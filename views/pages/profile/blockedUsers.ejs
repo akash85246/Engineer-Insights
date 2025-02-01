@@ -1,0 +1,99 @@
+<div class="container mx-auto p-2 md:p-6 max-w-4xl font-lora">
+  <h2 class="text-lg md:text-xl lg:text-2xl py-3 px-0 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %>">Blocked Users</h2>
+
+  <ul id="blockedUsersList" class="space-y-4 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-primary shadow-white-md' : 'bg-sixth text-primary shadow-md' %>  rounded-lg">
+   
+  </ul>
+
+  <div id="paginationControls" class="flex justify-center mt-6 space-x-2">
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+   changePage(1);
+  });
+
+  async function changePage(page) {
+    try {
+      const response = await fetch(`/api/profile/usersBlocked/?page=${page}`);
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log(data);
+        updateBlockedUsersList(data.blockedUsers, data.page, data.totalPages);
+      } else {
+        document.getElementById("blockedUsersList").innerHTML = `<p class='text-center'>No blocked users found. Status: ${response.status} - ${response.statusText}</p>`;
+      }
+    } catch (error) {
+      console.error("Error fetching blocked users:", error);
+    }
+  }
+
+  function updateBlockedUsersList(users, page, totalPages) {
+    const list = document.getElementById("blockedUsersList");
+    list.innerHTML = "";
+    users.forEach((user) => {
+      const userItem = `
+          <li class="flex justify-between items-center p-2 md:p-4  shadow rounded-md <%= user.settings.theme === 'dark' ? 'shadow-white-md' : 'shadow-md' %> ">
+            <div class="flex items-center gap-2 justify-center">
+           <img src="${user.avatar}" alt="${user.username}" class="w-12 h-12 rounded-full">
+            <span class="font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-primary' %> ">${user.username}</span>
+            <span class=" text-sm <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %> ">${user.firstname}</span>
+            <span class=" text-sm <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>">${user.lastname}</span>
+            </div>
+            <button
+              class="font-roboto <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : ' text-fifth bg-dark-sixth  border-fifth' %> hover:bg-red-500  font-semibold py-1 px-4 rounded text-sm md:text-sm "
+              onclick="unblockUser('${user._id}')"
+            >
+              Unblock
+            </button>
+          </li>
+        `;
+      list.insertAdjacentHTML("beforeend", userItem);
+    });
+
+    updatePaginationControls(page, totalPages);
+  }
+
+  function updatePaginationControls(currentPage, totalPages) {
+    const paginationControls = document.getElementById("paginationControls");
+    paginationControls.innerHTML = "";
+
+    if (currentPage > 1) {
+      paginationControls.innerHTML += `<button onclick="changePage(${
+        currentPage - 1
+      })" class="bg-tertiary text-white px-4 py-2 rounded" id
+      "prev">Previous</button>`;
+    }
+
+    for (let i = 1; i <= totalPages; i++) {
+      paginationControls.innerHTML += `<button onclick="changePage(${i})" class="px-4 py-2 rounded ${
+        i === currentPage ? "bg-tertiary text-white" : "bg-gray-300"
+      }">${i}</button>`;
+    }
+
+    if (currentPage < totalPages) {
+      paginationControls.innerHTML += `<button onclick="changePage(${
+        currentPage + 1
+      })" class="bg-tertiary text-white px-4 py-2 rounded" id="next">Next</button>`;
+    }
+  }
+
+  async function unblockUser(userId) {
+    try {
+      const response = await fetch(`/api/profile/block/${userId}`, {
+        method: "PATCH",
+      });
+
+      if (response.ok) {
+        alert("User unblocked successfully");
+        changePage(1);
+      } else {
+        alert("Failed to unblock user");
+      }
+    } catch (error) {
+      console.error("Error unblocking user:", error);
+    }
+  }
+</script>

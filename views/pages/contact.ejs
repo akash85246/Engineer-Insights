@@ -1,0 +1,165 @@
+<div class="grid grid-cols-2 p-2 pt-5 sm:p-5 md:p-10">
+  <div class="p-2 sm:p-5 md:p-8 rounded-lg max-w-3xl mx-auto mt-8">
+    <h1 class="text-2xl md:text-3xl font-bold  mb-4 <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-primary-dark' %>">
+      HAVE A QUESTION?
+    </h1>
+    <p class="<%= user.settings.theme === 'dark' ? ' text-white' : ' text-gray-600' %> text-xxs sm:text-sm md:text-lg leading-relaxed mb-6">
+      Welcome to
+      <span class="font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-primary-dark' %>">Engineer Insights!</span>
+      We're here to assist you with anything you need. Whether you have a
+      question about your blog, need technical guidance, or want to share your
+      thoughts, our team is just a message away.
+    </p>
+    <p class="<%= user.settings.theme === 'dark' ? ' text-white' : ' text-gray-600' %>  text-xxs sm:text-sm md:text-lg  leading-relaxed mb-6">
+      Every inquiry matters to us, and we ensure a personalized response
+      tailored to your needs. Please allow up to
+      <span class="font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-primary-dark' %>">24 hours</span>
+      during business hours for a reply. Our business hours are
+      <span class="font-semibold">Monday to Friday, 8 AM to 5 PM PT</span>.
+    </p>
+    <p class="<%= user.settings.theme === 'dark' ? ' text-white' : ' text-gray-600' %> text-xxs sm:text-sm md:text-lg  leading-relaxed">
+      Fill out the form below or reach out to us via email. Let us help you make
+      the most of your journey with Engineer Insights.
+    </p>
+  </div>
+
+  <form
+    class="<%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %> p-5 sm:p-5 md:p-8 rounded-lg shadow-md max-w-3xl mx-auto mt-8 flex flex-col gap-2 sm:gap-4"
+    id="contactForm"
+  >
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4">
+      <input
+        type="text"
+        maxlength="25"
+        placeholder="First Name"
+        id="firstName"
+        class="w-full  border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 p-2  sm:p-3 text-sm sm:text-base md:text-lg <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
+      />
+      <input
+        type="text"
+        maxlength="25"
+        placeholder="Last Name"
+        id="lastName"
+        class="w-full p-2  sm:p-3 text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
+      />
+    </div>
+    <input
+      type="email"
+      maxlength="50"
+      placeholder="Email Address"
+      id="email"
+      class="w-full p-2  sm:p-3 text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
+    />
+    <input
+      type="text"
+      name="number"
+      id="number"
+      maxlength="10"
+      placeholder="Phone Number"
+      class="w-full p-2  sm:p-3 text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
+    />
+    <input
+      type="text"
+      maxlength="50"
+      placeholder="Your Topic"
+      id="topic"
+      class="w-full p-2 sm:p-3  text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
+    />
+    <textarea
+      name="message"
+      id="message"
+      cols="30"
+      rows="5"
+      placeholder="Your Message"
+      class="w-full p-2  sm:p-3 text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
+    ></textarea>
+    <button
+      type="submit"
+      class="w-full  text-white p-2  sm:p-3 text-sm sm:text-base md:text-lg rounded-lg shadow hover:bg-blue-700 transition duration-300 font-semibold <%= user.settings.theme === 'dark' ? ' bg-dark-secondary' : ' bg-primary' %>"
+    >
+      SUBMIT
+    </button>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById("contactForm");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const firstName = document.getElementById("firstName").value.trim();
+    const lastName = document.getElementById("lastName").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const number = document.getElementById("number").value.trim();
+    const topic = document.getElementById("topic").value.trim();
+    const message = document.getElementById("message").value.trim();
+
+    const nameRegex = /^[A-Za-z]{2,}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const numberRegex = /^\d{10}$/;
+
+    if (!firstName || !nameRegex.test(firstName)) {
+      alert(
+        "Please enter a valid first name (letters only, at least 2 characters)."
+      );
+      return;
+    }
+
+    if (!lastName || !nameRegex.test(lastName)) {
+      alert(
+        "Please enter a valid last name (letters only, at least 2 characters)."
+      );
+      return;
+    }
+
+    if (!email || !emailRegex.test(email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    if (!number || !numberRegex.test(number)) {
+      alert("Please enter a valid phone number (10 digits).");
+      return;
+    }
+
+    if (!topic) {
+      alert("Please select a topic.");
+      return;
+    }
+
+    if (!message || message.length < 10) {
+      alert("Please enter a message (at least 10 characters).");
+      return;
+    }
+
+    const formData = {
+      firstName,
+      lastName,
+      email,
+      number,
+      topic,
+      message,
+    };
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        alert("Form submitted successfully");
+        form.reset();
+      } else {
+        alert("Error submitting the form. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error sending the message. Please try again.");
+    }
+  });
+</script>

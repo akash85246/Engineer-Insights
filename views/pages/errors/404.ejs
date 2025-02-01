@@ -1,0 +1,67 @@
+<div class="w-full flex-shrink-0" id="blog-${blog.slug}">
+  <div
+    class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md"
+    style="
+      background-image: url('data:image/jpeg;base64,${
+      blog.image
+    }');
+    "
+  >
+    <div
+      class="rounded-lg shadow-lg overflow-hidden w-full bg-black bg-opacity-30 p-3"
+    >
+      <div class="flex justify-end">
+        <p
+          class="backdrop-blur-md px-2 py-1 rounded-full <%= user.settings.theme === 'dark' ? 'bg-dark-secondary' : 'bg-secondary' %> bg-opacity-20 text-white text-xxxxs md:text-xxs lg:text-xs font-semibold font-sans uppercase"
+        >
+          ${truncateText( blog.tags[0], 10 )}
+        </p>
+      </div>
+      <div class="flex flex-col gap-2">
+        <div class="h-16 sm:h-20 md:h-24 lg:h-28"></div>
+        <p
+          class="text-xxs md:text-xs font-mono <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-primary-dark' %>"
+        >
+          ${new Date( blog.createdAt ).toLocaleDateString("en-US", { day:
+          "numeric", month: "numeric", year: "numeric", })}
+        </p>
+        <h5
+          class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold whitespace-normal break-words"
+        >
+          ${truncateText( blog.title, 50 )}
+        </h5>
+        <p
+          class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-primary-dark' %> text-xxxs sm:text-xxs md:text-xs lg:text-sm whitespace-normal break-words"
+        >
+          ${truncateText( blog.description, 100 )}
+        </p>
+        <div class="flex justify-between items-center gap-2">
+          <div class="flex gap-1 md:gap-2">
+            <a
+              href="/blog/edit/${
+                blog.slug
+              }"
+              class="border-2 border-green-600 text-green-600 hover:text-white px-3 rounded-full hover:bg-green-600 focus:outline-none flex items-center space-x-2 text-xxxxs sm:text-xxxs md:text-xxs lg:text-xs"
+            >
+              Edit
+            </a>
+            <button
+              class="remove-button border-2 border-red-600 bg-red-600 text-white hover:text-red-600 px-3 rounded-full hover:bg-white focus:outline-none flex items-center space-x-2 text-xxxxs sm:text-xxxs md:text-xxs lg:text-xs"
+              data-slug="${blog.slug}"
+            >
+              Remove
+            </button>
+          </div>
+          <a
+            href="/blog/${
+              blog.slug
+            }"
+            class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-secondary' %> hover:underline hover:text-blue-500 text-xxxxs sm:text-xxxs md:text-xxs lg:text-xs whitespace-nowrap"
+          >
+            Read More
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,151 @@
+<div
+  class="flex flex-col-reverse md:grid md:grid-cols-2 gap-6 py-16 px-4 sm:p-8 md:p-8 md:py-16"
+>
+  <div class="hidden md:flex justify-center items-center flex-col">
+    <h2
+      class="text-base sm:text-lg md:text-2xl font-bold text-gray-800 md:mb-4 text-center"
+    >
+      Forgot Your Password?
+    </h2>
+    <img
+      src="images/signinImg.png"
+      alt="Sign-in image"
+      class="h-60 sm:h-80 md:h-80"
+    />
+    <p
+      class="text-xs sm:text-base md:text-lg text-purple-950 md:font-semibold mb-6 text-center"
+    >
+      Enter your username to receive a One-Time Password (OTP) and reset your
+      account password securely.
+    </p>
+  </div>
+  <div
+    class="max-w-7xl mx-auto md:mx-5 my-auto p-8 rounded-lg shadow-lg bg-white bg-opacity-10 backdrop-blur-md border border-gray-200"
+  >
+    <h1
+      class="text-lg sm:text-xl md:text-2xl font-bold text-center md:mb-2 flex justify-center items-center gap-2"
+    >
+      <img src="images/logoImg/logo.png" class="h-10" alt="logo Img" />Password
+      Reset
+    </h1>
+    <h2
+      class="text-sm sm:text-base md:text-lg text-purple-950 md:font-semibold mb-6 text-center"
+    >
+      Please enter your username to receive the OTP.
+    </h2>
+    <form
+      id="resetForm"
+      action="/auth/generateOTP"
+      method="GET"
+      class="space-y-6"
+    >
+      <div class="h-16">
+        <label for="username" class="block text-sm font-medium text-gray-700"
+          >Username</label
+        >
+        <input
+          type="text"
+          name="username"
+          id="username"
+          required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+        <p class="text-xs text-red-500 mt-1 hidden" id="usernameError"></p>
+      </div>
+      <div>
+        <button
+          type="submit"
+          class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+        >
+          Send OTP
+        </button>
+      </div>
+    </form>
+    <div class="text-xs md:text-sm text-center mt-4">
+      <p>
+        Don't have an account?
+        <a href="/signup" class="text-blue-500">Sign Up</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const usernameRegex = /^[A-Za-z0-9_]+$/;
+
+  const form = document.getElementById("resetForm");
+  const username = document.getElementById("username");
+  const usernameError = document.getElementById("usernameError");
+
+  form.addEventListener("input", function (e) {
+    if (usernameRegex.test(username.value)) {
+      usernameError.classList.add("hidden");
+    } else {
+      usernameError.classList.remove("hidden");
+      usernameError.innerText = "Invalid username";
+    }
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    if (!usernameRegex.test(username.value)) {
+      usernameError.classList.remove("hidden");
+      usernameError.innerText = "Invalid username";
+      return;
+    } else {
+      usernameError.classList.add("hidden");
+    }
+
+    const url = `${form.action}?username=${encodeURIComponent(username.value)}`;
+
+    console.log(url);
+    try {
+      const res = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (res.status !== 201) {
+        throw new Error("Failed to generate OTP");
+      }
+
+      const data = await res.json();
+
+      const apiUrl = `/user/${username.value}`;
+      const response = await fetch(apiUrl);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+
+      const userData = await response.json();
+      const email = userData.email;
+
+      const requestData = {
+        username: username.value,
+        userEmail: email,
+        text: `Your OTP for password reset is ${data.code}. If you did not request this, please ignore this email.`,
+        subject: "OTP for Password Reset - Engineer Insights",
+      };
+
+      const mailResponse = await fetch("/auth/registerMail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      if (!mailResponse.ok) {
+        throw new Error("Failed to send email");
+      }
+      await mailResponse.json();
+      window.location.href = `/verify?username=${username.value}`;
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+    }
+  });
+</script>

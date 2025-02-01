@@ -1,0 +1,14 @@
+<div class="grid grid-cols-1 sm:grid-cols-8 md:grid-cols-6 lg:grid-cols-5 pt-10">
+  <div class="sm:col-span-2 md:col-span-2 lg:col-span-1">
+    <%- include("../../partials/authorDetails.ejs") %>
+  </div>
+
+  <div class="sm:col-span-6 md:col-span-4 lg:col-span-4">
+    <% if (reader.role == "writer") { %>
+      <%- include("../../partials/featuredAuthorBlogs.ejs") %>
+      <%- include("../../partials/authorBlogs.ejs") %>
+    <% } else { %>
+      <%- include("../../partials/profileReader.ejs") %>
+    <% } %>
+  </div>
+</div>
