@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Comment = require("../models/comment.model");
+const Comment = require("../models/Comment.model");
 const Blog = require("../models/Blog.model");
 const User = require("../models/User.model");
 const { createNotification } = require("./notification.controller");

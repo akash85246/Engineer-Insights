@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const UserModel = require("../models/User.model");
-const CommentModel = require("../models/comment.model");
+const CommentModel = require("../models/Comment.model");
 const BlogModel = require("../models/Blog.model");
 const NotificationModel = require("../models/Notification.model");
 const ReportModel = require("../models/Report.model");
