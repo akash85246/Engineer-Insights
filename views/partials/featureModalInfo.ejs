@@ -1,5 +1,5 @@
 <div
-  class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'text-text bg-primary' %> bg-opacity-50 flex items-center justify-center hidden z-50 p-5 md:p-0 backdrop-blur-sm w-full h-full"
+  class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'text-text bg-primary' %> bg-opacity-50 flex items-center justify-center hidden z-50 p-5 md:p-0 backdrop-blur-sm w-full h-full font-lora"
   id="featureModalInfo"
 >
   <div
@@ -78,10 +78,10 @@
         if (payment.featuredDetails.featureDuration > daysPassed) {
           buttonHtml = `
           <div class="flex justify-between items-center gap-1">
-          <button class="hover:bg-blue-300 hover:text-background   <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-gray-300  text-gray-700 ' %>  font-roboto md:font-bold font-semibold text-sm md:text-base p-2 md:py-2 md:px-4  rounded focus:outline-none focus:shadow-outline" onclick="showChangeFeaturedModal('${blog._id}')">
+          <button class="hover:bg-blue-300 hover:text-background   <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-gray-300  text-gray-700 ' %>  font-roboto md:font-bold font-semibold text-sm md:text-base p-2 md:py-2 md:px-4  rounded focus:outline-none focus:shadow-outline font-roboto" onclick="showChangeFeaturedModal('${blog._id}')">
               Change Blog
           </button>
-          <button class="hover:bg-red-300   hover:text-background   font-roboto <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : ' text-sixth bg-fourth' %>  md:font-bold font-semibold text-sm md:text-base p-2 md:py-2 md:px-4 rounded outline-none" onclick="removeFeatured('${blog._id}')">
+          <button class="hover:bg-red-300   hover:text-background   font-roboto <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : ' text-sixth bg-fourth' %>  md:font-bold font-semibold text-sm md:text-base p-2 md:py-2 md:px-4 rounded outline-none font-roboto" onclick="removeFeatured('${blog._id}')">
               Remove from Featured
           </button>
           </div>

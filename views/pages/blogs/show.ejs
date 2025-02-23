@@ -6,7 +6,7 @@
     class="pt-16 pb-5 sm:pb-10 md:pt-36 md:py-24 w-full bg-opacity-10 <%= user.settings.theme === 'dark' ? 'bg-dark-background ' : 'text-text bg-background ' %>"
   >
     <div
-      class="sm:p-0 w-3/5 sm:w-2/3 md:w-1/2 lg:w-1/2 flex justify-center items-center flex-col text-center gap-2 m-auto relative"
+      class="sm:p-0 w-4/5 sm:w-2/3 lg:w-1/2 flex justify-center items-center flex-col text-center gap-2 m-auto relative"
     >
       <p
         class="rounded-lg <%= user.settings.theme === 'dark' ? 'bg-background' : ' text-background bg-background' %> bg-opacity-30 p-2 px-3 py-0"
@@ -19,96 +19,98 @@
         </a>
       </p>
       <h1
-        class="text-sm sm:text-base md:text-xl lg:text-2xl w-full font-bold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %> break-words whitespace-normal"
+        class="text-sm sm:text-base md:text-xl lg:text-2xl w-full font-bold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-background' %> break-words whitespace-normal"
       >
         <%- blog.title %>
       </h1>
       <h2
-        class="w-full text-sm sm:text-sm md:text-base lg:text-base <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> font-sans break-words whitespace-normal font-light"
+        class="w-full text-sm sm:text-sm md:text-base lg:text-base <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-background' %> font-sans break-words whitespace-normal font-light"
       >
         <%- blog.description %>
       </h2>
       <h3
-        class="text-xxs sm:text-xs md:text-sm lg:text-base font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-background' %> capitalize"
+        class="text-xxs sm:text-xs md:text-sm lg:text-base font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-background' %> capitalize"
       >
         By <%- blog.author.firstname %> <%-blog.author.lastname %>
       </h3>
     </div>
   </div>
-  <div
-    class="absolute -top-2 -right-2 md:right-2 flex gap-1 md:gap-5 justify-between items-center flex-col bg-opacity-0 h-full"
-  >
-    <% if (isAuthenticated) { %>
+</div>
 
+<div
+  class="border-t-4 border-b-4 border-tertiary w-full flex justify-between items-center text-white p-1 px-5 sm:px-10  md:px-9 "
+>
+  <div class="flex gap-2 md:gap-5 items-center">
+    <% if (isAuthenticated) { %>
     <button
       id="saveBlogButton"
-      class="rounded-lg hover:scale-110 flex items-center transition-transform duration-200 ease-in-out z-100"
+      class="rounded-lg hover:scale-110 flex items-center justify-center transition-transform duration-200 ease-in-out z-100"
     >
       <img
         src="<%= userSavedBlog ? 'images/icons/saveBlogShowIcon.png' : 'images/icons/unsaveBlogShowIcon.png' %>"
         alt="<%= userSavedBlog ? 'Saved blog icon' : 'Unsaved blog icon' %>"
         id="saveBlogIcon"
-        class="h-24 sm:h-20 md:h-28 <%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"
+        class="w-6 h-5 md:w-8 md:h-6 <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
       />
     </button>
-    <div class="flex gap-2 md:gap-5 flex-col items-center">
+   
       <button
         id="likeButton"
-        class="<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-white' %> rounded-full flex items-center justify-center flex-col mt-5"
+        class="<%= user.settings.theme === 'dark' ? 'text-white' : 'text-text' %> rounded-full flex items-center justify-center gap-2"
       >
-        <h1
-          id="likeCount"
-          class="text-xxs sm:text-base md:text-lg text-center overflow-clip font-bold"
-        >
-          <%= blog.likes.length %>
-        </h1>
         <img
           src="<%= userAlreadyLiked ? 'images/icons/likeIcon.png' : 'images/icons/unlikeIcon.png' %>"
           alt="<%= userAlreadyLiked ? 'liked icon' : 'unliked icon' %>"
           id="likeIcon"
-          class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 hover:scale-110 transition-transform duration-200 ease-in-out relative <%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"
+          class="w-4 h-4 md:w-5 md:h-5 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
         />
       </button>
-
-      <% if (isAuthenticated && user.subscription=="elite" || editable ) { %>
-      <a
-        href="/api/blog/download/<%= blog.slug  %>"
-        class="flex items-center text-sm md:text-base font-roboto md:h-8"
+      <h1
+        id="likeCount"
+        class="sm:text-lg md:text-xl text-center overflow-clip font-semibold  <%= user.settings.theme === 'dark' ? ' text-dark-primary' : '  text-primary' %>"
       >
-        <img
-          src="images/icons/downloadBlogIcon.png"
-          alt="download blog icon"
-          class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"
-        />
-      </a>
-      <% } %> <% if (editable) { %>
-      <button
-        class="flex items-center transition duration-300 ease-in-out text-sm md:text-base font-roboto md:h-8"
-        id="archivedBlog"
-      >
-        <img
-          src="<%= blog.status !== 'archived' 
+        <%= blog.likes.length %>
+      </h1>
+    <% } %>
+  </div>
+  <div class="flex gap-2 md:gap-5 items-center">
+    <% if (isAuthenticated && user.subscription=="elite" || editable ) { %>
+    <a
+      href="/api/blog/download/<%= blog.slug  %>"
+      class="flex items-center text-sm md:text-base font-roboto md:h-8"
+    >
+      <img
+        src="images/icons/downloadBlogIcon.png"
+        alt="download blog icon"
+        class="w-5 h-6 md:w-6 md:h-7 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+      />
+    </a>
+    <% } if (editable) { %>
+    <button
+      class="flex items-center transition duration-300 ease-in-out text-sm md:text-base font-roboto md:h-8"
+      id="archivedBlog"
+    >
+      <img
+        src="<%= blog.status !== 'archived' 
   ? 'images/icons/archiveIcon.png' 
   : 'images/icons/publishIcon.png' %>"
-          alt="edit blog icon"
-          alt="edit blog icon"
-          class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"
-        />
-      </button>
+        alt="edit blog icon"
+        alt="edit blog icon"
+        class="w-5 h-6 md:w-6 md:h-7  hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+      />
+    </button>
 
-      <a
-        href="/blog/edit/<%= blog.slug  %>"
-        class="flex items-center text-sm md:text-base font-roboto md:h-8"
-      >
-        <img
-          src="images/icons/editBlog.png"
-          alt="edit blog icon"
-          class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"
-        />
-      </a>
+    <a
+      href="/blog/edit/<%= blog.slug  %>"
+      class="flex items-center text-sm md:text-base font-roboto md:h-8"
+    >
+      <img
+        src="images/icons/editBlog.png"
+        alt="edit blog icon"
+        class="w-5 h-6 md:w-6 md:h-7  hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+      />
+    </a>
 
-      <% } %>
-    </div>
     <% } %>
   </div>
 </div>
@@ -167,6 +169,7 @@
     </div>
 
     <div class="flex justify-between items-center my-10">
+      <div>
       <a
         href="/profile/<%= blog.author.slug%>"
         class="flex justify-center items-center gap-2 cursor-pointer"
@@ -189,21 +192,13 @@
           </h4>
         </div>
       </a>
+      <div><%- include("../../partials/subAuthor.ejs") %></div>
+    </div>
 
       <div
-        class="grid grid-cols-6 gap-x-2 gap-y-1 sm:gap-y-2 lg:gap-y-6 items-center max-w-sm"
+        class="grid grid-cols-4 gap-x-2 gap-y-2 sm:gap-y-2 lg:gap-y-6 items-center max-w-sm"
       >
-        <a
-          href="https://www.facebook.com/sharer/sharer.php?u=#url"
-          target="_blank"
-          class="text-white hover:bg-blue-200 transition duration-300 w-5 h-5 hover:scale-150 rounded-full mx-auto"
-        >
-          <img
-            src="images/icons/facebookIcon.png"
-            alt="facebook icon"
-            class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
-          />
-        </a>
+    
 
         <a
           href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(url) %>&text=Check out this page!"
@@ -217,17 +212,6 @@
           />
         </a>
 
-        <a
-          href="https://www.linkedin.com/shareArticle?mini=true&url=<%= encodeURIComponent(url) %>&title=Check out this page!"
-          target="_blank"
-          class="text-white w-5 h-5 hover:scale-150 rounded-full hover:bg-blue-200 transition duration-300"
-        >
-          <img
-            src="images/icons/linkedinIconDark.png"
-            alt="linkedin icon"
-            class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
-          />
-        </a>
 
         <a
           href="https://www.reddit.com/submit?url=<%= encodeURIComponent(url) %>&title=Check out this page!"
@@ -252,7 +236,8 @@
             class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
           />
         </a>
-        <div class="relative flex justify-between items-center">
+
+        <div class="relative flex justify-between items-center flex-col">
           <button
             id="copyBtn"
             class="text-white w-5 h-5 hover:scale-150 rounded-full shadow hover:bg-gray-200 transition duration-300"
@@ -275,7 +260,7 @@
 
         <button
           id="reportButton"
-          class="font-semibold px-3 md:px-6 py-1 md:py-2 rounded-full hover:bg-red-400 transition-all duration-300 ease-in-out text-sm col-span-6 flex items-center gap-2 justify-center font-roboto <%= user.settings.theme === 'dark' ? ' bg-dark-fifth shadow-white-md text-dark-secondary' : 'bg-fifth text-white shadow-md' %>"
+          class="font-semibold py-2  rounded-full hover:bg-red-400 transition-all duration-300 ease-in-out text-sm items-center col-span-4 font-roboto <%= user.settings.theme === 'dark' ? ' bg-dark-fifth shadow-white-md text-dark-secondary' : 'bg-fifth text-white shadow-md' %> max-w-sm box-border"
         >
           <span class="text-sm">Report</span>
         </button>
@@ -285,23 +270,23 @@
     <% if (isAuthenticated && blog.allowComments) { %>
     <form
       onsubmit="return addComment()"
-      class="sticky top-0 <%= user.settings.theme === 'dark' ? ' bg-dark-sixth shadow-white-lg' : 'bg-white shadow-lg' %> p-5 rounded-lg"
+      class="sticky top-0 <%= user.settings.theme === 'dark' ? ' bg-dark-sixth ' : 'bg-white shadow-lg' %> p-3 md:p-5 rounded-lg"
     >
       <textarea
         id="commentText"
         placeholder="Write a comment..."
-        class="text-base md:text-sm w-full p-3 border bg-transparent <%= user.settings.theme === 'dark' ?'placeholder-dark-tertiary text-dark-secondary border-dark-secondary' : 'text-fourth placeholder-fourth border-primary-dark' %> rounded-lg outline-none transition duration-300 resize-none"
+        class="text-sm  lg:text-base w-full p-3 border bg-transparent <%= user.settings.theme === 'dark' ?'placeholder-dark-tertiary text-dark-secondary border-dark-secondary' : 'text-fourth placeholder-fourth border-primary-dark' %> rounded-lg outline-none transition duration-300 resize-none"
         autofocus
-        rows="6"
+        rows="5"
         maxlength="500"
       ></textarea>
 
       <input type="hidden" id="parentCommentId" value="" />
 
-      <div class="mt-4 flex justify-end">
+      <div class="mt-2 md:mt-4 flex justify-end">
         <button
           type="submit"
-          class="px-5 py-2 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth shadow-white-md text-dark-secondary' : ' text-white bg-fifth shadow-md' %> rounded-full hover:bg-highlight hover:text-white transition duration-300 ease-in-out text-base md:text-sm lg:text-base hover:scale-110 font-roboto"
+          class="px-5 py-2 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth shadow-white-md text-dark-secondary' : ' text-white bg-fifth shadow-md' %> rounded-full hover:bg-highlight hover:text-white transition duration-300 ease-in-out text-sm  lg:text-base  hover:scale-110 font-roboto"
         >
           Add Comment
         </button>
@@ -353,8 +338,6 @@ include("../../partials/reportPopout.ejs") %>
 
     window.addComment=async  function addComment() {
       event.preventDefault();
-
-        console.log("Adding comment");
         const commentText = document.getElementById("commentText").value;
         const parentCommentId =
           document.getElementById("parentCommentId").value;
@@ -431,19 +414,14 @@ include("../../partials/reportPopout.ejs") %>
                           class="h-10 w-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-gray-200"
                         />
                         <div>
-                          <a class="flex items-center" href="/profile/${
+                          <a class="flex items-center gap-1 md:gap-2" href="/profile/${
                             comment.author.slug
                           }">
                             <p class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-secondary' %>">${
                               comment.author?.username || "Unknown User"
                             }</p>
-                            <p class="text-xxxxs  sm:text-xxxs md:text-xxs lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fourth' %>">
-                              (${comment.author.firstname || ""} ${
-          comment.author.lastname || ""
-        })
-                            </p>
                           </a>
-                          <p class="text-xxxxs  sm:text-xxxs md:text-xxs lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fourth' %> ">${new Date(
+                          <p class="text-xxs lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fourth' %> ">${new Date(
                             comment.createdAt
                           ).toLocaleString()}</p>
                         </div>
@@ -473,7 +451,7 @@ include("../../partials/reportPopout.ejs") %>
                     </button>
                   </div>
                   <div class="w-full">
-                    <p class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-fourth' %> mb-2 break-words whitespace-normal text-xxs sm:text-xs md:text-sm lg:text-base">
+                    <p class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-fourth' %> mb-2 break-words whitespace-normal text-sm lg:text-base">
                       ${comment.content || "No content"}
                     </p>
                   </div>
@@ -586,7 +564,7 @@ include("../../partials/reportPopout.ejs") %>
         }
       };
 
-      function renderComments(comments, container) {
+      window.renderComments = function renderComments(comments, container) {
         comments.forEach((comment) => {
           if (!comment.parentComment) {
             renderComment(comment, container, 0);
@@ -594,7 +572,7 @@ include("../../partials/reportPopout.ejs") %>
         });
       }
 
-      function deleteComment(commentId) {
+      window.deleteComment = function deleteComment(commentId) {
         fetch(`/api/comments/delete/${commentId}`, {
           method: "DELETE",
         })
@@ -648,9 +626,19 @@ include("../../partials/reportPopout.ejs") %>
 
       // Like/Unlike functionality
       likeButton.addEventListener("click", async () => {
-        const wasLiked = !(likeIcon.src.includes("unlikeIcon.png"));
-  likeIcon.src = wasLiked ? "images/icons/unlikeIcon.png" : "images/icons/likeIcon.png";
-  likeIcon.alt = wasLiked ? "Unlike icon" : "Like icon";
+        let wasLiked = !(likeIcon.src.includes("unlikeIcon.png"));
+        likeIcon.src = wasLiked ? "images/icons/unlikeIcon.png" : "images/icons/likeIcon.png";
+        likeIcon.alt = wasLiked ? "Unlike icon" : "Like icon";
+        const countLike=parseInt(likeCount.textContent, 10);
+        if(wasLiked){
+            likeCount.textContent = countLike - 1;
+            if(countLike-1<=0){
+            console.log("countLike",countLike);
+            likeCount.textContent = 0;
+            wasLiked = false;
+            return;
+           }
+        }
   likeCount.textContent = parseInt(likeCount.textContent, 10) + (wasLiked ? -1 : 1);
 
         try {
@@ -660,10 +648,10 @@ include("../../partials/reportPopout.ejs") %>
           });
 
           if (!response.ok) {
-            likeIcon.src = wasLiked ? "images/icons/likeIcon.png" : "images/icons/unlikeIcon.png";
-    likeIcon.alt = wasLiked ? "Like icon" : "Unlike icon";
-    likeCount.textContent = parseInt(likeCount.textContent, 10) + (wasLiked ? 1 : -1);
-            throw new Error("Failed to like/unlike the blog");
+            // likeIcon.src = wasLiked ? "images/icons/likeIcon.png" : "images/icons/unlikeIcon.png";
+            // likeIcon.alt = wasLiked ? "Like icon" : "Unlike icon";
+            // likeCount.textContent = parseInt(likeCount.textContent, 10) + (wasLiked ? 1 : -1);
+          throw new Error("Failed to like/unlike the blog");
           }
 
           const result = await response.json();

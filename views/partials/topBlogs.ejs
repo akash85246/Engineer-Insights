@@ -76,19 +76,19 @@
                           15
                         )}</p>
                       </div>
-                        <h5 class="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold whitespace-normal text-background break-all">${truncateText(
+                        <h5 class="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold whitespace-normal <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %> break-all">${truncateText(
                           blog.title,
                           50
                         )}</h5>
                         
                           
-                          <p class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %>  text-xxs sm:text-xs md:text-sm lg:text-base break-words font-extralight">${truncateText(
+                          <p class="<%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %>  text-xxs sm:text-xs md:text-sm lg:text-base break-words font-extralight">${truncateText(
                             blog.description,
                             100
                           )}
                             <span><a href="/blog/${
                               blog.slug
-                            }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> hover:text-highlight    font-roboto text-center  text-xxxs sm:text-xxs  md:text-xxs lg:text-xs  font-medium">Read More</a></span></p>
+                            }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %> hover:text-highlight    font-roboto text-center  text-xxs sm:text-xs md:text-sm lg:text-base  font-medium">read more</a></span></p>
                           <p class="-mt-1 <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> font-sans">_________</p>
                           <p class="text-xxxs sm:text-xxs  md:text-xxs lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> font-extralight">${new Date(
                             blog.createdAt

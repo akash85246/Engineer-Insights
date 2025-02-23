@@ -1,39 +1,25 @@
-// const multer = require('multer');
-// const { storage } = require('./cloudinary');
-// const upload = multer({ storage: storage });
-
-// module.exports = { upload };
-
-
 const multer = require("multer");
 const { cloudinary } = require("./cloudinary");
 const crypto = require("crypto");
 
-// Use in-memory storage for processing before upload
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-/**
- * Generate SHA-256 hash for image buffer
- */
+
 const generateImageHash = async (buffer) => {
   return crypto.createHash("sha256").update(buffer).digest("hex");
 };
 
-/**
- * Upload image to Cloudinary if not already present
- */
 const uploadImage = async (req, res, next) => {
     try {
       if (!req.file) {
-        return res.status(400).json({ error: "No file uploaded" });
-      }
+        return next();
+    }
   
       const fileBuffer = req.file.buffer;
       const imageHash = await generateImageHash(fileBuffer);
       console.log("Image Hash:", imageHash);
   
-      // Search Cloudinary for an image with the same hash
       const existingImages = await cloudinary.search
         .expression(`tags=${imageHash}`)
         .execute();

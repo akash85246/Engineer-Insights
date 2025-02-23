@@ -1,4 +1,5 @@
 const { ObjectId } = require("mongoose").Types;
+const { cloudinary } = require("../middleware/cloudinary");
 const puppeteer = require("puppeteer");
 const UserModel = require("../models/User.model");
 const BlogModel = require("../models/Blog.model");
@@ -42,6 +43,11 @@ const saveArticleAndRedirect = (path) => {
   return async (req, res) => {
     const body = req.body;
     const imageUrl = req.body.cloudinaryUrl;
+    if(!imageUrl){
+      return res.status(400).json({
+        errorMessage: "Please upload an image for the blog",
+      });
+    }
     const imageId = req.body.cloudinaryId;
     const userId = req.user._id;
 
@@ -73,7 +79,6 @@ const saveArticleAndRedirect = (path) => {
       if (!updatedUser) {
         return res.status(404).json({ message: "User not found" });
       }
-      console.log("blog", blog);
       const existingBlog = await BlogModel.findOne({ title: body.title });
       if (existingBlog) {
         return res.status(400).json({
@@ -162,13 +167,16 @@ async function getArticleBySlug(req, res) {
 
     let blog = await BlogModel.findOne({
       slug: req.params.slug,
-    }).lean();
+    })
+      .populate({
+        path: "subauthors",
+        select: "username firstname lastname slug avatar",
+      })
+      .lean();
 
     if (!blog) {
       return res.status(404).json({ message: "Blog not found" });
     }
-
-    // console.log("author", blog.author,"user:",user._id,typeof(blog.author),typeof(user),blog.author.toString()!==user._id.toString());
     if (
       blog.audience != "public" &&
       blog.author.toString() !== user._id.toString()
@@ -803,6 +811,7 @@ async function deleteBlog(req, res) {
       }
     );
 
+    console.log("Deleting image with public_id:", blog.blogPhotoId);
     await cloudinary.uploader.destroy(blog.blogPhotoId);
 
     const deleteResult = await BlogModel.deleteOne({ slug, author: userId });

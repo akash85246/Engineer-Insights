@@ -20,6 +20,7 @@ async function createNotification({
     if (reportId) {
       notification.reportId = reportId;
     }
+    console.log("notification", notification);
     await notification.save();
 
     const userDoc = await User.findById(user);
@@ -35,7 +36,7 @@ async function createNotification({
     };
     if (userDoc.settings.notifications == true) {
       const mailResponse = await fetch(
-        "http://localhost:3000/auth/registerMail",
+        `${process.env.BASE_URL}/auth/registerMail`,
         {
           method: "POST",
           headers: {

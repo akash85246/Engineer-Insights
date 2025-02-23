@@ -29,7 +29,7 @@
         class="pt-16 pb-5 sm:pb-10 md:pt-32 md:py-20 w-full bg-opacity-10 <%= user.settings.theme === 'dark' ? 'bg-dark-background ' : 'text-text bg-background ' %> flex justify-center items-center flex-col"
       >
         <div
-          class="sm:p-0 w-3/5 sm:w-2/3 md:w-1/2 lg:w-1/2 flex justify-center items-center flex-col text-center gap-2 relative"
+          class="sm:p-0 w-4/5 sm:w-2/3 lg:w-1/2 flex justify-center items-center flex-col text-center gap-2 relative"
         >
           <p
             class="rounded-lg <%= user.settings.theme === 'dark' ? 'bg-background' : ' text-background bg-background' %> bg-opacity-30 p-2 px-3 py-0"
@@ -57,60 +57,82 @@
           </h3>
         </div>
       </div>
-      <div
-        class="absolute -top-2 -right-2 md:right-2 flex gap-1 md:gap-5 justify-between items-center flex-col bg-opacity-0 h-full"
-      >
-        <div
-          class="rounded-lg hover:scale-110 flex items-center transition-transform duration-200 ease-in-out z-100"
-        >
-          <img
-            src="images/icons/unsaveBlogShowIcon.png"
-            alt="Unsaved blog icon"
-            id="saveBlogIcon"
-            class="h-24 sm:h-20 md:h-28 <%= user.settings.theme === 'dark' ? '' : 'invert' %>"
-          />
-        </div>
-        <div class="flex gap-2 md:gap-5 flex-col items-center">
-          <div
-            
-            class="<%= user.settings.theme === 'dark' ? 'text-black' : 'text-white' %> rounded-full flex items-center justify-center flex-col mt-5"
-          >
-            <h1
-              
-              class="text-xxs sm:text-base md:text-lg text-center overflow-clip font-bold"
-            >
-              <%= blog.likes.length %>
-            </h1>
-            <img
-              src="images/icons/unlikeIcon.png"
-              alt="unliked icon"
-              id="likeIcon"
-              class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 hover:scale-110 transition-transform duration-200 ease-in-out relative <%= user.settings.theme === 'dark' ? '' : 'invert' %>"
-            />
-          </div>
-
-          <div
-            class="flex items-center transition duration-300 ease-in-out text-sm md:text-base font-roboto md:h-8"
-           
-          >
-            <img
-              src="images/icons/archiveIcon.png"
-              alt="edit blog icon"
-              class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? '' : 'invert' %>"
-            />
-          </div>
-
-          <p class="flex items-center text-sm md:text-base font-roboto md:h-8">
-            <img
-              src="images/icons/editBlog.png"
-              alt="edit blog icon"
-              class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? '' : 'invert' %>"
-            />
-          </p>
-        </div>
-      </div>
     </div>
 
+    <div
+      class="border-t-4 border-b-4 border-tertiary w-full flex justify-between items-center text-white p-1 px-5 sm:px-10 md:px-9"
+    >
+      <div class="flex gap-2 md:gap-5 items-center">
+       
+        <button
+          id="saveBlogButton"
+          class="rounded-lg hover:scale-110 flex items-center justify-center transition-transform duration-200 ease-in-out z-100"
+        >
+          <img
+            src='images/icons/saveBlogShowIcon.png'
+            alt='Saved blog icon'
+            id="saveBlogIcon"
+            class="w-6 h-5 md:w-8 md:h-6 <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+        </button>
+
+        <button
+          id="likeButton"
+          class="<%= user.settings.theme === 'dark' ? 'text-white' : 'text-text' %> rounded-full flex items-center justify-center gap-2"
+        >
+          <img
+            src="images/icons/unlikeIcon.png"
+            alt="unliked icon"
+            id="likeIcon"
+            class="w-4 h-4 md:w-5 md:h-5 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+        </button>
+        <h1
+          id="likeCount"
+          class="sm:text-lg md:text-xl text-center overflow-clip font-semibold"
+        >
+          <%= blog.likes.length %>
+        </h1>
+       
+      </div>
+      <div class="flex gap-2 md:gap-5 items-center">
+        <a
+          href="/api/blog/download/<%= blog.slug  %>"
+          class="flex items-center text-sm md:text-base font-roboto md:h-8"
+        >
+          <img
+            src="images/icons/downloadBlogIcon.png"
+            alt="download blog icon"
+            class="w-5 h-6 md:w-6 md:h-7 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+        </a>
+        <button
+          class="flex items-center transition duration-300 ease-in-out text-sm md:text-base font-roboto md:h-8"
+          id="archivedBlog"
+        >
+          <img
+            src="<%= blog.status !== 'archived' 
+    ? 'images/icons/archiveIcon.png' 
+    : 'images/icons/publishIcon.png' %>"
+            alt="edit blog icon"
+            alt="edit blog icon"
+            class="w-5 h-6 md:w-6 md:h-7 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+        </button>
+
+        <a
+          class="flex items-center text-sm md:text-base font-roboto md:h-8"
+        >
+          <img
+            src="images/icons/editBlog.png"
+            alt="edit blog icon"
+            class="w-5 h-6 md:w-6 md:h-7 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+        </a>
+
+      
+      </div>
+    </div>
     <div class="grid grid-cols-5 gap-2 px-5 sm:px-8 p-2 pt-5 md:p-5 font-lora">
       <div
         id="date"

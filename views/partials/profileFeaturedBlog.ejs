@@ -68,7 +68,7 @@
     }
 
     function fetchBlogs() {
-      const user="<% user%>";
+      const user = "<% user%>";
       const url = `/api/blog/search/user?author=<%= profile._id%>&featured=true`;
       fetch(url)
         .then((response) => response.json())
@@ -89,7 +89,7 @@
                   user?.id && user._id.toString() === profile._id.toString();
                 return `
                   <div class="w-full flex-shrink-0 h-full">
-                    <div class="h-full flex justify-center items-center bg-no-repeat bg-cover text-white"
+                    <div class="h-full flex justify-center items-center bg-no-repeat bg-cover text-white bg-center"
                       style="background-image: url('${blog.blogPhoto}');">
                       <div class=" shadow-lg overflow-hidden <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'bg-background text-text' %>  bg-opacity-10 p-3 w-full">
                         <div class="flex justify-end pb-32">
@@ -99,7 +99,7 @@
                           </p>
                         </div>
                         <div class="flex flex-col gap-2 h-full justify-between">
-                          <p class="text-xxxs md:text-xxs lg:text-xs font-mono <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %>">
+                          <p class="text-xs md:text-sm font-mono <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %>">
                             ${new Date(blog.createdAt).toLocaleDateString(
                               "en-US",
                               {
@@ -109,15 +109,15 @@
                               }
                             )}
                           </p>
-                          <h5 class="text-sm sm:text-base md:text-lg lg:text-xl font-semibold break-words w-full  sm:w-2/3 text-white  w-1/2">
+                          <h5 class="text-lg md:text-xl  lg:text-2xl  font-semibold break-words w-full  sm:w-2/3 text-white  w-1/2">
                             ${truncateText(blog.title, 50)}
                           </h5>
-                          <p class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> text-xxxs sm:text-xxs md:text-xs lg:text-sm break-words w-full  md:w-2/3 w-1/2">
+                          <p class="<%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-background' %> text-sm md:text-lg break-words w-full  md:w-2/3 w-1/2">
                             ${truncateText(blog.description, 150)}
                             <span> <a href="/blog/${
                               blog.slug
-                            }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %> hover:text-highlight    font-roboto text-center  text-xxxs sm:text-xxs  md:text-xxs lg:text-xs  font-medium">
-                              Read More
+                            }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-background' %> hover:text-highlight    font-roboto text-center  text-sm md:text-base  font-medium ">
+                              read more
                             </a></span>
                           </p>
                           <div class="flex justify-between items-center gap-2 w-full  sm:w-2/3  w-1/2">

@@ -1,23 +1,25 @@
 <div class="pt-16 font-roboto">
-  <div class="relative bg-gray-200 rounded-lg p-1 w-full max-w-md mx-auto">
+  <div
+    class="relative <%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-gray-200' %> rounded-lg p-1 w-full max-w-md mx-auto"
+  >
     <!-- Sliding Background -->
     <div
       id="slider"
-      class="absolute bg-white rounded-lg top-1 left-1 h-[calc(100%-8px)] w-[calc(50%-4px)] transform transition-transform duration-300 ease-in-out"
+      class="absolute <%= user.settings.theme === 'dark' ? 'bg-dark-tertiary' : 'bg-white' %> rounded-lg top-1 left-1 h-[calc(100%-8px)] w-[calc(50%-4px)] transform transition-transform duration-300 ease-in-out"
     ></div>
 
     <!-- Buttons -->
     <div class="relative z-10 grid grid-cols-2">
       <button
         id="newButton"
-        class="text-gray-800 font-medium py-2 px-4 text-center rounded-lg focus:outline-none"
+        class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-gray-800 ' %> font-medium py-2 px-4 text-center rounded-lg focus:outline-none font-roboto"
         onclick="toggleTab('newBlogs')"
       >
         Feature New
       </button>
       <button
         id="featuredButton"
-        class="text-gray-500 font-medium py-2 px-4 text-center rounded-lg focus:outline-none"
+        class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-gray-800 ' %> font-medium py-2 px-4 text-center rounded-lg focus:outline-none font-roboto"
         onclick="toggleTab('featuredBlogs')"
       >
         Featured
@@ -74,48 +76,27 @@ include("../../partials/featureModalInfo.ejs") %>
   const newBlogContainer = document.getElementById("newBlogsContainer");
   const featureBlogContainer = document.getElementById("featureBlogContainer");
 
-  function toggleTab(tab) {
-    newBlogs.classList.toggle("absolute");
-    featuredBlogs.classList.toggle("absolute");
-    // newBlogContainer.classList.toggle("absolute");
-    // featureBlogContainer.classList.toggle("absolute");
+  function toggleTab(tab) { 
     if (tab === "newBlogs") {
       // Move the slider to the left
       slider.style.transform = "translateX(0)";
-
-      // Update button styles
-      newButton.classList.add("text-gray-800");
-      newButton.classList.remove("text-gray-500");
-      featuredButton.classList.add("text-gray-500");
-      featuredButton.classList.remove("text-gray-800");
-
+      newBlogs.classList.remove("absolute");
+      featuredBlogs.classList.add("absolute");
       // Show newBlogs content and hide  content
       newBlogs.classList.remove("translate-x-full");
       featuredBlogs.classList.add("translate-x-full");
 
+
       fetchNewBlogs(1, 10);
-      // newBlogs.classList.remove("hidden");
-      // newBlogs.classList.add("opacity-100");
-      // featuredBlogs.classList.add("hidden");
-      // featuredBlogs.classList.remove("opacity-100");
     } else if (tab === "featuredBlogs") {
       // Move the slider to the right
       slider.style.transform = "translateX(100%)";
-
-      // Update button styles
-      newButton.classList.add("text-gray-500");
-      newButton.classList.remove("text-gray-800");
-      featuredButton.classList.add("text-gray-800");
-      featuredButton.classList.remove("text-gray-500");
-
+      newBlogs.classList.add("absolute");
+      featuredBlogs.classList.remove("absolute");
       // Show featured  blogs content and hide newBlogs content
       newBlogs.classList.add("translate-x-full");
       featuredBlogs.classList.remove("translate-x-full");
       fetchFeaturedBlogs(1, 5);
-      // featuredBlogs.classList.remove("hidden");
-      // featuredBlogs.classList.add("opacity-100");
-      // newBlogs.classList.add("hidden");
-      // newBlogs.classList.remove("opacity-100");
     }
   }
 
@@ -132,6 +113,10 @@ include("../../partials/featureModalInfo.ejs") %>
       .then((data) => {
         const { blogs, pagination } = data;
         console.log("blogs", blogs);
+        if(blogs.length === 0){
+          newBlogContainer.innerHTML = `<h1 class="text-center text-2xl font-semibold text-secondary">No new blogs to feature</h1>`;
+          return;
+        }
         renderNewBlogs(blogs);
         renderPagination(pagination.currentPage, pagination.totalPages, true);
       })
@@ -146,7 +131,10 @@ include("../../partials/featureModalInfo.ejs") %>
       .then((data) => {
         console.log("data", data);
         const { blogs, pagination } = data;
-        console.log("blogs", blogs);
+        if(blogs.length === 0){
+          featureBlogContainer.innerHTML = `<h1 class="text-center text-2xl font-semibold text-secondary">No blog featured yet</h1>`;
+          return;
+        }
         renderFeaturedBlogs(blogs);
         renderPagination(pagination.currentPage, pagination.totalPages, false);
       })
@@ -193,15 +181,9 @@ include("../../partials/featureModalInfo.ejs") %>
                 <div class="flex justify-between items-center">
                   
                       <div class="flex gap-2">
-                         
-                             <button onclick="openDeleteModal('${
-                               blog.slug
-                             }')" class=" px-3 hover:bg-red-300 focus:outline-none text-sm md:text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-fourth' %> rounded-md">Delete</button>
-                             
-                           
                          <a href="/blog/edit/${
                            blog.slug
-                         }" class=" px-3 rounded-md focus:outline-none flex items-center text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300">Edit</a>
+                         }" class=" px-3 rounded-md focus:outline-none flex items-center text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300 font-roboto">Edit</a>
                       </div>
                 </div>
               </div>
@@ -220,9 +202,7 @@ include("../../partials/featureModalInfo.ejs") %>
     featureBlogContainer.innerHTML = blogs
       .map(
         (blog) => `
-<div class="w-full flex-shrink-0" onclick="showFeatureInfoModal('${
-          blog._id
-        }')">
+<div class="w-full flex-shrink-0" onclick="showFeatureInfoModal('${blog._id}')">
           <div class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
             blog.blogPhoto
           }')">
@@ -258,12 +238,14 @@ include("../../partials/featureModalInfo.ejs") %>
                          
                              <button onclick="openDeleteModal('${
                                blog.slug
-                             }')" class="remove-button px-3 hover:bg-red-300 focus:outline-none text-sm md:text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-fourth' %> rounded-md" data-slug=${blog.slug}>Remove</button>
+                             }')" class="remove-button px-3 hover:bg-red-300 focus:outline-none text-sm md:text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-fourth' %> rounded-md font-roboto" data-slug=${
+          blog.slug
+        }>Remove</button>
                              
                            
                          <a href="/blog/edit/${
                            blog.slug
-                         }" class=" px-3 rounded-md focus:outline-none flex items-center text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300">Edit</a>
+                         }" class=" px-3 rounded-md focus:outline-none flex items-center text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300 font-roboto">Edit</a>
                       </div>
                 </div>
               </div>
@@ -361,11 +343,9 @@ include("../../partials/featureModalInfo.ejs") %>
         }
       });
       paginationDiv.appendChild(pageButton);
-      if(currentPage === i){
+      if (currentPage === i) {
         prevButton.classList.add("hidden");
       }
-     
-     
     }
 
     const nextButton = document.createElement("button");
@@ -384,16 +364,15 @@ include("../../partials/featureModalInfo.ejs") %>
       } else {
         fetchFeaturedBlogs(currentPage + 1);
       }
-      if(totalPages<=5){
+      if (totalPages <= 5) {
         prevButton.classList.add("hidden");
         nextButton.classList.add("hidden");
       }
-    paginationDiv.appendChild(nextButton);
-    if(currentPage==endPage){
+      paginationDiv.appendChild(nextButton);
+      if (currentPage == endPage) {
         nextButton.classList.remove("hidden");
       }
     });
-    
   }
 
   function truncateText(text, maxLength) {

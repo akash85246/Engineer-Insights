@@ -89,7 +89,7 @@ async function login(req, res) {
 
     if (user.settings["2fa"] == true) {
       const otpResponse = await fetch(
-        `http://localhost:3000/auth/generateOTP?username=${encodeURIComponent(
+        `${process.env.BASE_URL}/auth/generateOTP?username=${encodeURIComponent(
           user.username
         )}`,
         {
@@ -112,7 +112,7 @@ async function login(req, res) {
       };
 
       const mailResponse = await fetch(
-        `http://localhost:3000/auth/registerMail`,
+        `${process.env.BASE_URL}/auth/registerMail`,
         {
           method: "POST",
           headers: {

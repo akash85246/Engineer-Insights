@@ -40,7 +40,7 @@ const commentController = require("./controllers/comment.controller");
 const { default: axios } = require("axios");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 
 app.use(
   session({
@@ -52,7 +52,7 @@ app.use(
     },
   })
 );
-app.use(flash()); 
+app.use(flash());
 
 console.log("Setting up server...");
 const server = http.createServer(app);
@@ -140,8 +140,8 @@ app.use((err, req, res, next) => {
 
 // Set a global timeout for all requests (in milliseconds)
 app.use((req, res, next) => {
-  req.setTimeout(120000);  // Timeout set to 2 minutes
-  next();  // Proceed to the next middleware
+  req.setTimeout(120000);
+  next();
 });
 
 app.get("/", async (req, res) => {
@@ -151,7 +151,7 @@ app.get("/", async (req, res) => {
     theme: "light",
     notifications: true,
   };
-const isAuthenticated = req.isAuthenticated();
+  const isAuthenticated = req.isAuthenticated();
   if (isAuthenticated) {
     const userId = req.user._id;
     user = await UserModel.findById(userId);
@@ -228,17 +228,20 @@ passport.use(
             req.session.twoFactor = { userId: user._id };
 
             // Redirect to 2FA page
-            req.session.twoFactor = { userId: user._id,username: user.username }; 
+            req.session.twoFactor = {
+              userId: user._id,
+              username: user.username,
+            };
 
-            return cb(null, false, { message: "2FA required", redirect: `/twoFactorAuth/${user.username}` });
-
+            return cb(null, false, {
+              message: "2FA required",
+              redirect: `/twoFactorAuth/${user.username}`,
+            });
           } catch (error) {
             console.error("Error handling 2FA:", error);
             return cb(error);
           }
         }
-
-        // Log login activity and create a notification
         try {
           const loginTime = new Date();
           const ipAddress =
@@ -292,17 +295,17 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/auth/google/home",
+      callbackURL: `${process.env.BASE_URL}/auth/google/home`,
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     async (accessToken, refreshToken, profile, cb) => {
       try {
         console.log(profile);
-        
+
         const result = await UserModel.findOne({ email: profile.email });
         if (!result) {
           const newUser = await UserModel.create({
-            username:  profile.displayName,
+            username: profile.displayName,
             firstname: profile.given_name,
             lastname: profile.family_name,
             email: profile.email,
@@ -338,7 +341,7 @@ connect()
     startScheduler();
     console.log("Database connected successfully");
     server.listen(port, () => {
-      console.log(`Server is running at http://localhost:${port}`);
+      console.log(`Server is running at ${process.env.BASE_URL}/`);
     });
   })
   .catch((error) => {

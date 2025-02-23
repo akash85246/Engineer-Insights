@@ -8,11 +8,12 @@ async function connect() {
   let uri;
 
   if (process.env.MONGODB_URI) {
-    uri = process.env.MONGODB_URI;
+    uri = process.env.MONGODB_URI;  
+    console.log("🌍 Connecting to MongoDB Atlas...");
   } else {
     const mongodb = await MongoMemoryServer.create();
-    uri = mongodb.getUri();
-    console.log("Connected to in-memory MongoDB");
+    uri = mongodb.getUri(); 
+    console.log("🛠️ Connected to in-memory MongoDB");
   }
 
   mongoose.set("strictQuery", true);

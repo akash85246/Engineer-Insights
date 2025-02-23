@@ -74,12 +74,12 @@
         <h5 class="w-full text-xs sm:text-sm md:text-base lg:text-lg  font-semibold break-words whitespace-normal <%= user.settings.theme === 'dark' ? ' text-dark-text' : 'text-background' %> ">
            ${truncateText(blog.title, 50)}
         </h5>
-        <p class=" <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-background' %> text-xxxs sm:text-xxxs md:text-xxs lg:text-xs font-thin break-words whitespace-normal ">
+        <p class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-background' %> text-xxxs sm:text-xxxs md:text-xxs lg:text-xs font-thin break-words whitespace-normal ">
           ${truncateText(blog.description, 100)}
           <span><a
             href="/blog/${blog.slug}"
-            class=" <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> hover:text-highlight    font-roboto text-center  text-xxxs sm:text-xxs  md:text-xxs lg:text-xs  font-medium"
-            >Read More</a
+            class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-background' %> hover:text-highlight    font-roboto text-center  text-xxxs sm:text-xxs  md:text-xxs lg:text-xs  font-medium"
+            >read more</a
           >
         </span>
         </p>

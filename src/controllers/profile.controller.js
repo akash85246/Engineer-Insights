@@ -1138,7 +1138,7 @@ async function getVerifyOtp(req, res) {
       subject: "OTP for Password Reset - Engineer Insights",
     };
     const mailResponse = await fetch(
-      `http://localhost:3000/auth/registerMail`,
+      `${process.env.BASE_URL}/auth/registerMail`,
       {
         method: "POST",
         headers: {
