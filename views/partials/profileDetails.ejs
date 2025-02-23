@@ -2,18 +2,20 @@
   class="py-2 px-4 sm:px-4 md:px-6 lg:px-8 lg:py-2 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'bg-secondary ' %> sticky top-0 grid grid-cols-2 sm:block gap-1 sm:gap-2 md:gap-4 md:min-h-screen font-lora"
 >
   <img
-  src="<%= profile && profile.avatar ? profile.avatar : '/images/defaultProfile.png' %>"
+    src="<%= profile && profile.avatar ? profile.avatar : '/images/defaultProfile.png' %>"
     alt="profile photo"
     class="max-w-60 w-full sm:max-w-full h-40 sm:h-52 rounded-md shadow-md object-cover"
   />
 
   <div class="flex flex-col gap-2 md:gap-4 sm:mt-6 p-2 sm:p-0">
     <h1
-      class="text-left text-base sm:text-lg md:text-base lg:text-lg font-semibold whitespace-nowrap flex gap-1 items-end  <%= profile.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-white' %> "
+      class="text-left text-base sm:text-lg md:text-base lg:text-lg font-semibold whitespace-nowrap flex gap-1 items-end <%= profile.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-white' %>"
     >
       <span><%= profile.firstname %></span>
       <span><%= profile.lastname %></span>
-      <p class="text-xs md:text-xxs lg:text-xs  <%= profile.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %>">
+      <p
+        class="text-xs md:text-xxs lg:text-xs <%= profile.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %>"
+      >
         <%= profile.subscription %>
       </p>
     </h1>
@@ -50,27 +52,25 @@
     </div>
 
     <% if (user._id && (user._id.toString() !== profile._id.toString())) { %>
-      <div class=" grid grid-cols-2 sm:grid-cols-1 gap-1">
-        <button
+    <div class="grid grid-cols-2 sm:grid-cols-1 gap-1">
+      <button
         id="followButton"
         class="w-full bg-blue-500 text-white font-bold rounded-full hover:bg-blue-600 outline-none transition-transform hover:scale-105 p-1 sm:py-2 sm:px-4 text-xs sm:text-sm md:text-base"
         onclick="toggleFollow( '<%= profile.slug %>')"
       >
-      <%= profile.followers.some(followerId => followerId.toString() === profile._id.toString()) ? "Unfollow" : "Follow" %>
+        <%= profile.followers.some(followerId => followerId.toString() ===
+        profile._id.toString()) ? "Unfollow" : "Follow" %>
       </button>
-    <button
-      id="blockButton"
-      class="w-full bg-red-500 text-white font-bold  rounded-full hover:bg-red-600 outline-none  transition-transform hover:scale-105  px-1 sm:py-2 sm:px-4 text-xs sm:text-sm md:text-base"
-      onclick="blockprofile('<%= profile._id %>')"
-    >
-    <%= 
-    (profile.blockedprofiles && user._id && 
-     profile.blockedprofiles.some(blockedId => blockedId.toString() === user._id.toString())) 
-     ? "Unblock" 
-     : "Block" 
-    %>
-    </button>
-  </div>
+      <button
+        id="blockButton"
+        class="w-full bg-red-500 text-white font-bold rounded-full hover:bg-red-600 outline-none transition-transform hover:scale-105 px-1 sm:py-2 sm:px-4 text-xs sm:text-sm md:text-base"
+        onclick="blockprofile('<%= profile._id %>')"
+      >
+        <%= (profile.blockedprofiles && user._id &&
+        profile.blockedprofiles.some(blockedId => blockedId.toString() ===
+        user._id.toString())) ? "Unblock" : "Block" %>
+      </button>
+    </div>
 
     <% } %>
 
@@ -82,7 +82,7 @@
       <div class="flex flex-wrap gap-2 w-full">
         <% profile.tags.forEach(function(tag) { %>
         <span
-          class="inline-block <%= profile.settings.theme === 'dark' ? 'text-dark-secondary border-dark-secondary' : ' border-sixth text-sixth ' %>bg-transparent  bg-opacity-35  text-xs md:text-xxs lg:text-xs border sm:border rounded-md sm:rounded-lg px-1 sm:px-2 sm:py-1 hover:scale-105 transition-transform font-roboto uppercase "
+          class="inline-block <%= profile.settings.theme === 'dark' ? 'text-dark-secondary border-dark-secondary' : ' border-sixth text-sixth ' %>bg-transparent bg-opacity-35 text-xs md:text-xxs lg:text-xs border sm:border rounded-md sm:rounded-lg px-1 sm:px-2 sm:py-1 hover:scale-105 transition-transform font-roboto uppercase"
         >
           <%= tag.trim() %>
         </span>
@@ -121,10 +121,20 @@
   </div>
   <div class="sm:pt-2 col-span-2"><%- include("./similarUsers.ejs") %></div>
 </div>
-
 <script>
-  
+  let startTime = Date.now();
 
+  window.addEventListener("beforeunload", function() {
+    let timeSpent = Math.round((Date.now() - startTime) / 1000); 
+
+    gtag('event', 'profile_time_spent', {
+      'event_category': 'Profile',
+      'event_label': '<%= profile.username %>',
+      'time_spent': timeSpent
+    });
+  });
+</script>
+<script>
   function truncateText(text, maxLength) {
     if (text.length > maxLength) {
       return text.substring(0, maxLength) + "...";
@@ -139,35 +149,42 @@
   const truncatedBio = truncateText(bioText, 500);
 
   profileBio.innerText = truncatedBio;
-  "<% if(profile){ %>";
+  ("<% if(profile){ %>");
 
-  async function toggleFollow( profileSlug) {
-  event.preventDefault();
-  const followButton = document.getElementById("followButton");
-  try {
-   
-    const response = await fetch(`/api/user/follow/${profileSlug}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  async function toggleFollow(profileSlug) {
+    event.preventDefault();
+    const followButton = document.getElementById("followButton");
+    try {
+      const response = await fetch(`/api/user/follow/${profileSlug}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (response.ok) {
-      const followButton = document.getElementById("followButton");
-      const data = await response.json();
+      if (response.ok) {
+        const followButton = document.getElementById("followButton");
+        const data = await response.json();
 
         alert(data.message);
 
         followButton.innerText =
           followButton.innerText === "Follow" ? "Unfollow" : "Follow";
-    } else {
-      console.error("Error following/unfollowing the profile.");
+        if (followButton.innerText === "Follow") {
+          gtag("event", "follow_user", {
+            event_category: "Profile",
+            event_label: "User Followed",
+            followed_user_id: "<%= profile._id %>",
+            follower_user_id: "<%= user._id %>",
+          });
+        }
+      } else {
+        console.error("Error following/unfollowing the profile.");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
     }
-  } catch (error) {
-    console.error("An error occurred:", error);
   }
-}
 
   async function blockprofile(profileSlug) {
     try {
@@ -184,6 +201,14 @@
 
         blockButton.innerText =
           blockButton.innerText === "Block" ? "Unblock" : "Block";
+          if (blockButton.innerText === "Block") {
+            gtag("event", "block_user", {
+              event_category: "Profile",
+              event_label: "User Blocked",
+              blocked_user_id: "<%= profile._id %>",
+              blocker_user_id: "<%= user._id %>",
+            });
+          }
       } else {
         console.log("Error blocking profile:", response);
       }
@@ -191,5 +216,5 @@
       console.log("Error:", error);
     }
   }
-  "<% } %>";
+  ("<% } %>");
 </script>

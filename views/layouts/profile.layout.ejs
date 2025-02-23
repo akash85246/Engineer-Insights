@@ -3,11 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/images/logoImg/logo.png">
+    <link rel="icon" type="image/png" href="/images/logoImg/logo.png" />
     <title><%= title %></title>
     <base href="/" />
     <link rel="stylesheet" href="stylesheets/style.css" />
   </head>
+
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-FG5BN3EY26"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-FG5BN3EY26");
+  </script>
   <body
     class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %>"
   >
@@ -19,9 +33,8 @@
       >
         <%- include(view) %>
       </div>
-      <% if(isAuthenticated) { %>
-      <%- include("../partials/profileSidebar.ejs") %>
-      <% } %>
+      <% if(isAuthenticated) { %> <%- include("../partials/profileSidebar.ejs")
+      %> <% } %>
     </div>
 
     <%- include("../partials/footer.ejs") %>

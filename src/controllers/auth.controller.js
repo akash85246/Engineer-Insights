@@ -168,6 +168,27 @@ async function login(req, res) {
       return res.status(500).json({ error: "Failed to create notification" });
     }
 
+    //gtag
+    fetch(
+      `https://www.google-analytics.com/mp/collect?measurement_id=G-FG5BN3EY26&api_secret=${process.env.GA_API_SECRET}`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          client_id: user._id,
+          events: [
+            {
+              name: "user_session_start",
+              params: {
+                user_id: user._id,
+                username: user.username,
+                login_time: new Date().toISOString(),
+              },
+            },
+          ],
+        }),
+      }
+    );
+
     res.status(200).json({
       message: "Login successful",
       username: user.username,
@@ -187,7 +208,9 @@ async function twoFactorVerify(req, res) {
   // Check if OTP matches
   if (parseInt(req.app.locals.OTP) !== parseInt(code)) {
     console.error("Invalid OTP:", req.app.locals.OTP, code);
-    res.status(400).send({ msg: "Invalid OTP", otp: req.app.locals.OTP, code: code });
+    res
+      .status(400)
+      .send({ msg: "Invalid OTP", otp: req.app.locals.OTP, code: code });
   }
 
   // Reset OTP and session reset flag
@@ -224,7 +247,7 @@ async function twoFactorVerify(req, res) {
     const notificationResponse = await createNotification(notificationData);
     if (!notificationResponse) {
       console.error("Failed to create notification:", notificationData);
-       res.status(500).json({ error: "Failed to create notification" });
+      res.status(500).json({ error: "Failed to create notification" });
     }
 
     req.login(user, (err) => {
@@ -280,9 +303,8 @@ async function generateOTP(req, res) {
     upperCaseAlphabets: false,
     specialChars: false,
   });
-  req.session.twoFactor = { username: username }; 
+  req.session.twoFactor = { username: username };
   res.status(201).send({ code: req.app.locals.OTP });
-
 }
 
 async function verifyOTP(req, res) {

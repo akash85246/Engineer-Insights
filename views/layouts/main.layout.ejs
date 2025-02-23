@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/images/logoImg/logo.png">
+    <link rel="icon" type="image/png" href="/images/logoImg/logo.png" />
     <title><%= title %></title>
     <base href="/" />
     <link rel="stylesheet" href="stylesheets/style.css" />
@@ -13,16 +13,33 @@
         overflow-wrap: break-word;
         white-space: pre-wrap;
       }
-    </style>   
-    
+    </style>
+
     <!-- fonts setup -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-text' %> ">
-    <%- include("../partials/header.ejs") %> 
-    <%- include(view) %> 
-    <%- include("../partials/footer.ejs") %>
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-FG5BN3EY26"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-FG5BN3EY26");
+  </script>
+  <body
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-text' %>"
+  >
+    <%- include("../partials/header.ejs") %> <%- include(view) %> <%-
+    include("../partials/footer.ejs") %>
   </body>
 </html>

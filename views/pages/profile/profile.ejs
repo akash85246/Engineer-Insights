@@ -3,8 +3,27 @@
     <%- include("../../partials/profileDetails.ejs")%>
   </div>
   <div class="sm:col-span-5 md:col-span-6 lg:col-span-4">
-    <%-
-    include("../../partials/profileFeaturedBlog.ejs")%> <%-
-    include("../../partials/profileBlogs.ejs")%> 
+    <%- include("../../partials/profileFeaturedBlog.ejs")%> <%-
+    include("../../partials/profileBlogs.ejs")%>
   </div>
 </div>
+<script>
+  gtag("event", "user_login", {
+    event_category: "User",
+    event_label: "Login Successful",
+    user_id: "<%= user._id %>",
+    username: "<%= user.username %>",
+    tag:"<%= user.tags %>",
+    followers: "<%= user.followers.length %>",  
+    following: "<%= user.following.length %>",
+    blogs: "<%= user.blogs.length %>",
+  });
+</script>
+<script>
+  gtag('event', 'profile_view', {
+    'event_category': 'Profile',
+    'event_label': 'Profile Viewed',
+    'viewed_user_id': '<%= profile._id %>',
+    'viewer_user_id': '<%= user._id %>'
+  });
+</script>
