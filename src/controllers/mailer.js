@@ -2,15 +2,14 @@
 
 const nodemailer = require("nodemailer");
 const Mailgen = require("mailgen");
-const ENV = require("../../config/development/config");
 
 const nodeConfig = {
   service: 'gmail',
   port: 587,
   secure: false,
   auth: {
-    user: ENV.EMAIL,
-    pass: ENV.PASSWORD,
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
   },
 };
 
@@ -41,7 +40,7 @@ const registerMail = async (req, res) => {
     const emailBody = mailGenerator.generate(email);
 
     const mailOptions = {
-      from: ENV.EMAIL,
+      from: process.env.EMAIL,
       to: userEmail,
       subject: subject || "Signup successful",
       html: emailBody,

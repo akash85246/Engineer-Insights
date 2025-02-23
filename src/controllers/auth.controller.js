@@ -1,7 +1,6 @@
 const UserModel = require("../models/User.model");
 const argon2 = require("argon2");
 const Jwt = require("jsonwebtoken");
-const ENV = require("../../config/development/config");
 const otpGenerator = require("otp-generator");
 const { createNotification } = require("./notification.controller");
 const userModel = require("../models/User.model");
@@ -136,7 +135,7 @@ async function login(req, res) {
         userId: user._id,
         username: user.username,
       },
-      ENV.JWT_SECRET,
+      process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
 

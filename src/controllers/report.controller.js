@@ -1,7 +1,3 @@
-const jwt = require("jsonwebtoken");
-const ENV = require("../../config/development/config");
-const { gfs } = require("../database/connection");
-const mongoose = require("mongoose");
 const ReportModel = require("../models/Report.model");
 const UserModel = require("../models/User.model");
 const BlogModel = require("../models/Blog.model");

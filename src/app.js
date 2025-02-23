@@ -12,6 +12,8 @@ const { Strategy } = require("passport-local");
 const passport = require("passport");
 const socketIo = require("socket.io");
 const argon2 = require("argon2");
+const dotenv = require("dotenv");
+dotenv.config();
 const {
   createNotification,
 } = require("./controllers/notification.controller.js");

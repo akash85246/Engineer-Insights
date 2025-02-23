@@ -1,14 +1,13 @@
 const nodemailer = require("nodemailer");
 const Mailgen = require("mailgen");
-const ENV = require("../../config/development/config");
 
 const nodeConfig = {
   service: "gmail",
   port: 587,
   secure: false, // Set to true if using SSL
   auth: {
-    user: ENV.EMAIL,
-    pass: ENV.PASSWORD,
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
   },
 };
 
@@ -45,8 +44,8 @@ async function contact(req, res) {
       });
   
     const mailOptions = {
-      from: ENV.EMAIL,  
-      to: ENV.EMAIL,  
+      from: process.env.EMAIL,  
+      to: process.env.EMAIL,  
       subject: "Contact Form Submission: " + topic,  
       html: emailContent,
     };

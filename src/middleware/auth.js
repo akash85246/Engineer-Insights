@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const ENV = require("../../config/development/config");
 
 async function Auth(req, res, next) {
   try {
@@ -8,7 +7,7 @@ async function Auth(req, res, next) {
       return res.redirect("/signin");
     }
     
-    const decodedToken = jwt.verify(token, ENV.JWT_SECRET);
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decodedToken;
 
     next();

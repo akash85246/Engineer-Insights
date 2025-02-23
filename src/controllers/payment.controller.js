@@ -1,14 +1,13 @@
 const paypal = require("paypal-rest-sdk");
-const jwt = require("jsonwebtoken");
 const UserModel = require("../models/User.model");
 const PaymentModel = require("../models/Payment.model");
 const BlogModel = require("../models/Blog.model");
-const ENV = process.env;
+
 
 paypal.configure({
-  mode: ENV.PAYPAL_MODE,
-  client_id: ENV.PAYPAL_CLIENT_ID,
-  client_secret: ENV.PAYPAL_CLIENT_SECRET,
+  mode: process.env.PAYPAL_MODE,
+  client_id: process.env.PAYPAL_CLIENT_ID,
+  client_secret: process.env.PAYPAL_CLIENT_SECRET,
   headers: { Connection: "Keep-Alive" },
   timeout: 10000,
 });

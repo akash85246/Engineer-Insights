@@ -1,10 +1,8 @@
 const mongoose = require("mongoose");
-const Comment = require("../models/Comment.model");
+const Comment = require("../models/comment.model");
 const Blog = require("../models/Blog.model");
 const User = require("../models/User.model");
 const { createNotification } = require("./notification.controller");
-const jwt = require("jsonwebtoken");
-const ENV = require("../../config/development/config");
 exports.handleNewComment = async (socket, data) => {
   try {
     const { content, author, blog, parentComment } = data.body;
