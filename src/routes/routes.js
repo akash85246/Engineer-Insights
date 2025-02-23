@@ -152,7 +152,7 @@ router.get("/subscribe", async (req, res) => {
     return res.redirect("/signin");
   }
   let user = await userModel.findById(req.user._id);
-  
+
   const defaultSettings = {
     theme: "light",
     notifications: true,
@@ -223,26 +223,54 @@ router.get("/about", async (req, res) => {
 router.get("/blog/edit/:slug", blogController.getEditArticleBySlug);
 router.get("/blog/all/:tags?", blogController.getAllBlogs);
 
-router.get("/blog/:slug",blogController.limitGuestBlogViews ,blogController.getArticleBySlug);
+router.get(
+  "/blog/:slug",
+  blogController.limitGuestBlogViews,
+  blogController.getArticleBySlug
+);
 
 //profile routes
 router.get("/profile/edit", profileController.getUpdateProfile);
-router.get("/drafts",profileController.getAuthorDrafts);
-router.get("/saveBlogs",profileController.savedBlogs);
-router.get("/archived",profileController.getArchivedBlogs);
-router.get("/analytics",profileController.getAnalyticss);
-router.get("/reports",profileController.getUserReports);
-router.get("/notifications",profileController.getUserNotification);
-router.get("/followers",profileController.getUserFollowers);
-router.get("/following",profileController.getUserFollowing);
-router.get("/settings",profileController.getSettings);
-router.get("/support",profileController.getSupport);
+router.get("/drafts", profileController.getAuthorDrafts);
+router.get("/saveBlogs", profileController.savedBlogs);
+router.get("/archived", profileController.getArchivedBlogs);
+router.get("/analytics", profileController.getAnalyticss);
+router.get("/reports", profileController.getUserReports);
+router.get("/notifications", profileController.getUserNotification);
+router.get("/followers", profileController.getUserFollowers);
+router.get("/following", profileController.getUserFollowing);
+router.get("/settings", profileController.getSettings);
+router.get("/support", profileController.getSupport);
 router.get("/blockedUsers", profileController.getBlockedUsers);
 router.get("/featureblog", profileController.getFeaturedBlog);
 router.get("/profile/verify", profileController.getVerifyOtp);
 router.get("/profile/reset", profileController.getResetPassword);
-router.get("/profile/:slug",profileController.getProfile);
+router.get("/profile/:slug", profileController.getProfile);
 
+router.get("/", async (req, res) => {
+  let user = null;
 
+  const defaultSettings = {
+    theme: "light",
+    notifications: true,
+  };
+  const isAuthenticated = req.isAuthenticated();
+  if (isAuthenticated) {
+    const userId = req.user._id;
+    user = await userModel.findById(userId);
+  }
+
+  if (!user) {
+    user = { settings: defaultSettings };
+  } else if (!user.settings) {
+    user.settings = defaultSettings;
+  }
+
+  res.renderWithMainLayout("../pages/home", {
+    title: "Home",
+    isAuthenticated,
+    user: user,
+  });
+});
 
 module.exports = router;

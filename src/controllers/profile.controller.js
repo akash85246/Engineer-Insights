@@ -5,7 +5,7 @@ const BlogModel = require("../models/Blog.model");
 const NotificationModel = require("../models/Notification.model");
 const ReportModel = require("../models/Report.model");
 
-async function getProfile(req, res) {
+async function getProfile(req, res,next) {
   try {
     const slug = req.params.slug;
 
@@ -34,7 +34,7 @@ async function getProfile(req, res) {
     });
   } catch (error) {
     console.error("Error fetching user profile:", error);
-    res.status(500).send("An error occurred while fetching the profile.");
+    return next();
   }
 }
 

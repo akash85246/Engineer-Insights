@@ -152,7 +152,7 @@ function limitGuestBlogViews(req, res, next) {
   next();
 }
 
-async function getArticleBySlug(req, res) {
+async function getArticleBySlug(req, res, next) {
   try {
     const isAuthenticated = req.isAuthenticated();
     let user = null;
@@ -175,7 +175,7 @@ async function getArticleBySlug(req, res) {
       .lean();
 
     if (!blog) {
-      return res.status(404).json({ message: "Blog not found" });
+      return next(); 
     }
     if (
       blog.audience != "public" &&

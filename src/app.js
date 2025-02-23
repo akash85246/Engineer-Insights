@@ -36,7 +36,6 @@ const router = require("./routes/routes.js");
 const suggestionrouter = require("./routes/suggestion.route.js");
 
 const { startScheduler } = require("./middleware/scheduler.js");
-// Connection to database
 const { connect, gfs } = require("./database/connection");
 const commentController = require("./controllers/comment.controller");
 const { default: axios } = require("axios");
@@ -135,18 +134,32 @@ app.use("/api/contact", contactrouter);
 app.use("/api/newsletter", newsletterrouter);
 app.use("/", router);
 
-app.use((err, req, res, next) => {
-  console.error("Server error:", err);
-  res.status(500).json({ error: "Internal Server Error" });
+app.use(async (req, res) => {
+  let user = null;
+
+  const defaultSettings = {
+    theme: "light",
+    notifications: true,
+  };
+  const isAuthenticated = req.isAuthenticated();
+  if (isAuthenticated) {
+    const userId = req.user._id;
+    user = await UserModel.findById(userId);
+  }
+
+  if (!user) {
+    user = { settings: defaultSettings };
+  } else if (!user.settings) {
+    user.settings = defaultSettings;
+  }
+  res.status(404).renderWithMainLayout("../pages/errors/404.ejs", {
+    title: "Page Not Found",
+    isAuthenticated,
+    user: user,
+  });
 });
 
-// Set a global timeout for all requests (in milliseconds)
-app.use((req, res, next) => {
-  req.setTimeout(120000);
-  next();
-});
-
-app.get("/", async (req, res) => {
+app.use(async (err, req, res, next) => {
   let user = null;
 
   const defaultSettings = {
@@ -165,11 +178,19 @@ app.get("/", async (req, res) => {
     user.settings = defaultSettings;
   }
 
-  res.renderWithMainLayout("../pages/home", {
-    title: "Home",
-    isAuthenticated,
-    user: user,
-  });
+  console.error("Server error:", err);
+  res
+    .status(500)
+    .renderWithMainLayout("../pages/errors/500.ejs", {
+      title: "Internal Server Error",
+      isAuthenticated,
+      user: user,
+    });
+});
+
+app.use((req, res, next) => {
+  req.setTimeout(120000);
+  next();
 });
 
 passport.use(
@@ -338,12 +359,13 @@ passport.deserializeUser((user, cb) => {
   cb(null, user);
 });
 
+console.log("port", port);
 connect()
   .then(() => {
     startScheduler();
     console.log("Database connected successfully");
     server.listen(port, () => {
-      console.log(`Server is running at ${process.env.BASE_URL}/`);
+      console.log(`Server is running at ${process.env.BASE_URL}`);
     });
   })
   .catch((error) => {
