@@ -3,9 +3,11 @@ const UserModel = require("../models/User.model");
 const CommentModel = require("../models/Comment.model");
 const BlogModel = require("../models/Blog.model");
 const NotificationModel = require("../models/Notification.model");
+const { getAnalyticsData } = require("../services/analytics");
+
 const ReportModel = require("../models/Report.model");
 
-async function getProfile(req, res,next) {
+async function getProfile(req, res, next) {
   try {
     const slug = req.params.slug;
 
@@ -23,7 +25,7 @@ async function getProfile(req, res,next) {
     if (!user) {
       user = { settings: defaultSettings };
     }
-    
+
     res.renderWithProfileLayout("../pages/profile/profile", {
       title: `${profile.username}'s Profile`,
       profile,
@@ -73,10 +75,10 @@ async function updateProfile(req, res) {
         .map((tag) => tag.trim())
         .filter((tag) => tag.length > 0);
     }
-  
+
     if (req.file) {
       const imageUrl = req.body.cloudinaryUrl;
-    const imageId = req.body.cloudinaryId;
+      const imageId = req.body.cloudinaryId;
       body.avatar = imageUrl;
       body.avatarId = imageId;
 
@@ -421,6 +423,7 @@ async function getAnalyticss(req, res) {
         isAuthenticated,
       });
     }
+    const analytics = await getAnalyticsData();
 
     res.renderWithProfileLayout("../pages/profile/analytic", {
       title: `${user.username}'s Analytics`,
@@ -428,6 +431,7 @@ async function getAnalyticss(req, res) {
       isAuthenticated,
       profile: { ...user },
       readerId: null,
+      analytics: analytics,
     });
   } catch (error) {
     console.error("Error fetching user:", error);
@@ -859,7 +863,7 @@ async function deleteProfile(req, res) {
     await UserModel.findByIdAndDelete(userId);
     const blogs = await BlogModel.find({ author: userId });
     // Extract all public_id values from blogs
-    const publicIds = blogs.map(blog => blog.blogPhotoId).filter(id => id); // Filter to avoid null values
+    const publicIds = blogs.map((blog) => blog.blogPhotoId).filter((id) => id); // Filter to avoid null values
 
     if (publicIds.length > 0) {
       //  Delete images from Cloudinary
@@ -870,9 +874,6 @@ async function deleteProfile(req, res) {
     await CommentModel.deleteMany({ author: userId });
     await NotificationModel.deleteMany({ user: userId });
     await ReportModel.deleteMany({ readerId: userId });
-
-   
-
 
     req.logout((err) => {
       if (err) {
@@ -969,12 +970,15 @@ async function getFeaturedBlog(req, res) {
       });
     }
 
-    const countFreeBlogs = await BlogModel.countDocuments({author: userId, isFree: true});
+    const countFreeBlogs = await BlogModel.countDocuments({
+      author: userId,
+      isFree: true,
+    });
     let freeBlogsLeft = 0;
     console.log("countFreeBlogs", countFreeBlogs);
-    if(user.subscription === "pro") {
-     freeBlogsLeft = 1 - countFreeBlogs;
-    }else if(user.subscription === "elite") {
+    if (user.subscription === "pro") {
+      freeBlogsLeft = 1 - countFreeBlogs;
+    } else if (user.subscription === "elite") {
       freeBlogsLeft = 5 - countFreeBlogs;
     }
 

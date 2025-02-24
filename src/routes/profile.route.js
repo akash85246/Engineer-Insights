@@ -3,7 +3,6 @@ const { upload,uploadImage } = require('../middleware/uploadImage');
 const router = express.Router();
 const profileController = require("../controllers/profile.controller");
 const { Auth } = require("../middleware/auth");
-
 router.get("/search", profileController.searchProfile);
 router.get("/search/saveBlogs",profileController.getSavedBlogs);
 

@@ -1,0 +1,100 @@
+<div class="bg-gray-100">
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold text-center text-gray-800">📊 Blog Analytics</h1>
+
+    <!-- User Engagement Section -->
+    <div class="bg-white shadow-lg rounded-lg p-6 mt-6">
+      <h2 class="text-xl font-semibold text-gray-700">📈 User Engagement</h2>
+      <canvas id="analyticsChart"></canvas>
+    </div>
+
+    <!-- Demographics Section -->
+    <div class="bg-white shadow-lg rounded-lg p-6 mt-6">
+      <h2 class="text-xl font-semibold text-gray-700">👥 User Demographics</h2>
+      <canvas id="demographicsChart"></canvas>
+    </div>
+
+    <!-- Devices Used Section -->
+    <div class="bg-white shadow-lg rounded-lg p-6 mt-6">
+      <h2 class="text-xl font-semibold text-gray-700">📱 Devices Used</h2>
+      <canvas id="devicesChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      try {
+        const user_id = "<%= user._id %>"; 
+        const analyticsData = JSON.parse(`<%- JSON.stringify(analytics.rows || []) %>`);
+
+        // 🔹 Filter analytics data for the specific user
+        const userAnalytics = analyticsData.filter(row => {
+          return row.dimensionValues.some(dim => dim.value.includes(user_id));
+        });
+
+        if (userAnalytics.length > 0) {
+          // 📊 Page Views Chart
+          const labels = userAnalytics.map(row => row.dimensionValues[0].value);
+          const pageViews = userAnalytics.map(row => parseInt(row.metricValues[1].value));
+          new Chart(document.getElementById('analyticsChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Page Views',
+                data: pageViews,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+              }]
+            }
+          });
+
+          // 👥 User Demographics Chart
+          const ageGroups = userAnalytics.map(row => row.dimensionValues.find(dim => dim.key === 'age')?.value || 'Unknown');
+          const genderData = userAnalytics.map(row => row.dimensionValues.find(dim => dim.key === 'gender')?.value || 'Unknown');
+          const uniqueAges = [...new Set(ageGroups)];
+          const ageCounts = uniqueAges.map(age => ageGroups.filter(a => a === age).length);
+
+          new Chart(document.getElementById('demographicsChart').getContext('2d'), {
+            type: 'pie',
+            data: {
+              labels: uniqueAges,
+              datasets: [{
+                label: 'Age Distribution',
+                data: ageCounts,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800']
+              }]
+            }
+          });
+
+          // 📱 Devices Chart
+          const deviceTypes = userAnalytics.map(row => row.dimensionValues.find(dim => dim.key === 'deviceCategory')?.value || 'Unknown');
+          const uniqueDevices = [...new Set(deviceTypes)];
+          const deviceCounts = uniqueDevices.map(device => deviceTypes.filter(d => d === device).length);
+
+          new Chart(document.getElementById('devicesChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+              labels: uniqueDevices,
+              datasets: [{
+                label: 'Devices Used',
+                data: deviceCounts,
+                backgroundColor: ['#42A5F5', '#66BB6A', '#FFA726']
+              }]
+            }
+          });
+
+        } else {
+          console.warn("No analytics data found for this user.");
+        }
+      } catch (error) {
+        console.error("JSON Parsing Error:", error.message);
+      }
+    </script>
+
+    <a href="/" class="mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition duration-300">
+      🔙 Back to Home
+    </a>
+  </div>
+</div>

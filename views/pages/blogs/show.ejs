@@ -325,6 +325,7 @@ include("../../partials/reportPopout.ejs") %>
     gtag("event", "time_on_page", {
       event_category: "Engagement",
       event_label: "<%= blog.title %>",
+      user_id:"<%= profile._id %>",
       value: timeSpent,
     });
   });
@@ -332,6 +333,7 @@ include("../../partials/reportPopout.ejs") %>
   gtag("event", "blog_view", {
     blog_title: "<%= blog.title %>",
     blog_id: "<%= blog._id %>",
+    user_id:"<%= profile._id %>",
     author: "<%= blog.author %>",
     subauthor:"<%= blog.subauthor %>",
     category: "<%= blog.category %>",
@@ -341,6 +343,7 @@ include("../../partials/reportPopout.ejs") %>
     event_category: "Traffic",
     referrer: document.referrer || "Direct",
     blog_id: "<%= blog._id %>",
+    user_id:"<%= profile._id %>"
   });
 </script>
 <script>
@@ -658,7 +661,8 @@ include("../../partials/reportPopout.ejs") %>
           gtag('event', 'like_blog', {
             'event_category': 'Engagement',
             'event_label': '<%= blog.title %>',
-            'blog_id': '<%= blog._id %>'
+            'blog_id': '<%= blog._id %>',
+            user_id:"<%= profile._id %>"
           });
         }
         if(wasLiked){
