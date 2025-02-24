@@ -7,18 +7,7 @@
     include("../../partials/profileBlogs.ejs")%>
   </div>
 </div>
-<script>
-  gtag("event", "user_login", {
-    event_category: "User",
-    event_label: "Login Successful",
-    user_id: "<%= user._id %>",
-    username: "<%= user.username %>",
-    tag:"<%= user.tags %>",
-    followers: "<%= user.followers.length %>",  
-    following: "<%= user.following.length %>",
-    blogs: "<%= user.blogs.length %>",
-  });
-</script>
+
 <script>
   gtag('event', 'profile_view', {
     'event_category': 'Profile',

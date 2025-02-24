@@ -47,6 +47,7 @@ async function createNotification({
       );
 
       if (!mailResponse.ok) {
+        console.log("mailResponse", mailResponse);
         throw new Error("Failed to send email");
       }
       return { message: "Notification created and email sent" };

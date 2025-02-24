@@ -23,9 +23,7 @@ async function getProfile(req, res,next) {
     if (!user) {
       user = { settings: defaultSettings };
     }
-    // console.log("profile", profile._id);
-    // console.log("user", user._id);
-    // console.log(user._id.toString() !== profile._id.toString());
+    
     res.renderWithProfileLayout("../pages/profile/profile", {
       title: `${profile.username}'s Profile`,
       profile,

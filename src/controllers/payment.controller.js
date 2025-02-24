@@ -73,8 +73,8 @@ async function createPayment(req, res) {
 
     subscriptionDetails.startDate = new Date();
     const daysToAdd = subscriptionType == "pro" ? 7 : 30;
-    const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + daysToAdd);
+    const endDate = new Date(subscriptionDetails.startDate);
+    endDate.setDate(subscriptionDetails.startDate.getDate() + daysToAdd);
     subscriptionDetails.endDate = endDate;
     subscriptionDetails.frequency =
       subscriptionType === "pro" ? "weekly" : "monthly";

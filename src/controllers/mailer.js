@@ -9,7 +9,7 @@ const nodeConfig = {
   secure: false,
   auth: {
     user: process.env.EMAIL,
-    pass: process.env.PASSWORD,
+    pass: process.env.EMAIL_Password,
   },
 };
 
@@ -27,6 +27,7 @@ const registerMail = async (req, res) => {
   try {
     const { username, userEmail, text, subject } = req.body;
 
+    console.log("username", username, "userEmail", userEmail, "text", text,"email",process.env.EMAIL,"EMAIL_Password",process.env.EMAIL_Password);
     
     const email = {
       body: {

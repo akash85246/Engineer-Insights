@@ -1,5 +1,5 @@
 <h1
-  class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-10 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-tertiary bg-white bg-background' %> sticky top-0 "
+  class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-10 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-tertiary bg-white bg-background' %> sticky top-0  -z-10"
 >
   All Blogs
   <span
@@ -9,12 +9,12 @@
 </h1>
 
 <div
-  class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 md:gap-4 px-1 md:px-2 lg:px-5"
+  class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 md:gap-4 px-1 md:px-2 lg:px-5 -z-50"
   id="allBlog"
 ></div>
 
 <div
-  class="flex justify-center space-x-2 my-4 sm:my-6 md:my-8 lg:my-10 overflow-x-scroll relative bottom-0"
+  class="flex justify-center space-x-2 my-4 sm:my-6 md:my-8 lg:my-10 overflow-x-scroll relative bottom-0 -z-50"
   id="pagingContainer"
 ></div>
 
@@ -45,7 +45,7 @@
       }
 
       return `
-        <div class="w-full flex-shrink-0">
+        <div class="w-full flex-shrink-0  -z-50">
           <div class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${blog.blogPhoto}')">
             <div class="rounded-lg shadow-lg overflow-hidden w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-3 h-full flex flex-col justify-between">
               <div class="flex justify-end">
