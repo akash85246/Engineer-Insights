@@ -1,0 +1,165 @@
+<div
+  class="flex flex-col-reverse md:grid md:grid-cols-2 gap-6 py-16 px-4 sm:p-8 md:p-8 md:py-16"
+>
+  <div class="hidden md:flex justify-center items-center flex-col">
+    <h2
+      class="text-base sm:text-lg md:text-2xl font-bold text-gray-800 md:mb-4 text-center"
+    >
+      Welcome Back!
+    </h2>
+    <img
+      src="images/signinImg.png"
+      alt="Sign-in image"
+      class="h-60 sm:h-80 md:h-80"
+    />
+    <p
+      class="text-xs sm:text-base md:text-lg text-purple-950 md: font-semibold mb-6 text-center"
+    >
+      Unlock a world of opportunities and insights—log in to join a dynamic
+      network of industry trailblazers and thought leaders who are redefining
+      the future of technology and innovation.
+    </p>
+  </div>
+
+  <div
+    class="max-w-7xl md:mx-5 my-auto p-8 rounded-lg shadow-lg bg-white bg-opacity-10 backdrop-blur-md border border-gray-200"
+  >
+    <h1
+      class="text-lg sm:text-xl md:text-2xl font-bold text-center md:mb-2 flex justify-center items-center gap-2"
+    >
+      <img src="images/logoImg/logo.png " class="h-10" alt="logo Img" />Sign In
+    </h1>
+    <h2
+      class="text-sm sm:text-base md:text-lg text-purple-950 md:font-semibold mb-6 text-center"
+    >
+      Please enter your details to sign in.
+    </h2>
+    <form id="signinForm" action="/auth/login" method="POST" class="space-y-6">
+      <div class="h-16">
+        <label for="username" class="block text-sm font-medium text-gray-700"
+          >Username</label
+        >
+        <input
+          type="text"
+          name="username"
+          id="username"
+          required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+        <p class="text-xs text-red-500 mt-1 hidden" id="usernameError"></p>
+      </div>
+      <div class="h-16">
+        <label for="password" class="block text-sm font-medium text-gray-700"
+          >Password</label
+        >
+        <input
+          type="password"
+          name="password"
+          id="password"
+          required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+        <p class="mt-1 text-xs text-red-500 hidden" id="passwordError"></p>
+      </div>
+      <div>
+        <button
+          type="submit"
+          class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+        >
+          Sign In
+        </button>
+      </div>
+    </form>
+
+    <div class="justify-between flex">
+      <div class="flex justify-center items-center gap-1 text-xs md:text-sm">
+        <input type="checkbox" name="showPassword" id="showPassword" />
+        <label for="showPassword"> Show Password</label>
+      </div>
+      <div class="text-xs md:text-sm mt-2">
+        <a href="/recovery" class="text-blue-500">Forgot Password?</a>
+      </div>
+    </div>
+    <div class="flex items-center justify-center space-x-4 my-6">
+      <div class="flex-grow h-px bg-gray-300"></div>
+      <p class="text-gray-500 font-semibold text-sm">OR</p>
+      <div class="flex-grow h-px bg-gray-300"></div>
+    </div>
+    <a href="/auth/google"
+      class="flex items-center justify-center w-full px-5 py-3 bg-white border border-gray-300 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-transform duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400"
+    >
+      <img
+        src="images/icons/googleIcon.svg"
+        alt="Google icon"
+        class="w-5 h-5 mr-3"
+      />
+      <span class="text-gray-700 font-semibold text-base"
+        >Sign in with Google</span
+      >
+  </a>
+
+    <div class="text-xs md:text-sm text-center mt-4">
+      <p>
+        Don't have an account?
+        <a href="/signup" class="text-blue-500">Sign Up</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const regex = {
+    username: /^[A-Za-z0-9_]+$/,
+    password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+  };
+
+  function showError(input, message) {
+    const errorElement = document.getElementById(`${input.id}Error`);
+    input.classList.add("error");
+    errorElement.textContent = message;
+    errorElement.classList.remove("hidden");
+  }
+
+  function clearError(input) {
+    const errorElement = document.getElementById(`${input.id}Error`);
+    input.classList.remove("error");
+    errorElement.textContent = "";
+    errorElement.classList.add("hidden");
+  }
+
+  document.getElementById("signinForm").addEventListener("input", function (e) {
+    const input = e.target;
+
+    switch (input.id) {
+      case "username":
+        if (!regex.username.test(input.value)) {
+          showError(input, "Username must be alphanumeric.");
+        } else {
+          clearError(input);
+        }
+        break;
+      case "password":
+        if (!regex.password.test(input.value)) {
+          showError(
+            input,
+            "Password must be at least 8 characters long, including uppercase, lowercase, and numbers."
+          );
+        } else {
+          clearError(input);
+        }
+        break;
+    }
+  });
+
+  document
+    .getElementById("showPassword")
+    .addEventListener("change", function () {
+      var passwordField = document.getElementById("password");
+      if (this.checked) {
+        passwordField.type = "text";
+      } else {
+        passwordField.type = "password";
+      }
+    });
+
+</script>

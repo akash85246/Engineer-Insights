@@ -1,0 +1,118 @@
+<div
+  class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'text-text bg-primary' %> bg-opacity-50 flex items-center justify-center hidden z-50 p-5 md:p-0 backdrop-blur-sm w-full h-full font-lora"
+  id="featureModalInfo"
+>
+  <div
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> backdrop-blur-sm p-4 rounded-lg w-full m-auto md:w-1/2"
+  >
+    <input type="text" id="modalBlogInfoId" hidden />
+    <div id="blogContent">
+      <p class="text-center">Loading blog information...</p>
+    </div>
+  </div>
+</div>
+
+<%- include("../partials/changeFeaturedModal.ejs") %>
+
+<script>
+  async function showChangeFeaturedModal(blogId) {
+    document.getElementById("modalChangeBlogInfoId").value = blogId;
+    document.getElementById("changeFeaturedModal").classList.remove("hidden");
+    searchBlog("");
+  }
+
+  function closeShowChangeFeaturedModal() {
+    const modal = document.getElementById("changeFeaturedModal");
+
+    modal.classList.add("hidden");
+  }
+
+  window.addEventListener("click", function (event) {
+    const modalChange = document.getElementById("changeFeaturedModal");
+    if (event.target === modalChange) {
+      closeShowChangeFeaturedModal();
+    }
+  });
+
+  async function removeFeatured(blogId) {
+    console.log(blogId);
+    const response = await fetch(`/api/payment/featured/remove`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        blogId: blogId,
+      }),
+    });
+    if (response.ok) {
+      document.getElementById("featureModalInfo").classList.add("hidden");
+      window.location.reload();
+    } else {
+      alert("Failed to remove blog from featured.");
+    }
+  }
+
+  async function loadFeatureModalInfo() {
+    const blogId = document.getElementById("modalBlogInfoId").value;
+    const modal = document.getElementById("featureModalInfo");
+    const response = await fetch(
+      `/api/payment/search?paymentType=featured&blog=${blogId}&featured=true`
+    );
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data, data.payments.length, data.payments.length > 0);
+      if (data.payments.length > 0) {
+        console.log(data.payments[0]);
+        const blog = data.payments[0].blog;
+        const user = data.payments[0].user;
+        const payment = data.payments[0];
+        const currentDate = new Date();
+
+        const differenceInMs =
+          currentDate - new Date(payment.featuredDetails.featuredAt);
+
+        const daysPassed = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
+        let buttonHtml = "";
+        console.log(payment.featuredDetails.featureDuration);
+        if (payment.featuredDetails.featureDuration > daysPassed) {
+          buttonHtml = `
+          <div class="flex justify-between items-center gap-1">
+          <button class="hover:bg-blue-300 hover:text-background   <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-gray-300  text-gray-700 ' %>  font-roboto md:font-bold font-semibold text-sm md:text-base p-2 md:py-2 md:px-4  rounded focus:outline-none focus:shadow-outline font-roboto" onclick="showChangeFeaturedModal('${blog._id}')">
+              Change Blog
+          </button>
+          <button class="hover:bg-red-300   hover:text-background   font-roboto <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : ' text-sixth bg-fourth' %>  md:font-bold font-semibold text-sm md:text-base p-2 md:py-2 md:px-4 rounded outline-none font-roboto" onclick="removeFeatured('${blog._id}')">
+              Remove from Featured
+          </button>
+          </div>
+      `;
+        }
+
+        document.getElementById("blogContent").innerHTML = `
+            <h2 class="text-2xl font-bold mb-4 break-words <%= user.settings.theme === 'dark' ? 'text-dark-primary' : ' text-text' %>">${
+              blog.title
+            }</h2>
+            <img src="${blog.blogPhoto}" alt="${
+          blog.title
+        }" class="mb-4 rounded-lg w-42  h-42"/>
+            <p class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-fourth' %>">Featured on: ${new Date(
+              payment.featuredDetails.featuredAt
+            ).toLocaleDateString()}</p>
+             <p class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-fourth' %>">Days passed since featured: ${daysPassed} days</p>
+    <p class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-fourth' %>">Amount deducted: ${
+      payment.currency
+    } ${payment.amount}</p>
+    ${buttonHtml}
+`;
+      } else {
+        document.getElementById(
+          "blogContent"
+        ).innerHTML = `<p>No blog information found for this ID.</p>`;
+      }
+    } else {
+      document.getElementById(
+        "blogContent"
+      ).innerHTML = `<p>Failed to fetch blog information.</p>`;
+    }
+  }
+</script>

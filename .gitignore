@@ -1,0 +1,56 @@
+# Node modules directory
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+
+# Configuration files (if they contain sensitive information)
+app/config/*.keys.js
+app/config/db.conf.js
+app/config/app.conf.js
+app/config/db.keys.js
+
+# Build directories
+public/dist/
+
+# System files
+.DS_Store
+
+# Editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.swp
+
+# Coverage directory used by testing tools
+coverage/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Yarn v1
+.yarn/
+yarn.lock
+
+# Project build directories
+build/
+dist/
+out/
+config/
+.env

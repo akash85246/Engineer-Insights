@@ -1,0 +1,278 @@
+<div class="md:grid md:grid-cols-2 py-16 px-4 sm:p-8 md:p-8 md:py-12" >
+  <div
+    class="hidden mx-auto my-10 p-8 md:flex flex-col items-center justify-center"
+  >
+    <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">
+      Join Our Community!
+    </h2>
+    <img src="images/signupImg.png" alt="signup image" />
+    <p class="text-lg text-purple-950 font-semibold mb-6 text-center">
+      By signing up, you’ll become part of a vibrant community of professionals
+      who are passionate about innovation and knowledge sharing.
+    </p>
+  </div>
+
+  <div
+    class="max-w-7xl mx-auto md:mx-5 px-8 py-10 md:my-10 sm:p-6 rounded-lg shadow-lg bg-white bg-opacity-10 backdrop-blur-md border border-gray-200 grid grid-cols-1 gap-4 sm:gap-0"
+  >
+    <h1 class="text-base sm:text-lg md:text-2xl font-semibold md:font-bold text-center">
+      Create an Account
+    </h1>
+    <h2
+      class="text-sm sm:text-base md:text-lg text-purple-950 md:font-semibold mb-2 text-center"
+    >
+      Create an account to enjoy our services.
+    </h2>
+    <form
+      id="signupForm"
+      action="/auth/register"
+      method="POST"
+      enctype="application/x-www-form-urlencoded"
+      class="md:space-y-4 space-y-2"
+    >
+      <!-- Personal Information -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="firstName" class="block text-xs  sm:text-sm font-medium text-gray-700"
+            >First Name</label
+          >
+          <input
+            type="text"
+            name="firstname"
+            id="firstName"
+            minlength="2"
+            maxlength="50"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs  sm:text-sm"
+          />
+          <p class="text-xs text-red-500 mt-1 hidden" id="firstNameError">
+            First name is required and must be letters only.
+          </p>
+        </div>
+        <div>
+          <label for="lastName" class="block text-xs  sm:text-sm font-medium text-gray-700"
+            >Last Name</label
+          >
+          <input
+            type="text"
+            name="lastname"
+            minlength="2"
+            maxlength="50"
+            required
+            id="lastName"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs  sm:text-sm"
+          />
+          <p class="text-xs text-red-500 mt-1 hidden" id="lastNameError">
+            Last name is required and must be letters only.
+          </p>
+        </div>
+      </div>
+
+      <!-- Account Details -->
+      <div class="grid grid-cols-1  gap-4">
+        <div>
+          <label for="username" class="block text-xs  sm:text-sm font-medium text-gray-700"
+            >Username</label
+          >
+          <input
+            type="text"
+            name="username"
+            id="username"
+            minlength="2"
+            maxlength="50"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs  sm:text-sm"
+          />
+          <p class="text-xs text-red-500 mt-1 hidden" id="usernameError">
+            Username is required and must be alphanumeric.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Contact Information -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="phone" class="block text-xs  sm:text-sm font-medium text-gray-700"
+            >Phone</label
+          >
+          <input
+            type="tel"
+            name="phone"
+            id="phone"
+            minlength="10"
+            maxlength="10"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs  sm:text-sm"
+          />
+          <p class="text-xs text-red-500 mt-1 hidden" id="phoneError">
+            Phone number is required and must be in the correct format.
+          </p>
+        </div>
+        <div>
+          <label for="email" class="block text-xs  sm:text-sm font-medium text-gray-700"
+            >Email</label
+          >
+          <input
+            type="email"
+            name="email"
+            id="email"
+            minlength="5"
+            maxlength="50"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs  sm:text-sm"
+          />
+          <p class="text-xs text-red-500 mt-1 hidden" id="emailError">
+            Please enter a valid email address.
+          </p>
+        </div>
+      </div>
+
+      <!-- Password -->
+       <div class="grid grid-cols-1 gap-4">
+      <div>
+        <label for="password" class="block text-xs  sm:text-sm font-medium text-gray-700"
+          >Password</label
+        >
+        <input
+          type="password"
+          name="password"
+          id="password"
+          minlength="8"
+          maxlength="50"
+          required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs  sm:text-sm"
+        />
+        <p class="text-xs text-red-500 mt-1 hidden" id="passwordError">
+          Password is required and must be at least 8 characters long, including
+          uppercase, lowercase, and numbers.
+        </p>
+      </div>
+      <div>
+        <label
+          for="confirmPassword"
+          class="block text-xs  sm:text-sm font-medium text-gray-700"
+          >Confirm Password</label
+        >
+        <input
+          type="password"
+          name="confirmPassword"
+          id="confirmPassword"
+          minlength="8"
+          maxlength="50"
+          required
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs  sm:text-sm"
+        />
+        <p class="text-xs text-red-500 mt-1 hidden" id="confirmPasswordError">
+          Passwords do not match.
+        </p>
+      </div>
+    </div>
+
+      <!-- Submit Button -->
+      <div>
+        <button
+          type="submit"
+          class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 text-xs  sm:text-sm"
+        >
+          Sign Up
+        </button>
+      </div>
+    </form>
+    <div class="text-xs md:text-sm text-center mt-4">
+      <p>
+        Already have an account?
+        <a href="/signin" class="text-blue-500">Sign In</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Regex patterns
+  const regex = {
+    name: /^[A-Za-z]+$/,
+    username: /^[A-Za-z0-9_]+$/,
+    phone: /^\+?[1-9]\d{1,14}$/,
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+  };
+
+  // Error handling function
+  function showError(input, message) {
+    const errorElement = document.getElementById(`${input.id}Error`);
+    input.classList.add("error");
+    errorElement.textContent = message;
+    errorElement.classList.remove("hidden");
+  }
+
+  // Clear error handling function
+  function clearError(input) {
+    const errorElement = document.getElementById(`${input.id}Error`);
+    input.classList.remove("error");
+    errorElement.textContent = "";
+    errorElement.classList.add("hidden");
+  }
+
+  document.getElementById("signupForm").addEventListener("input", function (e) {
+    const input = e.target;
+
+    switch (input.id) {
+      case "firstName":
+      case "lastName":
+        if (!regex.name.test(input.value)) {
+          showError(
+            input,
+            `${input.name
+              .replace(/([A-Z])/g, " $1")
+              .toUpperCase()} is required and must be letters only.`
+          );
+        } else {
+          clearError(input);
+        }
+        break;
+      case "username":
+        if (!regex.username.test(input.value)) {
+          showError(input, "Username is required and must be alphanumeric.");
+        } else {
+          clearError(input);
+        }
+        break;
+      case "phone":
+        if (!regex.phone.test(input.value)) {
+          showError(
+            input,
+            "Phone number is required and must be in the correct format."
+          );
+        } else {
+          clearError(input);
+        }
+        break;
+      case "email":
+        if (!regex.email.test(input.value)) {
+          showError(input, "Please enter a valid email address.");
+        } else {
+          clearError(input);
+        }
+        break;
+      case "password":
+        if (!regex.password.test(input.value)) {
+          showError(
+            input,
+            "Password is required and must be at least 8 characters long, including uppercase, lowercase, and numbers."
+          );
+        } else {
+          clearError(input);
+        }
+        break;
+      case "confirmPassword":
+        if (input.value !== document.getElementById("password").value) {
+          showError(input, "Passwords do not match.");
+        } else {
+          clearError(input);
+        }
+        break;
+    }
+  });
+
+</script>

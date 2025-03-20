@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    overflow: -moz-scrollbars-none; /* For Firefox */
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+  }
+  
+  *::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+  }
+
+.scale-30 {
+  width: 15vw; /* 30% of the viewport width */
+  height: auto; /* Maintain aspect ratio */
+  transform: scale(1); /* No further scaling needed */
+  transform-origin: center;
+  margin: 0 auto; 
+}
+
+.scale-content {
+  transform: scale(0.15); /* Scale down everything inside by 30% */
+  transform-origin: top left; /* Scale relative to the top-left corner */
+  width: 100vw; /* Scale based on screen width */
+  height: auto;
+  overflow-x: clip;
+  overflow-y: scroll;
+  
+}
+
+.full-screen {
+  transform: scale(1); /* Full scale */
+  width: 100vw; /* Full screen width */
+  height: 100vh; /* Full screen height */
+  top: 0;
+  left: 0;
+  z-index: 1000000000000000; 
+  position: fixed;
+  scroll-behavior: smooth;
+overflow: scroll;
+}
+
+#suggestionOverlay {
+  position: absolute;
+  z-index: 10;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: none;
+}

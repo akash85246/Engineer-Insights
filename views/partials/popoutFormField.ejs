@@ -1,0 +1,610 @@
+<div class="text-xs md:text-sm lg:text-base">
+  <div class="text-xs md:text-sm">
+    <label
+      for="title"
+      class="block font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-tertiary' %>"
+      >Title</label
+    >
+    <input
+      type="text"
+      id="title"
+      name="title"
+      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-tertiary border-gray-300'%>  mt-2 block w-full px-2 md:px-3 py-1.5 border  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs md:text-sm lg:text-base"
+      required
+      minlength="10"
+      maxlength="100"
+    />
+    <p
+      id="titleError"
+      class="text-red-600 h-4 md:h-6 text-xxxxs -mt-1 sm:text-xxxs md:text-xxs lg:text-xs"
+    ></p>
+  </div>
+
+  <div class="text-xs md:text-sm">
+    <label
+      for="description"
+      class="block font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-tertiary' %>"
+      >Description</label
+    >
+    <textarea
+      id="description"
+      name="description"
+      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-tertiary border-gray-300'%> mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs md:text-sm lg:text-base resize-none"
+      required
+      minlength="50"
+      maxlength="300"
+    ></textarea>
+    <p
+      id="descriptionError"
+      class="text-red-600 h-4 md:h-6 text-xxxxs -mt-1 sm:text-xxxs md:text-xxs lg:text-xs"
+    ></p>
+  </div>
+
+  <div class="text-xs md:text-sm">
+    <label
+      for="tags"
+      class="block font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-tertiary' %>"
+      >Tags</label
+    >
+    <input
+      type="text"
+      id="tags"
+      name="tags"
+      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-tertiary border-gray-300'%> mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none text-xs md:text-sm lg:text-base"
+      required
+    />
+    <p
+      id="tagsError"
+      class="text-red-600 h-4 md:h-6 text-xxxxs -mt-1 sm:text-xxxs md:text-xxs lg:text-xs"
+    ></p>
+  </div>
+
+  <div class="text-xs md:text-sm">
+    <label
+      for="image"
+      class="block font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-tertiary' %>"
+      >Select Image</label
+    >
+
+    <div class="grid grid-cols-6 md:grid-cols-8 gap-2 mt-2">
+      <div id="previewContainer" class="relative border rounded-md"></div>
+      <div
+        class="relative flex items-center justify-center border border-dashed rounded-md hover:border-blue-500"
+      >
+        <input
+          type="file"
+          id="image"
+          name="blogPhoto"
+          class="absolute inset-0 opacity-0 cursor-pointer <%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-tertiary border-gray-300'%>"
+        />
+        <label for="image" class="text-center text-gray-500 text-xs lg:text-sm "
+          >Upload Image</label
+        >
+      </div>
+
+      <div class="relative">
+        <input
+          type="radio"
+          name="selectedImage"
+          id="img1"
+          class="absolute inset-0 opacity-0 cursor-pointer"
+        />
+        <label for="img1">
+          <img
+            src="/images/sampleImg/nature.jpg"
+            alt="Nature"
+            class="w-full h-full object-cover border-2 border-transparent rounded-md hover:border-blue-500"
+          />
+        </label>
+      </div>
+
+      <div class="relative">
+        <input
+          type="radio"
+          name="selectedImage"
+          id="img2"
+          class="absolute inset-0 opacity-0 cursor-pointer"
+        />
+        <label for="img2">
+          <img
+            src="/images/sampleImg/science.jpg"
+            alt="Science"
+            class="w-full h-full object-cover border-2 border-transparent rounded-md hover:border-blue-500"
+          />
+        </label>
+      </div>
+      <div class="relative">
+        <input
+          type="radio"
+          name="selectedImage"
+          id="img3"
+          class="absolute inset-0 opacity-0 cursor-pointer"
+        />
+        <label for="img3">
+          <img
+            src="/images/sampleImg/logistics.jpg"
+            alt="Logistics"
+            class="w-full h-full object-cover border-2 border-transparent rounded-md hover:border-blue-500"
+          />
+        </label>
+      </div>
+      <div class="relative">
+        <input
+          type="radio"
+          name="selectedImage"
+          id="img4"
+          class="absolute inset-0 opacity-0 cursor-pointer"
+        />
+        <label for="img4">
+          <img
+            src="/images/sampleImg/psychology.jpg"
+            alt="Psychology"
+            class="w-full h-full object-cover border-2 border-transparent rounded-md hover:border-blue-500"
+          />
+        </label>
+      </div>
+      <div class="relative">
+        <input
+          type="radio"
+          name="selectedImage"
+          id="img5"
+          class="absolute inset-0 opacity-0 cursor-pointer"
+        />
+        <label for="img5">
+          <img
+            src="/images/sampleImg/space.jpg"
+            alt="Space"
+            class="w-full h-full object-cover border-2 border-transparent rounded-md hover:border-blue-500"
+          />
+        </label>
+      </div>
+      <div class="relative">
+        <input
+          type="radio"
+          name="selectedImage"
+          id="img6"
+          class="absolute inset-0 opacity-0 cursor-pointer"
+        />
+        <label for="img6">
+          <img
+            src="/images/sampleImg/technology.jpg"
+            alt="Technology"
+            class="w-full h-full object-cover border-2 border-transparent rounded-md hover:border-blue-500"
+          />
+        </label>
+      </div>
+      <div class="relative">
+        <input
+          type="radio"
+          name="selectedImage"
+          id="img7"
+          class="absolute inset-0 opacity-0 cursor-pointer"
+        />
+        <label for="img7">
+          <img
+            src="/images/sampleImg/architecture.jpg"
+            alt="Architecture"
+            class="w-full h-full object-cover border-2 border-transparent rounded-md hover:border-blue-500"
+          />
+        </label>
+      </div>
+      <div class="relative">
+        <input
+          type="radio"
+          name="selectedImage"
+          id="img8"
+          class="absolute inset-0 opacity-0 cursor-pointer"
+        />
+        <label for="img8">
+          <img
+            src="/images/sampleImg/art.jpg"
+            alt="Art"
+            class="w-full h-full object-cover border-2 border-transparent rounded-md hover:border-blue-500"
+          />
+        </label>
+      </div>
+      <div class="relative">
+        <input
+          type="radio"
+          name="selectedImage"
+          id="img9"
+          class="absolute inset-0 opacity-0 cursor-pointer"
+        />
+        <label for="img9">
+          <img
+            src="/images/sampleImg/business.jpg"
+            alt="Business"
+            class="w-full h-full object-cover border-2 border-transparent rounded-md hover:border-blue-500"
+          />
+        </label>
+      </div>
+      <div class="relative">
+        <input
+          type="radio"
+          name="selectedImage"
+          id="img10"
+          class="absolute inset-0 opacity-0 cursor-pointer"
+        />
+        <label for="img10">
+          <img
+            src="/images/sampleImg/education.jpg"
+            alt="Education"
+            class="w-full h-full object-cover border-2 border-transparent rounded-md hover:border-blue-500"
+          />
+        </label>
+      </div>
+      <div class="relative">
+        <input
+          type="radio"
+          name="selectedImage"
+          id="img11"
+          class="absolute inset-0 opacity-0 cursor-pointer"
+        />
+        <label for="img11">
+          <img
+            src="/images/sampleImg/engineering.jpg"
+            alt="Engineering"
+            class="w-full h-full object-cover border-2 border-transparent rounded-md hover:border-blue-500"
+          />
+        </label>
+      </div>
+      <div class="relative">
+        <input
+          type="radio"
+          name="selectedImage"
+          id="img12"
+          class="absolute inset-0 opacity-0 cursor-pointer"
+        />
+        <label for="img12">
+          <img
+            src="/images/sampleImg/healthcare.jpg"
+            alt="Healthcare"
+            class="w-full h-full object-cover border-2 border-transparent rounded-md hover:border-blue-500"
+          />
+        </label>
+      </div>
+      <div class="relative">
+        <input
+          type="radio"
+          name="selectedImage"
+          id="img13"
+          class="absolute inset-0 opacity-0 cursor-pointer"
+        />
+        <label for="img13">
+          <img
+            src="/images/sampleImg/lifestyle.jpg"
+            alt="Lifestyle"
+            class="w-full h-full object-cover border-2 border-transparent rounded-md hover:border-blue-500"
+          />
+        </label>
+      </div>
+      <div class="relative">
+        <input
+          type="radio"
+          name="selectedImage"
+          id="img14"
+          class="absolute inset-0 opacity-0 cursor-pointer"
+        />
+        <label for="img14">
+          <img
+            src="/images/sampleImg/media.jpg"
+            alt="Media"
+            class="w-full h-full object-cover border-2 border-transparent rounded-md hover:border-blue-500"
+          />
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative text-xs md:text-sm mt-2">
+    <label
+      for="author"
+      class="block font-medium text-xs md:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-tertiary' %>"
+      >Add Author</label
+    >
+    <input
+      type="text"
+      id="author-search"
+      name="author"
+      placeholder="Search for authors"
+      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-tertiary border-gray-300'%> mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs md:text-sm lg:text-base"
+    />
+
+    <input type="text" id="final-selected-authors" name="subauthors" hidden />
+
+    <ul
+      id="author-suggestions"
+      class="absolute z-10 mt-2 w-full bg-background border border-background rounded-md shadow-lg max-h-40 overflow-auto hidden text-tertiary"
+    ></ul>
+  </div>
+
+  <div
+    id="selected-authors"
+    class="flex flex-wrap gap-2 mt-2 p-2 space-x-2 rounded-md text-gray-500"
+  ></div>
+
+  <div class="flex items-center text-xxs md:text-xs lg:text-sm">
+    <input
+      id="allow-comments"
+      name="allow-comments"
+      type="checkbox"
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-tertiary' %> border-gray-300 rounded"
+    />
+    <label
+      for="allow-comments"
+      class="ml-2 block <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-tertiary' %>"
+      >Allow Comments</label
+    >
+  </div>
+</div>
+
+<script>
+  const imageRadioButtons = document.querySelectorAll(
+    'input[name="selectedImage"]'
+  );
+  const fileInput = document.getElementById("image");
+  const previewContainer = document.getElementById("previewContainer");
+
+  const createImagePreview = (src) => {
+    previewContainer.innerHTML = `
+    <div class="relative">
+      <img src="${src}" alt="Selected Image" id="selectedImage"  class="w-full h-full object-cover border-2 border-blue-500 rounded-md" />
+    </div>
+  `;
+  };
+
+  imageRadioButtons.forEach((radioButton) => {
+    radioButton.addEventListener("change", (event) => {
+      const selectedImg = event.target.nextElementSibling.querySelector("img");
+      if (selectedImg) {
+        createImagePreview(selectedImg.src);
+      }
+      const fileInput = document.getElementById("image");
+      imageRadioButtons.forEach((btn) => {
+        const img = btn.nextElementSibling.querySelector("img");
+        if (img) {
+          img.classList.remove("border-blue-500");
+          fileInput.value = "";
+        }
+      });
+
+      selectedImg.classList.add("border-blue-500");
+
+      fetch(selectedImg.src)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const file = new File([blob], "selectedImage.jpg", {
+            type: blob.type,
+          });
+
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(file);
+          fileInput.files = dataTransfer.files;
+        });
+    });
+  });
+
+  fileInput.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        createImagePreview(e.target.result);
+        imageRadioButtons.forEach((btn) => {
+          btn.checked = false;
+          const img = btn.nextElementSibling.querySelector("img");
+          if (img) {
+            img.classList.remove("border-blue-500");
+          }
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  document.getElementById("title").addEventListener("input", validateTitle);
+  document
+    .getElementById("description")
+    .addEventListener("input", validateDescription);
+  document.getElementById("tags").addEventListener("input", validateTags);
+
+  document
+    .getElementById("blogCreateForm")
+    .addEventListener("submit", handleFormSubmission);
+
+  function validateTitle() {
+    const title = document.getElementById("title").value;
+    const titleError = document.getElementById("titleError");
+    const titleRegex = /^(?!.* {2,})[A-Za-z0-9][A-Za-z0-9 ]{9,}$/;
+
+    if (!titleRegex.test(title)) {
+      titleError.textContent =
+        "Title must be at least 10 characters long, without consecutive spaces or special characters.";
+      return false;
+    } else {
+      titleError.textContent = "";
+      return true;
+    }
+  }
+
+  function validateDescription() {
+    const description = document.getElementById("description").value;
+    const descriptionError = document.getElementById("descriptionError");
+    const descriptionRegex = /^(?!.* {2,}).+$/;
+    console.log("out");
+    if (!descriptionRegex.test(description)) {
+      console.log("if eror",!descriptionRegex.test(description));
+      descriptionError.textContent =
+        "Description cannot contain consecutive spaces.";
+      return false;
+    } else {
+      console.log("else activated");
+      descriptionError.textContent = "";
+      return true;
+    }
+    console.log("out");
+    return true;
+  }
+
+  function validateTags() {
+    const tagsInput = document.getElementById("tags");
+    const tagsError = document.getElementById("tagsError");
+    const tags = tagsInput.value;
+
+    const tagsRegex = /^[\w-]+(,[\w-]+)*$/;
+
+    const tagsArray = tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.length > 0);
+    const noConsecutiveCommas = !/,{2,}/;
+    if (tagsArray.length > 10) {
+      tagsError.textContent = "You can only have up to 10 tags.";
+      tagsInput.setAttribute("readonly", true);
+      tagsInput.classList.add("bg-gray-200", "cursor-not-allowed");
+      return false;
+    } else if (!tagsRegex.test(tags)) {
+      console.log("tags", tags, tagsRegex.test(tags));
+      tagsError.textContent =
+        "Tags can only contain letters, numbers, and hyphens.";
+      tagsInput.classList.remove("bg-gray-200", "cursor-not-allowed");
+      return false;
+    } else {
+      console.log("tags", tags, tagsRegex.test(tags));
+      tagsError.textContent = "";
+
+      tagsInput.classList.remove("bg-gray-200", "cursor-not-allowed");
+      return true;
+    }
+  }
+
+  function handleFormSubmission(event) {
+    const isTitleValid = validateTitle();
+    const isDescriptionValid = validateDescription();
+    const areTagsValid = validateTags();
+    const subAuthors = document.getElementById("final-selected-authors").value;
+
+    console.log(!isTitleValid || !isDescriptionValid || !areTagsValid)
+    console.log("description",!isDescriptionValid);
+    console.log("title",!isTitleValid);
+    console.log("tag",!areTagsValid);
+    if (!isTitleValid || !isDescriptionValid || !areTagsValid) {
+      event.preventDefault();
+    }
+  }
+
+  const authorSearchInput = document.getElementById("author-search");
+  const authorSuggestions = document.getElementById("author-suggestions");
+  const selectedAuthorsContainer = document.getElementById("selected-authors");
+  let selectedAuthors = [];
+  authorSearchInput.addEventListener("input", async function () {
+    const query = authorSearchInput.value.toLowerCase().trim();
+    authorSuggestions.innerHTML = "";
+
+    if (query) {
+      try {
+        const response = await fetch(`/api/profile/search?username=${query}`);
+        const authorsList = await response.json();
+
+        if (authorsList && authorsList.length > 0) {
+          authorsList.forEach((author) => {
+            const li = document.createElement("li");
+            li.classList.add(
+              "cursor-pointer",
+              "px-4",
+              "py-2",
+              "hover:bg-gray-100"
+            );
+            li.textContent = author.username;
+            li.addEventListener("click", function () {
+              addAuthor(author._id, author.username);
+            });
+            authorSuggestions.appendChild(li);
+          });
+
+          authorSuggestions.classList.remove("hidden");
+        } else {
+          authorSuggestions.classList.add("hidden");
+        }
+      } catch (error) {
+        console.error("Error fetching authors:", error);
+      }
+    } else {
+      authorSuggestions.classList.add("hidden");
+    }
+  });
+
+  function addSubAuthor(id) {
+    const subAuthors = document.getElementById("final-selected-authors");
+    let selectedIds = subAuthors.value ? JSON.parse(subAuthors.value) : [];
+    if (!selectedIds.includes(id)) {
+      selectedIds.push(id);
+    }
+    subAuthors.value = JSON.stringify(selectedIds);
+  }
+
+  function removeSubAuthor(id) {
+    const subAuthors = document.getElementById("final-selected-authors");
+    let selectedIds = subAuthors.value ? JSON.parse(subAuthors.value) : [];
+    selectedIds = selectedIds.filter((existingId) => existingId !== id);
+    subAuthors.value = JSON.stringify(selectedIds);
+  }
+
+  function addAuthor(id, name) {
+    if (!selectedAuthors.some((author) => author.id === id)) {
+      selectedAuthors.push({ id, name });
+      updateSelectedAuthors();
+      addSubAuthor(id);
+    }
+    authorSearchInput.value = "";
+    authorSuggestions.classList.add("hidden");
+  }
+
+  function updateSelectedAuthors() {
+    selectedAuthorsContainer.innerHTML = "";
+
+    selectedAuthors.forEach(({ id, name }) => {
+      const span = document.createElement("span");
+      span.classList.add(
+        "inline-flex",
+        "items-center",
+        "px-3",
+        "py-1",
+        "rounded-full",
+        "text-xxxxs",
+        "sm:text-xxxs",
+        "md:text-xxs",
+        "lg:text-xs",
+        "mr-2",
+        "mb-2",
+        "text-tertiary",
+        "bg-background",
+        "border",
+        "border-sixth"
+      );
+      span.textContent = name;
+
+      const removeBtn = document.createElement("button");
+      removeBtn.classList.add(
+        "ml-2",
+        "text-dark-secondary",
+        "bg-background",
+        "hover:text-blue-600",
+        "focus:outline-none"
+      );
+      removeBtn.innerHTML = "&times;";
+      removeBtn.addEventListener("click", function () {
+        removeAuthor(id);
+      });
+
+      span.appendChild(removeBtn);
+      selectedAuthorsContainer.appendChild(span);
+    });
+  }
+
+  function removeAuthor(id) {
+    selectedAuthors = selectedAuthors.filter((author) => author.id !== id);
+    updateSelectedAuthors();
+    removeSubAuthor(id);
+  }
+</script>

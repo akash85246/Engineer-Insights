@@ -1,0 +1,80 @@
+<div class="grid grid-cols-1 sm:grid-cols-4  md:grid-cols-4 lg:grid-cols-5 font-lora " >
+    <div class=" sm:col-span-1  md:col-span-1   lg:col-span-1 "><%- include("../../partials/profileDetails.ejs")%></div>
+    <div class="sm:col-span-3 md:col-span-3 lg:col-span-4">
+      <!-- Tab Navigation -->
+      <div class="relative <%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-gray-200' %>  rounded-lg p-1 w-full max-w-md mx-auto mt-4">
+        <!-- Sliding Background -->
+        <div
+          id="slider"
+          class="absolute <%= user.settings.theme === 'dark' ? 'bg-dark-tertiary' : 'bg-white' %>  rounded-lg top-1 left-1 h-[calc(100%-8px)] w-[calc(50%-4px)] transform transition-transform duration-300 ease-in-out"
+        ></div>
+    
+        <!-- Buttons -->
+        <div class="relative z-10 grid grid-cols-2">
+          <button
+            id="reportsBtn"
+            class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-gray-800 ' %>  font-medium py-2 px-4 text-center rounded-lg focus:outline-none font-roboto"
+            onclick="toggleTab('reports')"
+          >
+            Reports
+          </button>
+          <button
+            id="reportedBlogsBtn"
+            class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-gray-800 ' %> font-medium py-2 px-4 text-center rounded-lg focus:outline-none font-roboto"
+            onclick="toggleTab('reportedBlogs')"
+          >
+            Reported Blogs
+          </button>
+        </div>
+      </div>
+    
+      <!-- Content Sections -->
+      <div id="reportsContent" class="mt-4 transition-opacity duration-300 ease-in-out opacity-100">
+        <%- include("../../partials/reportedBlogs.ejs") %>
+      </div>
+      <div id="reportedBlogsContent" class="mt-4 transition-opacity duration-300 ease-in-out opacity-0 hidden">
+        <%- include("../../partials/userReportedBlogs.ejs") %>
+      </div>
+    </div>
+  </div>
+  <script>
+    
+  function toggleTab(tab) {
+    const slider = document.getElementById("slider");
+    const reportsBtn = document.getElementById("reportsBtn");
+    const reportedBlogsBtn = document.getElementById("reportedBlogsBtn");
+    const reportsContent = document.getElementById("reportsContent");
+    const reportedBlogsContent = document.getElementById("reportedBlogsContent");
+  
+    if (tab === "reports") {
+      // Move the slider to the left
+      slider.style.transform = "translateX(0)";
+  
+      // Update button styles
+      // reportsBtn.classList.add("text-gray-800");
+      // reportsBtn.classList.remove("text-gray-500");
+      // reportedBlogsBtn.classList.add("text-gray-500");
+      // reportedBlogsBtn.classList.remove("text-gray-800");
+  
+      // Show reports content and hide reported blogs content
+      reportsContent.classList.remove("hidden");
+      reportsContent.classList.add("opacity-100");
+      reportedBlogsContent.classList.add("hidden");
+      reportedBlogsContent.classList.remove("opacity-100");
+    } else if (tab === "reportedBlogs") {
+      // Move the slider to the right
+      slider.style.transform = "translateX(100%)";
+  
+      // Update button styles
+      // reportsBtn.classList.add("text-gray-500");
+      // reportsBtn.classList.remove("text-gray-800");
+      // reportedBlogsBtn.classList.add("text-gray-800");
+      // reportedBlogsBtn.classList.remove("text-gray-500");
+  
+      // Show reported blogs content and hide reports content
+      reportedBlogsContent.classList.remove("hidden");
+      reportedBlogsContent.classList.add("opacity-100");
+      reportsContent.classList.add("hidden");
+      reportsContent.classList.remove("opacity-100");
+    }
+  }</script>

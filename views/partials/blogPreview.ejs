@@ -1,0 +1,338 @@
+<div
+  id="blogPreviewMainContainer"
+  class="mx-auto <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-text' %> rounded-lg shadow-lg relative w-full box-content scale-content cursor-pointer"
+  onclick="openPreview()"
+>
+  <div
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : 'bg-fifth text-fourth' %> flex items-center justify-center relative w-full"
+  >
+    <div class="flex space-x-0.5 absolute left-5">
+      <span class="block h-5 w-5 bg-red-500 rounded-full"></span>
+      <span class="block h-5 w-5 bg-yellow-500 rounded-full"></span>
+      <span class="block h-5 w-5 bg-green-500 rounded-full"></span>
+    </div>
+
+    <div
+      class="ttext-sm sm:text-base md:text-xl lg:text-2xl text-center w-1/3 overflow-clip"
+    >
+      <%- blog.title%>
+    </div>
+  </div>
+  <div
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-text' %> shadow-md mx-auto"
+  >
+    <div
+      class="bg-no-repeat bg-cover bg-center bg-origin-content w-full flex justify-center items-center text-center font-lora relative"
+      style="background-image: url('<%= blog.blogPhoto %>')"
+    >
+      <div
+        class="pt-16 pb-5 sm:pb-10 md:pt-32 md:py-20 w-full bg-opacity-10 <%= user.settings.theme === 'dark' ? 'bg-dark-background ' : 'text-text bg-background ' %> flex justify-center items-center flex-col"
+      >
+        <div
+          class="sm:p-0 w-4/5 sm:w-2/3 lg:w-1/2 flex justify-center items-center flex-col text-center gap-2 relative"
+        >
+          <p
+            class="rounded-lg <%= user.settings.theme === 'dark' ? 'bg-background' : ' text-background bg-background' %> bg-opacity-30 p-2 px-3 py-0"
+          >
+            <span
+              class="bg-none text-xxs md:text-xs lg:text-sm font-semibold uppercase cursor-pointer hover:scale-125 font-roboto"
+            >
+              <%= blog.tags[0] %>
+            </span>
+          </p>
+          <h1
+            class="text-sm sm:text-base md:text-xl lg:text-2xl w-full font-bold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %> break-words whitespace-normal"
+          >
+            <%- blog.title %>
+          </h1>
+          <h2
+            class="w-full text-sm sm:text-sm md:text-base lg:text-base <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> font-sans break-words whitespace-normal font-light"
+          >
+            <%- blog.description %>
+          </h2>
+          <h3
+            class="text-xxs sm:text-xs md:text-sm lg:text-base font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-background' %> capitalize"
+          >
+            By <%- blog.author.firstname %> <%-blog.author.lastname %>
+          </h3>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="border-t-4 border-b-4 border-tertiary w-full flex justify-between items-center text-white p-1 px-5 sm:px-10 md:px-9"
+    >
+      <div class="flex gap-2 md:gap-5 items-center">
+       
+        <button
+          id="saveBlogButton"
+          class="rounded-lg hover:scale-110 flex items-center justify-center transition-transform duration-200 ease-in-out z-100"
+        >
+          <img
+            src='images/icons/saveBlogShowIcon.png'
+            alt='Saved blog icon'
+            id="saveBlogIcon"
+            class="w-6 h-5 md:w-8 md:h-6 <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+        </button>
+
+        <button
+          id="likeButton"
+          class="<%= user.settings.theme === 'dark' ? 'text-white' : 'text-text' %> rounded-full flex items-center justify-center gap-2"
+        >
+          <img
+            src="images/icons/unlikeIcon.png"
+            alt="unliked icon"
+            id="likeIcon"
+            class="w-4 h-4 md:w-5 md:h-5 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+        </button>
+        <h1
+          id="likeCount"
+          class="sm:text-lg md:text-xl text-center overflow-clip font-semibold"
+        >
+          <%= blog.likes.length %>
+        </h1>
+       
+      </div>
+      <div class="flex gap-2 md:gap-5 items-center">
+        <a
+          href="/api/blog/download/<%= blog.slug  %>"
+          class="flex items-center text-sm md:text-base font-roboto md:h-8"
+        >
+          <img
+            src="images/icons/downloadBlogIcon.png"
+            alt="download blog icon"
+            class="w-5 h-6 md:w-6 md:h-7 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+        </a>
+        <button
+          class="flex items-center transition duration-300 ease-in-out text-sm md:text-base font-roboto md:h-8"
+          id="archivedBlog"
+        >
+          <img
+            src="<%= blog.status !== 'archived' 
+    ? 'images/icons/archiveIcon.png' 
+    : 'images/icons/publishIcon.png' %>"
+            alt="edit blog icon"
+            alt="edit blog icon"
+            class="w-5 h-6 md:w-6 md:h-7 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+        </button>
+
+        <a
+          class="flex items-center text-sm md:text-base font-roboto md:h-8"
+        >
+          <img
+            src="images/icons/editBlog.png"
+            alt="edit blog icon"
+            class="w-5 h-6 md:w-6 md:h-7 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+        </a>
+
+      
+      </div>
+    </div>
+    <div class="grid grid-cols-5 gap-2 px-5 sm:px-8 p-2 pt-5 md:p-5 font-lora">
+      <div
+        id="date"
+        class="col-span-5 md:col-span-1 lg:p-5 text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-tertiary' %>"
+      >
+        <% function timeSince(date) { const seconds = Math.floor((new Date() -
+        date) / 1000); let interval = Math.floor(seconds / 31536000); if
+        (interval > 1) return `${interval} years ago`; interval =
+        Math.floor(seconds / 2592000); if (interval > 1) return `${interval}
+        months ago`; interval = Math.floor(seconds / 86400); if (interval > 1)
+        return `${interval} days ago`; interval = Math.floor(seconds / 3600); if
+        (interval > 1) return `${interval} hours ago`; interval =
+        Math.floor(seconds / 60); if (interval > 1) return `${interval} minutes
+        ago`; return `${Math.floor(seconds)} seconds ago`; } %>
+        <div class="flex justify-between font-semibold">
+          <p>
+            <%= new Date(blog.createdAt).toLocaleDateString('en-US', { day:
+            'numeric', month: 'numeric', year: 'numeric' }) %>
+          </p>
+          <p><%= timeSince(new Date(blog.createdAt)) %></p>
+        </div>
+      </div>
+
+      <div class="col-span-5 md:col-span-3 lg:py-5">
+        <div
+          id="sanitizedHtml"
+          class="break-words text-sm md:text-base lg:text-base <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %>"
+        >
+          <%- blog.sanitizedHtml %>
+        </div>
+
+        <div
+          class="py-10 border-b <%= user.settings.theme === 'dark' ? 'border-dark-secondary ' : ' border-fourth' %>"
+        >
+          <div class="">
+            <% blog.tags.forEach(tag => { %>
+            <span
+              class="inline-block <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary border-dark-secondary' : 'bg-none text-fourth border-fourth' %> font-roboto text-xxs md:text-xs border px-5 py-1 rounded-lg mr-0.5 mb-0.5 cursor-pointer hover:bg-gray-300 hover:text-white hover:border-white hover:scale-110 transition-all duration-300 uppercase font-semibold"
+            >
+              <%= tag %>
+            </span>
+            <% }) %>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center my-10">
+          <div class="flex justify-center items-center gap-2 cursor-pointer">
+            <img
+              src="<%= blog.author.avatar  %>"
+              alt="author photo"
+              class="h-10 w-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:h-16 lg:w-16 rounded-full"
+            />
+            <div class="flex flex-col justify-between gap-1">
+              <h3
+                class="text-sm md:text-base lg:text-xl font-semibold uppercase <%= user.settings.theme === 'dark' ? 'text-dark-secondary ' : 'text-secondary ' %>"
+              >
+                By <%= blog.author.username %>
+              </h3>
+              <h4
+                class="text-xs md:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fourth' %> capitalize font-light"
+              >
+                <%= blog.author.firstname %> <%= blog.author.lastname %>
+              </h4>
+            </div>
+          </div>
+          <div
+            class="grid grid-cols-6 gap-x-2 gap-y-1 sm:gap-y-2 lg:gap-y-6 items-center max-w-sm"
+          >
+            <p
+              class="text-white hover:bg-blue-200 transition duration-300 w-5 h-5 hover:scale-150 rounded-full mx-auto"
+            >
+              <img
+                src="images/icons/facebookIcon.png"
+                alt="facebook icon"
+                class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+              />
+            </p>
+
+            <p
+              class="text-white hover:bg-blue-200 transition duration-300 w-5 h-5 hover:scale-150 rounded-full mx-auto"
+            >
+              <img
+                src="images/icons/twitterIconDark.png"
+                alt="twitter icon"
+                class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+              />
+            </p>
+
+            <p
+              class="text-white w-5 h-5 hover:scale-150 rounded-full hover:bg-blue-200 transition duration-300"
+            >
+              <img
+                src="images/icons/linkedinIconDark.png"
+                alt="linkedin icon"
+                class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+              />
+            </p>
+
+            <p
+              class="text-white w-5 h-5 hover:scale-150 rounded-full hover:bg-orange-200 transition duration-300"
+            >
+              <img
+                src="images/icons/redditIcon.png"
+                alt="reddit icon"
+                class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+              />
+            </p>
+
+            <p
+              class="text-white w-5 h-5 hover:scale-150 rounded-full hover:bg-green-200 transition duration-300"
+            >
+              <img
+                src="images/icons/whatsappIcon.png"
+                alt="whatsapp icon"
+                class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+              />
+            </p>
+            <div class="relative flex justify-between items-center">
+              <div
+                id="copyBtn"
+                class="text-white w-5 h-5 hover:scale-150 rounded-full shadow hover:bg-gray-200 transition duration-300"
+              >
+                <img
+                  src="images/icons/urlIcon.png"
+                  alt="copy url icon"
+                  class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+                />
+              </div>
+            </div>
+
+            <div
+              id="reportdiv"
+              class="font-semibold px-3 md:px-6 py-1 md:py-2 rounded-full hover:bg-red-400 transition-all duration-300 ease-in-out text-sm col-span-6 flex items-center gap-2 justify-center font-roboto <%= user.settings.theme === 'dark' ? ' bg-dark-fifth shadow-white-md text-dark-secondary' : 'bg-fifth text-white shadow-md' %>"
+            >
+              <span class="text-sm">Report</span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="sticky top-0 <%= user.settings.theme === 'dark' ? ' bg-dark-sixth shadow-white-lg' : 'bg-white shadow-lg' %> p-5 rounded-lg"
+        >
+          <textarea
+            id="commentText"
+            placeholder="Write a comment..."
+            class="text-base md:text-sm w-full p-3 border bg-transparent <%= user.settings.theme === 'dark' ?'placeholder-dark-tertiary text-dark-secondary border-dark-secondary' : 'text-fourth placeholder-fourth border-primary-dark' %> rounded-lg outline-none transition duration-300 resize-none"
+            autofocus
+            rows="6"
+            maxlength="500"
+            readonly
+          ></textarea>
+
+          <input type="hidden" id="parentCommentId" value="" />
+
+          <div class="mt-4 flex justify-end">
+            <div
+              class="px-5 py-2 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth shadow-white-md text-dark-secondary' : ' text-white bg-fifth shadow-md' %> rounded-full hover:bg-highlight hover:text-white transition duration-300 ease-in-out text-base md:text-sm lg:text-base hover:scale-110 font-roboto"
+            >
+              Add Comment
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const markdownTextarea = document.getElementById("markdown");
+    const sanitizedHtmlContainer = document.getElementById("sanitizedHtml");
+
+    function updateSanitizedHtml() {
+      const markdown = markdownTextarea.value;
+
+      const html = marked.parse(markdown);
+      const sanitizedHtml = DOMPurify.sanitize(html);
+
+      sanitizedHtmlContainer.innerHTML = sanitizedHtml;
+    }
+
+    markdownTextarea.addEventListener("input", updateSanitizedHtml);
+
+    updateSanitizedHtml();
+
+    let isOpen = false;
+    window.openPreview = function openPreview() {
+      document
+        .getElementById("blogPreviewMainContainer")
+        .classList.toggle("full-screen");
+      document
+        .getElementById("blogPreviewMainContainer")
+        .classList.toggle("scale-content");
+      document.getElementById("markdownLabel").classList.toggle("z-10");
+      document.getElementById("preview").classList.toggle("scale-30");
+      document.querySelectorAll("#socials img").forEach((img) => {
+        img.classList.toggle("hidden");
+      });
+      isOpen = !isOpen;
+    };
+  });
+</script>

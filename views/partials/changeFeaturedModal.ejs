@@ -1,0 +1,104 @@
+<div
+  class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'text-text bg-primary' %> bg-opacity-50 flex items-center justify-center hidden z-50 p-5 md:p-0 backdrop-blur-sm w-full h-full"
+  id="changeFeaturedModal"
+>
+  <input type="text" id="modalChangeBlogInfoId" hidden />
+
+  <div
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> backdrop-blur-sm p-4 rounded-lg w-full m-auto md:w-1/2"
+  >
+    <div
+      class="relative flex items-center bg-transparent  border  <%= user.settings.theme === 'dark' ? 'bg-dark-secondary text-dark-secondary' : 'border-fourth text-fourth' %>  rounded-lg px-4 md:py-2 lg:py-1 shadow-sm w-full"
+    >
+      <img
+        src="images/icons/searchIcon.png"
+        alt="Search Icon"
+        class="w-5 h-5 <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+      />
+      <input
+        type="text"
+        placeholder="Search a blog to select"
+        class="ml-2 bg-transparent outline-none  w-full <%= user.settings.theme === 'dark' ? 'placeholder-tertiary' : 'placeholder-third' %>  md:text-xs lg:text-sm"
+        oninput="searchBlog(this.value)"
+      />
+    </div>
+    <div id="top-10"></div>
+  </div>
+</div>
+
+<script>
+  const searchList = document.getElementById("top-10");
+  const user = "<%= user._id %>";
+
+  async function searchBlog(search) {
+    try {
+      const response = await fetch(
+        `/api/blog/search?search=${encodeURIComponent(
+          search
+        )}&featured=false&author=${user}`
+      );
+      if (!response.ok) throw new Error("Failed to search for blogs");
+
+      const data = await response.json();
+      searchList.innerHTML = "";
+
+      if (data.blogs && data.blogs.length > 0) {
+        data.blogs.forEach((blog) => {
+          const blogDiv = document.createElement("div");
+          blogDiv.classList.add(
+            "flex",
+            "items-center",
+            "justify-between",
+            "py-2",
+            "px-4",
+            "cursor-pointer"
+          );
+
+          console.log(blog._id);
+          blogDiv.innerHTML = `
+            <p>${blog.title}</p>
+             <button class="<%= user.settings.theme === 'dark' ? ' bg-dark-sixth text-dark-primary hover:bg-blue-400' : ' bg-blue-500 text-white hover:bg-blue-500' %> px-2 py-1 rounded-lg" onclick="selectBlog('${blog._id}')">Select</button>
+          `;
+          searchList.appendChild(blogDiv);
+        });
+      } else {
+        searchList.innerHTML = "<p class='text-center'>No blogs found</p>";
+      }
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+      alert("Failed to search for blogs");
+      searchList.innerHTML = "<p class='text-center'>An error occurred</p>";
+    }
+  }
+
+  async function selectBlog(currentBlogId) {
+  const blogIdInput = document.getElementById("modalChangeBlogInfoId").value;
+  console.log(currentBlogId, blogIdInput);
+
+  try {
+    const response = await fetch(`/api/payment/changeFeatured`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        currentBlogId: currentBlogId, 
+        blogId: blogIdInput,    
+      }),
+    });
+
+    if (!response.ok) {
+        console.log(response);
+      throw new Error("Failed to update the blog feature");
+    }
+
+    const result = await response.json();
+    // alert(`Blog updated successfully: ${result.message}`);
+    window.location.reload();
+
+  } catch (error) {
+    console.error("Error updating blog:", error);
+    alert("An error occurred while updating the blog");
+  }
+}
+</script>
