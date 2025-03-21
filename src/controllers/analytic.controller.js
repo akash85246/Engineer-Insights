@@ -370,11 +370,11 @@ async function getPopularBlogCategory() {
     ]);
 
     const popularCategory = result.length > 0 ? result[0]._id : null;
-    
+
     await AnalyticModel.findOneAndUpdate(
       { user_id: userId },
       {
-        $set: { popularBlogCategory: result[0]._id },
+        $set: { popularBlogCategory: popularCategory },
       },
       { upsert: true, new: true }
     );
