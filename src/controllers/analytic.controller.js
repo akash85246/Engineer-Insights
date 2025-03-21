@@ -369,6 +369,8 @@ async function getPopularBlogCategory() {
       { $limit: 1 },
     ]);
 
+    const popularCategory = result.length > 0 ? result[0]._id : null;
+    
     await AnalyticModel.findOneAndUpdate(
       { user_id: userId },
       {
