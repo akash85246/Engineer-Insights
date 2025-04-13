@@ -1,8 +1,9 @@
 <div
-  class="w-full <%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-sixth' %> bg-opacity-30 py-5 bg-blend-darken font-lora hidden sm:block px-2 md:px-5 lg:px-10 "
+  class="w-full <%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-sixth' %> bg-opacity-30 py-5 bg-blend-darken font-lora hidden sm:block px-2 md:px-5 lg:px-10"
+  id="similarBlogs"
 >
   <h1
-    class="text-xl font-semibold mb-3 <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-tertiary' %>  pb-0"
+    class="text-xl font-semibold mb-3 <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-tertiary' %> pb-0"
   >
     Related Blogs
   </h1>
@@ -34,12 +35,17 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    fetch("/api/blog/search?tags=<%= blog.tags %>")
-      .then((response) => response.json())
-      .then((data) => {
-        const blogs = data.blogs;
+   function fetchBlogs() {
+
+        const blogs = <%- JSON.stringify(similarBlogs) %>;
+      
+        if(blogs.length < 1){
+          document.getElementById("similarBlogs").style.display = "none";
+          return;
+        }
         const carouselContainer = document.getElementById("blogCarousel");
         const dotsContainer = document.getElementById("carouselDots");
+        console.log(blogs);
 
         if (blogs.length > 0) {
           const slidesHtml = blogs
@@ -78,7 +84,7 @@
                         }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-fifth' %> hover:text-highlight  text-center font-medium">read more</a></span>
                       </p>
                        <div class="justify-between items-center flex text-xxxs sm:text-xxs md:text-xs lg:text-sm">
-          
+
           <a class="flex items-center gap-2" href="/profile/${
             blog.author.slug
           }" >
@@ -97,7 +103,7 @@
             </div>
           </a>
         </div>
-                          
+
                         </div>
                       </div>
                     </div>
@@ -155,8 +161,7 @@
           carouselContainer.innerHTML =
             '<p class="text-center text-gray-700">No blogs found.</p>';
         }
-      })
-      .catch((error) => console.error("Error fetching blogs:", error));
+   }
 
     function truncateText(text, maxLength) {
       if (text.length > maxLength) {
@@ -164,5 +169,6 @@
       }
       return text;
     }
-  });
+    fetchBlogs();
+    });
 </script>

@@ -1,25 +1,25 @@
 <div class="md:grid md:grid-cols-2 py-16 px-4 sm:p-8 md:p-8 md:py-12" >
   <div
-    class="hidden mx-auto my-10 p-8 md:flex flex-col items-center justify-center"
+    class="hidden mx-auto my-10  md:flex flex-col items-center justify-center"
   >
-    <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">
+    <h2 class="text-2xl font-bold text-primary text-center -mb-10">
       Join Our Community!
     </h2>
-    <img src="images/signupImg.png" alt="signup image" />
-    <p class="text-lg text-purple-950 font-semibold mb-6 text-center">
+    <img src="images/signupImg.svg" alt="signup image"   class="h-[80%]"/>
+    <p class="text-lg text-secondary font-semibold mb-6 text-center">
       By signing up, you’ll become part of a vibrant community of professionals
       who are passionate about innovation and knowledge sharing.
     </p>
   </div>
 
   <div
-    class="max-w-7xl mx-auto md:mx-5 px-8 py-10 md:my-10 sm:p-6 rounded-lg shadow-lg bg-white bg-opacity-10 backdrop-blur-md border border-gray-200 grid grid-cols-1 gap-4 sm:gap-0"
+    class="max-w-7xl mx-auto md:mx-5 px-8 py-10 md:my-10 sm:p-6 rounded-lg shadow-lg bg-white bg-opacity-50 backdrop-blur-sm border border-gray-200 grid grid-cols-1 gap-4 sm:gap-0"
   >
-    <h1 class="text-base sm:text-lg md:text-2xl font-semibold md:font-bold text-center">
-      Create an Account
+    <h1 class="text-base sm:text-lg md:text-2xl font-semibold md:font-bold text-center flex justify-center items-center gap-2 text-primary">
+      <img src="images/logoImg/icon.png " class="h-10 rounded-md" alt="logo Img" /> Create an Account
     </h1>
     <h2
-      class="text-sm sm:text-base md:text-lg text-purple-950 md:font-semibold mb-2 text-center"
+      class="text-sm sm:text-base md:text-lg text-secondary md:font-semibold mb-2 text-center"
     >
       Create an account to enjoy our services.
     </h2>
@@ -33,7 +33,7 @@
       <!-- Personal Information -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label for="firstName" class="block text-xs  sm:text-sm font-medium text-gray-700"
+          <label for="firstName" class="block text-xs  sm:text-sm font-medium text-secondary"
             >First Name</label
           >
           <input
@@ -43,14 +43,14 @@
             minlength="2"
             maxlength="50"
             required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs  sm:text-sm"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
           />
-          <p class="text-xs text-red-500 mt-1 hidden" id="firstNameError">
+          <p class="text-xs text-red-600 mt-1 hidden" id="firstNameError">
             First name is required and must be letters only.
           </p>
         </div>
         <div>
-          <label for="lastName" class="block text-xs  sm:text-sm font-medium text-gray-700"
+          <label for="lastName" class="block text-xs  sm:text-sm font-medium text-secondary"
             >Last Name</label
           >
           <input
@@ -60,9 +60,9 @@
             maxlength="50"
             required
             id="lastName"
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs  sm:text-sm"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
           />
-          <p class="text-xs text-red-500 mt-1 hidden" id="lastNameError">
+          <p class="text-xs text-red-600 mt-1 hidden" id="lastNameError">
             Last name is required and must be letters only.
           </p>
         </div>
@@ -71,7 +71,7 @@
       <!-- Account Details -->
       <div class="grid grid-cols-1  gap-4">
         <div>
-          <label for="username" class="block text-xs  sm:text-sm font-medium text-gray-700"
+          <label for="username" class="block text-xs  sm:text-sm font-medium text-secondary"
             >Username</label
           >
           <input
@@ -81,9 +81,9 @@
             minlength="2"
             maxlength="50"
             required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs  sm:text-sm"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
           />
-          <p class="text-xs text-red-500 mt-1 hidden" id="usernameError">
+          <p class="text-xs text-red-600 mt-1 hidden" id="usernameError">
             Username is required and must be alphanumeric.
           </p>
         </div>
@@ -93,7 +93,7 @@
       <!-- Contact Information -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label for="phone" class="block text-xs  sm:text-sm font-medium text-gray-700"
+          <label for="phone" class="block text-xs  sm:text-sm font-medium text-secondary"
             >Phone</label
           >
           <input
@@ -103,14 +103,14 @@
             minlength="10"
             maxlength="10"
             required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs  sm:text-sm"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
           />
-          <p class="text-xs text-red-500 mt-1 hidden" id="phoneError">
+          <p class="text-xs text-red-600 mt-1 hidden" id="phoneError">
             Phone number is required and must be in the correct format.
           </p>
         </div>
         <div>
-          <label for="email" class="block text-xs  sm:text-sm font-medium text-gray-700"
+          <label for="email" class="block text-xs  sm:text-sm font-medium text-secondary"
             >Email</label
           >
           <input
@@ -120,9 +120,9 @@
             minlength="5"
             maxlength="50"
             required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs  sm:text-sm"
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
           />
-          <p class="text-xs text-red-500 mt-1 hidden" id="emailError">
+          <p class="text-xs text-red-600 mt-1 hidden" id="emailError">
             Please enter a valid email address.
           </p>
         </div>
@@ -131,7 +131,7 @@
       <!-- Password -->
        <div class="grid grid-cols-1 gap-4">
       <div>
-        <label for="password" class="block text-xs  sm:text-sm font-medium text-gray-700"
+        <label for="password" class="block text-xs  sm:text-sm font-medium text-secondary"
           >Password</label
         >
         <input
@@ -141,9 +141,9 @@
           minlength="8"
           maxlength="50"
           required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs  sm:text-sm"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
         />
-        <p class="text-xs text-red-500 mt-1 hidden" id="passwordError">
+        <p class="text-xs text-red-600 mt-1 hidden" id="passwordError">
           Password is required and must be at least 8 characters long, including
           uppercase, lowercase, and numbers.
         </p>
@@ -151,7 +151,7 @@
       <div>
         <label
           for="confirmPassword"
-          class="block text-xs  sm:text-sm font-medium text-gray-700"
+          class="block text-xs  sm:text-sm font-medium text-secondary"
           >Confirm Password</label
         >
         <input
@@ -161,9 +161,9 @@
           minlength="8"
           maxlength="50"
           required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs  sm:text-sm"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
         />
-        <p class="text-xs text-red-500 mt-1 hidden" id="confirmPasswordError">
+        <p class="text-xs text-red-600 mt-1 hidden" id="confirmPasswordError">
           Passwords do not match.
         </p>
       </div>
@@ -173,14 +173,17 @@
       <div>
         <button
           type="submit"
-          class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 text-xs  sm:text-sm"
+          class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600  transition duration-300 text-xs  sm:text-sm relative"
         >
           Sign Up
+          <span
+            class="absolute inset-0 bg-blue-700 opacity-0 rounded-lg transition-opacity duration-300 hover:opacity-20"
+          ></span>
         </button>
       </div>
     </form>
     <div class="text-xs md:text-sm text-center mt-4">
-      <p>
+      <p class="text-primary"> 
         Already have an account?
         <a href="/signin" class="text-blue-500">Sign In</a>
       </p>

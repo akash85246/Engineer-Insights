@@ -3,33 +3,33 @@
 >
   <div class="hidden md:flex justify-center items-center flex-col">
     <h2
-      class="text-base sm:text-lg md:text-2xl font-bold text-gray-800 md:mb-4 text-center"
+      class="text-base sm:text-lg md:text-2xl font-bold text-primary text-center"
     >
       Forgot Your Password?
     </h2>
     <img
-      src="images/signinImg.png"
+      src="images/recoveryImg.svg"
       alt="Sign-in image"
-      class="h-60 sm:h-80 md:h-80"
+      class="h-[80%]"
     />
     <p
-      class="text-xs sm:text-base md:text-lg text-purple-950 md:font-semibold mb-6 text-center"
+      class="text-xs sm:text-base md:text-lg text-secondary md:font-semibold mb-6 text-center"
     >
       Enter your username to receive a One-Time Password (OTP) and reset your
       account password securely.
     </p>
   </div>
   <div
-    class="max-w-7xl mx-auto md:mx-5 my-auto p-8 rounded-lg shadow-lg bg-white bg-opacity-10 backdrop-blur-md border border-gray-200"
+    class="max-w-7xl mx-auto md:mx-5 my-auto p-8 rounded-lg shadow-lg bg-white bg-opacity-50 backdrop-blur-sm border border-gray-200"
   >
     <h1
       class="text-lg sm:text-xl md:text-2xl font-bold text-center md:mb-2 flex justify-center items-center gap-2"
     >
-      <img src="images/logoImg/logo.png" class="h-10" alt="logo Img" />Password
+      <img src="images/logoImg/icon.png" class="h-10" alt="logo Img" />Password
       Reset
     </h1>
     <h2
-      class="text-sm sm:text-base md:text-lg text-purple-950 md:font-semibold mb-6 text-center"
+      class="text-sm sm:text-base md:text-lg text-secondary md:font-semibold mb-6 text-center"
     >
       Please enter your username to receive the OTP.
     </h2>
@@ -40,7 +40,7 @@
       class="space-y-6"
     >
       <div class="h-16">
-        <label for="username" class="block text-sm font-medium text-gray-700"
+        <label for="username" class="block text-sm font-medium text-secondary"
           >Username</label
         >
         <input
@@ -48,16 +48,19 @@
           name="username"
           id="username"
           required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth focus:border-fourth sm:text-sm text-primary"
         />
-        <p class="text-xs text-red-500 mt-1 hidden" id="usernameError"></p>
+        <p class="text-xs text-red-600 mt-1 hidden" id="usernameError"></p>
       </div>
       <div>
         <button
           type="submit"
-          class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+          class="relative w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 transition duration-300 hover:-translate-y-0.5" 
         >
           Send OTP
+          <span
+          class="absolute inset-0 bg-blue-700 opacity-0 rounded-lg transition-opacity duration-300 hover:opacity-20"
+        ></span>
         </button>
       </div>
     </form>

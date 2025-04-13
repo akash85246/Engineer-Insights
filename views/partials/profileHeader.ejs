@@ -1,6 +1,6 @@
 <nav
   id="navbar"
-  class="bg-opacity-20 shadow-lg fixed w-full z-50 transition-transform duration-300 backdrop-blur-sm <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : 'bg-primary text-text' %>"
+  class="bg-opacity-20 shadow-lg fixed w-full z-50 transition-transform duration-300  <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : 'bg-primary text-text' %>"
 >
   <div class="max-w-4xl lg:max-w-7xl mx-auto px-4">
     <div class="flex justify-between items-center">
@@ -63,7 +63,7 @@
           <!-- Sign In Button -->
           <a
             href="/signin"
-            class="relative px-5 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg shadow-inner hover:text-gray-900 hover:bg-gray-200 transition-all duration-300 focus:outline-none focus:ring focus:ring-gray-300"
+            class="relative px-5 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg shadow-inner hover:bg-gradient-to-r  hover:text-gray-900 hover:bg-gray-200 transition-all duration-300 focus:outline-none"
           >
             Sign In
             <span
@@ -74,7 +74,7 @@
           <!-- Sign Up Button -->
           <a
             href="/signup"
-            class="relative px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            class="relative px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:shadow-lg transition-all duration-300 focus:outline-none "
           >
             Sign Up
             <span

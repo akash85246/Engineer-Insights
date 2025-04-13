@@ -1,39 +1,39 @@
 <div class="flex flex-col-reverse md:grid md:grid-cols-2 gap-6 py-16 px-4 sm:p-8 md:p-8 md:py-16">
   <div class="hidden md:flex justify-center items-center flex-col ">
     <h2
-      class="text-base sm:text-lg md:text-2xl font-bold text-gray-800 md:mb-4 text-center"
+      class="text-base sm:text-lg md:text-2xl font-bold text-primary  text-center"
     >
       Two Factor Authentication
     </h2>
     <img
-      src="images/signinImg.png"
+      src="images/twoFactorImg.svg"
       alt="Sign-in image"
-      class="h-60 sm:h-80 md:h-80"
+      class="h-[80%]"
     />
     <p
-      class="text-xs sm:text-base md:text-lg text-purple-950 md:font-semibold mb-6 text-center"
+      class="text-xs sm:text-base md:text-lg text-secondary md:font-semibold mb-6 text-center"
     >
       Enter the 6-digit OTP sent to your email to securely complete two-factor
       authentication.
     </p>
   </div>
   <div
-    class="max-w-7xl mx-auto md:mx-5 my-auto p-8 rounded-lg shadow-lg bg-white bg-opacity-10 backdrop-blur-md border border-gray-200"
+    class="max-w-7xl mx-auto md:mx-5 my-auto p-8 rounded-lg shadow-lg bg-white bg-opacity-50 backdrop-blur-sm border border-gray-200"
   >
     <h1
-      class="text-lg sm:text-xl md:text-2xl font-bold text-center md:mb-2 flex justify-center items-center gap-2"
+      class="text-lg sm:text-xl md:text-2xl font-bold text-center md:mb-2 flex justify-center items-center gap-2 text-primary"
     >
-      <img src="images/logoImg/logo.png" class="h-10" alt="logo Img" /> Two
+      <img src="images/logoImg/icon.png" class="h-10" alt="logo Img" /> Two
       Factor Authentication
     </h1>
     <h2
-      class="text-sm sm:text-base md:text-lg text-purple-950 md:font-semibold mb-6 text-center"
+      class="text-sm sm:text-base md:text-lg text-secondary md:font-semibold mb-6 text-center"
     >
       Please enter the 6-digit OTP.
     </h2>
     <form id="otpForm" class="space-y-6" action="/auth/twoFactorVerify" method="POST">
       <div class="h-16">
-        <label for="otp" class="block text-sm font-medium text-gray-700">
+        <label for="otp" class="block text-sm font-medium text-secondary">
           OTP
         </label>
         <input type="text" name="username" id="username" value="<%= user.username %>" hidden />
@@ -44,16 +44,19 @@
           required
           pattern="\d{6}"
           maxlength="6"
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth focus:border-fourth sm:text-sm"
         />
-        <p class="text-xs text-red-500 mt-1 hidden" id="otpError"></p>
+        <p class="text-xs text-red-600 mt-1 hidden" id="otpError"></p>
       </div>
       <div>
         <button
           type="submit"
-          class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+          class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 transition duration-300 relative hover:-translate-y-0.5"
         >
           Submit OTP
+          <span
+          class="absolute inset-0 bg-blue-700 opacity-0 rounded-lg transition-opacity duration-300 hover:opacity-20"
+        ></span>
         </button>
       </div>
     </form>

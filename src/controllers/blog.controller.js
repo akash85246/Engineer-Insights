@@ -359,6 +359,8 @@ async function getArticleBySlug(req, res, next) {
 
     await updateDeviceInfo(req, author._id);
 
+    const similarBlogs = await getSimilarBlogs(blog._id, userId);
+
     res.renderWithMainLayout("../pages/blogs/show", {
       title: blog.title,
       blog: { ...blog, author, timeSinceCreation },
@@ -371,6 +373,7 @@ async function getArticleBySlug(req, res, next) {
       userSavedBlog,
       likesCount: blog.likes.length,
       user: user,
+      similarBlogs,
     });
   } catch (err) {
     console.error(err);
@@ -1315,6 +1318,43 @@ async function filterBlogsByStatus(blogs, user) {
 
   console.log("filteredBlogs", filteredBlogs);
   return filteredBlogs;
+}
+
+//
+async function getSimilarBlogs(blogId, userId) {
+  if (!userId) {
+    return [];
+  }
+  try {
+    const blog = await BlogModel.findById(blogId).select(
+      "category tags author subauthors"
+    );
+    
+  
+    const similarBlogs = await BlogModel.find({
+      category: blog.category,
+      _id: { $ne: blog._id },
+      status: "published",
+      author: { $ne: userId },
+      subAuthors: { $nin: [userId] },
+      tags: { $in: blog.tags },
+
+    })
+      .populate("author", "username avatar firstname lastname slug blockedUsers")
+      .sort({ createdAt: -1 })
+      .lean();
+
+    var filteredBlogs = (await filterBlogsByBlockedUsers(similarBlogs, userId)) || [];
+    filteredBlogs = (await filterBlogsByAudience(filteredBlogs, userId)) || [];
+    filteredBlogs = (await filterBlogsByStatus(filteredBlogs, userId)) || [];
+    filteredBlogs = filteredBlogs.slice(0, 20);
+
+
+    return filteredBlogs;
+  } catch (error) {
+    console.error("Error fetching similar blogs:", error);
+    return error;
+  }
 }
 
 module.exports = {

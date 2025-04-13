@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
-    <link rel="icon" type="image/png" href="/images/logoImg/logo.png" />
+    <link rel="icon" type="image/png" href="/images/logoImg/icon.png" />
     <title><%= title %></title>
     <link rel="stylesheet" href="stylesheets/style.css" />
      <!-- fonts setup -->
@@ -27,7 +27,7 @@
     });
   </script>
   <body
-    class="bg-[url('../images/backgroundImages/signupBackgroundImg.jpg')] bg-cover bg-center bg-no-repeat mt-0 top-0 pt-0 <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %>"
+    class="bg-[url('../images/backgroundImages/large-triangles.svg')]  bg-center mt-0 top-0 pt-0 <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %>"
   >
     <%- include("../partials/profileHeader.ejs") %><%- include(view) %> <%-
     include("../partials/footer.ejs") %>

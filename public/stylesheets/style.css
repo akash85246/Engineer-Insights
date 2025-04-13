@@ -739,6 +739,9 @@ video {
   margin-top: auto;
   margin-bottom: auto;
 }
+.-mb-10 {
+  margin-bottom: -2.5rem;
+}
 .-ml-4 {
   margin-left: -1rem;
 }
@@ -918,6 +921,12 @@ video {
 }
 .h-\[45vh\] {
   height: 45vh;
+}
+.h-\[70vh\] {
+  height: 70vh;
+}
+.h-\[75vh\] {
+  height: 75vh;
 }
 .h-\[90\%\] {
   height: 90%;
@@ -1699,8 +1708,8 @@ video {
 .bg-opacity-80 {
   --tw-bg-opacity: 0.8;
 }
-.bg-\[url\(\'\.\.\/images\/backgroundImages\/signupBackgroundImg\.jpg\'\)\] {
-  background-image: url('../images/backgroundImages/signupBackgroundImg.jpg');
+.bg-\[url\(\'\.\.\/images\/backgroundImages\/large-triangles\.svg\'\)\] {
+  background-image: url('../images/backgroundImages/large-triangles.svg');
 }
 .bg-\[url\(\'https\:\/\/www\.transparenttextures\.com\/patterns\/cubes\.png\'\)\] {
   background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
@@ -2292,6 +2301,10 @@ video {
 .text-red-700 {
   --tw-text-opacity: 1;
   color: rgb(185 28 28 / var(--tw-text-opacity, 1));
+}
+.text-red-800 {
+  --tw-text-opacity: 1;
+  color: rgb(153 27 27 / var(--tw-text-opacity, 1));
 }
 .text-secondary {
   --tw-text-opacity: 1;
@@ -3013,6 +3026,11 @@ overflow: scroll;
   border-color: rgb(96 165 250 / var(--tw-border-opacity, 1));
 }
 
+.focus\:border-fourth:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(184 181 173 / var(--tw-border-opacity, 1));
+}
+
 .focus\:border-indigo-500:focus {
   --tw-border-opacity: 1;
   border-color: rgb(99 102 241 / var(--tw-border-opacity, 1));
@@ -3048,6 +3066,11 @@ overflow: scroll;
 .focus\:ring-blue-600:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(37 99 235 / var(--tw-ring-opacity, 1));
+}
+
+.focus\:ring-fourth:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(184 181 173 / var(--tw-ring-opacity, 1));
 }
 
 .focus\:ring-gray-300:focus {
@@ -3187,10 +3210,6 @@ overflow: scroll;
 
   .sm\:h-12 {
     height: 3rem;
-  }
-
-  .sm\:h-16 {
-    height: 4rem;
   }
 
   .sm\:h-20 {

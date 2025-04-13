@@ -328,7 +328,7 @@ passport.use(
 
         if (!result) {
           const newUser = await UserModel.create({
-            username: profile.displayName,
+            username: profile.given_name+profile.family_name,
             firstname: profile.given_name,
             lastname: profile.family_name,
             email: profile.email,
