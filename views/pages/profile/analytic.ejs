@@ -1,0 +1,873 @@
+<div
+  class="grid grid-cols-1 sm:grid-cols-7 md:grid-cols-8 lg:grid-cols-5 font-lora"
+>
+  <div class="sm:col-span-2 md:col-span-2 lg:col-span-1">
+    <%- include("../../partials/profileDetails.ejs")%>
+  </div>
+  <div class="sm:col-span-5 md:col-span-6 lg:col-span-4">
+    <div class="grid grid-cols-2">
+      <div>
+        <div
+          id="engagement_score_chart"
+          style="width: 100%; height: auto; min-height: 400px"
+          class="px-8 py-8"
+        ></div>
+        <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+
+            let events = ["touchstart", "touchmove", "mousewheel", "wheel"];
+            events.forEach(function (eventName) {
+              document.addEventListener(
+                eventName,
+                function (event) {
+                  // event.preventDefault();
+                },
+                { passive: true }
+              );
+            });
+
+            var chartDom = document.getElementById("engagement_score_chart");
+            if (!chartDom) {
+              console.error("Chart container not found!");
+              return;
+            }
+
+            const totalEngagement="<%= analytics.engagementScore %>";
+            var engagementChart = echarts.init(chartDom);
+            var option = {
+              tooltip: {
+                trigger: "item",
+              },
+              legend: {
+                orient: "vertical",
+                left: "right",
+                top: "bottom",
+              },
+              series: [
+                {
+                  name: "Engagement",
+                  type: 'pie',
+                  radius: ['50%', '90%'],
+                  center: ["40%", "50%"],
+                  avoidLabelOverlap: false,
+                  padAngle: 5,
+                  itemStyle: {
+                    borderRadius: 10
+                  },
+                  data: [
+                    { value: <%= analytics.likesCount %>, name: "Likes" ,
+                      itemStyle: { color: "#FF6384" },
+                    },
+                    { value: <%= analytics.commentsCount %>, name: "Comments" ,
+                    itemStyle: { color: "#36A2EB" },
+                    },
+                    { value: <%= analytics.totalView %>, name: "Views",
+                      itemStyle: { color: "#3b82f6" },
+                     },
+                     {
+                      value: <%= analytics.blogsCount %>,
+                      name: "Blogs",
+                      itemStyle: { color: "#22c55e" },
+                     },
+                    { value: <%= analytics.reportsCount %>, name: "Reports" , itemStyle: { color: "#FFCE56" }, },
+                  ],
+                  label: {
+                    show: false,
+                    position: 'center'
+                  },
+                  labelLine: {
+                    show: false
+                  },
+                  emphasis: {
+                    itemStyle: {
+                      shadowBlur: 10,
+                      shadowOffsetX: 0,
+                      shadowColor: "rgba(0, 0, 0, 0.5)",
+                    }
+                  },
+                },
+              ],
+              graphic: {
+                type: "text",
+               left: "32%",
+                top: "middle",
+                style: {
+                text: totalEngagement.toString(),
+                fontSize: 50,
+                fontWeight: "bold",
+                fontStyle:"italic",
+                fill: "#333",
+                },
+              },
+            };
+
+            engagementChart.setOption(option);
+          });
+        </script>
+      </div>
+      <ul class="grid grid-cols-2 gap-6 p-8">
+        <li
+          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-6 hover:scale-105 duration-300"
+        >
+          <p class="absolute top-2 left-2 text-xs text-gray-500 opacity-70">
+            TOTAL BLOGS
+          </p>
+          <h3
+            class="text-5xl font-extrabold text-green-500 mt-2 drop-shadow-md"
+          >
+            <%= analytics.blogsCount %>
+          </h3>
+          <div
+            class="w-12 h-12 flex items-center justify-center bg-green-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
+          >
+            <img
+              src="../../images/analyticImages/blog.png"
+              alt="Blogs"
+              class="w-7 h-7"
+            />
+          </div>
+        </li>
+
+        <li
+          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-6 hover:scale-105 duration-300"
+        >
+          <p class="absolute top-2 left-2 text-xs text-gray-500 opacity-70">
+            TOTAL LIKES
+          </p>
+          <h3 class="text-5xl font-extrabold text-red-500 mt-2 drop-shadow-md">
+            <%= analytics.likesCount %>
+          </h3>
+          <div
+            class="w-12 h-12 flex items-center justify-center bg-red-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
+          >
+            <img
+              src="../../images/analyticImages/like.png"
+              alt="Likes"
+              class="w-7 h-7"
+            />
+          </div>
+        </li>
+
+        <li
+          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-6 hover:scale-105 duration-300"
+        >
+          <p class="absolute top-2 left-2 text-xs text-gray-500 opacity-70">
+            TOTAL REPORTS
+          </p>
+          <h3
+            class="text-5xl font-extrabold text-yellow-500 mt-2 drop-shadow-md"
+          >
+            <%= analytics.reportsCount %>
+          </h3>
+          <div
+            class="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
+          >
+            <img
+              src="../../images/analyticImages/report.png"
+              alt="Reports"
+              class="w-7 h-7"
+            />
+          </div>
+        </li>
+        <li
+          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-6 hover:scale-105 duration-300"
+        >
+          <p class="absolute top-2 left-2 text-xs text-gray-500 opacity-70">
+            TOTAL COMMENTS
+          </p>
+          <h3 class="text-5xl font-extrabold text-blue-500 mt-2 drop-shadow-md">
+            <%= analytics.commentsCount %>
+          </h3>
+          <div
+            class="w-12 h-12 flex items-center justify-center bg-blue-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
+          >
+            <img
+              src="../../images/analyticImages/comment.png"
+              alt="Comments"
+              class="w-7 h-7"
+            />
+          </div>
+        </li>
+      </ul>
+    </div>
+    <ul class="grid grid-cols-4 grid-rows-2 gap-6 p-6">
+      <li
+        class="text-center text-4xl flex flex-col justify-between items-center font-roboto"
+      >
+        Top Performing Blogs
+        <img
+          src="../images/analyticImages/topBlog.svg"
+          alt="top performing blogs"
+        />
+      </li>
+      <li class="w-full flex-shrink-0">
+        <div
+          class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full"
+          style="
+            background-image: url('<%= analytics.mostLikedBlog && analytics.mostLikedBlog.blogPhoto ? analytics.mostLikedBlog.blogPhoto : "" %>');"
+        >
+          <div
+            class="rounded-lg shadow-lg w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-3 h-full flex flex-col justify-between relative"
+          >
+            <% if (analytics.mostLikedBlog) { %>
+              <div class="flex justify-end">
+                <p
+                  class="px-3 py-1.5 text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-pink-600 to-red-500 border-red-400' : 'bg-gradient-to-r from-red-400 to-orange-300 border-orange-300' %> text-white tracking-wider"
+                >
+                  ❤️ MOST LIKED
+                </p>
+                <p
+                  class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
+                >
+                  <%= analytics.mostLikedBlog.tags[0] %>
+                </p>
+              </div>
+              <div class="flex flex-col gap-2">
+                <div class="h-10 sm:h-20 md:h-24 lg:h-28"></div>
+                <p
+                  class="text-xs font-lora <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %>"
+                >
+                  <%= new Date(analytics.mostLikedBlog.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "numeric" }) %>
+                </p>
+                <h5
+                  class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
+                >
+                  <%= analytics.mostLikedBlog.title.length > 50 ?
+                  analytics.mostLikedBlog.title.substring(0, 50) + '...' :
+                  analytics.mostLikedBlog.title %>
+                </h5>
+                <p
+                  class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
+                >
+                  <%= analytics.mostLikedBlog.description.length > 100 ?
+                  analytics.mostLikedBlog.description.substring(0, 100) + '...' :
+                  analytics.mostLikedBlog.description %>
+                  <span>
+                    <a
+                      href="/blog/<%= analytics.mostLikedBlog.slug %>"
+                      class="<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> hover:text-highlight font-roboto text-center font-medium"
+                    >
+                      read more
+                    </a>
+                  </span>
+                </p>
+              </div>
+            <% } else { %>
+              <!-- Blank Card Content -->
+              <div class="h-full flex items-center justify-center text-gray-400 font-semibold">
+                No Most Liked Blog Found
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </li>
+      <li class="w-full flex-shrink-0">
+        <div
+          class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full"
+          style="background-image: url('<%= ((analytics.mostLikedBlog && analytics.mostLikedBlog.blogPhoto) ? analytics.mostLikedBlog.blogPhoto : "") %>');"
+        >
+          <div
+            class="rounded-lg shadow-lg w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-3 h-full flex flex-col justify-between relative"
+          >
+            <% if (analytics.mostCommentedBlog) { %>
+              <div class="flex justify-end">
+                <p
+                  class="px-3 py-1.5 text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-blue-700 to-blue-500 border-blue-400' : 'bg-gradient-to-r from-sky-400 to-blue-300 border-blue-300' %> text-white tracking-wider"
+                >
+                  💬 MOST COMMENTED
+                </p>
+                <p
+                  class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
+                >
+                  <%= analytics.mostCommentedBlog.tags[0] %>
+                </p>
+              </div>
+              <div class="flex flex-col gap-2">
+                <div class="h-10 sm:h-20 md:h-24 lg:h-28"></div>
+                <p
+                  class="text-xs font-lora <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %>"
+                >
+                  <%= new Date(analytics.mostCommentedBlog.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "numeric" }) %>
+                </p>
+                <h5
+                  class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
+                >
+                  <%= analytics.mostCommentedBlog.title.length > 50 ?
+                  analytics.mostCommentedBlog.title.substring(0, 50) + '...' :
+                  analytics.mostCommentedBlog.title %>
+                </h5>
+                <p
+                  class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
+                >
+                  <%= analytics.mostCommentedBlog.description.length > 100 ?
+                  analytics.mostCommentedBlog.description.substring(0, 100) + '...' :
+                  analytics.mostCommentedBlog.description %>
+                  <span>
+                    <a
+                      href="/blog/<%= analytics.mostCommentedBlog.slug %>"
+                      class="<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> hover:text-highlight font-roboto text-center font-medium"
+                    >
+                      read more
+                    </a>
+                  </span>
+                </p>
+              </div>
+            <% } else { %>
+              <!-- Blank Card Content -->
+              <div class="h-full flex items-center justify-center text-gray-400 font-semibold">
+                No Most Commented Blog Found
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </li>
+      <li class="w-full flex-shrink-0">
+        <div
+          class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full"
+          style="
+            background-image: url('<%= analytics.mostViewedBlog ? analytics.mostViewedBlog.blogPhoto : '' %>');
+          "
+        >
+          <div
+            class="rounded-lg shadow-lg w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-3 h-full flex flex-col justify-between relative"
+          >
+            <% if (analytics.mostViewedBlog) { %>
+              <div class="flex justify-end">
+                <p
+                  class="px-3 py-1.5 text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-green-600 to-green-500 border-green-400' : 'bg-gradient-to-r from-teal-400 to-green-300 border-green-300' %> text-white tracking-wider flex items-center gap-1"
+                >
+                  👀 MOST VIEWED
+                </p>
+                <p
+                  class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
+                >
+                  <%= analytics.mostViewedBlog.tags[0] %>
+                </p>
+              </div>
+              <div class="flex flex-col gap-2">
+                <div class="h-10 sm:h-20 md:h-24 lg:h-28"></div>
+                <p
+                  class="text-xs font-lora <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %>"
+                >
+                  <%= new Date(analytics.mostViewedBlog.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "numeric" }) %>
+                </p>
+                <h5
+                  class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
+                >
+                  <%= analytics.mostViewedBlog.title.length > 50 ?
+                  analytics.mostViewedBlog.title.substring(0, 50) + '...' :
+                  analytics.mostViewedBlog.title %>
+                </h5>
+                <p
+                  class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
+                >
+                  <%= analytics.mostViewedBlog.description.length > 100 ?
+                  analytics.mostViewedBlog.description.substring(0, 100) + '...' :
+                  analytics.mostViewedBlog.description %>
+                  <span>
+                    <a
+                      href="/blog/<%= analytics.mostViewedBlog.slug %>"
+                      class="<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> hover:text-highlight font-roboto text-center font-medium"
+                    >
+                      read more
+                    </a>
+                  </span>
+                </p>
+              </div>
+            <% } else { %>
+              <!-- Blank Card Content -->
+              <div class="h-full flex items-center justify-center text-gray-400 font-semibold">
+                No Most Viewed Blog Found
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </li>
+
+      <li class="w-full flex-shrink-0">
+        <div
+          class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full"
+          style="
+            background-image: url('<%= analytics.mostSavedBlog ? analytics.mostSavedBlog.blogPhoto : '' %>');
+          "
+        >
+          <div
+            class="rounded-lg shadow-lg w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-3 h-full flex flex-col justify-between relative"
+          >
+            <% if (analytics.mostSavedBlog) { %>
+              <div class="flex justify-end">
+                <p
+                  class="px-3 py-1.5 text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-yellow-600 to-yellow-500 border-yellow-400' : 'bg-gradient-to-r from-yellow-400 to-amber-300 border-amber-300' %> text-white tracking-wider flex items-center gap-1"
+                >
+                  🔖 MOST SAVED
+                </p>
+                <p
+                  class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
+                >
+                  <%= analytics.mostSavedBlog.tags[0] %>
+                </p>
+              </div>
+              <div class="flex flex-col gap-2">
+                <div class="h-10 sm:h-20 md:h-24 lg:h-28"></div>
+                <p
+                  class="text-xs font-lora <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %>"
+                >
+                  <%= new Date(analytics.mostSavedBlog.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "numeric" }) %>
+                </p>
+                <h5
+                  class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
+                >
+                  <%= analytics.mostSavedBlog.title.length > 50 ?
+                  analytics.mostSavedBlog.title.substring(0, 50) + '...' :
+                  analytics.mostSavedBlog.title %>
+                </h5>
+                <p
+                  class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
+                >
+                  <%= analytics.mostSavedBlog.description.length > 100 ?
+                  analytics.mostSavedBlog.description.substring(0, 100) + '...' :
+                  analytics.mostSavedBlog.description %>
+                  <span>
+                    <a
+                      href="/blog/<%= analytics.mostSavedBlog.slug %>"
+                      class="<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> hover:text-highlight font-roboto text-center font-medium"
+                    >
+                      read more
+                    </a>
+                  </span>
+                </p>
+              </div>
+            <% } else { %>
+              <!-- Blank Card Content -->
+              <div class="h-full flex items-center justify-center text-gray-400 font-semibold">
+                No Most Saved Blog Found
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </li>
+
+      <li class="w-full flex-shrink-0">
+        <div
+          class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full"
+          style="
+            background-image: url('<%= analytics.mostReportedBlog ? analytics.mostReportedBlog.blogPhoto : '' %>');
+          "
+        >
+          <div
+            class="rounded-lg shadow-lg w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-3 h-full flex flex-col justify-between relative"
+          >
+            <% if (analytics.mostReportedBlog) { %>
+              <div class="flex justify-end">
+                <p
+                  class="px-3 py-1.5 text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-red-700 to-red-500 border-red-400' : 'bg-gradient-to-r from-rose-400 to-red-300 border-red-300' %> text-white tracking-wider flex items-center gap-1"
+                >
+                  🚨 MOST REPORTED
+                </p>
+                <p
+                  class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
+                >
+                  <%= analytics.mostReportedBlog.tags[0] %>
+                </p>
+              </div>
+              <div class="flex flex-col gap-2">
+                <div class="h-10 sm:h-20 md:h-24 lg:h-28"></div>
+                <p
+                  class="text-xs font-lora <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %>"
+                >
+                  <%= new Date(analytics.mostReportedBlog.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "numeric" }) %>
+                </p>
+                <h5
+                  class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
+                >
+                  <%= analytics.mostReportedBlog.title.length > 50 ?
+                  analytics.mostReportedBlog.title.substring(0, 50) + '...' :
+                  analytics.mostReportedBlog.title %>
+                </h5>
+                <p
+                  class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
+                >
+                  <%= analytics.mostReportedBlog.description.length > 100 ?
+                  analytics.mostReportedBlog.description.substring(0, 100) + '...' :
+                  analytics.mostReportedBlog.description %>
+                  <span>
+                    <a
+                      href="/blog/<%= analytics.mostReportedBlog.slug %>"
+                      class="<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> hover:text-highlight font-roboto text-center font-medium"
+                    >
+                      read more
+                    </a>
+                  </span>
+                </p>
+              </div>
+            <% } else { %>
+              <!-- Blank Card Content -->
+              <div class="h-full flex items-center justify-center text-gray-400 font-semibold">
+                No Most Reported Blog Found
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </li>
+
+      <li class="w-full flex-shrink-0">
+        <div
+          class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full"
+          style="
+            background-image: url('<%= analytics.mostReadBlog ? analytics.mostReadBlog.blogPhoto : '' %>');
+          "
+        >
+          <div
+            class="rounded-lg shadow-lg w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-3 h-full flex flex-col justify-between relative"
+          >
+            <% if (analytics.mostReadBlog) { %>
+              <div class="flex justify-end">
+                <p
+                  class="px-3 py-1.5 text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg transition-all duration-300 ease-in-out <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-purple-700 to-purple-500 border-purple-400' : 'bg-gradient-to-r from-indigo-500 to-blue-400 border-blue-300' %> text-white tracking-wider"
+                >
+                  🏆 LONGEST BLOG
+                </p>
+                <p
+                  class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
+                >
+                  <%= analytics.mostReadBlog.tags[0] %>
+                </p>
+              </div>
+              <div class="flex flex-col gap-2">
+                <div class="h-10 sm:h-20 md:h-24 lg:h-28"></div>
+                <p
+                  class="text-xs font-lora <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %>"
+                >
+                  <%= new Date(analytics.mostReadBlog.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "numeric" }) %>
+                </p>
+                <h5
+                  class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
+                >
+                  <%= analytics.mostReadBlog.title.length > 50 ?
+                  analytics.mostReadBlog.title.substring(0, 50) + '...' :
+                  analytics.mostReadBlog.title %>
+                </h5>
+                <p
+                  class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
+                >
+                  <%= analytics.mostReadBlog.description.length > 100 ?
+                  analytics.mostReadBlog.description.substring(0, 100) + '...' :
+                  analytics.mostReadBlog.description %>
+                  <span>
+                    <a
+                      href="/blog/<%= analytics.mostReadBlog.slug %>"
+                      class="<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> hover:text-highlight font-roboto text-center font-medium"
+                    >
+                      read more
+                    </a>
+                  </span>
+                </p>
+              </div>
+            <% } else { %>
+              <!-- Blank Card Content -->
+              <div class="h-full flex items-center justify-center text-gray-400 font-semibold">
+                No Longest Blog Found
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </li>
+
+      <li class="w-full flex-shrink-0">
+        <div
+          class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full"
+          style="background-image: url('<%= analytics.recentBlog ? analytics.recentBlog.blogPhoto : '' %>')"
+        >
+          <div
+            class="rounded-lg shadow-lg w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-3 h-full flex flex-col justify-between relative"
+          >
+            <% if (analytics.recentBlog) { %>
+              <div class="flex justify-end">
+                <p
+                  class="px-3 py-1.5 text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg transition-all duration-300 ease-in-out <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-cyan-600 to-blue-500 border-cyan-400' : 'bg-gradient-to-r from-sky-400 to-indigo-300 border-indigo-300' %> text-white tracking-wider"
+                >
+                  🆕 RECENT BLOG
+                </p>
+                <p
+                  class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
+                >
+                  <%= analytics.recentBlog.tags[0] %>
+                </p>
+              </div>
+              <div class="flex flex-col gap-2">
+                <div class="h-10 sm:h-20 md:h-24 lg:h-28"></div>
+                <p
+                  class="text-xs font-lora <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %>"
+                >
+                  <%= new Date(analytics.recentBlog.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "numeric" }) %>
+                </p>
+                <h5
+                  class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
+                >
+                  <%= analytics.recentBlog.title.length > 50 ?
+                  analytics.recentBlog.title.substring(0, 50) + '...' :
+                  analytics.recentBlog.title %>
+                </h5>
+                <p
+                  class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
+                >
+                  <%= analytics.recentBlog.description.length > 100 ?
+                  analytics.recentBlog.description.substring(0, 100) + '...' :
+                  analytics.recentBlog.description %>
+                  <span>
+                    <a
+                      href="/blog/<%= analytics.recentBlog.slug %>"
+                      class="<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> hover:text-highlight font-roboto text-center font-medium"
+                    >
+                      read more
+                    </a>
+                  </span>
+                </p>
+              </div>
+            <% } else { %>
+              <!-- Placeholder Content for No Recent Blog -->
+              <div class="h-full flex items-center justify-center text-gray-400 font-semibold">
+                No Recent Blog Found
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="w-full relative">
+      <div class="flex justify-center gap-2 mb-4 absolute top-0 right-5 z-50">
+        <select
+          id="timeframe-selector"
+          class="px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 shadow-sm hover:border-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 font-roboto"
+        >
+          <option value="hourly">Hourly</option>
+          <option value="daily" selected>Daily</option>
+          <option value="monthly">Monthly</option>
+        </select>
+
+        <select
+          id="minInterval"
+          class="px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 shadow-sm hover:border-gray-400 focus:ring-2 focus:ring-green-500 focus:outline-none transition-all duration-200 font-roboto"
+        >
+          <option value="1">1</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+
+      <div id="engagement-trend" class="w-[80vw] h-80"></div>
+
+      <script>
+          document.addEventListener("DOMContentLoaded", function () {
+
+            var engagementDom = document.getElementById("engagement-trend");
+            if (!engagementDom) {
+              console.error("Chart container not found!");
+              return;
+            }
+
+            var engagementChart = echarts.init(engagementDom);
+            var engagementData = <%- JSON.stringify(analytics.engagementTrend) %>;
+
+            function groupDataByHour(data) {
+              let hourlyData = {};
+              data.forEach(entry => {
+                let key = `${new Date(entry.date).toLocaleDateString()} ${entry.hour}:00`;
+                if (!hourlyData[key]) {
+                  hourlyData[key] = { views: 0, likes: 0, comments: 0, saves: 0, reports: 0 };
+                }
+                hourlyData[key].views += entry.views;
+                hourlyData[key].likes += entry.likes;
+                hourlyData[key].comments += entry.comments;
+                hourlyData[key].saves += entry.saves;
+                hourlyData[key].reports += entry.reports;
+              });
+
+              return Object.entries(hourlyData).map(([date, values]) => ({ date, ...values }));
+            }
+
+            function groupDataByDay(data) {
+              let dailyData = {};
+              data.forEach(entry => {
+                let key = new Date(entry.date).toLocaleDateString();
+                if (!dailyData[key]) {
+                  dailyData[key] = { views: 0, likes: 0, comments: 0, saves: 0, reports: 0 };
+                }
+                dailyData[key].views += entry.views;
+                dailyData[key].likes += entry.likes;
+                dailyData[key].comments += entry.comments;
+                dailyData[key].saves += entry.saves;
+                dailyData[key].reports += entry.reports;
+              });
+
+              return Object.entries(dailyData).map(([date, values]) => ({ date, ...values }));
+            }
+
+            function groupDataByMonth(data) {
+              let monthlyData = {};
+              data.forEach(entry => {
+                let dateObj = new Date(entry.date);
+                let key = `${dateObj.getFullYear()}-${dateObj.getMonth() + 1}`;
+                if (!monthlyData[key]) {
+                  monthlyData[key] = { views: 0, likes: 0, comments: 0, saves: 0, reports: 0 };
+                }
+                monthlyData[key].views += entry.views;
+                monthlyData[key].likes += entry.likes;
+                monthlyData[key].comments += entry.comments;
+                monthlyData[key].saves += entry.saves;
+                monthlyData[key].reports += entry.reports;
+              });
+
+              return Object.entries(monthlyData).map(([date, values]) => ({ date, ...values }));
+            }
+
+            function updateChart(mode, minInterval) {
+              let filteredData;
+              if (mode === "hourly") {
+                filteredData = groupDataByHour(engagementData);
+              } else if (mode === "daily") {
+                filteredData = groupDataByDay(engagementData);
+              } else {
+                filteredData = groupDataByMonth(engagementData);
+              }
+
+              let dates = filteredData.map(entry => entry.date);
+              let views = filteredData.map(entry => entry.views);
+              let likes = filteredData.map(entry => entry.likes);
+              let comments = filteredData.map(entry => entry.comments);
+              let saves = filteredData.map(entry => entry.saves);
+              let reports = filteredData.map(entry => entry.reports);
+
+              var option = {
+                title: {
+                  text: `User Engagement Trend (${mode.toUpperCase()})`,
+                  left: "2%",
+                  textStyle: { fontSize: 16 ,
+                    color: "#495057"
+                  },
+
+                },
+                tooltip: {
+                  trigger: "axis"
+                },
+                legend: {
+                  data: ["Views", "Likes", "Comments", "Saves", "Reports"],
+                  bottom: 0
+                },
+                grid: {
+                  left: "3%",
+                  right: "4%",
+                  bottom: "10%",
+                  containLabel: true
+                },
+                xAxis: {
+                  type: "category",
+                  data: dates,
+                  axisLabel: { rotate: 0 },
+                  show: true,
+                  lineStyle: {
+                  color: "#333",
+                  width: 2,
+                },
+                },
+                yAxis: {
+                  type: "value",
+                  minInterval: minInterval ||1,
+                  axisLine: {
+                  show: true,
+                  lineStyle: {
+                  color: "#333",
+                  width: 1,
+                  },
+                },
+                splitLine: {
+                  lineStyle: {
+                  type: "solid",
+                  color: "#ddd",
+                  },
+                },
+                },
+                series: [
+                  {
+                    name: "Views",
+                    type: "line",
+                    smooth: true,
+                    data: views,
+                    itemStyle: { color: "#1E90FF" }
+                  },
+                  {
+                    name: "Likes",
+                    type: "line",
+                    smooth: true,
+                    data: likes,
+                    itemStyle: { color: "#28A745" }
+                  },
+                  {
+                    name: "Comments",
+                    type: "line",
+                    smooth: true,
+                    data: comments,
+                    itemStyle: { color: "#FFC107" }
+                  },
+                  {
+                    name: "Saves",
+                    type: "line",
+                    smooth: true,
+                    data: saves,
+                    itemStyle: { color: "#17A2B8" }
+                  },
+                  {
+                    name: "Reports",
+                    type: "line",
+                    smooth: true,
+                    data: reports,
+                    itemStyle: { color: "#DC3545" }
+                  }
+                ]
+              };
+
+              engagementChart.setOption(option);
+            }
+
+            
+            document.getElementById("timeframe-selector").addEventListener("change", function () {
+              updateChart(this.value, document.getElementById("minInterval").value);
+            });
+
+            document.getElementById("minInterval").addEventListener("change", function () {
+              console.log(this.value);
+          updateChart(document.getElementById("timeframe-selector").value, this.value);
+        });
+
+            updateChart("daily", 1);
+          });
+      </script>
+    </div>
+
+    <div class="p-6 bg-white rounded-lg flex flex-col">
+      <h2
+        class="text-tertiary font-bold text-base tracking-wide mb-3 font-roboto"
+      >
+        Popular Tags
+      </h2>
+      <ul class="flex flex-wrap gap-3">
+        <%- analytics.popularTags.map(({ tag, count }) => { return `
+          <li
+            class="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-3 py-1 rounded-lg text-sm font-semibold shadow-md transition-transform transform hover:scale-110 uppercase"
+          >
+            <a href="/blog/all/${tag}">${tag} <span class="text-gray-200 text-xs">(${count})</span></a>
+          </li>
+        `; }).join("") %>
+      </ul>
+    </div>
+    <%- include("../../partials/usersMap.ejs") %>
+    <%- include("../../partials/usersTime.ejs") %>
+    <%- include("../../partials/usersLogin.ejs") %>
+    <%- include("../../partials/deviceInfo.ejs") %>
+    <%- include("../../partials/traffic.ejs") %>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="flex">
+  <div class="">
+    <%- include("../../partials/profileDetails.ejs")%>
+  </div>
+  <div class="w-full">
+    <%- include("../../partials/profileFeaturedBlog.ejs")%> <%-
+    include("../../partials/profileBlogs.ejs")%>
+  </div>
+</div>
+
+<script>
+   gtag("config", "<%= user.googleAnalyticsId %>");
+  gtag("event", "profile_view", {
+    event_category: "Profile",
+    event_label: "Profile Viewed",
+    viewed_user_id: "<%= profile._id %>",
+    viewer_user_id: "<%= user._id %>",
+    user_id: "<%= profile._id %>",
+  });
+</script>

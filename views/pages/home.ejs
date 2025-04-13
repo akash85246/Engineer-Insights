@@ -1,0 +1,22 @@
+<div class=""><%- include("../partials/featuredBlogs.ejs") %></div>
+
+<div><%- include("../partials/popularBlogs.ejs") %></div>
+
+<div id="favoriteAuthorsBlog"><%- include("../partials/favoriteAuthorsBlog.ejs") %></div>
+
+<div><%- include("../partials/latestBlogs.ejs") %></div>
+<div  id="editorsPickContainer"><%- include("../partials/editorsPick.ejs") %></div>
+<script>
+  if ("<%= isAuthenticated %>") {
+    gtag("event", "user_login", {
+      event_category: "User",
+      event_label: "Login Successful",
+      user_id: "<%= user._id %>",
+      username: "<%= user.username %>",
+      tag: "<%= user.tags %>",
+      followers: "<%= user.followers?.length %>",
+      following: "<%= user.following?.length %>",
+      blogs: "<%= user.blogs?.length %>",
+    });
+  }
+</script>

@@ -1,0 +1,74 @@
+<div class="flex items-center p-2 " onclick="openSubAuthorPopup()">
+  <% if (blog?.subauthors && blog.subauthors.length) { %> <%
+  blog.subauthors.forEach((subauthor, index) => { %>
+  <img
+  src="<%= subauthor && subauthor.avatar ? subauthor.avatar: '/images/defaultProfile.png' %>"
+    alt="<%= subauthor.username %>"
+    class="w-6 h-6 md:w-8 md:h-8 rounded-full cursor-pointer border-2 border-white shadow-lg <%= index !== 0 ? '-ml-4 md:-ml-6' : '' %>"
+    onclick="openSubAuthorPopup('<%= subauthor.username %>', '<%= subauthor.firstname %>', '<%= subauthor.lastname %>', '<%= subauthor.slug %>', '<%= subauthor.avatar %>')"
+  />
+  <% }) %> <% } %>
+</div>
+
+<div
+  id="popupModal"
+  class="hidden fixed inset-0 z-50 <%= user.settings.theme === 'dark' ? '  bg-dark-sixth shadow-white-lg' : 'bg-white shadow-lg' %>  bg-opacity-50 flex items-center justify-center backdrop-blur-sm font-lora"
+>
+  <div class="<%= user.settings.theme === 'dark' ? 'bg-dark-background' : 'bg-background' %> p-6 rounded-lg shadow-xl max-w-[90vw] md:max-w-md w-full" id="popup">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-text' %> ">Subauthors</h3>
+      <button
+        onclick="closeSubAuthorPopup()"
+        class="w-8 h-8 flex items-center justify-center  text-red-600 rounded-full transition"
+      >
+        &times;
+      </button>
+    </div>
+
+    <% if (blog?.subauthors && blog.subauthors.length) { %>
+    <div class="space-y-3 max-h-[60vh] overflow-y-scroll">
+      <% blog.subauthors.forEach((subauthor) => { %>
+      <div
+        class="flex items-center space-x-4 p-3 rounded-lg  <%= user.settings.theme === 'dark' ? ' hover:bg-dark-fifth' : 'hover:bg-gray-100 ' %> transition"
+      >
+        <a href="/profile/<%= subauthor.slug %>">
+          <img
+            src="<%= subauthor && subauthor.avatar ? subauthor.avatar: '/images/defaultProfile.png' %>"
+            alt="<%= subauthor.username %>"
+            class="w-12 h-12 rounded-full border border-gray-300 shadow-sm"
+          />
+        </a>
+        <div class="flex-1">
+          <a
+            href="/profile/<%= subauthor.slug %>"
+            class="text-blue-600 no-underline font-medium"
+          >
+            <%= subauthor.username %>
+          </a>
+          <p class="text-gray-500 text-sm">
+            <%= subauthor.firstname %> <%= subauthor.lastname %>
+          </p>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+    <% } else { %>
+    <p class="text-gray-500 text-center">No subauthors found.</p>
+    <% } %>
+  </div>
+</div>
+
+<script>
+  function openSubAuthorPopup() {
+    document.getElementById("popupModal").classList.remove("hidden");
+  }
+
+  function closeSubAuthorPopup() {
+    document.getElementById("popupModal").classList.add("hidden");
+  }
+  const popUp=document.getElementById("popup");
+  popUp.addEventListener("mouseleave", () => {
+  closeSubAuthorPopup();
+});
+
+</script>

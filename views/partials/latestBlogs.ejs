@@ -1,0 +1,130 @@
+<div class="relative overflow-hidden py-10 mt-8" id="latestBlogsContainer">
+  <div class="relative w-full">
+    <div
+      class="flex overflow-x-scroll scroll-smooth transition-transform duration-300 ease-in-out"
+      id="latestBlogCarousel"
+    ></div>
+
+    <div
+      class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2"
+      id="latestCarouselDots"
+    ></div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    function fetchBlog() {
+      const blogs = <%- JSON.stringify(latestBlog) %>;
+      const carouselContainer = document.getElementById("latestBlogCarousel");
+      const dotsContainer = document.getElementById("latestCarouselDots");
+      if (blogs.length > 0) {
+        const slidesHtml = blogs
+          .map(
+            (blog) => `
+              <div class="w-full flex-shrink-0 h-[35vh] sm:h-[40vh] md:h-[50vh] font-lora">
+                <div class="flex justify-center items-center bg-cover bg-center bg-origin-content w-full  h-full text-white rounded-none" style="background-image: url('${
+                  blog.blogPhoto
+                }')">
+                  <div class="rounded-lg shadow-lg overflow-hidden bg-black bg-opacity-30 h-full flex flex-col  w-full px-8 md:p-16 md:py-10 gap-2">
+                    
+                    <div class="flex flex-col gap-2 w-full sm:w-3/4 md:w-2/3  lg:w-1/2 m-auto text-center">
+                        <div class="flex">
+                      <p class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-secondary' : 'bg-background text-background' %> bg-opacity-30 text-white text-xxxs   md:text-xxs  lg:text-xs font-semibold font-sans uppercase mx-auto">${truncateText(
+                        blog.tags[0],
+                        15
+                      )}</p>
+                    </div>
+                      <h5 class="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold break-words whitespace-normal"> ${truncateText(
+                        blog.title,
+                        50
+                      )}</h5>
+                      
+                        
+                        <p class="<%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %>
+                        text-xxs sm:text-xs md:text-sm lg:text-base break-words whitespace-normal">${truncateText(
+                          blog.description,
+                          100
+                        )}<span><a href="/blog/${
+              blog.slug
+            }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %> hover:text-highlight  text-center mt-5">read more</a></span></p>
+                        <p class="-mt-1 font-sans <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fifth' %>">_________</p>
+                        <p class="text-xxxs sm:text-xxs  md:text-xxs lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %>">${new Date(
+                          blog.createdAt
+                        ).toLocaleDateString("en-US", {
+                          day: "numeric",
+                          month: "numeric",
+                          year: "numeric",
+                        })}</p>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `
+          )
+          .join("");
+
+        carouselContainer.innerHTML = slidesHtml;
+
+        // Dynamically create dots based on the number of blogs
+        const dotsHtml = blogs
+          .map(
+            (_, index) =>
+              `<span class="w-2 h-2 bg-gray-400 rounded-full cursor-pointer dot" data-index="${index}"></span>`
+          )
+          .join("");
+        dotsContainer.innerHTML = dotsHtml;
+
+        // Initialize the carousel dots
+        const dots = document.querySelectorAll(".dot");
+        const slideWidth =
+          carouselContainer.querySelector(".w-full").offsetWidth;
+        const totalSlides = dots.length;
+
+        function updateDots(index) {
+          dots.forEach((dot, i) => {
+            dot.classList.toggle("bg-background", i === index);
+            dot.classList.toggle("bg-gray-400", i !== index);
+          });
+        }
+
+        function scrollToSlide(index) {
+          const offset = index * slideWidth;
+          carouselContainer.scrollTo({
+            left: offset,
+            behavior: "smooth",
+          });
+          updateDots(index);
+        }
+
+        // Add click event listeners to dots
+        dots.forEach((dot) => {
+          dot.addEventListener("click", (e) => {
+            const index = parseInt(e.target.getAttribute("data-index"));
+            scrollToSlide(index);
+          });
+        });
+
+        // Auto-slide every 3 seconds
+        let currentIndex = 0;
+        setInterval(() => {
+          currentIndex = (currentIndex + 1) % totalSlides;
+          scrollToSlide(currentIndex);
+        }, 3000); // Change slide every 3 seconds
+
+        // Initially update dots
+        updateDots(0);
+      } else {
+        document.getElementById("latestBlogsContainer").style.display = "none";
+      }
+    }
+    fetchBlog();
+    function truncateText(text, maxLength) {
+      if (text.length > maxLength) {
+        return text.substring(0, maxLength) + "...";
+      }
+      return text;
+    }
+  });
+</script>

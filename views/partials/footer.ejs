@@ -1,0 +1,166 @@
+<footer
+  class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'bg-primary text-text' %> text-white pt-8 font-lora"
+>
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="md:flex justify-between">
+      <div id="footerSocials" class="md:w-1/3 flex justify-center flex-col items-center ">
+        <img
+          src="images/logoImg/logo.png"
+          alt="Engineer Insights logo"
+          class="h-40 transition-transform hover:scale-105 rounded-lg"
+        />
+        <ul class="grid grid-cols-4 gap-5 items-center mt-4" id="socials">
+          <li>
+            <a
+
+              href=""
+              class="block h-8 w-8 bg-transparent hover:scale-125 rounded transition-all"
+            >
+              <img
+                src="images/socialImg/linkedin.svg"
+                alt="linkedin icon"
+                class="h-8 w-8 object-cover <%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"
+              />
+            </a>
+          </li>
+          <li>
+            <a
+              href=""
+              class="block h-8 w-8 bg-transparent hover:scale-125 rounded transition-all"
+            >
+              <img
+                src="images/socialImg/twitter.svg"
+                alt="twitter icon"
+                class="h-8 w-8 relative  object-cover <%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"
+              />
+            </a>
+          </li>
+          <li>
+            <a
+              href=""
+              class="block h-8 w-8 bg-transparent hover:scale-125 rounded transition-all"
+            >
+              <img
+                src="images/socialImg/discord.svg"
+                alt="discord icon"
+                class="h-8 w-8 object-cover <%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"
+              />
+            </a>
+          </li>
+          <li>
+            <a
+              href=""
+              class="block h-8 w-8 bg-transparent hover:scale-125 rounded transition-all"
+            >
+              <img
+                src="images/socialImg/instagram.svg"
+                alt="instagram icon"
+                class="h-8 w-8 object-cover <%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"
+              />
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="md:w-1/3 mt-8 md:mt-0">
+        <h2 class="text-xl font-semibold mb-4 text-center">Quick Links</h2>
+        <ul class="text-center text-sm">
+          <li class="mb-2">
+            <a
+              href="/"
+              class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> hover:text-fifth hover:scale-125 transition duration-300"
+              >Home</a
+            >
+          </li>
+          <li class="mb-2">
+            <a
+              href="/about"
+              class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> hover:text-fifth hover:scale-125 transition duration-300"
+              >About</a
+            >
+          </li>
+          <li class="mb-2">
+            <a
+              href="/subscribe"
+              class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> hover:text-fifth hover:scale-125 transition duration-300"
+              >Subscribe</a
+            >
+          </li>
+          <li class="mb-2">
+            <a
+              href="/contact"
+              class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> hover:text-fifth hover:scale-125 transition duration-300"
+              >Contact</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="md:w-1/3 px-8 mt-8 md:mt-0">
+        <h2 class="text-xl font-semibold mb-4 text-center">
+          Subscribe to our newsletter
+        </h2>
+        <form action="" class="grid grid-cols-3" id="newsletterForm">
+          <input
+            type="email"
+            name="email"
+            class="col-span-2 px-3 py-2 rounded-l-md border-none outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-tertiary text-dark-background' : 'bg-fourth text-sixth' %> transition-colors"
+            placeholder="Email Address"
+            maxlength="100"
+          />
+          <button
+            class="col-span-1 py-2 <%= user.settings.theme === 'dark' ? ' bg-dark-secondary' : 'bg-secondary' %> rounded-r-md text-white hover:bg-tertiary transition-all"
+            type="submit"
+          >
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="text-center mt-8 text-gray-400 bg-secondary text-sm p-5">
+    &copy; <%= new Date().getFullYear() %> Engineer Insights. All rights
+    reserved.
+  </div>
+</footer>
+
+<script>
+  const newsletterForm = document.getElementById("newsletterForm");
+
+  newsletterForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    console.log("submitting form");
+    const emailInput = newsletterForm.querySelector('input[name="email"]');
+    const email = emailInput.value.trim();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email || !emailRegex.test(email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    const requestData = {
+      email,
+    };
+
+    try {
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      if (response.ok) {
+        alert("You have successfully subscribed to the newsletter!");
+        newsletterForm.reset();
+      } else {
+        const errorMessage = await response.text();
+        alert(`Error: ${errorMessage}`);
+      }
+    } catch (error) {
+      console.error("Error submitting the form:", error);
+      alert("Something went wrong, please try again later.");
+    }
+  });
+</script>

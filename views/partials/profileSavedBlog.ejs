@@ -1,0 +1,171 @@
+<h1
+  class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-10 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-tertiary bg-white bg-background' %> sticky top-0"
+>
+  Saved Blogs
+  <span
+    id="currentPage"
+    class="text-xs sm:text-sm md:text-base lg:text-lg <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-primary' %>"
+  ></span>
+</h1>
+
+<div
+  class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 px-3 md:px-5 lg:px-10"
+  id="allBlog"
+></div>
+
+<div
+  class="flex justify-center space-x-2 my-10 overflow-x-scroll relative bottom-0"
+  id="pagingContainer"
+></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let currentPage = 1;
+    const blogsPerPage = 10;
+
+    function renderBlogs(blogData) {
+      const allBlogContainer = document.getElementById("allBlog");
+
+      if (!blogData || blogData.length === 0) {
+        allBlogContainer.innerHTML = "<p>No blogs found.</p>";
+        return;
+      }
+
+      const slidesHtml = blogData
+        .map(
+          (blog) => `
+            <div class="w-full flex-shrink-0">
+                <div class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
+                  blog.blogPhoto
+                }')">
+                  <div class="rounded-lg shadow-lg overflow-hidden w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-3 h-full flex flex-col justify-between">
+                    <div class="flex justify-end ">
+                      <p class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-primary' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs  md:text-xxs  lg:text-xs font-semibold font-roboto uppercase">
+                         ${truncateText(blog.tags[0], 10)}</p>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                      <div class="h-20  md:h-24  lg:h-28"></div>
+                      <p class="text-xs font-lora  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %>">${new Date(
+                        blog.createdAt
+                      ).toLocaleDateString("en-US", {
+                        day: "numeric",
+                        month: "numeric",
+                        year: "numeric",
+                      })}</p>
+                      <h5 class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold  <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal font-lora">${truncateText(
+                        blog.title,
+                        50
+                      )}</h5>
+                      <p class="text-xxxs sm:text-xxs 
+                      md:text-xs lg:text-sm  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %> break-words whitespace-normal">${truncateText(
+                        blog.description,
+                        100
+                      )}
+                      <span><a href="/blog/${
+                        blog.slug
+                      }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> hover:text-highlight    font-roboto text-center   font-medium">read more</a></span>
+                      </p>
+                      <div class="flex justify-between items-center ">
+
+                        <div class="flex gap-2">
+                         <button onclick="openDeleteModal('${
+                           blog.slug
+                         }')"  class=" px-3 hover:bg-red-300 focus:outline-none text-sm md:text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-fourth' %> rounded-md">Delete</button>
+
+                       <a href="/blog/edit/${
+                         blog.slug
+                       }"  class=" px-3 rounded-md focus:outline-none flex items-center text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300">Edit</a>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          `
+        )
+        .join("");
+
+      allBlogContainer.innerHTML = slidesHtml;
+
+      document.querySelectorAll(".remove-button").forEach((button) => {
+        button.addEventListener("click", async function () {
+          const slug = this.getAttribute("data-slug");
+          console.log("slug", slug);
+          try {
+            const response = await fetch(`/blog/saveBlog/${slug}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to save/unsave the blog", response);
+            }
+
+            const result = await response.json();
+
+            if (!result.saved) {
+              const blogElement = document.getElementById(`blog-${slug}`);
+              if (blogElement) {
+                blogElement.remove();
+              }
+            }
+          } catch (error) {
+            console.error("Error saving/unsaving the blog:", error);
+          }
+        });
+      });
+
+      document.getElementById("currentPage").innerText = `Page ${currentPage}`;
+    }
+
+    function renderPagination(totalPages) {
+      const pagingContainer = document.getElementById("pagingContainer");
+      pagingContainer.innerHTML = "";
+
+      for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement("button");
+        pageBtn.className =
+          "px-3 py-1 rounded-md border bg-white text-gray-800 hover:bg-gray-100";
+        pageBtn.innerText = i;
+
+        pageBtn.onclick = function () {
+          currentPage = i;
+          fetchBlogs();
+        };
+
+        pagingContainer.appendChild(pageBtn);
+      }
+    }
+
+    function fetchBlogs() {
+      fetch(
+        `/api/profile/search/saveBlogs?page=${currentPage}&limit=${blogsPerPage}&status=archived`
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Error fetching blogs", response);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const { savedBlogs, totalPages } = data;
+          renderBlogs(savedBlogs);
+          renderPagination(totalPages);
+        })
+        .catch((error) => {
+          console.error("Error fetching blogs:", error);
+          const allBlogContainer = document.getElementById("allBlog");
+          allBlogContainer.innerHTML = "<p>Error loading blogs.</p>";
+        });
+    }
+
+    function truncateText(text, maxLength) {
+      if (text.length > maxLength) {
+        return text.substring(0, maxLength) + "...";
+      }
+      return text;
+    }
+
+    fetchBlogs();
+  });
+</script>

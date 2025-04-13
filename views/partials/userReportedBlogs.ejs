@@ -1,0 +1,400 @@
+<h1
+  class="text-base sm:text-lg md:text-xl lg:text-2xl <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-tertiary bg-white bg-background' %> sticky top-0 font lora z-10 font-semibold mt-8 md:mt-0 p-3  md:px-10"
+>
+  Blogs Reported
+</h1>
+
+<div class="relative overflow-x-scroll px-5">
+  <table
+    class="table-auto w-full overflow-x-scroll text-xs md:text-sm lg:text-base"
+  >
+    <thead>
+      <tr
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background  text-secondary' %>"
+      >
+        <th class="px-4 py-2">Blog</th>
+        <th class="px-4 py-2">Title</th>
+        <th class="px-4 py-2 whitespace-nowrap">Reported On</th>
+        <th class="px-4 py-2 whitespace-nowrap">Time Left</th>
+        <th class="px-4 py-2">Details</th>
+        <th class="px-4 py-2">Action Required</th>
+        <th class="px-4 py-2">Status</th>
+      </tr>
+    </thead>
+    <tbody id="userReportsTableBody"></tbody>
+  </table>
+</div>
+
+<div id="userPagination" class="my-4 flex justify-center gap-1 w-full"></div>
+
+<div
+  id="reportDetailsModal"
+  class="fixed  inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : ' text-text bg-primary' %> backdrop-blur-sm bg-opacity-50 flex items-center justify-center hidden z-50"
+>
+  <div
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-primary' : 'bg-background text-text' %> p-6 rounded-lg w-1/2"
+  >
+    <h2 class="text-xl font-semibold" id="modalInfoTitle"></h2>
+    <p id="modalInfoDescription" class="mt-2 <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'bg-background text-text' %>"></p>
+    <button
+      id="closeBlogModal"
+      class="mt-4 px-4 py-2  <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary hover:bg-blue-400' : 'text-white bg-primary hover:bg-blue-500' %> rounded"
+    >
+      Close
+    </button>
+  </div>
+</div>
+
+<div
+  id="deleteBlogModal"
+  class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : ' text-text bg-primary' %> backdrop-blur-sm bg-opacity-50 flex items-center justify-center hidden z-50 p-5 md:p-0"
+>
+  <div
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> p-6 rounded-lg shadow-lg w-full max-w-md relative"
+  >
+    <h2
+      class="text-xl font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-secondary' %> mb-4"
+    >
+      Delete Blog
+    </h2>
+
+    <p id="deletemodalInfoDescription" class="text-fourth mb-4"></p>
+
+    <form id="deleteBlogForm">
+      <div class="form-group mb-6">
+        
+      </div>
+
+      <div class="flex items-center justify-between">
+        
+        <button
+          type="button"
+          id="closeBlogModalBtn"
+          class="hover:bg-blue-300 hover:text-background   <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-gray-300  text-gray-700 ' %>  font-roboto font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          id="confirmDeleteButton"
+          class="hover:bg-red-300   hover:text-background   font-roboto <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : ' text-fifth border-fifth' %>  font-bold py-2 px-4 rounded outline-none"
+        >
+          Delete
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  let currentBlogSlug = null;
+
+  function calculateTimeLeft(reportDate) {
+    const currentDate = new Date();
+    const reportCreatedAt = new Date(reportDate);
+    const timeDiff =
+      reportCreatedAt.getTime() +
+      7 * 24 * 60 * 60 * 1000 -
+      currentDate.getTime();
+    if (timeDiff > 0) {
+      const daysLeft = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      return `${daysLeft} days left`;
+    } else {
+      return "Time's up!";
+    }
+  }
+
+  function showInfoModal(
+    reason,
+    description,
+    reportCreatedAt,
+    blogUpdatedAt,
+    reportId,
+    slug
+  ) {
+    console.log("reason:",reason,"\ndescription",description,"\nreportCreatedAt",reportCreatedAt,"\nblogUpdatedAt",blogUpdatedAt,"\nreportId",reportId,"\nslug",slug);
+
+    document.getElementById("modalInfoTitle").innerText = reason;
+    document.getElementById("modalInfoDescription").innerText = description;
+
+    document.getElementById("reportDetailsModal").classList.remove("hidden");
+
+    const actionButtonContainer = document.getElementById("actionButton");
+    actionButtonContainer.innerHTML = "";
+
+    const reportCreatedAtDate = new Date(reportCreatedAt);
+    const blogUpdatedAtDate = new Date(blogUpdatedAt);
+
+    if (reportCreatedAtDate < blogUpdatedAtDate) {
+      const goToBlogBtn = document.createElement("button");
+      goToBlogBtn.classList.add(
+        "px-4",
+        "py-2",
+        "bg-green-500",
+        "text-white",
+        "rounded"
+      );
+
+      goToBlogBtn.innerText = "Go to Blog";
+      console.log(
+        "reason\n",reason,"description\n",description,"reportCreatedAt\n",reportCreatedAt,"blogUpdatedAt\n",blogUpdatedAt,"reportId\n",reportId,"slug\n",slug);
+      goToBlogBtn.onclick = function () {
+        window.location.href = `/blog/${slug}`;
+      };
+
+     
+      const deleteReportBtn = document.createElement("button");
+      deleteReportBtn.classList.add(
+        "px-4",
+        "py-2",
+        "bg-red-500",
+        "text-white",
+        "rounded"
+      );
+      deleteReportBtn.innerText = "Delete Report";
+      deleteReportBtn.onclick = function () {
+        deleteReport(reportId);
+      };
+
+     
+      actionButtonContainer.appendChild(goToBlogBtn);
+      actionButtonContainer.appendChild(deleteReportBtn);
+    }
+  }
+
+  
+
+  function closeBlogModal() {
+    document.getElementById("reportDetailsModal").classList.add("hidden");
+  }
+
+  async function loadUserReports(page = 1, pageSize = 10) {
+    const userReportsTableBody = document.getElementById(
+      "userReportsTableBody"
+    );
+    const userPagination = document.getElementById("userPagination");
+
+    try {
+      const response = await fetch(
+        `/api/reports/user?page=${page}&pageSize=${pageSize}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+       
+
+      if (response.ok) {
+
+        const data = await response.json();
+        const reports = data.reports;
+        const totalReports = data.totalReports;
+        if(totalReports==0){
+          userReportsTableBody.innerHTML = `<tr class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background  text-secondary' %>">
+          <td class="border <%=
+            user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth'
+          %> px-4 py-2 mx-auto text-center w-96 overflow-x-scroll whitespace-nowrap text-xs md:text-sm lg:text-base " colspan="7">No reports found</td>
+        </tr>`;
+        return;
+        }
+        userReportsTableBody.innerHTML = "";
+
+        reports.forEach((report) => {
+          const timeLeft = calculateTimeLeft(report.createdAt);
+          console.log(report,report.blogId.slug);
+          const row = `
+            <tr data-blog-slug="${report.blogId.slug}" class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background  text-secondary' %>">
+              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %>">
+                <a href="/blog/${report.blogId.slug}" target="_blank">
+                  <img src="${report.blogId.blogPhoto}" alt="${
+            report.blogId.title
+          }" class="object-cover w-full h-10">
+                </a>
+              </td>
+              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 mx-auto text-center w-96 overflow-x-scroll whitespace-nowrap text-xs md:text-sm lg:text-base ">${truncateText(
+                report.blogId.title,
+                30
+              )}</td>
+              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 mx-auto text-center text-xs md:text-sm lg:text-base">${new Date(
+                report.createdAt
+              ).toLocaleDateString()}</td>
+              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 mx-auto text-center whitespace-nowrap">${timeLeft}</td>
+              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 text-center">
+                <button class="<%= user.settings.theme === 'dark' ? 'text-dark-tertiary' : 'text-fourth' %> font-roboto hover:text-highlight text-xs md:text-sm lg:text-base" onclick="showInfoModal('${
+                  report.reason
+                }', '${report.description}','${report.createdAt}','${
+            report.blogId.lastModified
+          }','${report._id}','${report.blogId.slug}')">View</button>
+              </td>
+              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 mx-auto text-center min-w-60">
+                <div class="grid grid-cols-2">
+                   <button class=" py-1 px-4 mr-2 rounded-md focus:outline-none flex items-center text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300 text-center flex justify-center item-center hover:text-white font-roboto"  onclick="handleEditAndUpdateStatus('${
+                     report._id
+                   }','${report.blogId.slug}')" >Edit</button>
+                <button class="delete-blog py-1 px-4 hover:bg-red-300 focus:outline-none text-sm md:text-sm sm:text-xxs md:text-xs lg:text-sm font-roboto <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-fourth' %> rounded-md hover:text-white" data-blog-slug="${
+                  report.blogId.slug
+                }" id="${report._id}" >Delete</button>
+                </div>
+              </td>
+              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 mx-auto text-center">
+                ${report.status}
+                </td>
+            </tr>
+          `;
+          userReportsTableBody.insertAdjacentHTML("beforeend", row);
+        });
+
+        const totalPages = Math.ceil(totalReports / pageSize);
+        userPagination.innerHTML = `
+          ${
+            page > 1
+              ? `<button class="px-3 py-1 border rounded" onclick="loadUserReports(${
+                  page - 1
+                }, ${pageSize})">Prev</button>`
+              : ""
+          }
+          ${Array.from({ length: totalPages }, (_, i) => i + 1)
+            .map(
+              (num) => `
+            <button class="px-3 py-1 border rounded ${
+              num === page ? "bg-tertiary text-white" : "bg-gray-200"
+            }" onclick="loadUserReports(${num}, ${pageSize})">${num}</button>
+          `
+            )
+            .join("")}
+          ${
+            page < totalPages
+              ? `<button class="px-3 py-1 border rounded" onclick="loadUserReports(${
+                  page + 1
+                }, ${pageSize})">Next</button>`
+              : ""
+          }
+        `;
+      } else {
+        console.error("Failed to fetch reports:", response.statusText);
+
+      }
+    } catch (error) {
+      console.error("Error loading reports:", error);
+    }
+  }
+
+  function updateStatus(id, status) {
+    const url = `/reports/update-status/${id}`;
+    fetch(url, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: status }),
+    })
+      .then(async (response) => {
+        if (response.ok) {
+          alert("Status updated successfully!");
+          loadUserReports(1, 10);
+          loadReports(1, 10);
+        } else {
+          const errorData = await response.json();
+          alert(
+            `Failed to update status: ${errorData.message || "Unknown error"}`
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating status:", error);
+        alert("An error occurred while updating status. Please try again.");
+      });
+  }
+
+  async function handleEditAndUpdateStatus(id, slug) {
+    try {
+      await updateStatus(id, "Reviewed");
+      window.location.href = `/blog/edit/${slug}`;
+    } catch (error) {
+      console.error("Failed to update status and redirect:", error);
+      alert("Failed to update status. Please try again.");
+    }
+  }
+
+  async function deleteBlog(reportId, blogSlug) {
+    try {
+      const response = await fetch(`/api/blog/delete/${blogSlug}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+
+      if (response.ok) {
+        alert("Blog deleted successfully.");
+        document
+          .querySelectorAll(`tr[data-blog-slug="${blogSlug}"]`)
+          .forEach((row) => row.remove());
+        const status = "Deleted";
+        closeDeleteBlogModal();
+      } else {
+        const result = await response.json();
+        alert(`Failed to delete blog: ${result.message}`);
+      }
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+      alert("An error occurred while trying to delete the blog.");
+    }
+  }
+
+  let currentReport_Id;
+
+  function openDeleteBlogModal(reportId, blogSlug) {
+    currentReport_Id = reportId;
+
+    document.getElementById("deletemodalInfoDescription").innerText =
+      "Please  confirm to delete the blog.";
+    document.getElementById("deleteBlogModal").classList.remove("hidden");
+  }
+
+  function closeDeleteBlogModal() {
+    document.getElementById("deleteBlogModal").classList.add("hidden");
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadUserReports(1, 10);
+
+    const reportsTableBody = document.getElementById("userReportsTableBody");
+
+    reportsTableBody.addEventListener("click", function (e) {
+      if (e.target.classList.contains("delete-blog")) {
+        const blogSlug = e.target.getAttribute("data-blog-slug");
+
+        const reportId = e.target.id;
+        currentBlogSlug = blogSlug;
+
+        openDeleteBlogModal(reportId, blogSlug);
+      }
+    });
+
+    document
+      .getElementById("closeBlogModal")
+      .addEventListener("click", closeBlogModal);
+    document
+      .getElementById("closeBlogModalBtn")
+      .addEventListener("click", closeDeleteBlogModal);
+    document
+      .getElementById("cancelDeleteButton")
+      .addEventListener("click", closeDeleteBlogModal);
+
+    document
+      .getElementById("deleteBlogForm")
+      .addEventListener("submit", async (event) => {
+        event.preventDefault();
+       
+        if (currentBlogSlug) {
+          await deleteBlog(
+            currentReport_Id,
+            currentBlogSlug
+          );
+        }
+      });
+  });
+</script>

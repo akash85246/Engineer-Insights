@@ -1,0 +1,516 @@
+<form
+  class="grid grid-cols-4 md:grid-cols-5 gap-3 md:gap-2 lg:gap-4 px-2 md:px-1 py-14 lg:py-16 font-lora"
+  action="/blog/save/<%= blog.slug %>?_method=PUT"
+  method="POST"
+>
+  <div
+    class="order-3 md:order-1 col-span-4 md:col-span-1 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-tertiary' %> shadow-lg rounded-lg"
+  >
+    <h2
+      class="text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2 lg:mb-6 <%= user.settings.theme === 'dark' ? 'text-dark-primary bg-dark-sixth' : 'text-tertiary bg-white' %> sticky top-0 pb-1 lg:pb-2"
+    >
+      Post Settings
+    </h2>
+
+    <div class="mb-6">
+      <label
+        for="category"
+        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %> mb-2"
+        >Category</label
+      >
+      <select
+        id="category"
+        name="category"
+        class="block w-full px-4 py-2 text-xs sm:text-sm md:text-base border <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-tertiary' %> border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+      >
+        <option value="" disabled selected>Select a category</option>
+        <option value="tech">Technology</option>
+        <option value="health">Health</option>
+        <option value="travel">Travel</option>
+        <option value="lifestyle">Lifestyle</option>
+        <option value="education">Education</option>
+        <option value="business">Business</option>
+        <option value="finance">Finance</option>
+        <option value="science">Science</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="sports">Sports</option>
+        <option value="food">Food</option>
+        <option value="fashion">Fashion</option>
+        <option value="art">Art</option>
+        <option value="music">Music</option>
+        <option value="movies">Movies</option>
+        <option value="books">Books</option>
+        <option value="gaming">Gaming</option>
+        <option value="politics">Politics</option>
+        <option value="technology">Technology</option>
+        <option value="history">History</option>
+        <option value="law">Law</option>
+        <option value="healthcare">Healthcare</option>
+        <option value="environment">Environment</option>
+        <option value="automotive">Automotive</option>
+        <option value="real-estate">Real Estate</option>
+        <option value="parenting">Parenting</option>
+        <option value="self-improvement">Self Improvement</option>
+        <option value="spirituality">Spirituality</option>
+        <option value="current-events">Current Events</option>
+        <option value="others">Others</option>
+      </select>
+    </div>
+
+    <div class="mb-6">
+      <label
+        for="status"
+        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %> mb-2"
+        >Status</label
+      >
+      <select
+        id="status"
+        name="status"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-tertiary' %> block w-full px-4 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+      >
+        <option value="published">Publish</option>
+        <option value="draft">Draft</option>
+        <option value="archived">Archive</option>
+      </select>
+    </div>
+
+    <div class="mb-6">
+      <label
+        for="audience"
+        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %> mb-2"
+        >Audience Restrictions</label
+      >
+      <select
+        id="audience"
+        name="audience"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-tertiary' %> block w-full px-4 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+        required
+      >
+        <option value="public">Public</option>
+        <option value="private">Private</option>
+        <option value="subscribers">Subscribers Only</option>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label
+        for="metaTitle"
+        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %> mb-1"
+        >SEO Title</label
+      >
+      <input
+        type="text"
+        id="metaTitle"
+        name="metaTitle"
+        maxlength="100"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-tertiary' %> w-full p-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        value="<%- blog.metaTitle || '' %>"
+      />
+      <p
+        id="metaTitleError"
+        class="text-red-500 text-xxs sm:text-xs md:text-sm"
+      ></p>
+    </div>
+
+    <div class="mb-4">
+      <label
+        for="metaDescription"
+        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %> mb-1"
+        >SEO Description</label
+      >
+      <textarea
+        id="metaDescription"
+        name="metaDescription"
+        rows="7"
+        maxlength="300"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-tertiary' %> w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none text-xs sm:text-sm md:text-base"
+      >
+<%- blog.metaDescription || ''  %></textarea
+      >
+      <p
+        id="metaDescriptionError"
+        class="text-red-500 text-xxs sm:text-xs md:text-sm"
+      ></p>
+    </div>
+
+    <div class="mb-6 flex justify-between items-center">
+      <label
+        for="summary"
+        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %> mb-2 my-auto"
+        >Summary</label
+      >
+      <div class="flex items-center">
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            id="summary"
+            name="summary"
+            class="sr-only peer"
+          />
+          <div
+            class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+          ></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="md:mt-24">
+      <button
+        type="submit"
+        id="submit"
+        class="w-full py-2 px-4 font-roboto <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300 hover:text-background"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="order-1 md:order-2 col-span-4 sm:col-span-3 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white' %> shadow-lg rounded-lg"
+  >
+    <h1
+      id="markdownLabel"
+      for="markdown"
+      class="text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2 lg:mb-6 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-primary' : ' bg-white text-tertiary' %> sticky top-0 z-10 pb-1 lg:pb-2 w-full"
+    >
+      Markdown
+    </h1>
+    <div class="relative mt-2">
+      <textarea
+        rows="28"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-background text-fourth' %> text-xs sm:text-sm md:text-base lg:text-lg w-full overflow-y-scroll overflow-x-hidden resize-none outline-none border border-tertiary rounded-lg p-1 md:p-2 lg:p-4 shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 break-words relative"
+        id="markdown"
+        name="markdown"
+        maxlength="50000"
+        required
+      >
+<%= blog.markdown %>
+      </textarea>
+
+      <div
+        id="suggestionOverlay"
+        class="z-50 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white' %> p-2 rounded shadow-md text-xs <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-text' %> border border-gray-300 flex gap-1 items-center"
+        style="display: none; flex-wrap: nowrap"
+      >
+        Suggestion:<span id="suggestionText">Your suggestion text here</span>
+        <div
+          id="closeButton"
+          class="ml-2 text-red-500 hover:text-red-700 focus:outline-none inline-block cursor-pointer"
+          title="Close"
+        >
+          &times;
+        </div>
+      </div>
+
+      <p id="markdownError" class="text-xs text-red-500"></p>
+    </div>
+  </div>
+
+  <div
+    class="order-2 hidden sm:block md:order-3 col-span-1 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-primary' : ' bg-white text-tertiary' %> shadow-lg rounded-lg"
+  >
+    <div class="sticky top-0 h-auto max-h-[70vh]">
+      <h2
+        class="text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2 lg:mb-6"
+      >
+        Post Preview
+      </h2>
+      <div
+        id="preview"
+        class="<%= user.settings.theme === 'dark' ? 'border-dark-tertiary' : 'border-gray-300' %> rounded-lg box-content w-full scale-30 h-auto max-h-[80vh]"
+      >
+        <%- include("../../partials/blogPreview.ejs") %>
+      </div>
+    </div>
+  </div>
+</form>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+  const textArea = document.getElementById("markdown");
+  const suggestionOverlay = document.getElementById("suggestionOverlay");
+  const suggestionText = document.getElementById("suggestionText");
+  const closeButton = document.getElementById("closeButton");
+  let closeButtonClicked = false;
+
+  closeButton.addEventListener("click", () => {
+    suggestionOverlay.style.display = "none";
+    closeButtonClicked = true;
+  });
+
+  function debounce(func, delay) {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), delay);
+    };
+  }
+
+  function getCursorPosition(textarea) {
+    const { selectionStart } = textarea;
+    const textBeforeCursor = textarea.value.substring(0, selectionStart);
+
+    // Create a hidden div styled like the textarea
+    const div = document.createElement('span');
+    const style = getComputedStyle(textarea);
+    div.classList.add("createdDiv");
+    div.id = "createdDiv";
+    div.style.position = 'absolute';
+  div.style.whiteSpace = 'pre-wrap';
+  div.style.wordWrap = 'break-word';
+  div.style.font = style.font;
+  div.style.lineHeight = style.lineHeight;
+  div.style.padding = style.padding;
+  div.style.border = style.border;
+  div.style.visibility = 'hidden';
+  div.style.overflow = 'hidden';
+
+  div.style.width = `${textarea.clientWidth}px`; // Adjust width to exclude scrollbar
+
+console.log(div)
+    // Handle newlines
+    div.textContent = textBeforeCursor.replace(/\n/g, '\u200b\n');
+    document.body.appendChild(div);
+
+    const rect = div.getBoundingClientRect();
+    const textareaRect = textarea.getBoundingClientRect();
+    document.body.removeChild(div);
+
+
+    return {
+    x: rect.width - textareaRect.left + parseFloat(style.paddingLeft) - textarea.scrollLeft,
+      y: rect.height - textarea.scrollTop - 20,
+    };
+  }
+  
+
+  function showSuggestion(suggestion, position) {
+    suggestionText.textContent = suggestion;
+    suggestionOverlay.style.left = `${position.x}px`;
+    suggestionOverlay.style.top = `${position.y}px`;
+    suggestionOverlay.style.display = 'flex';
+  }
+
+  const fetchSuggestion = async (position) => {
+    const userInput = textArea.value.trim();
+
+    if (userInput) {
+      const response = await fetch("/api/suggestion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: userInput }),
+      });
+      let data = await response.json();
+      const suggestion = data.suggestion;
+      if (suggestion) {
+        showSuggestion(suggestion, position);
+      } else {
+        suggestionOverlay.style.display = "none";
+      }
+    } else {
+      suggestionOverlay.style.display = "none";
+    }
+  };
+
+  const suggestionsEnabled = "<%= (user.settings.suggestions) %>";
+
+  if (suggestionsEnabled == "true") {
+    textArea.addEventListener("input", debounce(() => {
+      const cursorPosition = getCursorPosition(textArea);
+      fetchSuggestion(cursorPosition);
+    }, 100));
+  }
+
+
+          textArea.addEventListener("keydown", (e) => {
+            if (e.key === "Tab" && suggestionText.innerText) {
+              e.preventDefault();
+              const cursorPosition = textArea.selectionStart;
+              const beforeCursorText = textArea.value.substring(0, cursorPosition);
+              const afterCursorText = textArea.value.substring(cursorPosition);
+
+              textArea.value =
+                beforeCursorText + suggestionText.innerText + afterCursorText;
+
+              const newCursorPosition =
+                cursorPosition + suggestionText.innerText.length;
+              textArea.setSelectionRange(newCursorPosition, newCursorPosition);
+
+              suggestionText.innerText = "";
+              suggestionOverlay.style.display = "none";
+            }
+
+            if (e.ctrlKey && e.code === "KeyX") {
+              suggestionOverlay.style.display = "none";
+              closeButtonClicked = true;
+            }
+          });
+
+          const form = document.getElementById("articleForm");
+
+          const metaTitleRegex = /^[\w\s\-.,;!]{1,100}$/;
+          const metaDescriptionRegex = /^[\w\s\-.,;!]{1,300}$/;
+          const markdownRegex = /^(.|\s)*$/;
+
+          function validateField(inputElement, regex, errorElement, errorMessage) {
+            if (!regex.test(inputElement.value)) {
+              errorElement.textContent = errorMessage;
+              inputElement.classList.add("border-red-500", "focus:ring-red-500");
+              inputElement.classList.remove("border-gray-300", "focus:ring-blue-400");
+            } else {
+              errorElement.textContent = "";
+              inputElement.classList.add("border-gray-300", "focus:ring-blue-400");
+              inputElement.classList.remove("border-red-500", "focus:ring-red-500");
+            }
+          }
+
+          document.getElementById("metaTitle").addEventListener("input", function () {
+            validateField(
+              this,
+              metaTitleRegex,
+              document.getElementById("metaTitleError"),
+              "Invalid SEO title. Should be 1-60 characters long."
+            );
+          });
+
+          document
+            .getElementById("metaDescription")
+            .addEventListener("input", function () {
+              validateField(
+                this,
+                metaDescriptionRegex,
+                document.getElementById("metaDescriptionError"),
+                "Invalid SEO description. Should be 1-160 characters long."
+              );
+            });
+
+          document.getElementById("markdown").addEventListener("input", function () {
+            validateField(
+              this,
+              markdownRegex,
+              document.getElementById("markdownError"),
+              "Invalid markdown content."
+            );
+          });
+
+          const submitButton = document.getElementById("submit");
+
+          submitButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            const checkbox = document.getElementById("summary");
+            let summaryValue = false;
+            console.log("checked", checkbox);
+            if (checkbox.checked) {
+              console.log("checked", checkbox.checked);
+              summaryValue = true;
+            } else {
+              console.log("checked", checkbox.checked);
+              summaryValue = false;
+            }
+
+            const metaTitle = document.getElementById("metaTitle");
+            const metaDescription = document.getElementById("metaDescription");
+            const markdown = document.getElementById("markdown");
+
+            validateField(
+              metaTitle,
+              metaTitleRegex,
+              document.getElementById("metaTitleError"),
+              "Invalid SEO title. Should be 1-60 characters long."
+            );
+            validateField(
+              metaDescription,
+              metaDescriptionRegex,
+              document.getElementById("metaDescriptionError"),
+              "Invalid SEO description. Should be 1-160 characters long."
+            );
+            validateField(
+              markdown,
+              markdownRegex,
+              document.getElementById("markdownError"),
+              "Invalid markdown content."
+            );
+
+            if (
+              metaTitle.classList.contains("border-gray-300") &&
+              metaDescription.classList.contains("border-gray-300") &&
+              markdown.classList.contains("border-gray-300") &&
+              !closeButtonClicked
+            ) {
+              const category = document.getElementById("category").value;
+              const status = document.getElementById("status").value;
+              const audience = document.getElementById("audience").value;
+              const metaTitle = document.getElementById("metaTitle").value;
+              const metaDescription =
+                document.getElementById("metaDescription").value;
+              const markdown = document.getElementById("markdown").value;
+
+              console.log("body", {
+                category,
+                status,
+                audience,
+                metaTitle,
+                metaDescription,
+                markdown,
+                summaryValue,
+              });
+
+              fetch(`/api/blog/save/<%= blog.slug %>`, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  category,
+                  status,
+                  audience,
+                  metaTitle,
+                  metaDescription,
+                  markdown,
+                  summaryValue,
+                }),
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error("Failed to save the blog");
+                  }
+                  return response.json(); // Parse the JSON response
+                })
+                .then((data) => {
+                  if (data.redirectUrl) {
+                    window.location.href = data.redirectUrl;
+                  } else {
+                    throw new Error("No redirect URL provided");
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error catch:", error);
+                  alert("An error occurred: " + error.message);
+                });
+            }
+          });
+
+          const checkbox = document.getElementById("summary");
+          const summaryValue = <%= blog.summary %>;
+
+          checkbox.checked = summaryValue;
+          console.log("summaryValue", summaryValue);
+
+          const audience = document.getElementById("audience");
+          const audienceValue = "<%= blog.audience %>";
+          if (audienceValue) {
+            audience.value = audienceValue;
+          }
+
+          const status = document.getElementById("status");
+          const statusValue = "<%= blog.status %>";
+          if (statusValue) {
+            status.value = statusValue;
+          }
+
+          const category = document.getElementById("category");
+          const categoryValue = "<%= blog.category %>";
+          if (categoryValue) {
+            category.value = categoryValue;
+          }
+        });
+</script>

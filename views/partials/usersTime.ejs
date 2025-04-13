@@ -1,0 +1,108 @@
+<div class="p-6 grid grid-cols-2">
+  <div id="activity-clock" class="h-80"></div>
+  <ul class="grid grid-rows-2 gap-6 font-roboto">
+    <li
+      class="flex flex-col items-center justify-center bg-gradient-to-br from-teal-50 to-white shadow-xl rounded-2xl border border-gray-300 hover:shadow-2xl transition-all relative p-6 hover:scale-105 duration-300"
+    >
+      <p
+        class="absolute top-2 left-2 text-xs text-gray-600 font-medium opacity-80"
+      >
+        BEST WEEKDAY TO POST
+      </p>
+      <h3 class="text-5xl font-extrabold text-teal-600 mt-2 drop-shadow-md">
+        <%= analytics.peakDay?analytics.peakDay:"N/A" %>
+      </h3>
+      <div
+        class="w-14 h-14 flex items-center justify-center bg-teal-100 rounded-2xl opacity-90 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
+      >
+        <img
+          src="../../images/analyticImages/calendar.png"
+          alt="Blogs"
+          class="w-8 h-8 opacity-90"
+        />
+      </div>
+    </li>
+
+    <li
+      class="flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-white shadow-xl rounded-2xl border border-gray-300 hover:shadow-2xl transition-all relative p-6 hover:scale-105 duration-300"
+    >
+      <p
+        class="absolute top-2 left-2 text-xs text-gray-600 font-medium opacity-80"
+      >
+        BEST TIME TO POST
+      </p>
+      <h3 class="text-5xl font-extrabold text-blue-600 mt-2 drop-shadow-md">
+        <%= analytics.peakTime ? analytics.peakTime + ':00' : 'N/A' %>
+      </h3>
+      <div
+        class="w-14 h-14 flex items-center justify-center bg-blue-100 rounded-2xl opacity-90 absolute bottom-2 right-2 backdrop-blur-md shadow-md "
+      >
+        <img
+          src="../../images/analyticImages/clock.png"
+          alt="Likes"
+          class="w-8 h-8 opacity-90"
+        />
+      </div>
+    </li>
+  </ul>
+  <script>
+             function renderActivityClock(locations) {
+      const chart = echarts.init(document.getElementById("activity-clock"));
+
+      // Combine traffic data from all locations
+      let trafficData = new Array(24).fill(0);
+      locations.forEach((location) => {
+        Object.keys(location.trafficByHour).forEach((hour) => {
+          trafficData[parseInt(hour)] += location.trafficByHour[hour];
+        });
+      });
+
+      // Normalize data for better visualization
+      const maxTraffic = Math.max(...trafficData);
+      const normalizedData = trafficData.map((value) => (value / maxTraffic) * 100);
+
+      const hours = [...Array(24).keys()].map((h) => `${h}`);
+
+      normalizedData.push(normalizedData[0]);
+      const colors = normalizedData.map((value) =>
+        value > 70 ? "#ff4d4d" : value > 40 ? "#ffa500" : "#32cd32"
+      );
+
+      // Configure the radial bar chart
+      const option = {
+        polar: {
+          radius: ["30%", "80%"],
+        },
+        angleAxis: {
+          type: "category",
+          data: hours,
+          boundaryGap: false,
+          clockwise: true,
+          startAngle: 90,
+        },
+        radiusAxis: {
+          min: 0,
+          max: 100,
+          show: false,
+        },
+        series: [
+          {
+            type: "bar",
+            coordinateSystem: "polar",
+            data: normalizedData.map((value, index) => ({
+              value,
+              itemStyle: { color: colors[index] },
+            })),
+            barWidth: 15, // Bar thickness
+            roundCap: true, // Smooth rounded edges
+          },
+        ],
+      };
+
+      chart.setOption(option);
+    }
+
+    const locations = <%- JSON.stringify(analytics.locations) %>;
+    renderActivityClock(locations);
+  </script>
+</div>

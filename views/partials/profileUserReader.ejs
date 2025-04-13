@@ -1,0 +1,195 @@
+<h1
+  class="text-lg md:text-xl lg:text-2xl p-3 px-10 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %>"
+>
+  Recent view
+  <span
+    id="currentPage"
+    class="text-lg sticky top-0 <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-fourth' %>"
+  ></span>
+</h1>
+
+<div
+  class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 md:gap-4 px-1 md:px-2 lg:px-5"
+  id="allBlog"
+></div>
+
+<div
+  class="flex justify-center space-x-2 my-10 overflow-x-scroll relative bottom-0"
+  id="pagingContainer"
+></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let currentPage = 1;
+    const blogsPerPage = 10;
+    const paginationDiv = document.getElementById("pagingContainer");
+
+    function renderBlogs(blogData) {
+      const allBlogContainer = document.getElementById("allBlog");
+
+      const slidesHtml = blogData
+        .map(
+          (blog) => `
+            <div class="w-full flex-shrink-0">
+                <div class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
+                  blog.blogPhoto
+                }')">
+                  <div class="rounded-lg shadow-lg overflow-hidden w-full bg-background bg-opacity-10 p-3 h-full">
+                    <div class="flex justify-end ">
+                      <p class=" px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-secondary' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs  md:text-xxs  lg:text-xs font-semibold font-sans uppercase overflow-clipped">
+                         ${truncateText(blog.tags[0], 10)}</p>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                      <div class="h-20  md:h-24  lg:h-28"></div>
+                      <p class="text-xs font-mono <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-sixth' %>">${new Date(
+                        blog.createdAt
+                      ).toLocaleDateString("en-US", {
+                        day: "numeric",
+                        month: "numeric",
+                        year: "numeric",
+                      })}</p>
+                      <h5 class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal ">${truncateText(
+                        blog.title,
+                        50
+                      )}</h5>
+                      <p class="text-xxxs sm:text-xxs 
+                      md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-sixth' %>  break-words whitespace-normal">${truncateText(
+                        blog.description,
+                        100
+                      )} <span><a href="/blog/${
+                        blog.slug
+                      }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> hover:text-highlight    font-roboto text-center  text-xxxs sm:text-xxs  md:text-xxs lg:text-xs  font-medium">Read More</a></span>
+                        </p>
+          
+                    </div>
+                  </div>
+                </div>
+            </div>
+          `
+        )
+        .join("");
+
+      allBlogContainer.innerHTML = slidesHtml;
+
+      document.getElementById("currentPage").innerText = `Page ${currentPage}`;
+    }
+
+    function renderPagination(currentPage, totalPages) {
+      paginationDiv.innerHTML = "";
+
+      const maxVisiblePages = 5;
+      let startPage = Math.max(
+        currentPage - Math.floor(maxVisiblePages / 2),
+        1
+      );
+      let endPage = startPage + maxVisiblePages - 1;
+
+      if (endPage > totalPages) {
+        endPage = totalPages;
+        startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+      }
+
+      const prevButton = document.createElement("button");
+      prevButton.innerText = "Prev";
+      prevButton.classList.add(
+        "px-4",
+        "py-2",
+        "border",
+        "rounded-md",
+        "mx-1",
+        "hover:bg-gray-200",
+        "transition",
+        "text-xs",
+        "md:text-sm"
+      );
+      prevButton.disabled = currentPage === 1;
+      prevButton.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          fetchBlogs();
+        }
+      });
+      paginationDiv.appendChild(prevButton);
+
+      for (let i = startPage; i <= endPage; i++) {
+        const button = document.createElement("button");
+        button.classList.add(
+          "px-4",
+          "py-2",
+          "border",
+          "rounded-md",
+          "mx-1",
+          "hover:bg-gray-200",
+          "transition",
+          "text-xs",
+          "md:text-sm"
+        );
+
+        if (i === currentPage) {
+          button.classList.add("bg-blue-500", "text-white");
+        }
+
+        button.innerText = i;
+        button.addEventListener("click", () => {
+          currentPage = i;
+          fetchBlogs();
+        });
+
+        paginationDiv.appendChild(button);
+      }
+
+      const nextButton = document.createElement("button");
+      nextButton.innerText = "Next";
+      nextButton.classList.add(
+        "px-4",
+        "py-2",
+        "border",
+        "rounded-md",
+        "mx-1",
+        "hover:bg-gray-200",
+        "transition",
+        "text-xs",
+        "md:text-sm"
+      );
+      nextButton.disabled = currentPage === totalPages;
+      nextButton.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          fetchBlogs();
+        }
+      });
+      paginationDiv.appendChild(nextButton);
+    }
+
+    function fetchBlogs() {
+      fetch(
+        `/profile/recent?reader=<%= user._id %>&page=${currentPage}&limit=${blogsPerPage}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data.recentBlogs);
+          const { recentBlogs = [], pagination = { totalPages: 1 } } =
+            data || {};
+
+          if (Array.isArray(recentBlogs)) {
+            renderBlogs(recentBlogs);
+          } else {
+            console.error(
+              "Unexpected data format: blogs is not an array",
+              blogs
+            );
+          }
+
+          renderPagination(currentPage, pagination.totalPages);
+        })
+        .catch((error) => console.error("Error fetching blogs:", error));
+    }
+    function truncateText(text, maxLength) {
+      if (text.length > maxLength) {
+        return text.substring(0, maxLength) + "...";
+      }
+      return text;
+    }
+    fetchBlogs();
+  });
+</script>

@@ -1,0 +1,51 @@
+<div class="grid grid-cols-3 ">
+<div id="deviceUsageChart" style=" height: 300px;"></div>
+<div id="browserUsageChart" style=" height: 300px;"></div>
+<div id="osUsageChart" style=" height: 300px;"></div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const deviceUsageData = <%- JSON.stringify(analytics.deviceUsage) %>;
+
+    const browserUsageData = <%- JSON.stringify(analytics.browserUsage) %>;
+
+    const osUsageData =<%- JSON.stringify(analytics.osUsage) %>;
+
+    function renderPieChart(chartId, title, data) {
+        const chart = echarts.init(document.getElementById(chartId));
+        chart.setOption({
+            title: {
+                text: title,
+                left: "center",
+                textStyle: { fontSize: 16, fontWeight: "bold" },
+            },
+            tooltip: {
+                trigger: "item",
+                formatter: "{b}: {c} ({d}%)",
+            },
+            series: [
+                {
+                    name: 'Area Mode',
+                    type: 'pie',
+                    radius: [20, 70],
+                    roseType: 'area',
+                    itemStyle: {
+                        borderRadius: 5
+                    },
+                    data: Object.entries(data).map(([key, value]) => ({
+                        name: key,
+                        value,
+                    })),
+                    emphasis: {
+                        itemStyle: { shadowBlur: 10, shadowColor: "rgba(0, 0, 0, 0.5)" },
+                    },
+                },
+            ],
+        });
+    }
+
+    renderPieChart("deviceUsageChart", "Device Usage", deviceUsageData);
+    renderPieChart("browserUsageChart", "Browser Usage", browserUsageData);
+    renderPieChart("osUsageChart", "OS Usage", osUsageData);
+});
+</script>

@@ -1,0 +1,153 @@
+<div class="flex flex-col-reverse md:grid md:grid-cols-2 gap-6 py-16 px-4 sm:p-8 md:p-8 md:py-16">
+  <div class="hidden md:flex justify-center items-center flex-col ">
+    <h2
+      class="text-base sm:text-lg md:text-2xl font-bold text-gray-800 md:mb-4 text-center"
+    >
+      Two Factor Authentication
+    </h2>
+    <img
+      src="images/signinImg.png"
+      alt="Sign-in image"
+      class="h-60 sm:h-80 md:h-80"
+    />
+    <p
+      class="text-xs sm:text-base md:text-lg text-purple-950 md:font-semibold mb-6 text-center"
+    >
+      Enter the 6-digit OTP sent to your email to securely complete two-factor
+      authentication.
+    </p>
+  </div>
+  <div
+    class="max-w-7xl mx-auto md:mx-5 my-auto p-8 rounded-lg shadow-lg bg-white bg-opacity-10 backdrop-blur-md border border-gray-200"
+  >
+    <h1
+      class="text-lg sm:text-xl md:text-2xl font-bold text-center md:mb-2 flex justify-center items-center gap-2"
+    >
+      <img src="images/logoImg/logo.png" class="h-10" alt="logo Img" /> Two
+      Factor Authentication
+    </h1>
+    <h2
+      class="text-sm sm:text-base md:text-lg text-purple-950 md:font-semibold mb-6 text-center"
+    >
+      Please enter the 6-digit OTP.
+    </h2>
+    <form id="otpForm" class="space-y-6" action="/auth/twoFactorVerify" method="POST">
+      <div class="h-16">
+        <label for="otp" class="block text-sm font-medium text-gray-700">
+          OTP
+        </label>
+        <input type="text" name="username" id="username" value="<%= user.username %>" hidden />
+        <input
+          type="text"
+          name="code"
+          id="otp"
+          required
+          pattern="\d{6}"
+          maxlength="6"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+        <p class="text-xs text-red-500 mt-1 hidden" id="otpError"></p>
+      </div>
+      <div>
+        <button
+          type="submit"
+          class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+        >
+          Submit OTP
+        </button>
+      </div>
+    </form>
+    <div class="text-xs md:text-sm text-center mt-4">
+      <p>
+        <span id="timer" class="text-gray-500">
+          Resend OTP available in: 30s
+        </span>
+        <br />
+        <a href="#" id="resendLink" class="text-blue-500">Resend OTP</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const username = "<%= user.username %>";
+
+    if (!username) {
+      console.error("Username parameter is missing");
+    }
+
+    const form = document.getElementById("otpForm");
+    // form.addEventListener("submit", async (e) => {
+    //   e.preventDefault();
+    //   const otp = document.getElementById("otp").value;
+
+    //   if (username && otp) {
+    //     try {
+    //       const res = await fetch(
+    //         `/auth/twoFactorVerify?username=${username}&code=${otp}`,
+    //         {
+    //           method: "POST",
+    //           headers: { "Content-Type": "application/json" },
+    //         }
+    //       );
+
+    //       if (res.ok) {
+    //         const { username, token } = await res.json();
+    //         localStorage.setItem("username", username);
+    //         localStorage.setItem("token", token);
+    //         console.log("Verification successful", username, token);
+    //         window.location.href = "/";
+    //       } else {
+    //         throw new Error("Verification failed");
+    //       }
+    //     } catch (error) {
+    //         console.log(error);
+            
+    //       console.error("Fetch operation error:", error);
+    //     }
+    //   } else {
+    //     console.error("Username or OTP is missing");
+    //   }
+    // });
+
+    // const resendLink = document.getElementById("resendLink");
+    const timerDisplay = document.getElementById("timer");
+    let canResend = true;
+    const resendTimeout = 30000;
+
+    const updateResendLink = (enabled) => {
+      resendLink.textContent = enabled ? "Resend OTP" : "Wait 30 seconds";
+      resendLink.style.pointerEvents = enabled ? "auto" : "none";
+      resendLink.style.color = enabled ? "#1d4ed8" : "#9ca3af";
+    };
+
+    const startResendCountdown = () => {
+      let remainingTime = resendTimeout / 1000;
+      updateResendLink(false);
+
+      const countdown = setInterval(() => {
+        if (remainingTime <= 0) {
+          clearInterval(countdown);
+          canResend = true;
+          updateResendLink(true);
+          timerDisplay.textContent = "Resend OTP available now";
+        } else {
+          remainingTime -= 1;
+          timerDisplay.textContent = `Resend OTP available in: ${remainingTime}s`;
+        }
+      }, 1000);
+    };
+
+    resendLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (canResend) {
+        console.log("Resending OTP...");
+
+        startResendCountdown();
+      }
+    });
+
+    startResendCountdown();
+  });
+</script>

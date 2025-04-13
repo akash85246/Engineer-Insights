@@ -1,0 +1,234 @@
+<h1
+  class="text-lg md:text-xl lg:text-2xl <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> font-semibold py-1 px-2 md:py-2 md:px-5 lg:px-10 lg:py-5 mt-10 md:mt-8 font-lora !pb-0"
+>
+  Popular topics
+</h1>
+
+<div
+  id="category-bar"
+  class="py-1 px-2 md:py-2 md:px-5 lg:px-10 lg:py-5 sm:pb-0 text-xs lg:text-sm font-semibold flex justify-between items-center sticky top-0 z-10 <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background text-primary' %>"
+>
+  <ul
+    id="categories"
+    class="flex md:gap-2 gap-1 lg:gap-4 overflow-y-hidden overflow-x-scroll w-3/4 <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background text-primary' %> font-lora font-thin"
+  >
+    <li
+      data-category=""
+      class="category hover:text-highlight cursor-pointer text-highlight underline decoration-highlight"
+    >
+      All
+    </li>
+    <li
+      data-category="tech"
+      class="category hover:text-highlight cursor-pointer decoration-highlight"
+    >
+      Tech
+    </li>
+    <li
+      data-category="health"
+      class="category hover:text-highlight cursor-pointer decoration-highlight"
+    >
+      Health
+    </li>
+    <li
+      data-category="travel"
+      class="category hover:text-highlight cursor-pointer decoration-highlight"
+    >
+      Travel
+    </li>
+    <li
+      data-category="lifestyle"
+      class="category hover:text-highlight cursor-pointer decoration-highlight"
+    >
+      Lifestyle
+    </li>
+    <li
+      data-category="education"
+      class="category hover:text-highlight cursor-pointer decoration-highlight"
+    >
+      Education
+    </li>
+    <li
+      data-category="business"
+      class="category hover:text-highlight cursor-pointer decoration-highlight"
+    >
+      Business
+    </li>
+    <li
+      data-category="finance"
+      class="category hover:text-highlight cursor-pointer decoration-highlight"
+    >
+      Finance
+    </li>
+    <li
+      data-category="science"
+      class="category hover:text-highlight cursor-pointer decoration-highlight"
+    >
+      Science
+    </li>
+    <li
+      data-category="books"
+      class="category hover:text-highlight cursor-pointer decoration-highlight"
+    >
+      Books
+    </li>
+    <li
+      data-category="healthcare"
+      class="category hover:text-highlight cursor-pointer decoration-highlight"
+    >
+      Healthcare
+    </li>
+    <li
+      data-category="environment"
+      class="category hover:text-highlight cursor-pointer decoration-highlight"
+    >
+      Environment
+    </li>
+    <li
+      data-category="automotive"
+      class="category hover:text-highlight cursor-pointer decoration-highlight"
+    >
+      Automotive
+    </li>
+    <li
+      data-category="current-events"
+      class="category hover:text-highlight cursor-pointer whitespace-nowrap decoration-highlight"
+    >
+      Current Events
+    </li>
+    <li
+      data-category="others"
+      class="category hover:text-highlight cursor-pointer decoration-highlight"
+    >
+      Others
+    </li>
+  </ul>
+
+  <a href="/blog/all" class="hover:text-highlight cursor-pointer text-tertiary"
+    >view all</a
+  >
+</div>
+
+<div
+  id="blogsByCategory"
+  class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 p-2 md:px-5 lg:px-10"
+></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const categories = document.querySelectorAll(".category");
+      const carouselContainer = document.getElementById("blogsByCategory");
+
+      function fetchBlogs(selectedCategory = "") {
+        let blogs = <%- JSON.stringify(latestBlog) %>;
+        const grouped = {};
+        for (const blog of blogs) {
+          const category = blog.category?.toString() || "Uncategorized";
+          if (!grouped[category]) {
+            grouped[category] = [];
+          }
+          if (grouped[category].length < 8) {
+            grouped[category].push(blog);
+          }
+        }
+
+        const categoriesToRender = selectedCategory
+      ? { [selectedCategory]: grouped[selectedCategory] || [] }
+      : grouped;
+
+        let allCategoryHtml = "";
+
+        for (const [categoryName, categoryBlogs] of Object.entries(categoriesToRender)) {
+          const slidesHtml = categoryBlogs
+           .map((blog) => `
+            <div class="font-lora relative rounded-md flex flex-col justify-between <%= user.settings.theme === 'dark' ? 'bg-dark-sixth shadow-white-lg' : 'bg-background shadow-lg' %>">
+              <div class="flex justify-end bg-cover bg-center bg-origin-content rounded-md bg-blend-darken" style="background-image: url('${
+                blog.blogPhoto
+              }')">
+                <div class="flex h-auto mb-32 sm:mb-52 md:mb-64 mt-2 mr-2 md:mt-5 md:mr-5">
+                  <p class="px-2 py-1 rounded-lg bg-white bg-opacity-30 text-white text-xxxs md:text-xxs lg:text-xs font-semibold font-sans uppercase <%= user.settings.theme === 'dark' ? 'bg-dark-secondary' : 'bg-background text-background' %>">
+                    ${truncateText(blog.tags[0], 15)}
+                  </p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-2 pt-4 px-2 pb-2">
+                <p class="text-xxxs md:text-xxs lg:text-xs <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %> font-thin">
+                  ${new Date(blog.createdAt).toLocaleDateString("en-US", {
+                    day: "numeric",
+                    month: "numeric",
+                    year: "numeric",
+                  })}
+                </p>
+                <h5 class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-primary' %> break-words whitespace-normal">
+                  ${truncateText(blog.title, 50)}
+                </h5>
+                <p class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %> break-words whitespace-normal font-thin">
+                  ${truncateText(blog.description, 100)}
+                  <a href="/blog/${
+                    blog.slug
+                  }" class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %> hover:text-highlight  ">read more</a>
+                </p>
+              </div>
+              <a class="p-2 border-t-2 <%= user.settings.theme === 'dark' ? 'border-dark-fifth' : 'border-sixth' %> flex gap-2 mt-auto cursor-pointer" href="/profile/${
+                blog.author.slug
+              }">
+                <img src="${
+                  blog.author.avatar
+                }" alt="author" class="w-8 h-8 rounded-full" />
+                <div>
+                  <p class="text-xxs sm:text-xs md:text-sm lg:text-md font-thin <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>">
+                    ${blog.author.username}
+                  </p>
+                  <p class="text-xxxs sm:text-xxs md:text-xs lg:text-xs font-thin text-fourth">
+                    ${blog.author.firstname} ${blog.author.lastname}
+                  </p>
+                </div>
+              </a>
+            </div>
+          `
+            )
+            .join("");
+
+          allCategoryHtml += slidesHtml;
+        }
+
+        if (Object.keys(categoriesToRender).length === 0 || !Object.values(categoriesToRender)[0].length) {
+    carouselContainer.innerHTML = `
+      <div class="border-2 border border-gray-300 rounded-lg p-6 text-center                text-gray-500 font-lora font-thin min-h-[400px] flex flex-col               items-center justify-center shadow-lg">
+                  <img
+      src="/images/icons/blogNotFound.svg" />
+                <p class="text-lg">No blogs yet—be the pioneer!</p>
+              </div>
+    `;
+    return;
+  }
+
+        if (carouselContainer) {
+          carouselContainer.innerHTML = allCategoryHtml;
+        }
+      }
+
+      categories.forEach((categoryItem) => {
+        categoryItem.addEventListener("click", (e) => {
+          const selectedCategory = e.target.getAttribute("data-category");
+
+          fetchBlogs(selectedCategory);
+
+          categories.forEach((item) =>
+            item.classList.remove("text-highlight", "underline")
+          );
+          e.target.classList.add("text-highlight");
+          e.target.classList.add("underline");
+        });
+      });
+
+      fetchBlogs();
+
+      function truncateText(text, maxLength) {
+        if (text.length > maxLength) {
+          return text.substring(0, maxLength) + "...";
+        }
+        return text;
+      }
+    });
+</script>

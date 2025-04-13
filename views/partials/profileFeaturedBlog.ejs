@@ -1,0 +1,177 @@
+<div class="relative overflow-hidden font-lora -z-50" id="carouselWrapper">
+  <div
+    id="featuredBlogs"
+    class="flex transition-transform duration-500 ease-in-out w-full"
+  ></div>
+</div>
+
+<div id="dotsContainer" class="flex justify-center relative -top-5 -z-50"></div>
+
+<%- include("../partials/deleteBlogModal.ejs") %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const carouselContainer = document.getElementById("featuredBlogs");
+    const dotsContainer = document.getElementById("dotsContainer");
+    let currentIndex = 0;
+    let totalSlides = 0;
+    let autoSlideInterval;
+
+    function scrollToSlide(index) {
+      const slideWidth = carouselContainer.children[0].offsetWidth;
+      carouselContainer.style.transform = `translateX(-${
+        index * slideWidth
+      }px)`;
+      updateDots(index);
+    }
+
+    function updateDots(index) {
+      const dots = document.querySelectorAll(".dot");
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("bg-sixth", i === index);
+        dot.classList.toggle("bg-gray-400", i !== index);
+      });
+    }
+
+    function createDots() {
+      dotsContainer.innerHTML = "";
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement("div");
+        dot.classList.add(
+          "dot",
+          "h-3",
+          "w-3",
+          "bg-gray-400",
+          "rounded-full",
+          "mx-2",
+          "cursor-pointer"
+        );
+        dot.addEventListener("click", () => {
+          stopAutoSlide();
+          scrollToSlide(i);
+          setTimeout(startAutoSlide, 5000);
+        });
+        dotsContainer.appendChild(dot);
+      }
+      updateDots(currentIndex);
+    }
+
+    function startAutoSlide() {
+      autoSlideInterval = setInterval(() => {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        scrollToSlide(currentIndex);
+      }, 3000);
+    }
+
+    function stopAutoSlide() {
+      clearInterval(autoSlideInterval);
+    }
+
+    function fetchBlogs() {
+      const user = "<% user%>";
+      const url = `/api/blog/search/user?author=<%= profile._id%>&featured=true`;
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          let blogs = data.blogs;
+          totalSlides = blogs.length;
+          if (blogs.length > 0) {
+            const slidesHtml = blogs
+              .map((blog) => {
+                const isSubAuthor =
+                  user?.id &&
+                  blog.subauthors.some(
+                    (subauthorId) =>
+                      subauthorId.toString() === user._id.toString()
+                  );
+
+                const canEdit =
+                  user?.id && user._id.toString() === profile._id.toString();
+                return `
+                  <div class="w-full flex-shrink-0  flex items-stretch">
+                    <div class="h-full  flex   w-full justify-center items-center bg-no-repeat bg-cover text-white bg-center"
+                      style="background-image: url('${blog.blogPhoto}');">
+                      <div class=" shadow-lg overflow-hidden <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'bg-background text-text' %>  bg-opacity-10 p-3 w-full">
+                        <div class="flex justify-end pb-32">
+                          <p class=" px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-primary' : 'bg-background' %> bg-opacity-30 text-white text-xxxs md:text-xxs lg:text-xs font-semibold font-roboto uppercase shadow-lg">
+
+                             ${truncateText(blog.tags[0], 20)}
+                          </p>
+                        </div>
+                        <div class="flex flex-col gap-2 h-full justify-between">
+                          <p class="text-xs md:text-sm font-mono <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %>">
+                            ${new Date(blog.createdAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                day: "numeric",
+                                month: "numeric",
+                                year: "numeric",
+                              }
+                            )}
+                          </p>
+                          <h5 class="text-lg md:text-xl  lg:text-2xl  font-semibold break-words break-all  w-full  sm:w-2/3 text-white  w-1/2">
+                            ${truncateText(blog.title, 50)}
+                          </h5>
+                          <p class="<%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-background' %> text-sm md:text-lg break-words break-all  w-full  md:w-2/3 w-1/2">
+                            ${truncateText(blog.description, 150)}
+                            <span> <a href="/blog/${
+                              blog.slug
+                            }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-background' %> hover:text-highlight    font-roboto text-center  text-sm md:text-base  font-medium ">
+                              read more
+                            </a></span>
+                          </p>
+                          <div class="flex justify-between items-center gap-2 w-full  sm:w-2/3  w-1/2">
+                            ${
+                              isSubAuthor || canEdit
+                                ? `
+                          <div class="flex gap-2">
+                            ${
+                              canEdit
+                                ? `
+                           <button onclick="openDeleteModal('${blog.slug}')" class="border border-fourth text-fourth hover:text-white px-3 rounded-lg hover:bg-red-300 focus:outline-none text-xs md:text-sm lg:text-base font-roboto">Delete Blog</button>
+                            `
+                                : ""
+                            }
+
+                            <a href="/blog/edit/${
+                              blog.slug
+                            }" class="border border-sixth text-sixth hover:text-white px-3 rounded-lg hover:bg-green-300 focus:outline-none text-xs md:text-sm lg:text-base font-roboto">
+                              Edit
+                            </a>
+                             </div>
+                             `
+                                : ""
+                            }
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>`;
+              })
+              .join("");
+            carouselContainer.innerHTML = slidesHtml;
+            createDots();
+            startAutoSlide();
+          } 
+        })
+        .catch((error) => console.error("Error fetching blogs:", error));
+    }
+    fetchBlogs();
+
+    carouselContainer.addEventListener("mousedown", stopAutoSlide);
+    carouselContainer.addEventListener("mouseup", () => {
+      setTimeout(startAutoSlide, 5000);
+    });
+
+    function truncateText(text, maxLength) {
+      if (text.length > maxLength) {
+        return text.substring(0, maxLength) + "...";
+      }
+      return text;
+    }
+
+    window.addEventListener("resize", () => {
+      scrollToSlide(currentIndex);
+    });
+  });
+</script>

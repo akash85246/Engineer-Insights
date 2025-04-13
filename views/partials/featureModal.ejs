@@ -1,0 +1,161 @@
+<div
+  class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'text-text bg-primary' %> bg-opacity-50 flex items-center justify-center hidden z-50 p-5 md:p-0 backdrop-blur-sm w-full h-full font-lora"
+  id="featureModal"
+>
+  <div
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> backdrop-blur-sm p-4 rounded-lg w-full m-auto md:w-1/2 grid grid-cols-2 gap-2 md:gap-6"
+  >
+    <h1
+      class="text-base sm:text-lg md:text-xl lg:text-2xl <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-text' %> font-semibold col-span-2 "
+    >
+      Select One to Feature a Blog
+    </h1>
+
+    <div
+      class="max-w-sm w-full shadow-lg rounded-lg border <%= user.settings.theme === 'dark' ? 'bg-dark-fourth border-dark-background' : 'bg-sixth border-fifth' %> p-2 md:p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out transform hover:scale-105 flex flex-col justify-between items-center"
+    >
+      <div class="flex justify-center mb-4">
+        <img
+          src="images/icons/silverIcon.png"
+          alt="Silver Icon"
+          class="h-10 md:h-16"
+        />
+      </div>
+      <h1
+        class="text-sm sm:text-base md:text-lg lg:text-xl font-bold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-primary' %> mb-2 text-center"
+      >
+        Basic
+      </h1>
+      <ul
+        class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %> text-xxs md:text-sm mb-6 space-y-2 text-center"
+      >
+        <li>Featured only among followers</li>
+        <li>Featured only for 1 week</li>
+        <li>Featured only once</li>
+        <li>Non-refundable</li>
+      </ul>
+      <div
+        class="flex justify-center text-base sm:text-lg md:text-xl font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-primary' %> mb-10 md:mb-16"
+      >
+      <% if(user.subscription =="regular" ||user.subscription =="elite" || freeBlogsLeft==0) {%> $5 <% }
+        else {%> Free <% } %>
+      </div>
+      <div class="flex justify-center w-full">
+        <% if(user.subscription =="regular" ||user.subscription =="elite" || freeBlogsLeft==0) {%>
+        <form action="/api/payment/create" method="POST" class="w-full">
+          <input type="hidden" name="amount" value="5" />
+          <input type="hidden" name="currency" value="USD" />
+          <input type="hidden" name="paymentType" value="featured" />
+          <input type="hidden" id="modalBlogId" name="blog" value="" />
+          <input
+            type="hidden"
+            name="featuredDetails[featureDuration]"
+            value="7"
+          />
+          <button
+            class="<%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-fourth' %> rounded-md hover:bg-blue-600 transition duration-300 w-full text-xs sm:text-base md:text-lg lg:text-xl p-2 font-roboto"
+            type="submit"
+          >
+            Pay
+          </button>
+        </form>
+        <% } else  {%>
+        <form action="/api/payment/create" method="POST" class="w-full">
+          <input type="hidden" name="amount" value="free" />
+          <input type="hidden" name="paymentType" value="featured" />
+          <input type="hidden" id="modalBlogId" name="blog" value="" />
+          <input
+            type="hidden"
+            name="featuredDetails[featureDuration]"
+            value="7"
+          />
+          <button
+            class="<%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-fourth' %> rounded-md hover:bg-blue-600 transition duration-300 w-full text-xs sm:text-base md:text-lg lg:text-xl p-2 font-roboto"
+            type="submit"
+          >
+          Free blogs left: <%= freeBlogsLeft %>
+          </button>
+        </form>
+        <% } %>
+      </div>
+    </div>
+
+    <div
+      class="max-w-sm w-full shadow-lg rounded-lg border <%= user.settings.theme === 'dark' ? 'bg-dark-fourth border-dark-background' : 'bg-sixth border-fifth' %> p-2 md:p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out transform hover:scale-105 flex flex-col justify-between items-center"
+    >
+      <div class="flex justify-center mb-4">
+        <img
+          src="images/icons/goldIcon.png"
+          alt="Gold Icon"
+          class="h-10 md:h-16"
+        />
+      </div>
+      <div class="text-center mb-2">
+        <h1
+          class="text-sm sm:text-base md:text-lg lg:text-xl font-bold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-primary' %>"
+        >
+          Pro
+        </h1>
+      </div>
+      <ul
+        class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %> text-xxs sm:text-sm mb-6 space-y-2 text-center"
+      >
+        <li>Featured among all users</li>
+        <li>Featured for 1 month</li>
+        <li>Featured thrice</li>
+        <li>Feature can be shared</li>
+      </ul>
+      <div
+        class="flex justify-center text-base sm:text-lg md:text-xl font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-primary' %> mb-10 md:mb-16"
+      >
+      <% if(user.subscription =="regular" ||user.subscription =="pro" || freeBlogsLeft==0) {%> $15 <% }
+      else {%> Free <% } %>
+      </div>
+      <div class="flex justify-center w-full">
+        <% if(user.subscription =="regular" ||user.subscription =="pro" || freeBlogsLeft==0) {%>
+        <form action="/api/payment/create" method="POST" class="w-full">
+          <input type="hidden" name="amount" value="15" />
+          <input type="hidden" name="paymentType" value="featured" />
+          <input type="hidden" name="currency" value="USD" />
+          <input type="hidden" id="modalBlogIdPro" name="blog" value="" />
+          <input
+            type="hidden"
+            name="featuredDetails[featureDuration]"
+            value="30"
+          />
+
+          <button
+            class="<%= user.settings.theme === 'dark' ? ' bg-dark-sixth' : ' border-fifth text-sixth bg-fifth' %> rounded-md font-semibold p-2 hover:bg-blue-600 transition duration-300 w-full text-xs sm:text-base md:text-lg lg:text-xl font-roboto"
+            type="submit"
+          >
+            Pay
+          </button>
+        </form>
+        <% } else  {%>
+          <form action="/api/payment/create" method="POST" class="w-full">
+          <input type="hidden" name="amount" value="free" />
+          <input type="hidden" name="paymentType" value="featured" />
+          <input type="hidden" id="modalBlogIdPro" name="blog" value="" />
+          <input
+            type="hidden"
+            name="featuredDetails[featureDuration]"
+            value="30"
+          />
+
+          <button
+          class="<%= user.settings.theme === 'dark' ? ' bg-dark-sixth' : ' border-fifth text-sixth bg-fifth' %> rounded-md font-semibold p-2 hover:bg-blue-600 transition duration-300 w-full text-xs sm:text-base md:text-lg lg:text-xl font-roboto"
+            type="submit"
+          >
+          Free blogs left: <%= freeBlogsLeft %>
+          </button>
+        </form>
+          <% } %>
+      </div>
+      <div
+        class="absolute top-0 right-0 bg-green-500 text-white text-xxxs sm:text-xxs md:text-xs px-2 py-1 rounded-bl-lg rounded-tr-lg"
+      >
+        Best Value
+      </div>
+    </div>
+  </div>
+</div>

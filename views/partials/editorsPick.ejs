@@ -1,0 +1,63 @@
+<h1 class="text-lg md:text-xl  lg:text-2xl  <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %>  font-semibold py-1   px-2 md:py-2 md:px-5  lg:px-10 lg:py-5 font-lora">Editor’s Pick</h1>
+
+<div class=" grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 py-1  px-2 md:py-2 md:px-4  lg:px-10 lg:py-5 " id="editorsPick">
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      function fetchBlogs() {
+            const blog = <%- JSON.stringify(editorialBlog) %>;
+            const editorsPickContainer = document.getElementById("editorsPick");
+
+            if (blog.length > 0) {
+            const slidesHtml = blog
+                .map(
+                (blog) => `
+                <div class="<%= user.settings.theme === 'dark' ? 'shadow-white-lg' : 'shadow-lg' %> w-full flex-shrink-0 font-lora">
+                    <div class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md" style="background-image: url('${
+                      blog.blogPhoto
+                    }')">
+                      <div class="rounded-lg shadow-lg overflow-hidden w-full bg-secondary bg-opacity-30 p-3">
+                        <div class="flex justify-end">
+                          <p class="px-2 py-1 rounded-lg  <%= user.settings.theme === 'dark' ? 'bg-dark-secondary' : 'bg-background text-background' %> bg-opacity-20 text-white text-xxxs   md:text-xxs  lg:text-xs font-semibold font-sans uppercase">${
+                            blog.tags[0]
+                          }</p>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                          <div class="h-20 md:h-24 lg:h-28"></div>
+                          <p class="text-xxxs md:text-xxs  lg:text-xs font-mono  <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> ">${new Date(
+                            blog.createdAt
+                          ).toLocaleDateString("en-US", {
+                            day: "numeric",
+                            month: "numeric",
+                            year: "numeric",
+                          })}</p>
+                          <h5 class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold break-words text-background">${truncateText(blog.title, 50)}</h5>
+                          <p class="t <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> text-xxxs sm:text-xxs md:text-xs lg:text-sm break-words">${truncateText(blog.description, 100)} <span><a href="/blog/${
+                            blog.slug
+                          }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> hover:text-highlight  text-center  ">read more</a></span></p>
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `
+                )
+                .join("");
+            editorsPickContainer.innerHTML = slidesHtml;
+            }else{
+              document.getElementById("editorsPickContainer").style.display = "none";
+            }
+        
+      }
+      fetchBlogs();
+        function truncateText(text, maxLength) {
+          if (text.length > maxLength) {
+            return text.substring(0, maxLength) + "...";
+          }
+        return text;
+      }
+
+    });
+</script>

@@ -1,0 +1,447 @@
+<div
+  id="category-bar"
+  class="p-2 md:p-4 md:px-8 sticky top-0 <%= user.settings.theme === 'dark' ? ' bg-dark-background text-dark-primary' : 'bg-background text-text' %> z-30 -mt-12"
+>
+  <ul
+    class="flex gap-2 lg:gap-4 overflow-y-hidden overflow-x-scroll w-full text-xs md:text-sm lg:text-base"
+  >
+    <li
+      class="text-highlight underline cursor-pointer"
+      id="all"
+      onclick="filterByCategory('')"
+    >
+      All
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="tech"
+      onclick="filterByCategory('tech')"
+    >
+      Tech
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="health"
+      onclick="filterByCategory('health')"
+    >
+      Health
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="travel"
+      onclick="filterByCategory('travel')"
+    >
+      Travel
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="lifestyle"
+      onclick="filterByCategory('lifestyle')"
+    >
+      Lifestyle
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="education"
+      onclick="filterByCategory('education')"
+    >
+      Education
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="business"
+      onclick="filterByCategory('business')"
+    >
+      Business
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="finance"
+      onclick="filterByCategory('finance')"
+    >
+      Finance
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="science"
+      onclick="filterByCategory('science')"
+    >
+      Science
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="entertainment"
+      onclick="filterByCategory('entertainment')"
+    >
+      Entertainment
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="sports"
+      onclick="filterByCategory('sports')"
+    >
+      Sports
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="food"
+      onclick="filterByCategory('food')"
+    >
+      Food
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="fashion"
+      onclick="filterByCategory('fashion')"
+    >
+      Fashion
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="art"
+      onclick="filterByCategory('art')"
+    >
+      Art
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="music"
+      onclick="filterByCategory('music')"
+    >
+      Music
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="movies"
+      onclick="filterByCategory('movies')"
+    >
+      Movies
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="books"
+      onclick="filterByCategory('books')"
+    >
+      Books
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="gaming"
+      onclick="filterByCategory('gaming')"
+    >
+      Gaming
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="politics"
+      onclick="filterByCategory('politics')"
+    >
+      Politics
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="history"
+      onclick="filterByCategory('history')"
+    >
+      History
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="law"
+      onclick="filterByCategory('law')"
+    >
+      Law
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="healthcare"
+      onclick="filterByCategory('healthcare')"
+    >
+      Healthcare
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="environment"
+      onclick="filterByCategory('environment')"
+    >
+      Environment
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="automotive"
+      onclick="filterByCategory('automotive')"
+    >
+      Automotive
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer whitespace-nowrap"
+      id="real"
+      onclick="filterByCategory('real estate')"
+    >
+      Real Estate
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="parenting"
+      onclick="filterByCategory('parenting')"
+    >
+      Parenting
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer whitespace-nowrap"
+      id="self"
+      onclick="filterByCategory('self improvement')"
+    >
+      Self Improvement
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="spirituality"
+      onclick="filterByCategory('spirituality')"
+    >
+      Spirituality
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer whitespace-nowrap"
+      id="current"
+      onclick="filterByCategory('current events')"
+    >
+      Current Events
+    </li>
+    <li
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %> hover:text-highlight cursor-pointer"
+      id="others"
+      onclick="filterByCategory('others')"
+    >
+      Others
+    </li>
+  </ul>
+</div>
+
+<div
+  class="p-2 md:p-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4"
+  id="displayBlogs"
+></div>
+
+<div
+  id="pagination"
+  class="flex justify-center items-center gap-2 md:gap-4 my-2"
+></div>
+
+<script>
+  let currentCategory = "";
+  let searchQuery = "";
+  let startDate = "";
+  let endDate = "";
+  let tags = "<%= tags%>" || "";
+  let page = 1;
+
+  async function fetchBlogs(page) {
+    searchQuery = document.getElementById("searchBlogInput").value;
+    startDate = document.getElementById("startDate").value;
+    endDate = document.getElementById("endDate").value;
+    console.log("Search Input", searchQuery);
+    const apiURL = `/api/blog/search?category=${currentCategory}&tags=${tags}&search=${searchQuery}&startDate=${startDate}&endDate=${endDate}&page=${page}`;
+
+    try {
+      const response = await fetch(apiURL);
+      const data = await response.json();
+      displayBlogs(data.blogs);
+      console.log("Data", data);
+      const currentPage = page;
+      setupPagination(data.pagination.totalPages, currentPage);
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    }
+  }
+
+  function filterByCategory(category) {
+    currentCategory = category;
+    const previousSelected = document.querySelectorAll(
+      ".text-highlight, .underline"
+    );
+    previousSelected.forEach((element) => {
+      element.classList.remove("text-highlight", "underline");
+    });
+    
+    if (category === "") {
+      const tagAll = document.getElementById("all");
+      tagAll.classList.add("text-highlight", "underline");
+      tagAll.classList.remove("text-dark-secondary", "text-primary");
+      return fetchBlogs();
+    }
+    
+
+    const categorySelected = document.getElementById(currentCategory);
+
+    if (categorySelected) {
+      console.log(categorySelected);
+      categorySelected.classList.add("text-highlight", "underline");
+      categorySelected.classList.remove("text-dark-secondary", "text-primary");
+    }
+    fetchBlogs();
+  }
+
+  function displayBlogs(blogs) {
+    const displayBlogsElement = document.getElementById("displayBlogs");
+    displayBlogsElement.innerHTML = "";
+
+
+    blogs.forEach((blog) => {
+      const blogCard = `
+         <div class="font-lora relative rounded-md <%= user.settings.theme === 'dark' ? 'bg-dark-sixth shadow-white-lg' : 'bg-background shadow-lg' %> flex flex-col justify-between">
+                    <div class="flex justify-end bg-cover bg-center bg-origin-content rounded-md bg-blend-darken"  style="background-image: url('${
+                      blog.blogPhoto
+                    }')">
+                    <div class="flex h-auto mb-32 sm:mb-52  md:mb-64 mt-2 mr-2   md:mt-5 md:mr-5">
+                      <p class=" px-2 py-1 rounded-lg bg-white bg-opacity-30 text-white text-xxxs   md:text-xxs  lg:text-xs font-semibold font-sans uppercase <%= user.settings.theme === 'dark' ? 'bg-dark-secondary' : 'bg-background text-background' %>">${truncateText(
+                        blog.tags[0],
+                        15
+                      )}</p>
+                    </div>
+                 
+                </div>
+                <div class="flex flex-col gap-2 pt-4 px-2 pb-2">
+                   <p class="text-xxxs md:text-xxs  lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-fourth' %>  font-thin">${new Date(
+                     blog.createdAt
+                   ).toLocaleDateString("en-US", {
+                     day: "numeric",
+                     month: "numeric",
+                     year: "numeric",
+                   })}</p>
+                    <h5 class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : 'text-tertiary' %> break-words whitespace-normal ">
+                      ${truncateText(blog.title, 50)}
+                    </h5>
+                    <p class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-fourth' %> break-words whitespace-normal font-thin">
+                      ${truncateText(blog.description, 100)}
+                      <span>
+                      <a href="/blog/${
+                        blog.slug
+                      }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-fourth' %> hover:text-highlight    font-roboto text-center  text-xxxs sm:text-xxs md:text-xs lg:text-sm font-medium">read more</a>
+                        
+                      </span>
+                    </p>
+
+                  </div>
+                  <a class="p-2 border-t-2 <%= user.settings.theme === 'dark' ? 'border-dark-fifth' : 'border-sixth' %> flex gap-2 relative bottom-0 mt-auto cursor-pointer"  href="/profile/${
+                    blog.author.slug
+                  }">
+                    <img src="${
+                      blog.author.avatar
+                    }" alt="author" class="w-8 h-8 rounded-full" />
+                    <div class="">
+                    <p class="text-xxs sm:text-xs md:text-sm lg:text-md font-thin <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-tertiary' %> ">
+                      ${blog.author.username}
+                    </p>
+                    <p class="text-xxxs sm:text-xxs md:text-xs lg:text-xs font-thin text-fourth">
+                      ${blog.author.firstname} ${blog.author.lastname}
+                    </p>
+                </div>
+                </a>
+                </div>
+        `;
+      displayBlogsElement.innerHTML += blogCard;
+    });
+  }
+
+  function setupPagination(totalPages, currentPage) {
+    const paginationElement = document.getElementById("pagination");
+    paginationElement.innerHTML = "";
+    const maxVisiblePages = 5;
+    let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1);
+    let endPage = startPage + maxVisiblePages - 1;
+
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+    }
+
+    if (totalPages < 1) {
+      const displayBlogsElement = document.getElementById("displayBlogs");
+      const noBlogCard = `
+      <div class="border-2 border border-gray-300 rounded-lg p-6 text-center                text-gray-500 font-lora font-thin min-h-[400px] flex flex-col               items-center justify-center shadow-lg">
+                  <img
+      src="/images/icons/blogNotFound.svg" />
+                <p class="text-lg">No blogs yet—be the pioneer!</p>
+              </div>
+            `.trim();
+    displayBlogsElement.innerHTML += noBlogCard;
+      return;
+    }
+
+    const prevButton = document.createElement("button");
+    prevButton.innerText = "Prev";
+    prevButton.classList.add(
+      "px-4",
+      "py-2",
+      "border",
+      "rounded-md",
+      "mx-1",
+      "hover:bg-gray-200",
+      "transition",
+      "text-xs",
+      "md:text-sm"
+    );
+
+    prevButton.disabled = currentPage === 1;
+    prevButton.addEventListener("click", () => fetchBlogs(currentPage - 1));
+    paginationElement.appendChild(prevButton);
+
+    for (let i = startPage; i <= endPage; i++) {
+      const pageButton = document.createElement("button");
+      pageButton.innerText = i;
+      pageButton.classList.add(
+        "px-4",
+        "py-2",
+        "border",
+        "rounded-md",
+        "mx-1",
+        "hover:bg-gray-200",
+        "transition",
+        "text-xs",
+        "md:text-sm"
+      );
+      if (i === currentPage) {
+        pageButton.classList.add("bg-secondary", "text-white");
+      } else {
+        pageButton.classList.add("hover:bg-gray-200");
+      }
+      pageButton.onclick = () => fetchBlogs(i);
+      paginationElement.appendChild(pageButton);
+    }
+    const nextButton = document.createElement("button");
+    nextButton.innerText = "Next";
+    nextButton.classList.add(
+      "px-4",
+      "py-2",
+      "border",
+      "rounded-md",
+      "mx-1",
+      "hover:bg-gray-200",
+      "transition",
+      "text-xs",
+      "md:text-sm"
+    );
+    // nextButton.disabled = currentPage === totalPages;
+    nextButton.addEventListener("click", () => {
+      console.log("I am cklicked");
+      fetchBlogs(currentPage + 1);
+    });
+    paginationElement.appendChild(nextButton);
+    if (currentPage == 1) {
+      prevButton.style.display = "none";
+    }
+    if (currentPage >= totalPages) {
+      nextButton.style.display = "none";
+    }
+  }
+
+  function truncateText(text, maxLength) {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  }
+
+  window.onload = fetchBlogs(1);
+</script>

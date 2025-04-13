@@ -1,0 +1,30 @@
+<div
+  class="<%= user.settings.theme === 'dark' ? ' bg-dark-background' : 'bg-background' %> bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] flex flex-col items-center justify-center min-h-screen px-4"
+>
+  <div
+    class="<%= user.settings.theme === 'dark' ? ' bg-dark-sixth' : ' bg-sixth' %> shadow-xl rounded-2xl p-8 md:p-12 max-w-lg text-center transform transition-all duration-500 hover:scale-105"
+  >
+    <img
+      src="/images/errorsImg/404.svg"
+      alt="404 Error"
+      class="w-3/4 mx-auto animate-pulse transition duration-300 ease-in-out  <%= user.settings.theme === 'dark' ? 'brightness-125 contrast-110' : '' %>"
+    />
+    <h1
+      class="text-4xl font-extrabold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-primary' %> mt-6"
+    >
+      Oops! Page Not Found
+    </h1>
+    <p
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %> mt-3 leading-relaxed"
+    >
+      The page you’re looking for doesn’t exist or has been moved. Try checking
+      the URL or go back to the homepage.
+    </p>
+    <a
+      href="/"
+      class="mt-6 inline-block text-white font-semibold px-6 py-3 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-fourth to-secondary hover:from-secondary hover:to-tertiary' : 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-indigo-600 hover:to-blue-500' %>"
+    >
+      Go to Home
+    </a>
+  </div>
+</div>

@@ -1,0 +1,507 @@
+<div class="md:max-w-4xl <%= user.settings.theme === 'dark' ? 'shadow-white-lg' : 'shadow-lg' %> m-auto p-2 pt-10 md:p-10 font-lora mb-5">
+  <h1
+    class="text-lg md:text-xl lg:text-2xl p-3 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %>"
+  >
+    Subscription Plans
+  </h1>
+  <div class="grid grid-rows-2 sm:grid-rows-1 sm:grid-cols-2 gap-8 sm:gap-4 px-3">
+    <!-- Pro Membership Card -->
+    <div id="proMembershipCard" class="relative  perspective h-32 block">
+      <div
+        class="border rounded-lg <%= user.settings.theme === 'dark' ? 'shadow-white-lg  bg-dark-sixth border-dark-secondary' : 'shadow-lg  bg-background border-sixth' %> w-full h-36 transition-transform duration-500 ease-in-out transform preserve-3d overflow-hidden"
+        id="proMembershipContainer"
+      >
+        <!-- Front Side -->
+        <div
+          class="absolute inset-0 backface-hidden flex flex-col justify-between p-4"
+          id="proMembership"
+        >
+          <div class="flex justify-between items-center">
+            <h1
+              class="text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-tertiary' %>"
+            >
+              Pro Membership
+            </h1>
+            <h1
+              class="text-xl font-bold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-tertiary' %>"
+            >
+              $10<span class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> text-sm">/weekly</span>
+            </h1>
+          </div>
+          <p
+            class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> text-sm"
+            id="timeLeftPro"
+          >
+            7 days remaining
+          </p>
+          <div class="flex gap-4 items-center mt-auto">
+            <button
+              onclick="upgradeSubscription('pro')"
+              class=" <%= user.settings.theme === 'dark' ? 'border-dark-secondary text-dark-secondary' : 'bg-sixth text-fourth' %>  font-medium rounded-md px-4 py-2 transition hover:bg-blue-300 hover:text-background hover:border-background font-roboto"
+              id="proUpgradeButton"
+            >
+              Upgrade
+            </button>
+            <p
+              class="text-sm <%= user.settings.theme === 'dark' ? 'text-tertiary' : 'text-fifth' %> cursor-pointer flex items-center font-roboto hover:text-fourth"
+              id="proDetails"
+            >
+              <span class="mr-1">ⓘ</span> For more details, click here.
+            </p>
+          </div>
+        </div>
+
+        <!-- Back Side -->
+        <div
+          class="absolute inset-0 backface-hidden rotate-y-180 flex items-center justify-center px-2 md:p-4 hidden z-50"
+          id="proMembershipInfo"
+        >
+          <ul
+            class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-tertiary' %> text-xs rounded-lg space-y-2"
+          >
+            <li class="flex items-center space-x-2">
+              <span class="text-green-500 font-bold">✓</span>
+              <span>3 free featured blogs for 7 days per month</span>
+            </li>
+            <li class="flex items-center space-x-2">
+              <span class="text-green-500 font-bold">✓</span>
+              <span>50 blog posts per month</span>
+            </li>
+            <li class="flex items-center space-x-2">
+              <span class="text-green-500 font-bold">✓</span>
+              <span>Bookmark up to 50 blogs per month for easy access</span>
+            </li>
+            <li class="flex items-center space-x-2">
+              <span class="text-green-500 font-bold">✓</span>
+              <span>Monthly insights and analytics on your reading habits</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Elite Membership Card -->
+    <div id="eliteMembershipCard" class="relative perspective h-32 block">
+      <div
+        class="border rounded-lg  w-full h-36 transition-transform duration-500 ease-in-out transform preserve-3d overflow-hidden <%= user.settings.theme === 'dark' ? ' bg-dark-sixth border-dark-secondary shadow-white-lg' : 'bg-background border-sixth shadow-lg' %>"
+        id="eliteMembershipContainer"
+      >
+        <!-- Front Side -->
+        <div
+          class="absolute inset-0 backface-hidden flex flex-col justify-between p-4"
+          id="eliteMembership"
+        >
+          <div class="flex justify-between items-center">
+            <h1
+              class="text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-tertiary' %>"
+            >
+              Elite Membership
+            </h1>
+            <h1
+              class="text-xl font-bold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-tertiary' %>"
+            >
+              $48<span class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> text-sm">/month</span>
+            </h1>
+          </div>
+          <p
+            class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> text-sm"
+            id="timeLeftElite"
+          >
+            30 days remaining
+          </p>
+          <div class="flex gap-4 items-center mt-auto">
+            <button
+              onclick="upgradeSubscription('elite')"
+              class=" <%= user.settings.theme === 'dark' ? 'border-dark-secondary text-dark-secondary' : 'bg-fourth text-white' %> font-medium rounded-md px-4 py-2 transition hover:bg-blue-300 hover:text-background hover:border-background font-roboto"
+              id="eliteUpgradeButton"
+            >
+              Upgrade
+            </button>
+            <p
+              class="text-sm <%= user.settings.theme === 'dark' ? 'text-tertiary' : 'text-fifth' %> cursor-pointer flex items-center font-roboto hover:text-fourth"
+              id="eliteDetails"
+            >
+              <span class="mr-1">ⓘ</span> For more details, click here.
+            </p>
+          </div>
+        </div>
+
+        <!-- Back Side -->
+        <div
+          class="absolute inset-0 backface-hidden rotate-y-180 flex items-center justify-center px-1 md:p-4 hidden"
+          id="eliteMembershipInfo"
+        >
+          <ul
+            class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-tertiary' %> text-xs rounded-lg py-4 space-y-2"
+          >
+            <li class="flex items-center space-x-2">
+              <span class="text-blue-500 font-bold">✓</span>
+              <span>5 free featured blogs for 30 days per month</span>
+            </li>
+            <li class="flex items-center space-x-2">
+              <span class="text-blue-500 font-bold">✓</span>
+              <span>Unlimited blog posts</span>
+            </li>
+
+            <li class="flex items-center space-x-2">
+              <span class="text-blue-500 font-bold">✓</span>
+              <span
+                >Unlimited bookmarks for easy access to your favorite
+                blogs</span
+              >
+            </li>
+
+            <li class="flex items-center space-x-2">
+              <span class="text-blue-500 font-bold">✓</span>
+              <span>Option to download blogs for offline reading</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-5">
+    <h1
+      class="text-lg md:text-xl lg:text-2xl p-3 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-text bg-dark-background' : 'bg-background text-tertiary' %> sticky top-0"
+    >
+      Subscription History
+    </h1>
+    <ul id="history" class="overflow-x-scroll p-3"></ul>
+    <div id="pagination" class="py-2 flex justify-center"></div>
+  </div>
+</div>
+
+<style>
+  .perspective {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+</style>
+
+<script>
+  const proMembershipContainer = document.getElementById(
+    "proMembershipContainer"
+  );
+  const proDetails = document.getElementById("proDetails");
+  const proFront = document.getElementById("proMembership");
+  const proBack = document.getElementById("proMembershipInfo");
+
+  proDetails.addEventListener("click", () => {
+    proMembershipContainer.classList.toggle("rotate-y-180");
+    proFront.classList.toggle("hidden");
+    proBack.classList.toggle("hidden");
+  });
+
+  proBack.addEventListener("mouseleave", () => {
+    proMembershipContainer.classList.toggle("rotate-y-180");
+    proFront.classList.toggle("hidden");
+    proBack.classList.toggle("hidden");
+  });
+
+  const eliteMembershipContainer = document.getElementById(
+    "eliteMembershipContainer"
+  );
+  const eliteDetails = document.getElementById("eliteDetails");
+  const eliteFront = document.getElementById("eliteMembership");
+  const eliteBack = document.getElementById("eliteMembershipInfo");
+
+  eliteDetails.addEventListener("click", () => {
+    eliteMembershipContainer.classList.toggle("rotate-y-180");
+    eliteFront.classList.toggle("hidden");
+    eliteBack.classList.toggle("hidden");
+  });
+
+  eliteBack.addEventListener("mouseleave", () => {
+    eliteMembershipContainer.classList.toggle("rotate-y-180");
+    eliteFront.classList.toggle("hidden");
+    eliteBack.classList.toggle("hidden");
+  });
+
+  async function upgradeSubscription(plan) {
+    try {
+      const formData = new FormData();
+      formData.append("paymentType", "subscription");
+      formData.append("amount", plan == "pro" ? "0.01" : "0.05");
+      formData.append("subscriptionType", plan);
+      formData.append("currency", "USD");
+      const currentDate = new Date();
+      const endDate = new Date(
+        currentDate.setDate(currentDate.getDate() + (plan == "pro" ? 7 : 30))
+      );
+      const formattedEndDate = endDate.toISOString().split("T")[0];
+      formData.append("subscriptionDetails[endDate]", formattedEndDate);
+      formData.append(
+        "subscriptionDetails[frequency]",
+        plan == "pro" ? "weekly" : "monthly"
+      );
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = "/api/payment/create";
+
+      for (let [key, value] of formData.entries()) {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+      }
+
+      const modalBlogIdInput = document.createElement("input");
+      modalBlogIdInput.type = "hidden";
+      modalBlogIdInput.name = "modalBlogId";
+      modalBlogIdInput.value = "";
+      form.appendChild(modalBlogIdInput);
+
+      document.body.appendChild(form);
+      form.submit();
+    } catch (error) {
+      console.error("Error during API call:", error);
+      alert("Failed to upgrade subscription. Please try again.");
+    }
+  }
+
+  const paymentHistory = document.getElementById("history");
+  const paginationDiv = document.getElementById("pagination");
+
+  function fetchPaymentHistory(page = 1, limit = 10) {
+    console.log("Fetching payment history for page:", page);
+    fetch(
+      `/api/payment/search?paymentType=subscription&page=${page}&limit=${limit}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.payments.length > 0) {
+          // Render table structure
+          paymentHistory.innerHTML = `
+          <table class="w-full border-collapse border border-gray-300">
+            <thead>
+              <tr class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-secondary text-dark-secondary' : 'bg-sixth border-fourth text-fourth' %>">
+                <th class="border border-gray-300 p-3 text-left text-xxs whitespace-nowrap">Payment Type</th>
+                <th class="border border-gray-300 p-3 text-left text-xxs whitespace-nowrap">Transaction ID</th>
+                <th class="border border-gray-300 p-3 text-left text-xxs whitespace-nowrap">Payment Status</th>
+                <th class="border border-gray-300 p-3 text-left text-xxs">Amount</th>
+                <th class="border border-gray-300 p-3 text-left text-xxs whitespace-nowrap">Start Date</th>
+                <th class="border border-gray-300 p-3 text-left text-xxs whitespace-nowrap">End Date</th>
+                <th class="border border-gray-300 p-3 text-left text-xxs">Frequency</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        `;
+
+          const tableBody = paymentHistory.querySelector("tbody");
+
+          data.payments.forEach((payment) => {
+            const paymentType = payment.paymentType
+              ? payment.paymentType.charAt(0).toUpperCase() +
+                payment.paymentType.slice(1)
+              : "Unknown";
+            const transactionId = payment.transactionId || "N/A";
+            const paymentStatus = payment.paymentStatus || "N/A";
+            const amount = payment.amount || "0.00";
+            const currency = payment.currency || "USD";
+
+            const subscriptionDetails = payment.subscriptionDetails || {};
+            const startDate = subscriptionDetails.startDate
+              ? new Date(subscriptionDetails.startDate).toLocaleDateString()
+              : "N/A";
+            const endDate = subscriptionDetails.endDate
+              ? new Date(subscriptionDetails.endDate).toLocaleDateString()
+              : "N/A";
+            const frequency = subscriptionDetails.frequency || "N/A";
+
+            const user = payment.user || {};
+            const firstname = user.firstname || "Unknown";
+            const lastname = user.lastname || "User";
+            const username = user.username || "N/A";
+
+            const tr = document.createElement("tr");
+
+            tr.innerHTML = `
+            <td class="border border-sixth <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fourth' %> p-3 text-xxs">${paymentType}</td>
+            <td class="border border-sixth <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fourth' %> p-3 text-xxs">${transactionId}</td>
+            <td class="border border-sixth <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fourth' %> p-3 text-xxs">${paymentStatus}</td>
+            <td class="border border-sixth <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fourth' %> p-3 text-xxs">$${amount} ${currency}</td>
+            <td class="border border-sixth <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fourth' %> p-3 text-xxs">${startDate}</td>
+            <td class="border border-sixth <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fourth' %> p-3 text-xxs">${endDate}</td>
+            <td class="border border-sixth <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fourth' %> p-3 text-xxs">${frequency}</td>
+          `;
+            tableBody.appendChild(tr);
+          });
+
+          renderPagination(data.currentPage, data.totalPages);
+        } else {
+          paymentHistory.innerHTML = `
+          <p class="text-center text-gray-600 py-4 text-lg">
+            No subscription history found.
+          </p>
+        `;
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching payment history:", error);
+        paymentHistory.innerHTML = `
+        <p class="text-center text-red-600 py-4 text-lg">
+          Error fetching payment history. Please try again later.
+        </p>
+      `;
+      });
+  }
+
+  
+
+  function renderPagination(currentPage, totalPages) {
+    paginationDiv.innerHTML = "";
+    const maxVisiblePages = 5;
+    let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1);
+    let endPage = startPage + maxVisiblePages - 1;
+
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+    }
+
+    // Prev Button
+    const prevButton = document.createElement("button");
+    prevButton.innerText = "Prev";
+    prevButton.classList.add(
+      "px-3",
+      "py-1",
+      "mr-2",
+      "border",
+      "border-sixth",
+      "text-tertiary",
+      "font-lora",
+      "rounded-md"
+    );
+    prevButton.addEventListener("click", () => {
+      if (currentPage > 1) {
+        fetchPaymentHistory(currentPage - 1);
+      }
+    });
+    paginationDiv.appendChild(prevButton);
+
+    // Page Buttons
+    for (let i = startPage; i <= endPage; i++) {
+      const pageButton = document.createElement("button");
+      pageButton.innerText = i;
+      pageButton.classList.add(
+        "px-3",
+        "py-1",
+        "mx-1",
+        "border",
+        "border-sixth",
+        "text-tertiary",
+        "font-lora",
+        "rounded-md"
+      );
+
+      if (i == currentPage) {
+        pageButton.classList.add("bg-tertiary", "text-background");
+        pageButton.classList.remove("text-tertiary");
+      }
+
+      pageButton.addEventListener("click", () => fetchPaymentHistory(i));
+      paginationDiv.appendChild(pageButton);
+    }
+
+    // Next Button
+    const nextButton = document.createElement("button");
+    nextButton.innerText = "Next";
+    nextButton.classList.add(
+      "px-3",
+      "py-1",
+      "ml-2",
+      "border",
+      "border-sixth",
+      "text-tertiary",
+      "font-lora",
+      "rounded-md"
+    );
+    
+    nextButton.addEventListener("click", () => {
+      currentPage = parseInt(currentPage);
+      console.log(currentPage, typeof currentPage);
+      fetchPaymentHistory(currentPage + 1, 10);
+    });
+    paginationDiv.appendChild(nextButton);
+    if (currentPage == 1) {
+      prevButton.style.display = "none";
+    }
+    if (currentPage >= totalPages) {
+      nextButton.style.display = "none";
+    }
+  }
+
+  // Initial Fetch
+  fetchPaymentHistory();
+
+  const Subscription = "<%= user.subscription %>";
+
+  if (Subscription === "pro") {
+    const proMembershipHeader = document.querySelector(
+      "#proMembership > div > h1:nth-child(2)"
+    );
+    const proMembershipButton = document.getElementById("proUpgradeButton");
+    const eliteUpgradeButton = document.getElementById("eliteUpgradeButton");
+
+    if (proMembershipButton && eliteUpgradeButton) {
+      proMembershipButton.disabled = true;
+      eliteUpgradeButton.disabled = true;
+      proMembershipButton.classList.add(
+        "bg-green-500",
+        "cursor-not-allowed",
+        "hover:bg-red-300",
+        "hover:text-white",
+        "hover:border-red-300",
+        "text-green-100",
+        "border-green-300"
+      );
+      eliteUpgradeButton.classList.add(
+        "bg-sixth",
+        "text-fifth",
+        "border-fifth",
+        "cursor-not-allowed",
+        "hover:text-white",
+        "hover:border-red-300",
+        "hover:bg-red-300"
+      );
+      proMembershipButton.innerText = "Selected";
+    }
+  } else if (Subscription === "elite") {
+    const eliteMembershipHeader = document.querySelector(
+      "#eliteMembership > div > h1:nth-child(2)"
+    );
+    const proMembershipButton = document.getElementById("proUpgradeButton");
+    const eliteUpgradeButton = document.getElementById("eliteUpgradeButton");
+
+    if (proMembershipButton && eliteUpgradeButton) {
+      proMembershipButton.disabled = true;
+      eliteUpgradeButton.disabled = true;
+      proMembershipButton.classList.add(
+        "bg-gray-500",
+        "text-gray-300",
+        "border-gray-300",
+        "cursor-not-allowed",
+        "hover:text-white",
+        "hover:border-red-500",
+        "hover:bg-red-500"
+      );
+      eliteUpgradeButton.classList.add(
+        "bg-green-500",
+        "cursor-not-allowed",
+        "hover:bg-red-300",
+        "hover:text-white",
+        "hover:border-red-300",
+        "text-green-100",
+        "border-green-300"
+      );
+      eliteUpgradeButton.innerText = "Selected";
+    }
+  }
+</script>

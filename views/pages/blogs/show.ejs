@@ -1,0 +1,857 @@
+<div
+  class="bg-no-repeat bg-cover bg-center bg-origin-content w-full flex justify-center items-center text-center font-lora relative overflow-x-clip"
+  style="background-image: url('<%= blog.blogPhoto %>')"
+
+  id="blogPhotoContainer"
+>
+  <div
+    class="pt-16 pb-5 sm:pb-10 md:pt-36 md:py-24 w-full bg-opacity-10 <%= user.settings.theme === 'dark' ? 'bg-dark-background ' : 'text-text bg-background ' %>"
+  >
+    <div
+      class="sm:p-0 w-4/5 sm:w-2/3 lg:w-1/2 flex justify-center items-center flex-col text-center gap-2 m-auto relative"
+    >
+      <p
+        class="rounded-lg <%= user.settings.theme === 'dark' ? 'bg-background' : ' text-background bg-background' %> bg-opacity-30 p-2 px-3 py-0"
+      >
+        <a
+          href="/blog/all/<%= blog.tags[0] %>"
+          class="bg-none text-xxs md:text-xs lg:text-sm font-semibold uppercase cursor-pointer hover:scale-125 font-roboto"
+        >
+          <%= blog.tags[0] %>
+        </a>
+      </p>
+      <h1
+        class="text-sm sm:text-base md:text-xl lg:text-2xl w-full font-bold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-background' %> break-words whitespace-normal"
+      >
+        <%- blog.title %>
+      </h1>
+      <h2
+        class="w-full text-sm sm:text-sm md:text-base lg:text-base <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-background' %> font-sans break-words whitespace-normal font-light"
+      >
+        <%- blog.description %>
+      </h2>
+      <h3
+        class="text-xxs sm:text-xs md:text-sm lg:text-base font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-background' %> capitalize"
+      >
+        By <%- blog.author.firstname %> <%-blog.author.lastname %>
+      </h3>
+    </div>
+  </div>
+
+  
+  <div
+  class="absolute -bottom-5 right-5 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-lg rounded-full px-4 py-2 flex items-center space-x-4 border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:scale-105 hidden"
+  id="blogActions"
+>
+  <div class="flex gap-2 md:gap-5 items-center">
+    <% if (isAuthenticated) { %>
+    <button
+      id="saveBlogButton"
+      class="rounded-lg hover:scale-110 flex items-center justify-center transition-transform duration-200 ease-in-out z-100"
+    >
+      <img
+        src="<%= userSavedBlog ? 'images/icons/bookMark.svg' : 'images/icons/unbookMark.svg' %>"
+        alt="<%= userSavedBlog ? 'Saved blog icon' : 'Unsaved blog icon' %>"
+        id="saveBlogIcon"
+        class="w-5 h-5 md:w-6 md:h-6 <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+      />
+    </button>
+
+    <button
+      id="likeButton"
+      class="<%= user.settings.theme === 'dark' ? 'text-white' : 'text-text' %> rounded-full flex items-center justify-center gap-2"
+    >
+      <img
+        src="<%= userAlreadyLiked ? 'images/icons/likeIcon.svg' : 'images/icons/unlikeIcon.svg' %>"
+        alt="<%= userAlreadyLiked ? 'liked icon' : 'unliked icon' %>"
+        id="likeIcon"
+        class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+        
+      />
+      <h1
+      id="likeCount"
+      class="text-base  lg:text-xl font-roboto text-center overflow-clip font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-highlight' %>"
+    >
+      <%= blog.likes.length %>
+    </h1>
+    </button>
+   
+    <% } %>
+  </div>
+
+
+    <% if (isAuthenticated && user.subscription=="elite" || editable ) { %>
+  <div class="flex gap-2 md:gap-5 items-center">
+ 
+    <a
+      href="/api/blog/download/<%= blog.slug  %>"
+      class="flex items-center text-sm md:text-base font-roboto md:h-8"
+    >
+      <img
+        src="images/icons/downloadBlogIcon.svg"
+        alt="download blog icon"
+        class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+      />
+    </a>
+    <% if (editable) { %>
+    <button
+      class="flex items-center transition duration-300 ease-in-out text-sm md:text-base font-roboto "
+      id="archivedBlog"
+    >
+      <img
+        src="<%= blog.status !== 'archived' 
+  ? 'images/icons/archiveIcon.svg' 
+  : 'images/icons/unarchiveIcon.svg' %>"
+        alt="edit blog icon"
+        alt="edit blog icon"
+        class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+      />
+    </button>
+
+    <a
+      href="/blog/edit/<%= blog.slug  %>"
+      class="flex items-center text-sm md:text-base font-roboto md:h-8"
+    >
+      <img
+        src="images/icons/editBlog.svg"
+        alt="edit blog icon"
+        class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+      />
+    </a>
+
+    <% } %>
+  </div>
+  <% } %>
+</div>
+</div>
+
+
+
+<div class="grid grid-cols-5 gap-2 px-5 sm:px-8 p-2 pt-5 md:p-5 font-lora">
+  <div
+    id="date"
+    class="col-span-5 md:col-span-1 lg:p-5 text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-tertiary' %>"
+  >
+    <div class="flex justify-between font-semibold">
+      <p>
+        <%= new Date(blog.createdAt).toLocaleDateString('en-US', { day:
+        'numeric', month: 'numeric', year: 'numeric' }) %>
+      </p>
+      <p><%- blog.timeSinceCreation %></p>
+    </div>
+  </div>
+  <div class="col-span-5 md:col-span-3 lg:py-5">
+    <div
+      id="contentContainer"
+      class="text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %>"
+    >
+      <%- blog.sanitizedHtml %>
+    </div>
+    <% if (blog.summary ) { %>
+    <div
+      class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %> mt-5 rounded-md"
+      id="summaryContainer"
+    >
+      <h3
+        class="text-xs md:text-sm lg:text-base font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %> capitalize"
+      >
+        Summary
+      </h3>
+      <p
+        class="mt-3 text-xs md:text-sm lg:text-base leading-relaxed"
+        id="summary"
+      ></p>
+    </div>
+    <% } %>
+
+    <div
+      class="py-10 border-b <%= user.settings.theme === 'dark' ? 'border-dark-secondary ' : ' border-fourth' %>"
+    >
+      <div class="">
+        <% blog.tags.forEach(tag => { %>
+        <a href="/blog/all/<%= tag%>">
+          <span
+            class="inline-block <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary border-dark-secondary' : 'bg-none text-fourth border-fourth' %> font-roboto text-xxs md:text-xs border px-5 py-1 rounded-lg mr-0.5 mb-0.5 cursor-pointer hover:bg-gray-300 hover:text-white hover:border-white hover:scale-110 transition-all duration-300 uppercase font-semibold"
+          >
+            <%= tag %>
+          </span>
+        </a>
+        <% }) %>
+      </div>
+    </div>
+
+    <div class="flex justify-between items-center my-10">
+      <div>
+        <a
+          href="/profile/<%= blog.author.slug%>"
+          class="flex justify-center items-center gap-2 cursor-pointer"
+        >
+          <img
+            src="<%= blog.author.avatar  %>"
+            alt="author photo"
+            class="h-10 w-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:h-16 lg:w-16 rounded-full"
+          />
+          <div class="flex flex-col justify-between gap-1">
+            <h3
+              class="text-sm md:text-base lg:text-xl font-semibold uppercase <%= user.settings.theme === 'dark' ? 'text-dark-secondary ' : 'text-secondary ' %>"
+            >
+              <%- blog.author.username %>
+            </h3>
+            <h4
+              class="text-xs md:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fourth' %> capitalize font-light"
+            >
+              <%- blog.author.firstname %> <%= blog.author.lastname %>
+            </h4>
+          </div>
+        </a>
+        <div><%- include("../../partials/subAuthor.ejs") %></div>
+      </div>
+
+      <div
+        class="grid grid-cols-4 gap-x-2 gap-y-2 sm:gap-y-2 lg:gap-y-6 items-center max-w-sm"
+      >
+        <a
+          href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(url) %>&text=Check out this page!"
+          target="_blank"
+          class="text-white w-5 h-5 hover:scale-150 rounded-full hover:bg-blue-200 transition duration-300"
+        >
+          <img
+            src="images/icons/twitterIconDark.png"
+            alt="twitter icon"
+            class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+        </a>
+
+        <a
+          href="https://www.reddit.com/submit?url=<%= encodeURIComponent(url) %>&title=Check out this page!"
+          target="_blank"
+          class="text-white w-5 h-5 hover:scale-150 rounded-full hover:bg-orange-200 transition duration-300"
+        >
+          <img
+            src="images/icons/redditIcon.png"
+            alt="reddit icon"
+            class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+        </a>
+
+        <a
+          href="https://api.whatsapp.com/send?text=Check out this page: <%= encodeURIComponent(url) %>"
+          target="_blank"
+          class="text-white w-5 h-5 hover:scale-150 rounded-full hover:bg-green-200 transition duration-300"
+        >
+          <img
+            src="images/icons/whatsappIcon.png"
+            alt="whatsapp icon"
+            class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+        </a>
+
+        <div class="relative flex justify-between items-center flex-col">
+          <button
+            id="copyBtn"
+            class="text-white w-5 h-5 hover:scale-150 rounded-full shadow hover:bg-gray-200 transition duration-300"
+          >
+            <img
+              src="images/icons/urlIcon.png"
+              alt="copy url icon"
+              class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+            />
+          </button>
+          <p
+            id="copyMessage"
+            class="text-green-600 mt-2 absolute top-full left-0 hidden"
+          >
+            Copied!
+          </p>
+        </div>
+
+        <% if (isAuthenticated) { %>
+
+        <button
+          id="reportButton"
+          class="font-semibold py-2 rounded-full hover:bg-red-400 transition-all duration-300 ease-in-out text-sm items-center col-span-4 font-roboto <%= user.settings.theme === 'dark' ? ' bg-dark-fifth shadow-white-md text-dark-secondary' : 'bg-tertiary text-white shadow-md' %> max-w-sm box-border"
+        >
+          <span class="text-sm">Report</span>
+        </button>
+        <% } %>
+      </div>
+    </div>
+    <% if (isAuthenticated && blog.allowComments) { %>
+    <form
+      onsubmit="return addComment()"
+      class="sticky top-0 <%= user.settings.theme === 'dark' ? ' bg-dark-sixth ' : 'bg-white shadow-lg' %> p-3 md:p-5 rounded-lg"
+    >
+      <textarea
+        id="commentText"
+        placeholder="Write a comment..."
+        class="text-sm lg:text-base w-full p-3 border bg-transparent <%= user.settings.theme === 'dark' ?'placeholder-dark-tertiary text-dark-secondary border-dark-secondary' : 'text-fourth placeholder-fourth border-primary-dark' %> rounded-lg outline-none transition duration-300 resize-none"
+        autofocus
+        rows="5"
+        maxlength="500"
+      ></textarea>
+
+      <input type="hidden" id="parentCommentId" value="" />
+
+      <div class="mt-2 md:mt-4 flex justify-end">
+        <button
+          type="submit"
+          class="px-5 py-2 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth shadow-white-md text-dark-secondary' : ' text-white bg-fourth shadow-md' %> rounded-full hover:bg-highlight hover:text-white transition duration-300 ease-in-out text-sm lg:text-base hover:scale-110 font-roboto"
+        >
+          Add Comment
+        </button>
+      </div>
+    </form>
+    <% } else if(!blog.allowComments) { %>
+    <p class="p-5 text-center text-red-300">No comments allowed</p>
+    <% } else { %>
+    <p class="text-gray-600 text-sm text-center">
+      <a
+        href="/signin"
+        class="text-fourth hover:text-highlight font-semibold transition duration-300 ease-in-out underline"
+      >
+        Sign in
+      </a>
+      to comment
+    </p>
+    <% } %>
+    <div id="comments" class="p-5"></div>
+  </div>
+
+  <div
+    class="hidden  md:col-span-1 md:text-center lg:p-5 text-sm <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-tertiary' %> font-semibold md:flex md:justify-between w-full"
+  >
+  <p> <%- blog.views.length %> views</p>
+  <p> <%- blog.readingTime %></p>
+ 
+  </div>
+</div>
+
+<%- include("../../partials/similarBlog.ejs") %> <%-
+include("../../partials/reportPopout.ejs") %>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  let startTime = Date.now();
+
+  window.addEventListener("beforeunload", function () {
+    let timeSpent = Math.round((Date.now() - startTime) / 1000);
+
+    gtag("config", "<%= blog.author.googleAnalyticsId %>");
+    gtag("event", "time_on_page", {
+      event_category: "Engagement",
+      event_label: "<%= blog.title %>",
+      user_id: "<%= blog.author._id %>",
+      value: timeSpent,
+    });
+  });
+
+  gtag("config", "<%= blog.author.googleAnalyticsId %>");
+  gtag("event", "blog_view", {
+    blog_title: "<%= blog.title %>",
+    blog_id: "<%= blog._id %>",
+    user_id: "<%= blog.author._id %>",
+    author: "<%= blog.author %>",
+    subauthor: "<%= blog.subauthor %>",
+    category: "<%= blog.category %>",
+  });
+
+  gtag("event", "traffic_source", {
+    event_category: "Traffic",
+    referrer: document.referrer || "Direct",
+    blog_id: "<%= blog._id %>",
+    user_id: "<%= blog.author._id %>",
+  });
+
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (isAuthenticated) {
+      addRecentBlog();
+
+      async function addRecentBlog() {
+        await fetch("/api/profile/recent", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ blogId: "<%= blog._id %>" }),
+        });
+      }
+
+      const socket = io();
+
+    window.addComment=async  function addComment() {
+      event.preventDefault();
+        const commentText = document.getElementById("commentText").value;
+        const parentCommentId =
+          document.getElementById("parentCommentId").value;
+        const blogId = "<%= blog._id %>";
+        const userId = "<%= userId %>";
+        if (commentText.trim()) {
+          socket.emit("newComment", {
+            content: commentText,
+            blog: blogId,
+            author: userId,
+            parentComment: parentCommentId || null,
+          });
+          gtag("config", "<%= blog.author.googleAnalyticsId %>");
+          gtag('event', 'comment_blog', {
+            'event_category': 'Engagement',
+            'event_label': '<%= blog.title %>',
+            'blog_id': '<%= blog._id %>',
+            user_id:"<%= blog.author._id %>"
+          });
+          document.getElementById("commentText").value = "";
+          document.getElementById("parentCommentId").value = "";
+        } else {
+          alert("Comment cannot be empty");
+        }
+        return false;
+      }
+
+      window.replyToComment = function replyToComment(commentId) {
+        document.getElementById("parentCommentId").value = commentId;
+        document.getElementById("commentText").focus();
+      }
+
+      socket.on("commentAdded", function (newComment) {
+        const commentsContainer = document.getElementById("comments");
+        renderComment(newComment, commentsContainer, 0);
+      });
+
+      socket.on("commentError", function (error) {
+        alert("Error: " + error.message);
+      });
+
+      const blogId = "<%= blog._id %>";
+
+      fetch(`/api/comments/${blogId}`)
+        .then((response) => response.json())
+        .then((comments) => {
+          const commentSection = document.getElementById("comments");
+
+          renderComments(comments, commentSection);
+        })
+        .catch((error) => console.error("Error fetching comments:", error));
+
+      function renderComment(comment, container, depth = 0) {
+        if (!comment || !comment.author) {
+          console.warn("Invalid comment data:", comment);
+          return;
+        }
+
+        var userHasLiked = comment.likes.includes("<%= user._id %>");
+
+        const userId = "<%= userId %>";
+        const commentDiv = document.createElement("div");
+        commentDiv.id = `comment-${comment._id}`;
+        commentDiv.classList.add(`ml-${depth * 4}`);
+        const authorId = "<%= blog.author._id %>";
+        const user = <%- JSON.stringify(user) %>;
+        console.log("user", user);
+        commentDiv.innerHTML = `
+            <div class="border  rounded-lg p-4 mb-4 <%= user.settings.theme === 'dark' ? ' bg-dark-sixth border-dark-secondary shadow-white-md' : ' bg-white border-primary-dark  shadow-md' %>  w-full max-w-full">
+              <div class="flex items-start space-x-3">
+                <div class="flex-1 w-full">
+                  <div class="flex items-center justify-between mb-2 w-full">
+                    <div>
+                      <div class="flex items-center justify-between gap-2">
+                        <img
+                          src="${
+                            comment.author?.avatar ||
+                            "/images/defaultProfile.png"
+                          }"
+                          alt="profile photo"
+                          class="h-10 w-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-gray-200"
+                        />
+                        <div>
+                          <a class="flex items-center gap-1 md:gap-2" href="/profile/${
+                            comment.author.slug
+                          }">
+                            <p class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-secondary' %>">${
+                              comment.author?.username || "Unknown User"
+                            }</p>
+                          </a>
+                          <p class="text-xxs lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fourth' %> ">${new Date(
+                            comment.createdAt
+                          ).toLocaleString()}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <button onclick="like_comment('${
+                      comment._id
+                    }',this)" class="border  <%= user.settings.theme === 'dark' ? '  border-dark-secondary text-dark-primary' : ' border-purple-700 text-purple-700' %> hover:scale-105  px-3 py-1 rounded-full  outline-none flex items-center space-x-2">
+                      <img
+                        src="${
+                          user.settings.theme === "dark"
+                            ? userHasLiked
+                              ? "images/icons/darkLikeCommentIcon.png"
+                              : "images/icons/darkUnlikeCommentIcon.png"
+                            : userHasLiked
+                            ? "images/icons/likeCommentIcon.png"
+                            : "images/icons/unlikeCommentIcon.png"
+                        }"
+                        alt="${userHasLiked ? "liked" : "unliked"} icon"
+                        class="h-3 w-3 sm:w-4 sm:h-4  md:w-5 md:h-5 transition-transform duration-200 ease-in-out
+                        <%= user.settings.theme === 'dark' ? ' invert-20' : '' %>"
+                        id="like-${comment._id}"
+                      />
+                      <span class="transition-all duration-300 ease-in-out text-xxs sm:text-xs md:text-sm lg:text-base">${
+                        comment.likes.length
+                      }</span>
+                    </button>
+                  </div>
+                  <div class="w-full">
+                    <p class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-fourth' %> mb-2 break-words whitespace-normal text-sm lg:text-base">
+                      ${comment.content || "No content"}
+                    </p>
+                  </div>
+                  <div class="flex space-x-2 items-end justify-end">
+                    ${
+                      userId == comment.author._id || userId == authorId
+                        ? `<button
+                            onclick="deleteComment('${comment._id}')"
+                            class="text-fourth px-3 py-1 rounded-full focus:outline-none border border-fourth hover:scale-105 transition-all duration-300 ease-in-out text-xxs sm:text-xs md:text-sm lg:text-base font-roboto">
+                                Delete
+                            </button>`
+                        : ""
+                    }
+                    ${
+                      !comment.parentComment
+                        ? `<button onclick="replyToComment('${comment._id}')" class=" <%= user.settings.theme === 'dark' ? 'border-dark-primary text-dark-primary' : ' text-fifth border-fifth' %> px-3 py-1 rounded-full hover:scale-105 outline-none border  transition-all duration-300 ease-in-out text-xxs sm:text-xs md:text-sm lg:text-base font-roboto">
+                            Reply
+                          </button>`
+                        : ""
+                    }
+                  </div>
+                  <div id="replies-${comment._id}" class="mt-4 space-y-4"></div>
+                </div>
+              </div>
+            </div>
+          `;
+
+        if (comment.parentComment) {
+          const parentCommentDiv = document.getElementById(
+            `comment-${comment.parentComment}`
+          );
+          if (parentCommentDiv) {
+            const repliesContainer = parentCommentDiv.querySelector(
+              `#replies-${comment.parentComment}`
+            );
+            if (repliesContainer) {
+              repliesContainer.appendChild(commentDiv);
+            } else {
+              const newRepliesContainer = document.createElement("div");
+              newRepliesContainer.id = `replies-${comment.parentComment}`;
+              newRepliesContainer.classList.add("ml-5");
+              parentCommentDiv.appendChild(newRepliesContainer);
+              newRepliesContainer.appendChild(commentDiv);
+            }
+          } else {
+            container.appendChild(commentDiv);
+          }
+        } else {
+          container.appendChild(commentDiv);
+        }
+
+        const repliesContainer = commentDiv.querySelector(
+          `#replies-${comment._id}`
+        );
+        if (comment.replies && comment.replies.length > 0) {
+          comment.replies.forEach((reply) => {
+            renderComment(reply, repliesContainer, depth + 1);
+          });
+        }
+      }
+
+      window.like_comment = async function like_comment(commentId, button) {
+        const userId = "<%= userId %>";
+        console.log("userId", userId);
+        const imgElement = document.getElementById(`like-${commentId}`);
+        const likeCountSpan = button.querySelector("span");
+        let currentLikes = parseInt(likeCountSpan.textContent, 10) || 0;
+        const user = <%- JSON.stringify(user) %>;
+
+        if (imgElement.src.endsWith("images/icons/unlikeCommentIcon.png") || imgElement.src.endsWith("images/icons/darkUnlikeCommentIcon.png")) {
+          if(user.settings.theme == "dark") {
+            imgElement.src = "images/icons/darkLikeCommentIcon.png";
+          } else {
+            imgElement.src = "images/icons/likeCommentIcon.png";
+          }
+          // imgElement.src = "images/icons/likeCommentIcon.png";
+          imgElement.alt = "liked";
+          likeCountSpan.textContent = `${currentLikes + 1}`;
+        } else {
+          console.log(user.settings.theme);
+          if(user.settings.theme == "dark") {
+            imgElement.src = "images/icons/darkUnlikeCommentIcon.png";
+          } else {
+            imgElement.src = "images/icons/unlikeCommentIcon.png";
+          }
+          // imgElement.src = "images/icons/unlikeCommentIcon.png";
+          imgElement.alt = "unliked";
+          likeCountSpan.textContent = `${Math.max(0, currentLikes - 1)}`;
+        }
+
+        try {
+          const response = await fetch(`/api/comments/like/${commentId}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId }),
+          });
+          const updatedComment = await response.json();
+          likeCountSpan.textContent = `${updatedComment.likes.length}`;
+        } catch (error) {
+          console.error("Error liking comment:", error);
+          if (imgElement.src.endsWith("images/icons/likeCommentIcon.png")) {
+            imgElement.src = "images/icons/unlikeIcon.svg";
+            imgElement.alt = "unliked";
+            likeCountSpan.textContent = `${Math.max(0, currentLikes - 1)}`;
+          } else {
+            imgElement.src = "images/icons/likeCommentIcon.png";
+            imgElement.alt = "liked";
+            likeCountSpan.textContent = `${currentLikes + 1}`;
+          }
+        }
+      };
+
+      window.renderComments = function renderComments(comments, container) {
+        comments.forEach((comment) => {
+          if (!comment.parentComment) {
+            renderComment(comment, container, 0);
+          }
+        });
+      }
+
+      window.deleteComment = function deleteComment(commentId) {
+        fetch(`/api/comments/delete/${commentId}`, {
+          method: "DELETE",
+        })
+          .then((response) => {
+            if (!response.ok) throw new Error("Network response was not ok");
+            return response.json();
+          })
+          .then(() => {
+            const commentElement = document.getElementById(
+              `comment-${commentId}`
+            );
+            if (commentElement) {
+              commentElement.remove();
+            }
+          })
+          .catch((error) => console.error("Error deleting comment:", error));
+      }
+
+      const userAlreadyReported = "<%= userAlreadyReported %>" === "true";
+      const userAlreadyLiked = "<%= userAlreadyLiked %>" === "true";
+      const userSavedBlog = "<%= userSavedBlog %>" === "true";
+
+      const reportButton = document.getElementById("reportButton");
+      if (userAlreadyReported) {
+        reportButton.disabled = true;
+        reportButton.classList.add(
+          "hover:bg-red-400",
+          "hover:text-dark-secondary",
+          "cursor-not-allowed",
+          "text-gray-500",
+          "flex",
+          "justify-center",
+          "items-center"
+        );
+        reportButton.innerHTML = `
+        <span class="text-sm">Reported</span>
+      `;
+      }
+
+
+      reportButton.addEventListener("click", async () => {
+        document.getElementById("reportPopout").classList.toggle("hidden");
+      });
+
+      const likeButton = document.getElementById("likeButton");
+      const likeIcon = document.getElementById("likeIcon");
+      const likeCount = document.getElementById("likeCount");
+
+      const saveButton = document.getElementById("saveBlogButton");
+      const saveIcon = document.getElementById("saveBlogIcon");
+
+      // Like/Unlike functionality
+      likeButton.addEventListener("click", async () => {
+        let wasLiked = !(likeIcon.src.includes("unlikeIcon.svg"));
+        likeIcon.src = wasLiked ? "images/icons/unlikeIcon.svg" : "images/icons/likeIcon.svg";
+        likeIcon.alt = wasLiked ? "Unlike icon" : "Like icon";
+        const countLike=parseInt(likeCount.textContent, 10);
+        if(!wasLiked){
+          gtag("config", "<%= blog.author.googleAnalyticsId %>");
+          gtag('event', 'like_blog', {
+            'event_category': 'Engagement',
+            'event_label': '<%= blog.title %>',
+            'blog_id': '<%= blog._id %>',
+            user_id:"<%= blog.author._id %>"
+          });
+        }
+        if(wasLiked){
+            likeCount.textContent = countLike - 1;
+            if(countLike-1<=0){
+            console.log("countLike",countLike);
+            likeCount.textContent = 0;
+            wasLiked = false;
+            return;
+           }
+        }
+  likeCount.textContent = parseInt(likeCount.textContent, 10) + (wasLiked ? -1 : 1);
+
+        try {
+          const response = await fetch(`/api/blog/like/<%= blog.slug %>`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          });
+
+          if (!response.ok) {
+            // likeIcon.src = wasLiked ? "images/icons/likeIcon.svg" : "images/icons/unlikeIcon.svg";
+            // likeIcon.alt = wasLiked ? "Like icon" : "Unlike icon";
+            // likeCount.textContent = parseInt(likeCount.textContent, 10) + (wasLiked ? 1 : -1);
+          throw new Error("Failed to like/unlike the blog");
+          }
+
+          const result = await response.json();
+
+          likeCount.textContent = result.likesCount;
+          if (!result.liked) {
+            likeIcon.src = "images/icons/unlikeIcon.svg";
+            likeIcon.alt = "Unlike icon";
+          } else {
+            likeIcon.src = "images/icons/likeIcon.svg";
+            likeIcon.alt = "Like icon";
+          }
+        } catch (error) {
+          console.error("Error liking/unliking the blog:", error);
+          likeIcon.src = wasLiked ? "images/icons/likeIcon.svg" : "images/icons/unlikeIcon.svg";
+    likeIcon.alt = wasLiked ? "Like icon" : "Unlike icon";
+    likeCount.textContent = parseInt(likeCount.textContent, 10) + (wasLiked ? 1 : -1);
+        }
+      });
+
+      const editable = "<%= editable %>" == "true";
+      if (isAuthenticated && editable) {
+        const archiveButton = document.getElementById("archivedBlog");
+        const publishIcon = archiveButton.querySelector("img");
+        archiveButton.addEventListener("click", async () => {
+          try {
+            const response = await fetch(`/api/blog/archive/<%= blog.slug %>`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to archive the blog");
+            }
+
+            const result = await response.json();
+
+            if (!result.archived) {
+              publishIcon.src = "images/icons/archiveIcon.svg";
+            } else {
+              publishIcon.src = "images/icons/unarchiveIcon.svg";
+            }
+          } catch (error) {
+            console.error("Error archiving the blog:", error);
+          }
+        });
+      }
+
+      // Save/Unsave blog functionality
+      saveButton.addEventListener("click", async () => {
+        try {
+          console.log("Save button clicked");
+          const response = await fetch(`/api/blog/saveBlog/<%= blog.slug %>`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to save/unsave the blog");
+          }
+
+          const result = await response.json();
+
+          if (result.saved) {
+            saveIcon.src = "images/icons/bookMark.svg";
+            saveIcon.alt = "Saved blog icon";
+            gtag("config", "<%= blog.author.googleAnalyticsId %>");
+          gtag('event', 'save_blog', {
+            'event_category': 'Engagement',
+            'event_label': '<%= blog.title %>',
+            'blog_id': '<%= blog._id %>',
+            user_id:"<%= blog.author._id %>"
+          });
+          } else {
+            saveIcon.src = "images/icons/unbookMark.svg";
+            saveIcon.alt = "Unsaved blog icon";
+          }
+        } catch (error) {
+          console.error("Error saving/unsaving the blog:", error);
+        }
+      });
+
+      document.getElementById("copyBtn").addEventListener("click", function () {
+        const url = "<%= url %>";
+        navigator.clipboard.writeText(url).then(function () {
+          const copyMessage = document.getElementById("copyMessage");
+          copyMessage.classList.remove("hidden");
+          setTimeout(() => copyMessage.classList.add("hidden"), 2000);
+        });
+      });
+    }
+
+    const blogSummaryBool = "<%= blog.summary %>";
+    if (blogSummaryBool == "true") {
+      const summaryContainer = document.getElementById("summaryContainer");
+      const summary = document.getElementById("summary");
+
+      const blogId = "<%= blog._id %>";
+      fetch("/api/suggestion/summary", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ blogId: "<%= blog._id %>" }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.summary) {
+            summary.innerHTML = data.summary;
+            summaryContainer.classList.remove("hidden");
+          }
+        })
+        .catch((error) => console.error("Error fetching summary:", error));
+    }
+
+    var blogPhotoContainer=document.getElementById("blogPhotoContainer");
+    var blogActions = document.getElementById("blogActions");
+    console.log("blogPhotoContainer", blogPhotoContainer);
+    console.log("blogActions", blogActions);
+    blogPhotoContainer.addEventListener("mouseenter", function() {
+      console.log("hover");
+      blogActions.classList.remove("hidden");
+    });
+    blogPhotoContainer.addEventListener("mouseleave", function() {
+      console.log("hover");
+      blogActions.classList.add("hidden");
+    });
+    blogPhotoContainer.addEventListener("click", function() {
+      var blogActions = document.getElementById("blogActions");
+      console.log("hover");
+      blogActions.classList.toggle("hidden");
+    });
+    blogActions.addEventListener("click", function() {
+      var blogActions = document.getElementById("blogActions");
+      console.log("hover");
+      blogActions.classList.toggle("hidden");
+    });
+    blogActions.addEventListener("hover", function() {
+      console.log("hover");
+      blogActions.classList.add("hidden");
+    });
+  });
+</script>

@@ -1,0 +1,321 @@
+<div
+  class="flex justify-between sticky top-0 <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %>"
+>
+  <h1
+  class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-10 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-tertiary bg-white bg-background' %> sticky top-0"
+  >
+    Notifications
+  </h1>
+  <button
+    id="delete-all-btn"
+    class="<%= user.settings.theme === 'dark' ? 'text-red-400' : 'text-red-600' %> hover:text-red-900 font-semibold py-2 px-4 rounded transition text-sm sm:text-base"
+  >
+    delete all 
+  </button>
+</div>
+
+<div
+  id="notifications-list"
+  class="grid grid-cols-1 md:grid-cols-2 gap-6 px-4 md:px-10 py-6"
+></div>
+
+<div id="pagination" class="flex justify-center my-3"></div>
+
+<script>
+  const notificationsList = document.getElementById("notifications-list");
+  const paginationDiv = document.getElementById("pagination");
+
+  async function fetchNotifications(page = 1, limit = 10) {
+    try {
+      const response = await fetch(
+        `/api/notifications/<%= user._id %>?page=${page}&limit=${limit}`
+      );
+      const data = await response.json();
+      // console.log(response);
+      console.log("data", data);
+
+      if (response.ok) {
+        notificationsList.innerHTML = "";
+
+        data.notifications.forEach((notification) => {
+          const notificationDiv = document.createElement("div");
+          console.log("notification", notification);
+          const theme = "<%= user.settings.theme %>";
+
+          const themeClasses =
+            theme === "dark"
+              ? ["bg-dark-sixth", "text-dark-text","shadow-white-lg"]
+              : ["shadow-lg","bg-sixth", "text-text"];
+
+          notificationDiv.classList.add(
+            ...themeClasses,
+            "rounded-lg",
+            "p-4",
+            "lg:p-6",
+            "flex",
+            "flex-col",
+            "justify-between",
+            "items-start",
+            "transition",
+            "hover:shadow-xl"
+          );
+          let notificationContent = "";
+
+          if (notification.notificationType == "new_login") {
+            console.log("notification", notification);
+            notificationContent = `
+              <div class="w-full">
+                <h1 class="font-bold text-sm sm:text-base md:text-lg lg:text-xl ">New Login Detected</h1>
+                <p class="text-xxs sm:text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' text-dark-tertiary border-dark-tertiary' : 'text-primary-dark border-dark-primary-light' %>  break-words whitespace-normal break-words">
+                  ${notification.message}
+                </p>
+                 <p class="text-xxs sm:text-xs md:text-sm lg:text-base text-gray-400 mt-2 break-words ">Type: ${
+                   notification.notificationType
+                 }</p>
+                <p class="text-xs md:text-sm text-gray-400">Created: ${new Date(
+                  notification.createdAt
+                ).toLocaleString()}</p>
+              </div>`;
+          } else if (notification.notificationType === "new_follower") {
+            notificationContent = `
+              <div class="w-full">
+                <h1 class="font-bold text-sm sm:text-base md:text-lg lg:text-xl ">New Follower</h1>
+                <p class="text-xxs sm:text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' text-dark-tertiary border-dark-tertiary' : 'text-primary-dark border-dark-primary-light' %>  break-words whitespace-normal">
+                  ${notification.message}
+                </p>
+                 <p class="text-xxs sm:text-xs md:text-sm lg:text-base text-gray-400 mt-2 break-words ">Type: ${
+                   notification.notificationType
+                 }</p>
+                <p class="text-xs md:text-sm text-gray-300">Created: ${new Date(
+                  notification.createdAt
+                ).toLocaleString()}</p>
+              </div>`;
+          } else if(notification.notificationType ==="new_report") {
+            notificationContent = `
+              <div class="w-full">
+                <h2 class="font-semibold text-xs sm:text-sm md:text-base lg:text-lg  break-words">${
+                  notification.subject
+                }</h2>
+                <p class="text-xxs sm:text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' text-dark-tertiary border-dark-tertiary' : 'text-primary-dark border-dark-primary-light' %>  break-words whitespace-normal">${
+                  notification.message
+                }</p>
+                
+                <p class="text-xxs sm:text-xs md:text-sm lg:text-base text-gray-400 mt-2 break-words ">Type: ${
+                  notification.notificationType
+                }</p>
+                <p class="text-xs md
+                :text-sm text-gray-400">Created: ${new Date(
+                  notification.createdAt
+                ).toLocaleString()}</p>
+              </div>`;
+          }else{
+            notificationContent = `
+              <div class="w-full">
+                <h1 class="font-bold text-sm sm:text-base md:text-lg lg:text-xl  break-words">${
+                  notification.blogId.title
+                }</h1>
+                <h2 class="font-semibold text-xs sm:text-sm md:text-base lg:text-lg  break-words">${
+                  notification.subject
+                }</h2>
+                <p class="text-xxs sm:text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' text-dark-tertiary border-dark-tertiary' : 'text-primary-dark border-dark-primary-light' %>  break-words whitespace-normal">${
+                  notification.message
+                }</p>
+                <a href="/blog/${
+                  notification.blogId.slug
+                }" class="text-xxs sm:text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' text-dark-tertiary ' : 'text-primary ' %> hover:text-blue-600 hover:underline">Visit now</a>
+                <p class="text-xxs sm:text-xs md:text-sm lg:text-base text-gray-400 mt-2 break-words ">Type: ${
+                  notification.notificationType
+                }</p>
+                <p class="text-xs md:text-sm text-gray-400">Created: ${new Date(
+                  notification.createdAt
+                ).toLocaleString()}</p>
+              </div>`;
+          }
+
+          notificationContent += `
+              <div class="flex space-x-4 mt-4 md:mt-6">
+                <button class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary ' : 'text-secondary-dark ' %> hover:text-blue-700 font-semibold text-xxs sm:text-xs md:text-sm lg:text-base" onclick="toggleReadStatus('${
+                  notification._id
+                }', ${notification.isRead})">
+                  ${notification.isRead ? "Mark as Unread" : "Mark as Read"}
+                </button>
+                <button class="text-red-500 hover:text-red-700 font-semibold text-xxs sm:text-xs md:text-sm lg:text-base" onclick="deleteNotification('${
+                  notification._id
+                }')">
+                  Delete
+                </button>
+              </div>
+            `;
+
+          notificationDiv.innerHTML = notificationContent;
+          notificationsList.appendChild(notificationDiv);
+        });
+
+        renderPagination(data.page, data.totalPages);
+      } else {
+        notificationsList.innerHTML = `<p class="text-red-500">Failed to fetch notifications.</p>`;
+      }
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      notificationsList.innerHTML = `<p class="text-red-500">An error occurred while fetching notifications.</p>`;
+    }
+  }
+
+  async function toggleReadStatus(notificationId, isRead) {
+    try {
+      const response = await fetch(
+        `/api/notifications/mark-read/${notificationId}`,
+        {
+          method: "POST",
+        }
+      );
+
+      if (response.ok) {
+        const newStatus = isRead ? "Unread" : "Read";
+        alert(`Notification marked as ${newStatus.toLowerCase()}.`);
+        fetchNotifications();
+      } else {
+        alert("Failed to update notification status.");
+      }
+    } catch (error) {
+      console.error("Error toggling notification read status:", error);
+    }
+  }
+
+  async function deleteNotification(notificationId) {
+    try {
+      const response = await fetch(`/api/notifications/${notificationId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        alert("Notification deleted.");
+        fetchNotifications();
+      } else {
+        alert("Failed to delete notification.");
+      }
+    } catch (error) {
+      console.error("Error deleting notification:", error);
+    }
+  }
+
+  function renderPagination(currentPage, totalPages) {
+    paginationDiv.innerHTML = "";
+
+    const maxVisiblePages = 5;
+    let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1);
+    let endPage = startPage + maxVisiblePages - 1;
+
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+    }
+
+    const prevButton = document.createElement("button");
+    prevButton.innerText = "Prev";
+    prevButton.classList.add(
+      "px-4",
+      "py-2",
+      "border",
+      "rounded-md",
+      "mx-1",
+      "hover:bg-gray-200",
+      "transition",
+      "text-xs",
+      "md:text-sm"
+    );
+
+    prevButton.disabled = currentPage === 1;
+    prevButton.addEventListener("click", () =>
+      fetchNotifications(currentPage - 1)
+    );
+    paginationDiv.appendChild(prevButton);
+
+    for (let i = startPage; i <= endPage; i++) {
+      const button = document.createElement("button");
+      button.classList.add(
+        "px-4",
+        "py-2",
+        "border",
+        "rounded-md",
+        "mx-1",
+        "hover:bg-gray-200",
+        "transition",
+        "text-xs",
+        "md:text-sm"
+      );
+
+      if (i === currentPage) {
+        button.classList.add("bg-tertiary", "text-white");
+      }
+
+      button.innerText = i;
+      button.addEventListener("click", () => fetchNotifications(i));
+
+      paginationDiv.appendChild(button);
+    }
+
+    const nextButton = document.createElement("button");
+    nextButton.innerText = "Next";
+    nextButton.classList.add(
+      "px-4",
+      "py-2",
+      "border",
+      "rounded-md",
+      "mx-1",
+      "hover:bg-gray-200",
+      "transition",
+      "text-xs",
+      "md:text-sm"
+    );
+    nextButton.disabled = currentPage === totalPages;
+    nextButton.addEventListener("click", () =>
+      fetchNotifications(currentPage + 1)
+    );
+    paginationDiv.appendChild(nextButton);
+    if(totalPages === 0){
+      nextButton.classList.add("hidden");
+      prevButton.classList.add("hidden");
+    }
+    if(currentPage === 1){
+      prevButton.classList.add("hidden");
+    }
+    if(currentPage === totalPages){
+      nextButton.classList.add("hidden");
+    }
+  }
+
+  document
+    .getElementById("delete-all-btn")
+    .addEventListener("click", async () => {
+      const userId = "<%= user._id %>";
+      const confirmDelete = confirm(
+        "Are you sure you want to delete all notifications?"
+      );
+
+      if (confirmDelete) {
+        try {
+          const response = await fetch(`/api/notifications/all/${userId}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (response.ok) {
+            alert("All notifications have been deleted.");
+
+            fetchNotifications();
+          } else {
+            const errorData = await response.json();
+            alert(`Error: ${errorData.error}`);
+          }
+        } catch (error) {
+          console.error("Error deleting notifications:", error);
+          alert("An error occurred while deleting notifications.");
+        }
+      }
+    });
+
+  fetchNotifications();
+</script>

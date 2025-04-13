@@ -1,0 +1,337 @@
+<form class="grid grid-cols-2 gap-1 sm:gap-1 md:gap-2 text-lg font-lora">
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+    <label
+      for="name"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      >Name</label
+    >
+    <input
+      type="text"
+      id="firstname"
+      name="firstname"
+      minlength="2"
+      maxlength="10"
+      value="<%= user.firstname %>"
+      class="userInfo px-3 py-2 border rounded-md shadow-sm outline-none text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %>"
+      placeholder="Enter your name"
+      autocapitalize="words"
+      autofocus
+      required
+    />
+    <span class="text-red-500 text-xs error"></span>
+  </div>
+
+  <div class="flex flex-col gap-2 col-span-2 sm:col-span-1">
+    <label
+      for="lastname"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : 'text-fourth' %> text-xs md:text-sm lg:text-base"
+      >Last Name</label
+    >
+    <input
+      type="text"
+      id="lastname"
+      name="lastname"
+      minlength="2"
+      maxlength="10"
+      value="<%= user.lastname %>"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+      placeholder="Enter your last name"
+      autocapitalize="words"
+      autofocus
+      required
+    />
+    <span class="text-red-500 text-xs error"></span>
+  </div>
+
+  <div
+    class="flex flex-col col-span-2 sm:col-span-1 gap-2 text-xs md:text-sm lg:text-base"
+  >
+    <label
+      for="phoneNumber"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %>"
+      >Phone Number</label
+    >
+    <input
+      type="text"
+      id="phoneNumber"
+      name="phoneNumber"
+      maxlength="10"
+      value="<%= user.phone %>"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+      autocapitalize="words"
+      autofocus
+      placeholder="Enter your phone number"
+    />
+    <span class="text-red-500 text-xs error"></span>
+  </div>
+
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+    <label
+      for="username"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      >Userame</label
+    >
+    <input
+      type="text"
+      id="username"
+      name="username"
+      minlength="2"
+      maxlength="10"
+      value="<%= user.username %>"
+      class="userInfo px-3 py-2 border rounded-md shadow-sm outline-none text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %>"
+      placeholder="Enter your name"
+      autocapitalize="words"
+      autofocus
+      required
+    />
+    <span class="text-red-500 text-xs error"></span>
+  </div>
+
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+    <label
+      for="tags"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      >Tags</label
+    >
+    <input
+      type="text"
+      id="tag"
+      value="<%= user.tags %>"
+      name="tags"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+      placeholder="Enter tags separated by commas"
+    />
+    <span class="text-red-500 text-xs error"></span>
+  </div>
+
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+    <label
+      for="linkedin"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      >LinkedIn</label
+    >
+    <input
+      type="text"
+      id="linkedin"
+      name="linkedin"
+      value="<%= user.linkedin %>"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+      autocapitalize="words"
+      autofocus
+      placeholder="Enter your LinkedIn profile name"
+    />
+    <span class="text-red-500 text-xs error"></span>
+  </div>
+
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+    <label
+      for="github"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      >Github</label
+    >
+    <input
+      type="text"
+      id="github"
+      name="github"
+      value="<%= user.github %>"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+      autocapitalize="words"
+      autofocus
+      placeholder="Enter your Github profile name"
+    />
+    <span class="text-red-500 text-xs error"></span>
+  </div>
+
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+    <label
+      for="twitter"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      >Twitter</label
+    >
+    <input
+      type="text"
+      id="twitter"
+      name="twitter"
+      value="<%= user.twitter %>"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+      autocapitalize="words"
+      autofocus
+      placeholder="Enter your Twitter profile name"
+    />
+    <span class="text-red-500 text-xs error"></span>
+  </div>
+
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+    <label
+      for="country"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      >Country</label
+    >
+    <select
+      id="country"
+      name="country"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+    >
+      <option class=" ">Select a country</option>
+    </select>
+  </div>
+
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+    <label
+      for="state"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      >State</label
+    >
+    <select
+      id="state"
+      name="state"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+    >
+      <option>Select a state</option>
+    </select>
+  </div>
+
+  <div class="flex flex-col gap-2 col-span-2">
+    <label
+      for="bio"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
+      >Bio</label
+    >
+    <textarea
+      id="bio"
+      name="bio"
+      rows="7"
+      maxlength="600"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base resize-none"
+      placeholder="Tell us about yourself"
+    ><%= user.bio %></textarea
+    >
+    <span class="text-red-500 text-xs error"></span>
+  </div>
+</form>
+
+<script>
+  const countrySelect = document.getElementById("country");
+  const stateSelect = document.getElementById("state");
+
+  const savedCountry = "<%= user.country %>";
+  const savedState = "<%= user.state %>";
+
+  fetch("/countries")
+    .then((response) => response.json())
+    .then((countries) => {
+      countries.forEach((country) => {
+        const option = document.createElement("option");
+        option.value = country.isoCode;
+        option.textContent = country.name;
+
+        if (country.isoCode === savedCountry) {
+          option.selected = true;
+        }
+
+        countrySelect.appendChild(option);
+      });
+
+      if (savedCountry) {
+        countrySelect.dispatchEvent(new Event("change"));
+      }
+    });
+
+  countrySelect.addEventListener("change", function () {
+    const countryCode = this.value;
+    stateSelect.innerHTML = '<option value="">Select a state</option>';
+
+    if (countryCode) {
+      fetch(`/states/${countryCode}`)
+        .then((response) => response.json())
+        .then((states) => {
+          states.forEach((state) => {
+            const option = document.createElement("option");
+            option.value = state.isoCode;
+            option.textContent = state.name;
+
+            if (state.isoCode === savedState) {
+              option.selected = true;
+            }
+
+            stateSelect.appendChild(option);
+          });
+        });
+    }
+  });
+
+  const inputs = document.querySelectorAll(".userInfo");
+const saveProfile = document.getElementById("saveProfile");
+
+inputs.forEach((input) => {
+  input.addEventListener("input", function () {
+    validateInput(input);
+    updateFormValidity();
+  });
+});
+
+const regexPatterns = {
+  firstname: /^[a-zA-Z]+$/,
+  lastname: /^[a-zA-Z\s]+$/,
+  username: /^(?!\s)[a-zA-Z0-9\s]{3,20}(?<!\s)$/,
+  phoneNumber: /^[0-9]{10}$/,
+  linkedin: /^[a-zA-Z0-9-]+$/,
+  github: /^[a-zA-Z0-9-]+$/,
+  twitter: /^[a-zA-Z0-9_]+$/,
+  tags: /^[a-zA-Z0-9,\s]+$/,
+  bio: /^(?!.*\s{2})[a-zA-Z0-9\s\S]{0,600}$/,
+};
+
+function validateInput(input) {
+  const errorSpan = input.nextElementSibling;
+  const fieldName = input.name;
+  const regex = regexPatterns[fieldName];
+  if (regex && regex.test(input.value)) {
+    errorSpan.textContent = "";
+    input.classList.remove("border-red-500");
+    input.classList.add("border-gray-300");
+    return true;
+  } else {
+    errorSpan.textContent = "Invalid input";
+    input.classList.remove("border-gray-300");
+    input.classList.add("border-red-500");
+    return false;
+  }
+}
+
+function updateFormValidity() {
+  let allValid = true;
+
+  inputs.forEach((input) => {
+    const fieldName = input.name;
+    const regex = regexPatterns[fieldName];
+    if (regex && !regex.test(input.value)) {
+      allValid = false;
+    }
+  });
+
+  const isDarkMode = "<%= user.settings.theme === 'dark' %>";
+
+  if (allValid) {
+    saveProfile.disabled = false;
+    saveProfile.classList.remove("cursor-not-allowed", "bg-red-500");
+
+    if (isDarkMode) {
+      saveProfile.classList.add("bg-dark-fifth");
+    } else {
+      saveProfile.classList.add("bg-tertiary");
+    }
+    saveProfile.classList.add("hover:bg-blue-700");
+  } else {
+    saveProfile.disabled = true;
+    saveProfile.classList.add("cursor-not-allowed", "bg-red-500");
+
+    if (isDarkMode) {
+      saveProfile.classList.remove("bg-dark-fifth");
+    } else {
+      saveProfile.classList.remove("bg-tertiary");
+    }
+    saveProfile.classList.remove("hover:bg-blue-700");
+  }
+}
+</script>

@@ -1,0 +1,200 @@
+<div class="font-lora">
+  <h1
+    class="text-base sm:text-lg md:text-xl lg:text-2xl <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-text' %> font-semibold mt-8 md:mt-0 p-3 md:px-10 font-lora"
+  >
+    Following
+  </h1>
+  <div
+    id="followings-list"
+    class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2 md:px-10 md:py-5"
+  ></div>
+  <div id="pagination" class="flex justify-center my-2"></div>
+</div>
+
+<script>
+  const followingsList = document.getElementById("followings-list");
+  const paginationDiv = document.getElementById("pagination");
+
+  async function fetchfollowings(page = 1, limit = 5) {
+    try {
+      const response = await fetch(
+        `/api/user/search/following/<%= user.slug %>?page=${page}&limit=${limit}`
+      );
+      const data = await response.json();
+
+      if (response.ok) {
+        followingsList.innerHTML = "";
+
+        followingsList.innerHTML = `
+                ${data.following
+                  .map(
+                    (follower) => `
+                    <div class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-primary' : 'bg-sixth text-text' %> shadow-md rounded-lg p-2 md:p-6 flex flex-col items-center justify-between text-center hover:shadow-lg transform hover:scale-105 transition duration-300">
+                      <img
+                        src="${follower.avatar || "/images/defaultProfile.png"}"
+                        alt="Profile Photo"
+                        class="h-16 w-16 sm:h-18 sm:w-18 md:h-20 md:w-20 lg:h-24 lg:w-24 rounded-full mb-4"
+                      />
+                      <h2 class="font-bold text-xs sm:text-sm md:text-base <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-primary' %>">
+                        ${follower.firstname} ${follower.lastname}
+                      </h2>
+                      <div class="mt-2">
+                          ${
+                            follower.tags && follower.tags.length > 0
+                              ? follower.tags
+                                  .map(
+                                    (tag) =>
+                                      `<span class="inline-block text-xxs md:text-xxxs  lg:text-xxs border bg-transparent <%= user.settings.theme === 'dark' ? 'border-dark-secondary text-dark-secondary' : 'border-dark-text text-dark-text' %>  rounded-lg shadow px-1 md:px-2 md:py-1 cursor-pointer transform hover:scale-105 transition duration-200 uppercase">${tag}</span>`
+                                  )
+                                  .join("")
+                              : `<span class="inline-block text-xxs md:text-xxxs  lg:text-xxs border bg-transparent <%= user.settings.theme === 'dark' ? 'border-dark-secondary text-dark-secondary' : 'border-dark-text text-dark-text' %>  rounded-lg shadow px-1 md:px-2 md:py-1 cursor-pointer transform hover:scale-105 transition duration-200 uppercase">No tags available </span>`
+                          }
+                      </div>
+                      <p class="text-xxxs md:text-xxs  lg:text-xs  <%= user.settings.theme === 'dark' ? ' text-dark-secondary ' : 'text-fourth ' %> mt-2 	break-all">
+                        ${truncateText(follower.bio || "No bio available", 150)}
+                      </p>
+                      <div class="flex justify-around w-full mt-4">
+                        <a href="/profile/${
+                          follower.slug
+                        }" class="<%= user.settings.theme === 'dark' ? ' text-blue-400 hover:text-blue-500' : 'text-blue-500 hover:text-blue-700' %>   font-semibold text-xxs md:text-xxs  lg:text-xs">
+                          Visit Profile
+                        </a>
+                        <button
+                          class="<%= user.settings.theme === 'dark' ? ' text-red-400 hover:text-red-500' : 'ttext-red-500 hover:text-red-700' %>   font-semibold text-xxs md:text-xxs  lg:text-xs"
+                          onclick="removeFollower('${follower.slug}')"
+                        >
+                          Unfollow
+                        </button>
+                      </div>
+                    </div>
+                  `
+                  )
+                  .join("")}
+            `;
+
+        renderPagination(data.page, data.totalPages);
+      } else {
+        followingsList.innerHTML = `<p class="text-red-500">Failed to fetch followings.</p>`;
+      }
+    } catch (error) {
+      console.error("Error fetching followings:", error);
+      followingsList.innerHTML = `<p class="text-red-500">An error occurred while fetching followings.</p>`;
+    }
+  }
+
+  function renderPagination(currentPage, totalPages) {
+    paginationDiv.innerHTML = "";
+
+    const maxVisiblePages = 5;
+    let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1);
+    let endPage = startPage + maxVisiblePages - 1;
+
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+    }
+
+    if (totalPages < 1) {
+      const followingsList = document.getElementById("followings-list");
+      followingsList.innerHTML = `<p class="text-red-500">No followings found.</p>`;
+      return;
+    }
+
+    const prevButton = document.createElement("button");
+    prevButton.innerText = "Prev";
+    prevButton.classList.add(
+      "px-4",
+      "py-2",
+      "border",
+      "rounded-md",
+      "mx-1",
+      "hover:bg-gray-200",
+      "transition",
+      "text-xs",
+      "md:text-sm"
+    );
+
+    prevButton.disabled = currentPage === 1;
+    prevButton.addEventListener("click", () =>
+      fetchNotifications(currentPage - 1)
+    );
+    paginationDiv.appendChild(prevButton);
+
+    for (let i = startPage; i <= endPage; i++) {
+      const button = document.createElement("button");
+      button.classList.add(
+        "px-4",
+        "py-2",
+        "border",
+        "rounded-md",
+        "mx-1",
+        "hover:bg-gray-200",
+        "transition",
+        "text-xs",
+        "md:text-sm"
+      );
+
+      if (i === currentPage) {
+        button.classList.add("bg-secondary", "text-white");
+      }
+
+      button.innerText = i;
+      button.addEventListener("click", () => fetchNotifications(i));
+
+      paginationDiv.appendChild(button);
+    }
+
+    const nextButton = document.createElement("button");
+    nextButton.innerText = "Next";
+    nextButton.classList.add(
+      "px-4",
+      "py-2",
+      "border",
+      "rounded-md",
+      "mx-1",
+      "hover:bg-gray-200",
+      "transition",
+      "text-xs",
+      "md:text-sm"
+    );
+    nextButton.disabled = currentPage === totalPages;
+    nextButton.addEventListener("click", () =>
+      fetchNotifications(currentPage + 1)
+    );
+    paginationDiv.appendChild(nextButton);
+    if (currentPage == 1) {
+      prevButton.style.display = "none";
+    }
+    if (currentPage >= totalPages) {
+      nextButton.style.display = "none";
+    }
+  }
+
+  async function removeFollower(slug) {
+    try {
+      const response = await fetch(`/api/user/follow/${slug}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        fetchfollowings();
+      } else {
+        console.error("Failed to remove follower.");
+      }
+    } catch (error) {
+      console.error("Error removing follower:", error);
+    }
+  }
+
+  function truncateText(text, maxLength) {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  }
+
+  fetchfollowings();
+</script>

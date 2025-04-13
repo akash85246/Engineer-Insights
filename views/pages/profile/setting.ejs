@@ -1,0 +1,274 @@
+<div class="p-4 rounded-lg max-w-4xl m-auto font-lora">
+  <h1 class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-0 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-tertiary  bg-background ' %> sticky top-0 z-10">User Settings</h1>
+  <table
+    class="w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : 'bg-sixth text-tertiary' %> shadow-md rounded-lg"
+  >
+    <tbody>
+      
+      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/featureIcon.png" alt="feature icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/>Feature a Blog</td>
+        <td class="p-4 text-right">
+          <a
+            href="/featureblog"
+            class="text-blue-500 hover:text-highlight font-roboto whitespace-nowrap"
+            >
+            
+            Feature a Blog</a
+          >
+        </td>
+      </tr>
+
+      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/blockedUserIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Blocked Users</td>
+        <td class="p-4 text-right">
+          <a
+            href="/blockedUsers"
+            class="text-blue-500 hover:text-highlight font-roboto whitespace-nowrap"
+            >Blocked Users</a
+          >
+        </td>
+      </tr>
+      
+      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2 "><img src="/images/icons/suggestionIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Auto Suggestion</td>
+        <td class="p-4 text-right">
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" class="sr-only peer" <%= setting.suggestions
+            ? 'checked' : '' %> onclick="toggleSuggestion()" />
+            <div
+              class="w-11 h-6 bg-fourth rounded-full peer peer-checked:bg-blue-600"
+            ></div>
+            <div
+              class="w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 peer-checked:left-6 transition-all"
+            ></div>
+          </label>
+        </td>
+      </tr>
+     
+      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/nightModeIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Night Mode</td>
+        <td class="p-4 text-right">
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" class="sr-only peer" id="theme-toggle" <%=
+            setting.theme == 'light' ? '' : 'checked' %>
+            onclick="toggleNightMode()" />
+            <div
+              class="w-11 h-6 bg-fourth rounded-full peer peer-checked:bg-blue-600"
+            ></div>
+            <div
+              class="w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 peer-checked:left-6 transition-all"
+            ></div>
+          </label>
+        </td>
+      </tr>
+
+      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/emailIcon copy.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Email Notifications</td>
+        <td class="p-4 text-right">
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" class="sr-only peer" <%=
+            setting.notifications ? 'checked' : '' %>
+            onclick="toggleNotification()"/>
+            <div
+              class="w-11 h-6 bg-fourth rounded-full peer peer-checked:bg-blue-600"
+            ></div>
+            <div
+              class="w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 peer-checked:left-6 transition-all"
+            ></div>
+          </label>
+        </td>
+      </tr>
+
+      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/newsletterIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Receive Newsletters</td>
+        <td class="p-4 text-right">
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" class="sr-only peer" <%= setting.newsletter ?
+            'checked' : '' %> onclick="toggleNewsletter()"/>
+            <div
+              class="w-11 h-6 bg-fourth rounded-full peer peer-checked:bg-blue-600"
+            ></div>
+            <div
+              class="w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 peer-checked:left-6 transition-all"
+            ></div>
+          </label>
+        </td>
+      </tr>
+
+      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/2faIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Two-Factor Authentication</td>
+        <td class="p-4 text-right">
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" class="sr-only peer" <%= setting['2fa'] ?
+            'checked' : '' %> onclick="toggle2fa()" />
+            <div
+              class="w-11 h-6 bg-fourth rounded-full peer peer-checked:bg-blue-600"
+            ></div>
+            <div
+              class="w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 peer-checked:left-6 transition-all"
+            ></div>
+          </label>
+        </td>
+      </tr>
+
+      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/passwordResetIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Password Reset</td>
+        <td class="p-4 text-right">
+          <a href="/profile/verify"
+            class="bg-blue-500 hover:bg-blue-600 text-sixth  py-1 px-4 rounded-lg font-roboto"
+          >
+            Reset
+        </a>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/deleteUserIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Delete User</td>
+        <td class="p-4 text-right">
+          <button
+            class="bg-red-500 hover:bg-red-600 text-sixth py-1 font-roboto px-4 rounded-lg"
+            onclick="toggleDeleteUser()"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div
+  class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center hidden z-20"
+  id="deleteUser"
+>
+  <div class="<%= user.settings.theme === 'dark' ? 'bg-dark-background' : 'bg-background' %> p-4 rounded-lg w-96 backdrop-blur-lg">
+    <h1 class="text-xl  font-semibold mb-4">Delete User</h1>
+    <p class=" text-sm mb-4 <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-sixth' %>">
+      Are you sure you want to delete your account? This action cannot be
+      undone.
+    </p>
+    <div class="flex justify-end gap-4">
+      <button
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-fourth' %> rounded-md hover:bg-red-600  py-1 px-4 font-roboto"
+        onclick="deleteUser()"
+      >
+        Delete
+      </button>
+      <button
+        class="<%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300 hover:text-white py-1 px-4  font-roboto"
+        onclick="toggleDeleteUser()"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleNightMode() {
+    fetch("/api/profile/mode", {
+      method: "PATCH",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Night mode updated successfully.", response);
+          window.location.reload();
+        } else {
+          throw new Error("Failed to update night mode.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function toggleSuggestion() {
+    fetch("/api/profile/suggestions", {
+      method: "PATCH",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Suggestions updated successfully.", response);
+        } else {
+          throw new Error("Failed to update suggestions.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function toggleNotification() {
+    fetch("/api/profile/notification", {
+      method: "PATCH",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Notifications updated successfully.", response);
+        } else {
+          throw new Error("Failed to Notificatios mode.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function toggleNewsletter() {
+    fetch("/api/profile/newsletter", {
+      method: "PATCH",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Newsletter updated successfully.", response);
+        } else {
+          throw new Error("Failed to update newsletter.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function toggle2fa() {
+    fetch("/api/profile/2fa", {
+      method: "PATCH",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("2fa updated successfully.", response);
+        } else {
+          throw new Error("Failed to update 2fa.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  async function deleteUser() {
+    try {
+      const response = await fetch("/api/profile/delete", {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        console.log("User deleted successfully.", response);
+        window.location.href = "/signin";
+      } else {
+        throw new Error("Failed to delete user.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  function toggleDeleteUser() {
+    const modal = document.getElementById("deleteUser");
+    if (modal.style.display === "none" || modal.style.display === "") {
+      modal.style.display = "flex";
+    } else {
+      modal.style.display = "none";
+    }
+  }
+</script>

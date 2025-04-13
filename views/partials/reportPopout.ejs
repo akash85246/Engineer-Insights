@@ -1,0 +1,149 @@
+<div
+  class="hidden fixed top-0 bottom-0 left-0 right-0
+  <%= user.settings.theme === 'dark' ? '  bg-dark-background' : 'bg-background' %>  bg-opacity-50 flex justify-center items-center w-screen h-screen backdrop-blur-sm font-lora"
+  id="reportPopout"
+>
+  <form
+    class="relative <%= user.settings.theme === 'dark' ? '  bg-dark-sixth shadow-white-lg' : 'bg-white shadow-lg' %>  rounded-lg p-6 max-w-xs  m-5 sm:max-w-lg   md:max-w-2xl lg:max-w-4xl space-y-6 w-full"
+    id="reportForm"
+  >
+    <h2 class="text-sm sm:text-base md:text-lg lg:text-xl font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %>  break-words whitespace-normal">
+      Report <%- blog.title %>
+    </h2>
+
+    <div class="form-group">
+      <label for="reason" class="block text-sm md:text-base lg:text-lg font-medium  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-gray-700' %>">
+        Reason
+      </label>
+      <select
+        class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm md:text-base lg:text-lg bg-transparent"
+        id="reason"
+        name="reason"
+        required
+      >
+        <option value="Inappropriate Content">Inappropriate Content</option>
+        <option value="Misleading Information">Misleading Information</option>
+        <option value="Spam">Spam</option>
+        <option value="Harassment or Bullying">Harassment or Bullying</option>
+        <option value="Violence or Harmful Behavior">
+          Violence or Harmful Behavior
+        </option>
+        <option value="Hate Speech or Symbols">Hate Speech or Symbols</option>
+        <option value="False Information">False Information</option>
+        <option value="Plagiarism">Plagiarism</option>
+        <option value="Copyright Violation">Copyright Violation</option>
+        <option value="Illegal Activity">Illegal Activity</option>
+        <option value="Scam or Fraud">Scam or Fraud</option>
+        <option value="Impersonation">Impersonation</option>
+        <option value="Sensitive Content">Sensitive Content</option>
+        <option value="Offensive Language">Offensive Language</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="description" class="block text-sm md:text-base lg:text-lg font-medium  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-gray-700' %>">
+        Description
+      </label>
+      <textarea
+        class="form-control mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm md:text-base lg:text-lg resize-none bg-transparent"
+        id="descriptionInput"
+        name="description"
+        rows="6"
+        required
+      ></textarea>
+      <p id="descriptionError" class="text-red-500 text-xs lg:text-sm hidden">
+        Description must be at least 10 characters long.
+      </p>
+    </div>
+
+    <div class="flex justify-end gap-2">
+      <button
+        type="button"
+        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm md:text-base lg:text-lg font-medium rounded-md text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 font-roboto"
+        id="closeReportPopout"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm md:text-base lg:text-lg font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 font-roboto"
+        id="submitReport"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  const reportForm = document.getElementById("reportForm");
+  const descriptionInput = document.getElementById("descriptionInput");
+  const descriptionError = document.getElementById("descriptionError");
+  const closeReportPopout = document.getElementById("closeReportPopout");
+  const reportPopout = document.getElementById("reportPopout");
+
+  const descriptionRegex = /^.{10,}$/;
+
+  // Function to validate description field
+  function validateReportDescription() {
+    const descriptionValue = descriptionInput.value.trim();
+    console.log("Description:", descriptionValue);
+    if (!descriptionRegex.test(descriptionValue)) {
+      descriptionError.classList.remove("hidden"); // Show error message
+      descriptionInput.classList.add("border-red-500"); 
+    } else {
+      descriptionError.classList.add("hidden"); // Hide error message
+      descriptionInput.classList.remove("border-red-500"); }
+  }
+
+  // Validate on input change
+  descriptionInput.addEventListener("input", validateReportDescription);
+
+  // Add validation and form submission logic
+  reportForm.addEventListener("submit", async (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+    validateReportDescription(); // Validate description input
+
+    // Prevent submission if the input is invalid
+    if (descriptionInput.classList.contains("border-red-500")) {
+      console.log("Invalid description");
+      return;
+    }
+
+    const formData = new FormData(reportForm);
+    const reason = formData.get("reason");
+    const description = formData.get("description");
+
+    console.log("Submitting report with data:", { reason, description });
+
+    try {
+      const response = await fetch("/api/reports/<%= blog.slug %>", {
+        method: "POST",
+        body: JSON.stringify({ reason, description }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      console.log("Response data:", data);
+
+      if (response.status === 201) {
+        reportPopout.classList.add("hidden");
+        alert(data.message || "Report submitted successfully!");
+      } else {
+        // Show error message if response status is not 201
+        alert(data.message || "Failed to submit report. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      alert("An error occurred while submitting the report.");
+    }
+  });
+
+  // Close report popout on cancel
+  closeReportPopout.addEventListener("click", () => {
+    reportPopout.classList.add("hidden");
+  });
+</script>

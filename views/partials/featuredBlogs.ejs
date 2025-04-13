@@ -1,0 +1,161 @@
+<div class="relative overflow-hidden">
+  <div class="relative w-full font-lora">
+    <div
+      class="flex transition-transform duration-300 ease-in-out <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-secondary text-text' %>"
+      id="featuredBlogCarousel"
+    ></div>
+
+    <button
+      class="absolute left-0 top-1/2 transform -translate-y-1/2 <%= user.settings.theme === 'dark' ? 'bg-dark-secondary text-dark-text' : 'bg-secondary text-text' %> p-2 bg-opacity-35 carousel-button-prev z-10 h-full text-lg px-5 bg-no-repeat opacity-0 hover:opacity-100 transition-opacity"
+      id="prevButton"
+    >
+      &#10094;
+    </button>
+    <button
+      class="absolute right-0 top-1/2 transform -translate-y-1/2 <%= user.settings.theme === 'dark' ? 'bg-dark-secondary text-dark-text' : 'bg-secondary text-text' %> p-2 bg-opacity-35 carousel-button-next z-10 h-full text-lg px-5 bg-no-repeat opacity-0 hover:opacity-100 transition-opacity"
+      id="nextButton"
+    >
+      &#10095;
+    </button>
+
+    <div
+      class="absolute bottom-4 left-16 transform flex space-x-2"
+      id="carouselDotsContainer"
+    ></div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const carouselContainer = document.getElementById("featuredBlogCarousel");
+    const dotsContainer = document.getElementById("carouselDotsContainer");
+
+    function showFeaturedBlogs() {
+      var blogs = <%- JSON.stringify(featuredBlog) %>;
+      // blogs = JSON.parse(blogs);
+
+      if (blogs.length > 0) {
+        const slidesHtml = blogs
+          .map(
+            (blog) => `
+            <div class="w-full flex-shrink-0 h-[40vh]  md:h-[50vh]">
+              <div class="flex justify-center items-center bg-cover bg-center bg-origin-content w-full h-full text-white rounded-none " style="background-image: url('${
+                blog.blogPhoto
+              }')">
+                <div class="rounded-lg shadow-lg overflow-hidden <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'bg-primary text-text' %> bg-opacity-30 h-full flex flex-col justify-end w-full p-5 py-2  md:p-10 md:py-4  lg:p-16 lg:py-10 gap-2">
+                  <div class="flex">
+                    <p class=" px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-secondary text-dark-text' : 'bg-background text-text' %>  bg-opacity-30 text-white text-xxxs   md:text-xxs  lg:text-xs font-semibold font-sans uppercase">${
+                      blog.tags[0]
+                    }</p>
+                  </div>
+                  <div class="flex flex-col gap-2 mb-4 w-full sm:w-4/5  md:w-1/2">
+                    <h5 class="text-lg md:text-xl  lg:text-2xl font-semibold text-white break-words">  ${truncateText(
+                      blog.title,
+                      60
+                    )}</h5>
+                    <div class="flex gap-2 w-full overflow-clip font-thin text-sixth">
+                      <p class="text-xxs md:text-sm  lg:text-md  font-thin ">${new Date(
+                        blog.createdAt
+                      ).toLocaleDateString("en-US", {
+                        day: "numeric",
+                        month: "numeric",
+                        year: "numeric",
+                      })}</p>
+                      <p class="-mt-2  flex p-0 font-sans">___</p>
+                      <p class=" text-xxs md:text-sm  lg:text-md break-words w-full sm:w-2/3 md:w-full font-thin">${truncateText(
+                        blog.description,
+                        150
+                      )}</p>
+                    </div>
+                    <a href="/blog/${
+                      blog.slug
+                    }" class="text-fifth hover:text-highlight hover:underline text-end text-xxs md:text-sm decoration-highlight font-roboto cursor-pointer">Read More </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `
+          )
+          .join("");
+
+        carouselContainer.innerHTML = slidesHtml;
+
+        const dotsHtml = blogs
+          .map(
+            (_, index) =>
+              `<span class="w-2 h-2 bg-background rounded-full cursor-pointer featuredDot" data-index="${index}"></span>`
+          )
+          .join("");
+        dotsContainer.innerHTML = dotsHtml;
+
+        const dots = document.querySelectorAll(".featuredDot");
+        let currentSlide = 0;
+        const totalSlides = blogs.length;
+        const slideWidth = carouselContainer.clientWidth;
+
+        function updateCarousel() {
+          carouselContainer.style.transform = `translateX(-${
+            currentSlide * 100
+          }%)`;
+          updateDots(currentSlide);
+        }
+
+        function updateDots(index) {
+          dots.forEach((dot, i) => {
+            dot.classList.toggle("bg-opacity-100", i === index);
+            dot.classList.toggle("bg-opacity-20", i !== index);
+          });
+        }
+
+        function scrollToSlide(index) {
+          const offset = index * slideWidth;
+          carouselContainer.scrollTo({
+            left: offset,
+            behavior: "smooth",
+          });
+          updateDots(index);
+        }
+
+        document
+          .getElementById("nextButton")
+          .addEventListener("click", function () {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+          });
+
+        document
+          .getElementById("prevButton")
+          .addEventListener("click", function () {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+          });
+
+        dots.forEach((dot) => {
+          dot.addEventListener("click", (e) => {
+            const index = parseInt(e.target.getAttribute("data-index"));
+            currentSlide = index;
+            updateCarousel();
+          });
+        });
+
+        setInterval(() => {
+          currentSlide = (currentSlide + 1) % totalSlides;
+          updateCarousel();
+        }, 3000);
+
+        updateCarousel();
+      } else {
+        carouselContainer.innerHTML = "";
+      }
+    }
+
+    showFeaturedBlogs();
+
+    function truncateText(text, maxLength) {
+      if (text.length > maxLength) {
+        return text.substring(0, maxLength) + "...";
+      }
+      return text;
+    }
+  });
+</script>

@@ -1,0 +1,399 @@
+<div class="pt-16 font-roboto">
+  <div
+    class="relative <%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-gray-200' %> rounded-lg p-1 w-full max-w-md mx-auto"
+  >
+   
+    <div
+      id="slider"
+      class="absolute <%= user.settings.theme === 'dark' ? 'bg-dark-tertiary' : 'bg-white' %> rounded-lg top-1 left-1 h-[calc(100%-8px)] w-[calc(50%-4px)] transform transition-transform duration-300 ease-in-out"
+    ></div>
+
+    <div class="relative z-10 grid grid-cols-2">
+      <button
+        id="newButton"
+        class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-gray-800 ' %> font-medium py-2 px-4 text-center rounded-lg focus:outline-none font-roboto"
+        onclick="toggleTab('newBlogs')"
+      >
+        Feature New
+      </button>
+      <button
+        id="featuredButton"
+        class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-gray-800 ' %> font-medium py-2 px-4 text-center rounded-lg focus:outline-none font-roboto"
+        onclick="toggleTab('featuredBlogs')"
+      >
+        Featured
+      </button>
+    </div>
+  </div>
+</div>
+<div
+  id="blogsContainer"
+  class="relative overflow-hidden min-h-screen w-full h-full font-lora"
+>
+  <div
+    id="newBlogs"
+    class="w-full transition-transform transform translate-x-0"
+  >
+    <h1
+      class="text-base sm:text-lg md:text-xl lg:text-2xl <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %> font-semibold mt-8 md:mt-0 p-3 md:px-10"
+    >
+      Select a Blog to feature
+    </h1>
+    <div
+      class="h-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 p-3 md:px-10"
+      id="newBlogsContainer"
+    ></div>
+  </div>
+  <div
+    id="featuredBlogs"
+    class="absolute w-full transition-transform transform translate-x-full"
+  >
+    <h1
+      class="text-base sm:text-lg md:text-xl lg:text-2xl <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %> font-semibold mt-8 md:mt-0 p-3 md:px-10"
+    >
+      Select a featured blog
+    </h1>
+    <div
+      class="p-3 md:px-10 h-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4"
+      id="featureBlogContainer"
+    ></div>
+  </div>
+</div>
+
+<div id="pagination" class="py-2 flex justify-center"></div>
+
+<%- include("../../partials/featureModal.ejs") %> <%-
+include("../../partials/featureModalInfo.ejs") %>
+
+<script>
+  const newButton = document.getElementById("newButton");
+  const featuredButton = document.getElementById("featuredButton");
+  const slider = document.getElementById("slider");
+  const newBlogs = document.getElementById("newBlogs");
+  const featuredBlogs = document.getElementById("featuredBlogs");
+  const paginationDiv = document.getElementById("pagination");
+  const newBlogContainer = document.getElementById("newBlogsContainer");
+  const featureBlogContainer = document.getElementById("featureBlogContainer");
+
+  function toggleTab(tab) { 
+    if (tab === "newBlogs") {
+      
+      slider.style.transform = "translateX(0)";
+      newBlogs.classList.remove("absolute");
+      featuredBlogs.classList.add("absolute");
+     
+      newBlogs.classList.remove("translate-x-full");
+      featuredBlogs.classList.add("translate-x-full");
+
+
+      fetchNewBlogs(1, 10);
+    } else if (tab === "featuredBlogs") {
+      
+      slider.style.transform = "translateX(100%)";
+      newBlogs.classList.add("absolute");
+      featuredBlogs.classList.remove("absolute");
+     
+      newBlogs.classList.add("translate-x-full");
+      featuredBlogs.classList.remove("translate-x-full");
+      fetchFeaturedBlogs(1, 5);
+    }
+  }
+
+  function updatePagination(currentPage, totalPages, isNew) {
+    paginationDiv.innerHTML = "";
+    renderPagination(currentPage, totalPages, isNew);
+  }
+
+  function fetchNewBlogs(page = 1, limit = 10) {
+    fetch(
+      `/api/blog/search/user?author=<%= user._id %>&page=${page}&limit=${limit}&featured=false&status=published`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const { blogs, pagination } = data;
+        console.log("blogs", blogs);
+        if(blogs.length === 0){
+          const noFeatureCard =` <div class="border-2 border border-gray-300 rounded-lg p-6 text-center                text-gray-500 font-lora font-thin min-h-[400px] flex flex-col               items-center justify-center shadow-lg">
+                  <img
+      src="/images/icons/blogNotFound.svg" />
+                <p class="text-lg">No blogs published yet—publish and feature your first blog now!</p>
+              </div>`.trim();
+          newBlogContainer.innerHTML = noFeatureCard;
+    
+          return;
+        }
+        renderNewBlogs(blogs);
+        renderPagination(pagination.currentPage, pagination.totalPages, true);
+      })
+      .catch((error) => console.error("Error fetching new blogs:", error));
+  }
+
+  function fetchFeaturedBlogs(page = 1, limit = 10) {
+    fetch(
+      `/api/blog/search/user?author=<%= user._id %>&page=${page}&limit=${limit}&featured=true&status=published`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data", data);
+        const { blogs, pagination } = data;
+        if(blogs.length === 0){
+          const featureBlogCard=`
+      <div class="border-2 border border-gray-300 rounded-lg p-6 text-center                text-gray-500 font-lora font-thin min-h-[400px] flex flex-col               items-center justify-center shadow-lg">
+                  <img
+      src="/images/icons/blogNotFound.svg" />
+                <p class="text-lg">No blogs yet—be the pioneer!</p>
+              </div>
+            `.trim();
+
+          featureBlogContainer.innerHTML = featureBlogCard;
+          return;
+        }
+        renderFeaturedBlogs(blogs);
+        renderPagination(pagination.currentPage, pagination.totalPages, false);
+      })
+      .catch((error) => console.error("Error fetching featured blogs:", error));
+  }
+
+  function renderNewBlogs(blogs) {
+    const newBlogContainer = document.getElementById("newBlogsContainer");
+    newBlogContainer.innerHTML = blogs
+      .map(
+        (blog) => `
+            <div class="w-full flex-shrink-0" onclick="showFeatureModal('${
+              blog._id
+            }')">
+          <div class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
+            blog.blogPhoto
+          }')">
+            <div class="rounded-lg shadow-lg overflow-hidden w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-3 h-full flex flex-col justify-between">
+              <div class="flex justify-end">
+                <p class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase">
+                   ${truncateText(blog.tags[0], 10)}</p>
+              </div>
+              <div class="flex flex-col gap-2">
+                <div class="h-10 sm:h-20 md:h-24 lg:h-28"></div>
+                <p class="text-xs font-lora <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %>">${new Date(
+                  blog.createdAt
+                ).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "numeric",
+                  year: "numeric",
+                })}</p>
+                <h5 class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora">${truncateText(
+                  blog.title,
+                  50
+                )}</h5>
+                <p class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %> break-words whitespace-normal">${truncateText(
+                  blog.description,
+                  100
+                )}
+                <span><a href="/blog/${
+                  blog.slug
+                }" class="<%= user.settings.theme === 'dark' ? 'text-dark-tertiary' : 'text-fifth' %> hover:text-highlight font-roboto text-center  font-medium">read more</a></span>
+                </p>
+                <div class="flex justify-between items-center">
+                  
+                      <div class="flex gap-2">
+                         <a href="/blog/edit/${
+                           blog.slug
+                         }" class=" px-3 rounded-md focus:outline-none flex items-center text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300 font-roboto">Edit</a>
+                      </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
+      )
+      .join("");
+  }
+
+  function renderFeaturedBlogs(blogs) {
+    const featureBlogContainer = document.getElementById(
+      "featureBlogContainer"
+    );
+    featureBlogContainer.innerHTML = blogs
+      .map(
+        (blog) => `
+<div class="w-full flex-shrink-0" onclick="showFeatureInfoModal('${blog._id}')">
+          <div class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
+            blog.blogPhoto
+          }')">
+            <div class="rounded-lg shadow-lg overflow-hidden w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-3 h-full flex flex-col justify-between">
+              <div class="flex justify-end">
+                <p class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase">
+                   ${truncateText(blog.tags[0], 10)}</p>
+              </div>
+              <div class="flex flex-col gap-2">
+                <div class="h-10 sm:h-20 md:h-24 lg:h-28"></div>
+                <p class="text-xs font-lora <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %>">${new Date(
+                  blog.createdAt
+                ).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "numeric",
+                  year: "numeric",
+                })}</p>
+                <h5 class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora">${truncateText(
+                  blog.title,
+                  50
+                )}</h5>
+                <p class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %> break-words whitespace-normal">${truncateText(
+                  blog.description,
+                  100
+                )}
+                <span><a href="/blog/${
+                  blog.slug
+                }" class="<%= user.settings.theme === 'dark' ? 'text-dark-tertiary' : 'text-fifth' %> hover:text-highlight font-roboto text-center  font-medium">read more</a></span>
+                </p>
+                <div class="flex justify-between items-center">
+                  
+                      <div class="flex gap-2">
+                         
+                             <button onclick="openDeleteModal('${
+                               blog.slug
+                             }')" class="remove-button px-3 hover:bg-red-300 focus:outline-none text-sm md:text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-fourth' %> rounded-md font-roboto" data-slug=${
+          blog.slug
+        }>Remove</button>
+                             
+                           
+                         <a href="/blog/edit/${
+                           blog.slug
+                         }" class=" px-3 rounded-md focus:outline-none flex items-center text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300 font-roboto">Edit</a>
+                      </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
+      )
+      .join("");
+  }
+
+  function closeFeatureModal() {
+    const modal = document.getElementById("featureModal");
+    modal.classList.add("hidden");
+  }
+  function showFeatureModal(blogId) {
+    const modal = document.getElementById("featureModal");
+    const blogIdInput = document.getElementById("modalBlogId");
+    const blogIdInputPro = document.getElementById("modalBlogIdPro");
+    blogIdInputPro.value = blogId;
+    blogIdInput.value = blogId;
+    modal.classList.remove("hidden");
+  }
+
+  function showFeatureInfoModal(blogId) {
+    const modal = document.getElementById("featureModalInfo");
+    const blogIdInput = document.getElementById("modalBlogInfoId");
+    blogIdInput.value = blogId;
+    console.log("blogId feature", blogId);
+    loadFeatureModalInfo();
+    modal.classList.remove("hidden");
+  }
+
+  function closeFeatureInfoModal() {
+    const modal = document.getElementById("featureModalInfo");
+    modal.classList.add("hidden");
+  }
+
+  window.addEventListener("click", function (event) {
+    const modalInfo = document.getElementById("featureModalInfo");
+    const modal = document.getElementById("featureModal");
+    if (event.target === modal || event.target === modalInfo) {
+      closeFeatureModal();
+      closeFeatureInfoModal();
+    }
+  });
+
+  function renderPagination(currentPage, totalPages, isNew) {
+    paginationDiv.innerHTML = "";
+
+    const maxVisiblePages = 5;
+    let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1);
+    let endPage = startPage + maxVisiblePages - 1;
+
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+    }
+
+    const prevButton = document.createElement("button");
+    prevButton.innerText = "Prev";
+    prevButton.classList.add(
+      "px-3",
+      "py-1",
+      "mr-2",
+      "bg-gray-200",
+      "rounded-md"
+    );
+    prevButton.disabled = currentPage === 1;
+    prevButton.addEventListener("click", () => {
+      if (isNew) {
+        fetchNewBlogs(currentPage - 1);
+      } else {
+        fetchFeaturedBlogs(currentPage - 1);
+      }
+    });
+    paginationDiv.appendChild(prevButton);
+
+    for (let i = startPage; i <= endPage; i++) {
+      const pageButton = document.createElement("button");
+      pageButton.innerText = i;
+      pageButton.classList.add(
+        "px-3",
+        "py-1",
+        "mx-1",
+        i === currentPage ? "bg-secondary" : "bg-gray-200",
+        i === currentPage ? "text-background" : "text-secondary",
+        "rounded-md"
+      );
+      pageButton.addEventListener("click", () => {
+        if (isNew) {
+          fetchNewBlogs(i);
+        } else {
+          fetchFeaturedBlogs(i);
+        }
+      });
+      paginationDiv.appendChild(pageButton);
+      if (currentPage === i) {
+        prevButton.classList.add("hidden");
+      }
+    }
+
+    const nextButton = document.createElement("button");
+    nextButton.innerText = "Next";
+    nextButton.classList.add(
+      "px-3",
+      "py-1",
+      "ml-2",
+      "bg-gray-200",
+      "rounded-md"
+    );
+    nextButton.disabled = currentPage === totalPages;
+    nextButton.addEventListener("click", () => {
+      if (isNew) {
+        fetchNewBlogs(currentPage + 1);
+      } else {
+        fetchFeaturedBlogs(currentPage + 1);
+      }
+      if (totalPages <= 5) {
+        prevButton.classList.add("hidden");
+        nextButton.classList.add("hidden");
+      }
+      paginationDiv.appendChild(nextButton);
+      if (currentPage == endPage) {
+        nextButton.classList.remove("hidden");
+      }
+    });
+  }
+
+  function truncateText(text, maxLength) {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  }
+
+  fetchNewBlogs(1, 10);
+</script>

@@ -1,0 +1,341 @@
+<h1 class="text-base sm:text-lg md:text-xl lg:text-2xl <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-tertiary bg-white bg-background' %> sticky top-0 font lora z-10 font-semibold mt-8 md:mt-0 p-3  md:px-10">
+  Your Reports
+</h1>
+
+<div class="relative overflow-x-scroll px-5">
+  <table class="table-auto w-full overflow-x-scroll text-xs md:text-sm lg:text-base  sticky top-0">
+    <thead>
+      <tr class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background  text-secondary' %>">
+        <th class="px-4 py-2">Blog</th>
+        <th class="px-4 py-2">Title</th>
+        <th class="px-4 py-2 whitespace-nowrap">Reported On</th>
+        <th class="px-4 py-2 whitespace-nowrap">Time Left</th>
+        <th class="px-4 py-2">Status</th>
+        <th class="px-4 py-2">Details</th>
+        <th class="px-4 py-2">Delete</th>
+      </tr>
+    </thead>
+    <tbody id="reportsTableBody"></tbody>
+  </table>
+  
+</div>
+<div id="paginationToggle" class="mt-4 flex justify-center gap-1 w-full"></div>
+
+<div
+  id="reportInfoModal"
+  class="fixed  inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : ' text-text bg-primary' %>  bg-opacity-50 flex items-center justify-center hidden z-10 p-5 md:p-0 backdrop-blur-sm"
+>
+  <div class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background text-fourth' %> backdrop-blur-sm  p-4 rounded-lg w-full m-auto  md:w-1/2">
+    <h2 class="text-xl font-semibold  <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %> " id="modalTitle"></h2>
+    <textarea
+      id="modalDescription"
+      class="mt-2 resize-none w-full bg-transparent "
+      row-5
+      readonly
+    ></textarea>
+    <div class="flex w-full justify-end">
+      <button
+        id="closeModalBtn"
+        class="mt-4 px-4 py-2 hover:bg-red-300  hover:border-red-300 hover:text-background  <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : ' text-fifth border-fifth' %>  rounded"
+      >
+        Close
+      </button>
+      <div id="actionButton" class="mt-4 flex justify-between"></div>
+    </div>
+  </div>
+</div>
+
+<div
+  id="deleteReportModal"
+  class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' text-fourth bg-primary' %> bg-opacity-50 flex items-center justify-center hidden p-5 md:p-0 z-50 backdrop-blur-sm"
+>
+  <div class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> backdrop-blur-sm p-4 rounded-lg w-full md:w-1/2 lg:1/3 ">
+    <h2 class="text-xl font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %>">Delete Report</h2>
+    <p class="mt-2" id="deleteModalDescription ">
+      Are you sure you want to delete this report?
+    </p>
+    <div class="mt-4 flex justify-end gap-4">
+      <button
+        id="cancelDeleteButton"
+        class="hover:bg-blue-300 hover:text-background   <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-gray-300  text-gray-700 ' %>  font-roboto font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        Cancel
+      </button>
+      <button
+        id="confirmDeleteButton"
+        class="hover:bg-red-300   hover:text-background   font-roboto <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : ' text-fifth border-fifth' %>  font-bold py-2 px-4 rounded outline-none"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentReportId = null;
+
+  function calculateTimeLeft(reportDate) {
+    const currentDate = new Date();
+    const reportCreatedAt = new Date(reportDate);
+    const timeDiff =
+      reportCreatedAt.getTime() +
+      7 * 24 * 60 * 60 * 1000 -
+      currentDate.getTime();
+
+    if (timeDiff > 0) {
+      const daysLeft = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      return `${daysLeft} days left`;
+    } else {
+      return "Time's up!";
+    }
+  }
+
+  function showModal(
+    reason,
+    description,
+    reportCreatedAt,
+    blogUpdatedAt,
+    reportId,
+    slug
+  ) {
+    document.getElementById("modalTitle").innerText = reason;
+    document.getElementById("modalDescription").innerText = description;
+
+    document.getElementById("reportInfoModal").classList.remove("hidden");
+
+    const actionButtonContainer = document.getElementById("actionButton");
+    actionButtonContainer.innerHTML = "";
+
+    const reportCreatedAtDate = new Date(reportCreatedAt);
+    const blogUpdatedAtDate = new Date(blogUpdatedAt);
+
+    if (reportCreatedAtDate < blogUpdatedAtDate) {
+      const goToBlogBtn = document.createElement("button");
+      goToBlogBtn.classList.add(
+        "px-4",
+        "py-2",
+        "bg-green-500",
+        "text-white",
+        "rounded"
+      );
+
+      goToBlogBtn.innerText = "Go to Blog";
+      console.log(
+        "reason\n",reason,"description\n",description,"reportCreatedAt\n",reportCreatedAt,"blogUpdatedAt\n",blogUpdatedAt,"reportId\n",reportId,"slug\n",slug);
+      goToBlogBtn.onclick = function () {
+        window.location.href = `/blog/${slug}`;
+      };
+
+     
+      const deleteReportBtn = document.createElement("button");
+      deleteReportBtn.classList.add(
+        "px-4",
+        "py-2",
+        "bg-red-500",
+        "text-white",
+        "rounded"
+      );
+      deleteReportBtn.innerText = "Delete Report";
+      deleteReportBtn.onclick = function () {
+        deleteReport(reportId);
+      };
+
+     
+      actionButtonContainer.appendChild(goToBlogBtn);
+      actionButtonContainer.appendChild(deleteReportBtn);
+    }
+  }
+
+  function closeModal() {
+    document.getElementById("reportInfoModal").classList.add("hidden");
+  }
+
+  function openDeleteReportModal(reportId) {
+    currentReportId = reportId;
+    document.getElementById("deleteReportModal").classList.remove("hidden");
+  }
+
+  function closeDeleteReportModal() {
+    document.getElementById("deleteReportModal").classList.add("hidden");
+  }
+
+  async function loadReports(page = 1, pageSize = 10) {
+    console.log("page\n",page,"pageSize\n",pageSize);
+    const reportsTableBody = document.getElementById("reportsTableBody");
+    const paginationToggle = document.getElementById("paginationToggle");
+
+    try {
+      const response = await fetch(
+        `/api/reports?page=${page}&pageSize=${pageSize}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        const reports = data.reports;
+        const totalReports = data.totalReports;
+
+        console.log("reports\n",reports,"\ntotalReports\n",totalReports); 
+
+        if(totalReports <= 0){
+        reportsTableBody.innerHTML = `<tr class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background  text-secondary' %>">
+          <td class="border <%=
+            user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth'
+          %> px-4 py-2 mx-auto text-center w-96 overflow-x-scroll whitespace-nowrap text-xs md:text-sm lg:text-base " colspan="7">No reports found</td>
+        </tr>`;
+        return;
+        }
+
+        reportsTableBody.innerHTML = "";
+
+        reports.forEach((report) => {
+          const timeLeft = calculateTimeLeft(report.createdAt);
+
+          const row = `
+            <tr data-report-id="${report._id}" class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background  text-secondary' %>">
+              <td class="border  <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %>">
+                <a href="/blog/${report.blogId.slug}" target="_blank">
+                  <img src="${report.blogId.blogPhoto}" alt="${
+            report.blogId.title
+          }" class="object-cover w-full h-10">
+                </a>
+              </td>
+              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 mx-auto text-center w-96 overflow-x-scroll whitespace-nowrap text-xs md:text-sm lg:text-base  ">${
+                truncateText(report.blogId.title, 40)
+              }</td>
+              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 mx-auto text-center text-xs md:text-sm lg:text-base ">${new Date(
+                report.createdAt
+              ).toLocaleDateString()}</td>
+              <td class="border px-4 py-2 mx-auto text-center whitespace-nowrap">${timeLeft}</td>
+             <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 mx-auto text-center text-xs md:text-sm lg:text-base ">
+                ${
+                  report.status
+                }
+              </td>
+              <td class="border px-4 py-2 text-center <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %>">
+                <button class="<%= user.settings.theme === 'dark' ? 'text-dark-tertiary' : 'text-fourth' %> hover:text-highlight text-xs md:text-sm lg:text-base " onclick="showModal('${
+                  report.reason
+                }', '${report.description}','${report.createdAt}','${
+            report.blogId.lastModified
+          }','${report._id}','${report.blogId.slug}')">View</button>
+              </td>
+              <td class="border px-4 py-2 mx-auto text-center <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %>">
+                <button class="delete-report py-1 px-4 hover:bg-red-300 focus:outline-none text-sm md:text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-fourth' %> rounded-md" data-report-id="${
+                  report._id
+                }">
+                 Delete
+                </button>
+              </td>
+            </tr>
+          `;
+          reportsTableBody.insertAdjacentHTML("beforeend", row);
+        });
+
+        const totalPages = Math.ceil(totalReports / pageSize);
+        paginationToggle.innerHTML = `
+          ${
+            page > 1
+              ? `<button class="px-3 py-1 border rounded" onclick="loadReports(${
+                  page - 1
+                }, ${pageSize})">Prev</button>`
+              : ""
+          }
+          ${Array.from({ length: totalPages }, (_, i) => i + 1)
+            .map(
+              (num) => `
+              <button class="px-3 py-1 border rounded ${
+                num === page ? "bg-tertiary text-white" : "bg-fifth"
+              }" onclick="loadReports(${num}, ${pageSize})">${num}</button>
+            `
+            )
+            .join("")}
+          ${
+            page < totalPages
+              ? `<button class="px-3 py-1 border rounded" onclick="loadReports(${
+                  page + 1
+                }, ${pageSize})">Next</button>`
+              : ""
+          }
+        `;
+      } else {
+        console.error("Failed to fetch reports:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error loading reports:", error);
+    }
+  }
+
+  async function deleteReport(reportId) {
+    const confirmation = confirm(
+      "Are you sure you want to delete this report?"
+    );
+
+    if (!confirmation) return;
+
+
+
+
+    try {
+      const response = await fetch(`/api/reports/${reportId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        alert("Report deleted successfully.");
+        document.querySelector(`tr[data-report-id="${reportId}"]`).remove();
+        closeDeleteReportModal();
+        loadUserReports(1, 10);
+        loadReports(1, 10);
+      } else {
+        const result = await response.json();
+        alert(`Failed to delete report: ${result.message}`);
+      }
+    } catch (error) {
+      console.error("Error deleting report:", error);
+      alert("An error occurred while trying to delete the report.");
+    }
+  }
+  function truncateText(text, maxLength) {
+      if (text.length > maxLength) {
+        return text.substring(0, maxLength) + "...";
+      }
+      return text;
+    }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadReports(1, 10);
+
+    const reportsTableBody = document.getElementById("reportsTableBody");
+
+    reportsTableBody.addEventListener("click", function (e) {
+      if (e.target.classList.contains("delete-report")) {
+        const reportId = e.target.getAttribute("data-report-id");
+        openDeleteReportModal(reportId);
+      }
+    });
+
+    
+    
+    document
+      .getElementById("closeModalBtn")
+      .addEventListener("click", closeModal);
+    document
+      .getElementById("cancelDeleteButton")
+      .addEventListener("click", closeDeleteReportModal);
+    document
+      .getElementById("confirmDeleteButton")
+      .addEventListener("click", () => {
+        if (currentReportId) {
+          deleteReport(currentReportId);
+        }
+      });
+  });
+</script>

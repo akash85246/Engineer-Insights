@@ -1,0 +1,328 @@
+<nav
+  id="navbar"
+  class="bg-opacity-20 shadow-lg fixed w-full z-50 transition-transform duration-300 backdrop-blur-sm <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : 'bg-primary text-text' %>"
+>
+  <div class="max-w-4xl lg:max-w-7xl mx-auto px-4">
+    <div class="flex justify-between items-center">
+      <div class="flex font-roboto">
+        <a href="/" class="flex items-center space-x-2 group">
+          <img
+            src="images/logoImg/logo.png"
+            alt="Logo"
+            class="h-8 w-8 rounded-lg shadow-lg"
+          />
+          <span
+            class="text-lg font-semibold tracking-wide bg-gradient-to-r from-[#393E46] to-[#00ADB5] text-transparent bg-clip-text transition-all duration-300 group-hover:from-[#00ADB5] group-hover:to-[#393E46] font-montserrat sm:block hidden"
+          >
+            Engineer Insights
+          </span>
+        </a>
+        <div class="hidden md:flex items-center space-x-1">
+          <a
+            href="/blog/all"
+            class="py-2 px-2 text-white hover:text-highlight transition duration-300 md:text-sm lg:text-base"
+            >Explore</a
+          >
+          <% if (isAuthenticated) { %>
+          <a
+            href="/featureblog"
+            class="py-2 px-2 text-white hover:text-highlight transition duration-300 md:text-sm lg:text-base"
+            >Feature</a
+          >
+          <p
+            class="write-link py-2 px-2 text-white hover:text-highlight transition duration-300 md:text-sm lg:text-base"
+          >
+            Write
+          </p>
+          <a
+            href="/subscribe"
+            class="py-2 px-2 text-white hover:text-highlight transition duration-300 md:text-sm lg:text-base"
+            >Subscribe</a
+          >
+          <% } %>
+        </div>
+      </div>
+      <div class="flex gap-4 md:gap-2">
+        <div class="flex items-center space-x-4 md:space-x-3">
+          <div
+          class="relative flex flex-col items-start bg-white border border-gray-300 rounded-md sm:px-4 sm:py-2 px-2 py-1  shadow-sm w-40 lg:w-96 md:w-60"
+        >
+          <div class="flex items-center w-full">
+            <img
+              src="images/icons/searchIcon.png"
+              alt="Search Icon"
+              class="h-4 w-4 sm:w-5 sm:h-5"
+            />
+            <input
+              type="text"
+              placeholder="Search"
+              class="ml-2 bg-transparent outline-none text-gray-700 w-full placeholder-gray-500 md:text-xs lg:text-sm"
+              id="searchInput"
+              autocomplete="off"
+            />
+          </div>
+
+          <div
+            id="searchResults"
+            class="absolute top-full mt-2 left-0 w-full bg-white border border-gray-300 shadow-md rounded-lg hidden"
+          >
+            <div id="userResults"></div>
+            <div id="blogResults"></div>
+          </div>
+        </div>
+          <div
+            class="auth-links flex items-center gap-1 m-0 md:mx-auto my-2"
+          ></div>
+        </div>
+
+        <div class="md:hidden flex items-center">
+          <button class="outline-none mobile-menu-button">
+            <svg
+              class="w-6 h-6 text-white hover:text-blue-500"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hidden mobile-menu text-center pb-5">
+    <ul>
+      <li>
+        <a
+          href="/blog/all"
+          class="block text-sm px-2 py-4 text-white hover:bg-highlight transition duration-300"
+          >Explore</a
+        >
+      </li>
+      <% if (isAuthenticated) { %>
+      <li>
+        <a
+          href="/featureblog"
+          class="mx-auto block text-sm px-2 py-4 text-white hover:bg-highlight transition duration-300"
+        >
+          Feature
+        </a>
+      </li>
+      <li>
+        <button
+          class="mx-auto block text-sm px-2 py-4 text-white hover:bg-highlight transition duration-300 write-link"
+        >
+          Write
+        </button>
+      </li>
+
+      <li>
+        <a
+          href="/subscribe"
+          class="py-2 px-2 text-white font-semibold hover:text-highlight transition duration-300 md:text-xs lg:text-sm"
+          >Subscribe</a
+        >
+      </li>
+      <% } %>
+    </ul>
+  </div>
+</nav>
+
+<div><%- include("../partials/newBlogPopout.ejs") %></div>
+
+<script>
+  let lastScrollTop = 0;
+  const navbar = document.getElementById("navbar");
+
+  window.addEventListener("scroll", function () {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop) {
+      navbar.style.transform = "translateY(-100%)";
+    } else {
+      navbar.style.transform = "translateY(0)";
+    }
+
+    lastScrollTop = scrollTop;
+  });
+
+  const btn = document.querySelector("button.mobile-menu-button");
+  const menu = document.querySelector(".mobile-menu");
+
+  btn.addEventListener("click", () => {
+    menu.classList.toggle("hidden");
+  });
+
+  let isAuthenticated = "<%= isAuthenticated %>" == "true";
+  const username = localStorage.getItem("username");
+  console.log(isAuthenticated, typeof isAuthenticated);
+
+  const authLinksDesktop = document.querySelector(".auth-links");
+  if (isAuthenticated) {
+    const authLinksContent = `
+        <a href="/profile/<%= user.slug %>" class="font-medium text-white rounded hover:scale-125 transition duration-300">
+          <img src="<%= user && user.avatar ?user.avatar : '/images/defaultProfile.png' %>" alt="profile image" class="h-8 w-8  rounded-md">
+        </a>
+      `;
+    authLinksDesktop.innerHTML = authLinksContent;
+  } else {
+    const authLinksContent = `
+        <a href="/signin"  class="whitespace-nowrap  relative px-2 md:px-5 py-2 text-xs md:text-sm font-medium text-gray-700 bg-gray-100 rounded-lg shadow-inner hover:text-gray-900 hover:bg-gray-200 transition-all duration-300 focus:outline-none focus:ring focus:ring-gray-300">Sign In  <span
+            class="absolute inset-0 rounded-lg border-2 border-transparent hover:border-gray-300 transition-all duration-300"
+          ></span></a>
+        <a href="/signup"  class="whitespace-nowrap  relative px-2 px-2 md:px-5 py-2 text-xs md:text-sm font-medium text-white bg-blue-600 rounded-lg shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400">Sign Up <span
+            class="absolute inset-0 bg-blue-700 opacity-0 rounded-lg transition-opacity duration-300 hover:opacity-20"
+          ></span></a>
+      `;
+    authLinksDesktop.innerHTML = authLinksContent;
+  }
+
+  const writeLinks = document.querySelectorAll(".write-link");
+  const popoutModal = document.getElementById("popout-modal");
+  const closePopout = document.getElementById("close-popout");
+
+  writeLinks.forEach((writeLink) => {
+    writeLink.addEventListener("click", function (event) {
+      console.log("Write link clicked");
+      event.preventDefault();
+      popoutModal.classList.remove("hidden");
+    });
+  });
+
+  closePopout.addEventListener("click", function () {
+    popoutModal.classList.add("hidden");
+  });
+
+  popoutModal.addEventListener("click", function (event) {
+    if (event.target === popoutModal) {
+      popoutModal.classList.add("hidden");
+    }
+  });
+
+  const searchInput = document.getElementById("searchInput");
+  const searchResults = document.getElementById("searchResults");
+  const blogResults = document.getElementById("blogResults");
+  const userResults = document.getElementById("userResults");
+
+  async function fetchBlogs(searchValue) {
+    try {
+      const res = await fetch(
+        `/api/blog/search?title=${searchValue}&limit=5&page=1`
+      );
+      const data = await res.json();
+
+      blogResults.innerHTML = "";
+
+      if (data.blogs?.length > 0) {
+        data.blogs.forEach((blog) => {
+          const resultItem = createResultItem({
+            imageSrc: blog.blogPhoto ? `${blog.blogPhoto}` : "defaultImage.jpg",
+            altText: blog.title,
+            title: blog.title,
+            subtitle: blog.readingTime,
+            clickHandler: () => {
+              console.log(`Selected Blog: ${blog.title}`);
+              window.location.href = `/blog/${blog.slug}`;
+            },
+          });
+          blogResults.appendChild(resultItem);
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    }
+  }
+
+  async function fetchUsers(searchValue) {
+    try {
+      const res = await fetch(
+        `/api/profile/search?username=${searchValue}&limit=5&page=1`
+      );
+      const data = await res.json();
+      console.log(data);
+      userResults.innerHTML = "";
+
+      if (data.length > 0) {
+        data.forEach((user) => {
+          const resultItem = createResultItem({
+            imageSrc: user.avatar
+              ? `${user.avatar}`
+              : "./images/defaultProfile.png",
+            altText: `${user.firstname} ${user.lastname}` || user.username,
+            title: user.username,
+            subtitle: user.bio
+              ? user.bio.slice(0, 50) + "..."
+              : "No bio available",
+            clickHandler: () => {
+              console.log(`Selected User: ${user.username}`);
+              window.location.href = `/profile/${user.slug}`;
+            },
+          });
+          userResults.appendChild(resultItem);
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  }
+
+  function createResultItem({
+    imageSrc,
+    altText,
+    title,
+    subtitle,
+    clickHandler,
+  }) {
+    const resultItem = document.createElement("div");
+    resultItem.className =
+      "px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm text-gray-700 flex items-center gap-3";
+
+    const img = document.createElement("img");
+    img.src = imageSrc;
+    img.alt = altText;
+    img.className = "w-8 h-8 rounded-full";
+
+    const info = document.createElement("div");
+    info.className =
+      "flex flex-col w-full overflow-hidden object-contain box-border";
+
+    const titleElement = document.createElement("p");
+    titleElement.textContent = title;
+    titleElement.className = "font-medium overflow-hidden whitespace-nowrap";
+
+    info.appendChild(titleElement);
+
+    if (subtitle) {
+      const subtitleElement = document.createElement("span");
+      subtitleElement.textContent = subtitle;
+      subtitleElement.className =
+        "text-gray-500 text-xs overflow-hidden whitespace-nowrap";
+      info.appendChild(subtitleElement);
+    }
+
+    resultItem.appendChild(img);
+    resultItem.appendChild(info);
+    resultItem.addEventListener("click", clickHandler);
+
+    return resultItem;
+  }
+
+  searchInput.addEventListener("input", (e) => {
+    const searchValue = e.target.value.trim();
+
+    if (searchValue === "") {
+      searchResults.classList.add("hidden");
+      blogResults.innerHTML = "";
+      userResults.innerHTML = "";
+      return;
+    }
+
+    searchResults.classList.remove("hidden");
+    fetchUsers(searchValue);
+    fetchBlogs(searchValue);
+  });
+</script>
