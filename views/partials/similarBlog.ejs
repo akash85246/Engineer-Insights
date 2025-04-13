@@ -49,7 +49,7 @@
                     <div class="flex justify-evenly items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
                       blog.blogPhoto
                     }')">
-                      <div class="rounded-lg shadow-lg overflow-hidden w-full  <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %>  bg-opacity-10 p-3 h-full flex flex-col justify-between">
+                      <div class="rounded-lg shadow-lg overflow-hidden w-full  p-3 h-full flex flex-col justify-between">
                         <div class="flex justify-end">
                           <p class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-primary ' : 'bg-background text-background'  %>  bg-opacity-30  text-xxs  md:text-xs lg:text-sm font-semibold font-roboto uppercase">${truncateText(
                             blog.tags[0],
@@ -75,8 +75,28 @@
                           )}
                         <span><a href="/blog/${
                           blog.slug
-                        }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-fifth' %> hover:text-highlight font-roboto text-center  text-xxxs sm:text-xxs  md:text-xxs lg:text-xs  font-medium">read more</a></span>
+                        }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-fifth' %> hover:text-highlight  text-center font-medium">read more</a></span>
                       </p>
+                       <div class="justify-between items-center flex text-xxxs sm:text-xxs md:text-xs lg:text-sm">
+          
+          <a class="flex items-center gap-2" href="/profile/${
+            blog.author.slug
+          }" >
+            <img
+              src="${blog.author.avatar}"
+              alt="${blog.author.firstname}'s avatar"
+              class="w-8 h-8 lg:w-10 lg:h-10 rounded-full"
+            />
+            <div>
+              <h3 class=" font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-fifth' %>">
+                ${blog.author.username}
+              </h3>
+              <p class="text-xxxs sm:text-xxs md:text-xs lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-sixth' %> ">
+                ${blog.author.firstname} ${blog.author.lastname}
+              </p>
+            </div>
+          </a>
+        </div>
                           
                         </div>
                       </div>
