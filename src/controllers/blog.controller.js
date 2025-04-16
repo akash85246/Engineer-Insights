@@ -13,7 +13,7 @@ const {
 
 async function limitBlogCreate(req, res, next) {
   if (!req.isAuthenticated() || req.user.subscription === "elite") {
-    console.log("i am out");
+   
     return next();
   }
 
@@ -40,7 +40,6 @@ async function limitBlogCreate(req, res, next) {
       message: `You have reached your monthly limit of ${userLimit} blogs.`,
     });
   }
-  console.log("i am our");
   next();
 }
 
@@ -269,9 +268,9 @@ async function getArticleBySlug(req, res, next) {
             canEdit = blog.subauthors.some((subauthorId) =>
               subauthorId.equals(new ObjectId(userId))
             );
-            console.log("can edit", canEdit);
+            
           }
-          console.log("can edit", canEdit);
+        
           userAlreadyReported = blog.reports.some((report) =>
             report.equals(userId)
           );
@@ -404,7 +403,6 @@ async function updateArticleAndRedirect(req, res) {
     if (!blog) {
       return res.status(404).send("Article not found");
     }
-    console.log("summary", blog.summary, req.body.summaryValue);
     blog.markdown = req.body.markdown.trim() || blog.markdown;
     blog.category = req.body.category || blog.category;
     blog.status = req.body.status || blog.status;
@@ -478,7 +476,7 @@ async function likeBlog(req, res) {
         );
       } else {
         await AnalyticModel.findOneAndUpdate(
-          { user_id: author_Id },
+          { user_id: blog.author },
           {
             $push: {
               engagementTrend: {
@@ -814,7 +812,7 @@ async function archiveBlog(req, res) {
 
 async function limitSavedBlogs(req, res, next) {
   const slug = req.params.slug;
-  console.log("slug", slug);
+ 
 
   if (!req.isAuthenticated() || req.user.subscription === "elite") {
     return next();
@@ -992,7 +990,6 @@ async function deleteBlog(req, res) {
       }
     );
 
-    console.log("Deleting image with public_id:", blog.blogPhotoId);
     await cloudinary.uploader.destroy(blog.blogPhotoId);
 
     const deleteResult = await BlogModel.deleteOne({ slug, author: userId });
@@ -1167,8 +1164,8 @@ async function getLatestBlogs(userId) {
     var filteredBlogs = (await filterBlogsByBlockedUsers(blogs, user)) || [];
     filteredBlogs = (await filterBlogsByAudience(filteredBlogs, user)) || [];
     filteredBlogs = (await filterBlogsByStatus(filteredBlogs, user)) || [];
-    filteredBlogs = filteredBlogs.slice(0, 10);
-    console.log("filteredBlogs", filteredBlogs);
+    filteredBlogs = filteredBlogs.slice(0, 8);
+
     return filteredBlogs;
   } catch (error) {
     console.error("Error fetching latest blogs:", error);
@@ -1198,7 +1195,6 @@ async function getFavouriteAuthorBlogs(userId) {
   filteredBlogs = (await filterBlogsByAudience(filteredBlogs, user)) || [];
   filteredBlogs = (await filterBlogsByStatus(filteredBlogs, user)) || [];
   filteredBlogs = filteredBlogs.slice(0, 20);
-  console.log("filteredBlogs", filteredBlogs);
   return filteredBlogs;
 }
 
@@ -1219,7 +1215,6 @@ async function getFeaturedBlogs(userId) {
   filteredBlogs = (await filterBlogsByStatus(filteredBlogs, userId)) || [];
 
   filteredBlogs = filteredBlogs.slice(0, 10);
-  console.log("filteredBlogs featured", filteredBlogs);
   return filteredBlogs;
 }
 
@@ -1256,8 +1251,8 @@ async function getEditorialBlogs(userId) {
   filteredBlogs = (await filterBlogsByAudience(filteredBlogs, userId)) || [];
   filteredBlogs = (await filterBlogsByStatus(filteredBlogs, userId)) || [];
   filteredBlogs = filteredBlogs.slice(0, 6);
-  console.log("filteredBlogs editorial", filteredBlogs);
-  return scoredBlogs;
+  console.log("filteredBlogs editorial", filteredBlogs.length);
+  return filteredBlogs;
 }
 
 //function to filter blogs by blocked users
@@ -1316,7 +1311,6 @@ async function filterBlogsByStatus(blogs, user) {
     return false;
   });
 
-  console.log("filteredBlogs", filteredBlogs);
   return filteredBlogs;
 }
 

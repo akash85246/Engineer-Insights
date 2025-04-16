@@ -271,6 +271,7 @@ router.get("/", async (req, res) => {
   const latestBlog = await blogController.getLatestBlogs(user._id);
   const featuredBlog = await blogController.getFeaturedBlogs(user._id);
   const editorialBlog = await blogController.getEditorialBlogs(user._id);
+  console.log("editorialBlog", editorialBlog.length);
   const authorBlog = await blogController.getFavouriteAuthorBlogs(user._id);
 
   res.renderWithMainLayout("../pages/home", {

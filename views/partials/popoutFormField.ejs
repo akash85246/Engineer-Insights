@@ -3,13 +3,15 @@
     <label
       for="title"
       class="block font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-tertiary' %>"
-      >Title</label
+      ></label
     >
     <input
       type="text"
       id="title"
       name="title"
-      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-tertiary border-gray-300'%>  mt-2 block w-full px-2 md:px-3 py-1.5 border  rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs md:text-sm lg:text-base"
+      placeholder="Title of the blog post"
+      aria-describedby="titleError"
+      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-primary border-gray-300'%>  mt-2 block w-full px-2 md:px-3 py-1.5 border  rounded-md shadow-sm focus:outline-none focus:ring-fourth focus:border-fourth text-xs md:text-sm lg:text-base"
       required
       minlength="10"
       maxlength="100"
@@ -24,15 +26,18 @@
     <label
       for="description"
       class="block font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-tertiary' %>"
-      >Description</label
+      ></label
     >
     <textarea
       id="description"
       name="description"
-      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-tertiary border-gray-300'%> mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs md:text-sm lg:text-base resize-none"
+      placeholder="Description of the blog post"
+      aria-describedby="descriptionError"
+      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-primary border-gray-300'%> mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none focus:ring-fourth focus:border-fourth text-xs md:text-sm lg:text-base resize-none"
       required
       minlength="50"
       maxlength="300"
+      rows="4"
     ></textarea>
     <p
       id="descriptionError"
@@ -44,13 +49,15 @@
     <label
       for="tags"
       class="block font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-tertiary' %>"
-      >Tags</label
+      ></label
     >
     <input
       type="text"
       id="tags"
+      placeholder="Tags (comma-separated)"
+      aria-describedby="tagsError"
       name="tags"
-      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-tertiary border-gray-300'%> mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none text-xs md:text-sm lg:text-base"
+      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-primary border-gray-300'%> mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none text-xs md:text-sm lg:text-base"
       required
     />
     <p
@@ -75,7 +82,8 @@
           type="file"
           id="image"
           name="blogPhoto"
-          class="absolute inset-0 opacity-0 cursor-pointer <%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-tertiary border-gray-300'%>"
+          placeholder="Upload Image"
+          class="absolute inset-0 opacity-0 cursor-pointer <%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-primary border-gray-300'%>"
         />
         <label for="image" class="text-center text-gray-500 text-xs lg:text-sm "
           >Upload Image</label
@@ -300,14 +308,15 @@
     <label
       for="author"
       class="block font-medium text-xs md:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-tertiary' %>"
-      >Add Author</label
+      ></label
     >
     <input
       type="text"
       id="author-search"
       name="author"
-      placeholder="Search for authors"
-      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-tertiary border-gray-300'%> mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs md:text-sm lg:text-base"
+
+      placeholder="Add Sub-Authors"
+      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-primary border-gray-300'%> mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none focus:ring-fourth focus:border-fourth text-xs md:text-sm lg:text-base"
     />
 
     <input type="text" id="final-selected-authors" name="subauthors" hidden />
@@ -345,6 +354,9 @@
   const fileInput = document.getElementById("image");
   const previewContainer = document.getElementById("previewContainer");
 
+
+
+
   const createImagePreview = (src) => {
     previewContainer.innerHTML = `
     <div class="relative">
@@ -352,6 +364,24 @@
     </div>
   `;
   };
+
+  //if fileInput is empty then remove the image preview
+  fileInput.addEventListener("change", (event) => {
+    if (event.target.files.length === 0) {
+      previewContainer.innerHTML = "";
+    }
+  });
+  
+  //if imageRadioButtons is selected then remove the image preview
+  imageRadioButtons.forEach((radioButton) => {
+    radioButton.addEventListener("change", (event) => {
+      if (!event.target.checked) {
+        previewContainer.innerHTML = "";
+      }
+    });
+  });
+
+
 
   imageRadioButtons.forEach((radioButton) => {
     radioButton.addEventListener("change", (event) => {

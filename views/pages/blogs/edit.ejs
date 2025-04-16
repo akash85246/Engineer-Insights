@@ -4,10 +4,10 @@
   method="POST"
 >
   <div
-    class="order-3 md:order-1 col-span-4 md:col-span-1 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-tertiary' %> shadow-lg rounded-lg"
+    class="order-3 md:order-1 col-span-4 md:col-span-1 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-secondary' %> shadow-lg rounded-lg"
   >
     <h2
-      class="text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2 lg:mb-6 <%= user.settings.theme === 'dark' ? 'text-dark-primary bg-dark-sixth' : 'text-tertiary bg-white' %> sticky top-0 pb-1 lg:pb-2"
+      class="text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2 lg:mb-6 <%= user.settings.theme === 'dark' ? 'text-dark-primary bg-dark-sixth' : 'text-secondary bg-white' %> sticky top-0 pb-1 lg:pb-2"
     >
       Post Settings
     </h2>
@@ -15,13 +15,13 @@
     <div class="mb-6">
       <label
         for="category"
-        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %> mb-2"
+        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-secondary' %> mb-2"
         >Category</label
       >
       <select
         id="category"
         name="category"
-        class="block w-full px-4 py-2 text-xs sm:text-sm md:text-base border <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-tertiary' %> border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+        class="block w-full px-4 py-2 text-xs sm:text-sm md:text-base border <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-secondary' %> border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-fourth focus:border-fourth"
       >
         <option value="" disabled selected>Select a category</option>
         <option value="tech">Technology</option>
@@ -42,7 +42,6 @@
         <option value="books">Books</option>
         <option value="gaming">Gaming</option>
         <option value="politics">Politics</option>
-        <option value="technology">Technology</option>
         <option value="history">History</option>
         <option value="law">Law</option>
         <option value="healthcare">Healthcare</option>
@@ -60,13 +59,13 @@
     <div class="mb-6">
       <label
         for="status"
-        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %> mb-2"
+        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-secondary' %> mb-2"
         >Status</label
       >
       <select
         id="status"
         name="status"
-        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-tertiary' %> block w-full px-4 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-secondary' %> block w-full px-4 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-fourth focus:border-fourth"
       >
         <option value="published">Publish</option>
         <option value="draft">Draft</option>
@@ -77,13 +76,13 @@
     <div class="mb-6">
       <label
         for="audience"
-        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %> mb-2"
+        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-secondary' %> mb-2"
         >Audience Restrictions</label
       >
       <select
         id="audience"
         name="audience"
-        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-tertiary' %> block w-full px-4 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-secondary' %> block w-full px-4 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-fourth focus:border-fourth"
         required
       >
         <option value="public">Public</option>
@@ -95,7 +94,7 @@
     <div class="mb-4">
       <label
         for="metaTitle"
-        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %> mb-1"
+        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-secondary' %> mb-1"
         >SEO Title</label
       >
       <input
@@ -103,7 +102,7 @@
         id="metaTitle"
         name="metaTitle"
         maxlength="100"
-        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-tertiary' %> w-full p-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-secondary' %> w-full p-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
         value="<%- blog.metaTitle || '' %>"
       />
       <p
@@ -115,7 +114,7 @@
     <div class="mb-4">
       <label
         for="metaDescription"
-        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %> mb-1"
+        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-secondary' %> mb-1"
         >SEO Description</label
       >
       <textarea
@@ -123,7 +122,7 @@
         name="metaDescription"
         rows="7"
         maxlength="300"
-        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-tertiary' %> w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none text-xs sm:text-sm md:text-base"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-secondary' %> w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none text-xs sm:text-sm md:text-base"
       >
 <%- blog.metaDescription || ''  %></textarea
       >
@@ -136,7 +135,7 @@
     <div class="mb-6 flex justify-between items-center">
       <label
         for="summary"
-        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %> mb-2 my-auto"
+        class="block text-xs sm:text-sm md:text-base font-medium <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-secondary' %> mb-2 my-auto"
         >Summary</label
       >
       <div class="flex items-center">
@@ -171,14 +170,14 @@
     <h1
       id="markdownLabel"
       for="markdown"
-      class="text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2 lg:mb-6 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-primary' : ' bg-white text-tertiary' %> sticky top-0 z-10 pb-1 lg:pb-2 w-full"
+      class="text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2 lg:mb-6 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-primary' : ' bg-white text-secondary' %> sticky top-0 z-10 pb-1 lg:pb-2 w-full"
     >
       Markdown
     </h1>
     <div class="relative mt-2">
       <textarea
         rows="28"
-        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-background text-fourth' %> text-xs sm:text-sm md:text-base lg:text-lg w-full overflow-y-scroll overflow-x-hidden resize-none outline-none border border-tertiary rounded-lg p-1 md:p-2 lg:p-4 shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 break-words relative"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-background text-fourth' %> text-xs sm:text-sm md:text-base lg:text-lg w-full overflow-y-scroll overflow-x-hidden resize-none outline-none border border-tertiary rounded-lg p-1 md:p-2 lg:p-4 shadow-sm focus:ring-2 focus:ring-fourth focus:border-fourth break-words relative"
         id="markdown"
         name="markdown"
         maxlength="50000"
@@ -207,7 +206,7 @@
   </div>
 
   <div
-    class="order-2 hidden sm:block md:order-3 col-span-1 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-primary' : ' bg-white text-tertiary' %> shadow-lg rounded-lg"
+    class="order-2 hidden sm:block md:order-3 col-span-1 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-primary' : ' bg-white text-secondary' %> shadow-lg rounded-lg"
   >
     <div class="sticky top-0 h-auto max-h-[70vh]">
       <h2
@@ -355,10 +354,10 @@ console.log(div)
             if (!regex.test(inputElement.value)) {
               errorElement.textContent = errorMessage;
               inputElement.classList.add("border-red-500", "focus:ring-red-500");
-              inputElement.classList.remove("border-gray-300", "focus:ring-blue-400");
+              inputElement.classList.remove("border-gray-300", "focus:ring-fourth");
             } else {
               errorElement.textContent = "";
-              inputElement.classList.add("border-gray-300", "focus:ring-blue-400");
+              inputElement.classList.add("border-gray-300", "focus:ring-fourth");
               inputElement.classList.remove("border-red-500", "focus:ring-red-500");
             }
           }

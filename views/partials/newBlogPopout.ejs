@@ -9,7 +9,7 @@
       class="<%= user.settings.theme === 'dark' ? 'bg-dark-background' : 'bg-white' %>  rounded-lg p-3 md:p-6 w-11/12 md:w-2/3 lg:w-1/2 relative shadow-lg"
     >
       <h2
-        class="text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-tertiary' %> mb-4"
+        class="text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-secondary' %> mb-4"
       >
         Write a Blog
       </h2>
@@ -26,13 +26,13 @@
           <button
             type="button"
             id="close-popout"
-            class="py-2 px-4 <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %>  rounded-md hover:bg-red-400 font-roboto"
+            class="py-2 px-4 <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-secondary text-secondary bg-sixth' %>  rounded-md hover:bg-red-400 hover:text-white font-roboto"
           >
             Close
           </button>
           <button
             type="submit"
-            class="py-2 px-4 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-fourth' %> rounded-md hover:bg-blue-400 hover:text-white font-roboto"
+            class="py-2 px-4 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-secondary' %> rounded-md hover:bg-blue-400 hover:text-white font-roboto"
             
           >
             New

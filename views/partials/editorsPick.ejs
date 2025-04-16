@@ -8,17 +8,18 @@
     document.addEventListener("DOMContentLoaded", function () {
       function fetchBlogs() {
             const blog = <%- JSON.stringify(editorialBlog) %>;
+            console.log("blog received",blog.length);
             const editorsPickContainer = document.getElementById("editorsPick");
 
             if (blog.length > 0) {
             const slidesHtml = blog
                 .map(
                 (blog) => `
-                <div class="<%= user.settings.theme === 'dark' ? 'shadow-white-lg' : 'shadow-lg' %> w-full flex-shrink-0 font-lora">
-                    <div class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md" style="background-image: url('${
+                <div class="<%= user.settings.theme === 'dark' ? 'shadow-white-lg' : 'shadow-lg' %> w-full flex-shrink-0  font-lora">
+                    <div class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
                       blog.blogPhoto
                     }')">
-                      <div class="rounded-lg shadow-lg overflow-hidden w-full  p-3">
+                      <div class="rounded-lg shadow-lg overflow-hidden w-full  p-3 h-full flex flex-col justify-between">
                         <div class="flex justify-end">
                           <p class="px-2 py-1 rounded-lg  <%= user.settings.theme === 'dark' ? 'bg-dark-secondary' : 'bg-background text-background' %> bg-opacity-20 text-white text-xxxs   md:text-xxs  lg:text-xs font-semibold font-sans uppercase">${
                             blog.tags[0]
