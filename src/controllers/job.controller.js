@@ -20,7 +20,6 @@ async function runScheduledJob() {
           const endDate = new Date(featuredAt);
           console.log("Old End Date:", endDate.toDateString());
           endDate.setDate(endDate.getDate() + featureDuration);
-          // endDate.setDate(endDate.getDate());
           console.log("featuredAt:", featuredAt.toDateString());
           console.log("New End Date:", endDate.toDateString());
           console.log("Current Date:", now.toDateString());
@@ -33,6 +32,9 @@ async function runScheduledJob() {
             await logJobStatus(
               "featuredBlogUpdate",
               "success",
+              `Updated blog "${blog.title}" to not featured.`
+            );
+            console.log(
               `Updated blog "${blog.title}" to not featured.`
             );
           }

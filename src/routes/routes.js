@@ -3,6 +3,7 @@ const router = express.Router();
 const authcontroller = require("../controllers/auth.controller");
 const { Country, State } = require("country-state-city");
 const userModel = require("../models/User.model");
+const PaymentModel = require("../models/Payment.model");
 const blogController = require("../controllers/blog.controller");
 const profileController = require("../controllers/profile.controller");
 const AnalyticController = require("../controllers/analytic.controller");
@@ -153,6 +154,11 @@ router.get("/subscribe", async (req, res) => {
     return res.redirect("/signin");
   }
   let user = await userModel.findById(req.user._id);
+  let payment = await PaymentModel.findOne({
+    user: req.user._id,
+    paymentType: "subscription",
+    paymentStatus: "completed",
+  }).sort({ createdAt: -1 });
 
   const defaultSettings = {
     theme: "light",
@@ -167,6 +173,7 @@ router.get("/subscribe", async (req, res) => {
     title: "Subscribe",
     isAuthenticated,
     user,
+    payment: payment,
   });
 });
 

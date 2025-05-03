@@ -225,7 +225,7 @@
 
 <div
   id="pagination"
-  class="flex justify-center items-center gap-2 md:gap-4 my-2"
+  class="flex justify-center items-center my-2"
 ></div>
 
 <script>
@@ -235,13 +235,14 @@
   let endDate = "";
   let tags = "<%= tags%>" || "";
   let page = 1;
+  let limit = 12;
 
   async function fetchBlogs(page) {
     searchQuery = document.getElementById("searchBlogInput").value;
     startDate = document.getElementById("startDate").value;
     endDate = document.getElementById("endDate").value;
     console.log("Search Input", searchQuery);
-    const apiURL = `/api/blog/search?category=${currentCategory}&tags=${tags}&search=${searchQuery}&startDate=${startDate}&endDate=${endDate}&page=${page}`;
+    const apiURL = `/api/blog/search?category=${currentCategory}&tags=${tags}&search=${searchQuery}&startDate=${startDate}&endDate=${endDate}&page=${page} &limit=${limit}`;
 
     try {
       const response = await fetch(apiURL);
@@ -372,15 +373,14 @@
     const prevButton = document.createElement("button");
     prevButton.innerText = "Prev";
     prevButton.classList.add(
-      "px-4",
-      "py-2",
-      "border",
+      "px-3",
+      "py-1",
+      "ml-2",
+      "bg-fourth",
       "rounded-md",
-      "mx-1",
-      "hover:bg-gray-200",
-      "transition",
-      "text-xs",
-      "md:text-sm"
+      "text-secondary",
+      "hover:bg-fifth",
+      "hover:text-fourth"
     );
 
     prevButton.disabled = currentPage === 1;
@@ -391,20 +391,17 @@
       const pageButton = document.createElement("button");
       pageButton.innerText = i;
       pageButton.classList.add(
-        "px-4",
-        "py-2",
-        "border",
-        "rounded-md",
+       "px-3",
+        "py-1",
         "mx-1",
-        "hover:bg-gray-200",
-        "transition",
-        "text-xs",
-        "md:text-sm"
+        i === currentPage ? "bg-secondary" : "bg-fourth",
+        i === currentPage ? "text-background" : "text-secondary",
+        "rounded-md"
       );
       if (i === currentPage) {
         pageButton.classList.add("bg-secondary", "text-white");
       } else {
-        pageButton.classList.add("hover:bg-gray-200");
+        pageButton.classList.add("hover:bg-fifth", "hover:text-fourth");
       }
       pageButton.onclick = () => fetchBlogs(i);
       paginationElement.appendChild(pageButton);
@@ -412,15 +409,14 @@
     const nextButton = document.createElement("button");
     nextButton.innerText = "Next";
     nextButton.classList.add(
-      "px-4",
-      "py-2",
-      "border",
+      "px-3",
+      "py-1",
+      "ml-2",
+      "bg-fourth",
       "rounded-md",
-      "mx-1",
-      "hover:bg-gray-200",
-      "transition",
-      "text-xs",
-      "md:text-sm"
+      "text-secondary",
+      "hover:bg-fifth",
+      "hover:text-fourth"
     );
     // nextButton.disabled = currentPage === totalPages;
     nextButton.addEventListener("click", () => {

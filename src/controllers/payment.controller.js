@@ -1,8 +1,8 @@
 const paypal = require("paypal-rest-sdk");
+const paypalCheckout = require("@paypal/checkout-server-sdk");
 const UserModel = require("../models/User.model");
 const PaymentModel = require("../models/Payment.model");
 const BlogModel = require("../models/Blog.model");
-
 
 paypal.configure({
   mode: process.env.PAYPAL_MODE,
@@ -136,11 +136,14 @@ async function paymentSuccess(req, res) {
       });
     } else {
       if (paymentType === "featured") {
+        const saleId = payment.transactions[0].related_resources[0].sale.id;
+        console.log("saleId", saleId);
         await PaymentModel.create({
           amount: payment.transactions[0].amount.total,
           currency: payment.transactions[0].amount.currency,
           paymentStatus: "completed",
           transactionId: paymentId,
+          saleId: saleId,
           blog: blog,
           user: user._id,
           paymentType: paymentType,
@@ -149,11 +152,14 @@ async function paymentSuccess(req, res) {
           },
         });
       } else if (paymentType === "subscription") {
+        const saleId = payment.transactions[0].related_resources[0].sale.id;
+        console.log("saleId", saleId);
         await PaymentModel.create({
           amount: payment.transactions[0].amount.total,
           currency: payment.transactions[0].amount.currency,
           paymentStatus: "completed",
           transactionId: paymentId,
+          saleId: saleId,
           user: user._id,
           paymentType: paymentType,
           subscriptionDetails: subscriptionDetails,
@@ -327,6 +333,7 @@ async function changeBlog(req, res) {
     if (differenceInDays > oldBlog.featuredDetails.featureDuration) {
       return res.status(400).send("Featured duration has expired");
     }
+
     if (oldBlog.isFree == false) {
       payment.featuredDetails.featureDuration -= differenceInDays;
       payment.featuredDetails.featuredAt = new Date();
@@ -351,8 +358,7 @@ async function changeBlog(req, res) {
       if (isFree == true) {
         currentBlog.isFree = true;
       }
-      currentBlog.featuredDetails.featureDuration =
-        featureDuration - differenceInDays;
+      currentBlog.featuredDetails.featureDuration = featureDuration;
       await currentBlog.save();
     } else {
       return res.status(404).send("New blog not found");
@@ -402,6 +408,100 @@ async function removeFeatured(req, res) {
   }
 }
 
+const Environment = paypalCheckout.core.SandboxEnvironment; // or LiveEnvironment
+
+const paypalClient = new paypalCheckout.core.PayPalHttpClient(
+  new Environment(
+    process.env.PAYPAL_CLIENT_ID,
+    process.env.PAYPAL_CLIENT_SECRET
+  )
+);
+
+async function changeSubscription(req, res) {
+  const isAuthenticated = req.isAuthenticated();
+  if (!isAuthenticated) {
+    return res.status(401).send("Unauthorized");
+  }
+  const userId = req.user._id;
+
+  try {
+    const user = await UserModel.findById(userId);
+    const payment = await PaymentModel.findOne({
+      user: userId,
+      paymentType: "subscription",
+      paymentStatus: "completed",
+    }).sort({ createdAt: -1 });
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    if (!payment || !payment.saleId) {
+      return res
+        .status(404)
+        .json({ message: "Payment not found or sale ID missing" });
+    }
+
+    if (payment.createdAt < Date.now() - 5 * 24 * 60 * 60 * 1000) {
+      const request = new paypalCheckout.payments.CapturesRefundRequest(
+        payment.saleId
+      );
+      request.requestBody({});
+
+      const response = await paypalClient.execute(request);
+
+      payment.paymentStatus = "refunded";
+      await payment.save();
+    }
+
+    createPayment(req, res);
+  } catch (error) {
+    res.status(500).send("An error occurred while updating the subscription");
+  }
+}
+
+async function refundPayment(req, res) {
+  const { transactionId } = req.body;
+  console.log("transactionId", transactionId);
+
+  const payment = await PaymentModel.findOne({ transactionId });
+
+  if (payment.createdAt < Date.now() - 5 * 24 * 60 * 60 * 1000) {
+    return res
+      .status(400)
+      .json({ message: "Refund request is only valid for 5 days" });
+  }
+
+  if (!payment || !payment.saleId) {
+    return res
+      .status(404)
+      .json({ message: "Payment not found or sale ID missing" });
+  }
+
+  const request = new paypalCheckout.payments.CapturesRefundRequest(
+    payment.saleId
+  );
+  request.requestBody({});
+
+  try {
+    const response = await paypalClient.execute(request);
+
+    payment.paymentStatus = "refunded";
+    await payment.save();
+
+    const user = await UserModel.findById(payment.user);
+    if (user) {
+      user.subscription = "regular";
+      await user.save();
+    }
+
+    res.status(200).json({ message: "Refund successful" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Refund failed", error: err.message });
+  }
+}
+
 module.exports = {
   createPayment,
   paymentSuccess,
@@ -409,4 +509,6 @@ module.exports = {
   searchPayment,
   changeBlog,
   removeFeatured,
+  changeSubscription,
+  refundPayment,
 };

@@ -13,4 +13,7 @@ router.get("/search", paymentController.searchPayment);
 router.patch("/changeFeatured",paymentController.changeBlog);
 
 router.patch("/featured/remove",paymentController.removeFeatured);
+
+router.post("/refund",paymentController.refundPayment);
+router.post("/changeSubscription",paymentController.changeSubscription);
 module.exports = router;

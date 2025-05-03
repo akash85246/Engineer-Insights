@@ -1,6 +1,6 @@
 <div class="pt-16 font-roboto">
   <div
-    class="relative <%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-gray-200' %> rounded-lg p-1 w-full max-w-md mx-auto"
+    class="relative <%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-fourth' %> rounded-lg p-1 md:w-full max-w-sm md:max-w-md mx-auto"
   >
    
     <div
@@ -8,17 +8,17 @@
       class="absolute <%= user.settings.theme === 'dark' ? 'bg-dark-tertiary' : 'bg-white' %> rounded-lg top-1 left-1 h-[calc(100%-8px)] w-[calc(50%-4px)] transform transition-transform duration-300 ease-in-out"
     ></div>
 
-    <div class="relative z-10 grid grid-cols-2">
+    <div class="relative z-10 grid grid-cols-2 ">
       <button
         id="newButton"
-        class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-gray-800 ' %> font-medium py-2 px-4 text-center rounded-lg focus:outline-none font-roboto"
+        class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-tertiary ' %> font-medium p-1 md:py-2 md:px-4 text-center  rounded-lg focus:outline-none font-roboto"
         onclick="toggleTab('newBlogs')"
       >
         Feature New
       </button>
       <button
         id="featuredButton"
-        class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-gray-800 ' %> font-medium py-2 px-4 text-center rounded-lg focus:outline-none font-roboto"
+        class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-tertiary ' %> font-medium p-1 md:py-2 md:px-4 text-center rounded-lg focus:outline-none font-roboto"
         onclick="toggleTab('featuredBlogs')"
       >
         Featured
@@ -32,10 +32,10 @@
 >
   <div
     id="newBlogs"
-    class="w-full transition-transform transform translate-x-0"
+    class="w-full transition-transform transform translate-x-0 "
   >
     <h1
-      class="text-base sm:text-lg md:text-xl lg:text-2xl <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %> font-semibold mt-8 md:mt-0 p-3 md:px-10"
+      class="text-base sm:text-lg md:text-xl lg:text-2xl <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %> font-semibold mt-2 md:mt-0 p-3 md:px-10"
     >
       Select a Blog to feature
     </h1>
@@ -86,7 +86,7 @@ include("../../partials/featureModalInfo.ejs") %>
       featuredBlogs.classList.add("translate-x-full");
 
 
-      fetchNewBlogs(1, 10);
+      fetchNewBlogs(1, 12);
     } else if (tab === "featuredBlogs") {
       
       slider.style.transform = "translateX(100%)";
@@ -104,7 +104,7 @@ include("../../partials/featureModalInfo.ejs") %>
     renderPagination(currentPage, totalPages, isNew);
   }
 
-  function fetchNewBlogs(page = 1, limit = 10) {
+  function fetchNewBlogs(page = 1, limit = 12) {
     fetch(
       `/api/blog/search/user?author=<%= user._id %>&page=${page}&limit=${limit}&featured=false&status=published`
     )
@@ -191,14 +191,6 @@ include("../../partials/featureModalInfo.ejs") %>
                   blog.slug
                 }" class="<%= user.settings.theme === 'dark' ? 'text-dark-tertiary' : 'text-fifth' %> hover:text-highlight font-roboto text-center  font-medium">read more</a></span>
                 </p>
-                <div class="flex justify-between items-center">
-                  
-                      <div class="flex gap-2">
-                         <a href="/blog/edit/${
-                           blog.slug
-                         }" class=" px-3 rounded-md focus:outline-none flex items-center text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300 font-roboto">Edit</a>
-                      </div>
-                </div>
               </div>
             </div>
           </div>
@@ -245,22 +237,6 @@ include("../../partials/featureModalInfo.ejs") %>
                   blog.slug
                 }" class="<%= user.settings.theme === 'dark' ? 'text-dark-tertiary' : 'text-fifth' %> hover:text-highlight font-roboto text-center  font-medium">read more</a></span>
                 </p>
-                <div class="flex justify-between items-center">
-                  
-                      <div class="flex gap-2">
-                         
-                             <button onclick="openDeleteModal('${
-                               blog.slug
-                             }')" class="remove-button px-3 hover:bg-red-300 focus:outline-none text-sm md:text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-fourth' %> rounded-md font-roboto" data-slug=${
-          blog.slug
-        }>Remove</button>
-                             
-                           
-                         <a href="/blog/edit/${
-                           blog.slug
-                         }" class=" px-3 rounded-md focus:outline-none flex items-center text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300 font-roboto">Edit</a>
-                      </div>
-                </div>
               </div>
             </div>
           </div>
@@ -324,9 +300,13 @@ include("../../partials/featureModalInfo.ejs") %>
       "px-3",
       "py-1",
       "mr-2",
-      "bg-gray-200",
-      "rounded-md"
+      "bg-fourth",
+      "rounded-md",
+      "text-secondary",
+      "hover:bg-fifth",
+      "hover:text-fourth"
     );
+
     prevButton.disabled = currentPage === 1;
     prevButton.addEventListener("click", () => {
       if (isNew) {
@@ -337,6 +317,7 @@ include("../../partials/featureModalInfo.ejs") %>
     });
     paginationDiv.appendChild(prevButton);
 
+   
     for (let i = startPage; i <= endPage; i++) {
       const pageButton = document.createElement("button");
       pageButton.innerText = i;
@@ -344,10 +325,17 @@ include("../../partials/featureModalInfo.ejs") %>
         "px-3",
         "py-1",
         "mx-1",
-        i === currentPage ? "bg-secondary" : "bg-gray-200",
+        i === currentPage ? "bg-secondary" : "bg-fourth",
         i === currentPage ? "text-background" : "text-secondary",
         "rounded-md"
       );
+
+      if (i === currentPage) {
+        pageButton.classList.add("bg-secondary", "text-white");
+      } else {
+        pageButton.classList.add("hover:bg-fifth", "hover:text-fourth");
+      }
+
       pageButton.addEventListener("click", () => {
         if (isNew) {
           fetchNewBlogs(i);
@@ -356,9 +344,10 @@ include("../../partials/featureModalInfo.ejs") %>
         }
       });
       paginationDiv.appendChild(pageButton);
-      if (currentPage === i) {
+      if (currentPage === startPage) {
         prevButton.classList.add("hidden");
       }
+      
     }
 
     const nextButton = document.createElement("button");
@@ -367,9 +356,13 @@ include("../../partials/featureModalInfo.ejs") %>
       "px-3",
       "py-1",
       "ml-2",
-      "bg-gray-200",
-      "rounded-md"
+      "bg-fourth",
+      "rounded-md",
+      "text-secondary",
+      "hover:bg-fifth",
+      "hover:text-fourth"
     );
+    paginationDiv.appendChild(nextButton);
     nextButton.disabled = currentPage === totalPages;
     nextButton.addEventListener("click", () => {
       if (isNew) {
@@ -377,15 +370,15 @@ include("../../partials/featureModalInfo.ejs") %>
       } else {
         fetchFeaturedBlogs(currentPage + 1);
       }
-      if (totalPages <= 5) {
-        prevButton.classList.add("hidden");
-        nextButton.classList.add("hidden");
-      }
-      paginationDiv.appendChild(nextButton);
-      if (currentPage == endPage) {
-        nextButton.classList.remove("hidden");
-      }
+      // if (totalPages <= 5) {
+      //   prevButton.classList.add("hidden");
+      //   nextButton.classList.add("hidden");
+      // }
     });
+    if(currentPage === totalPages){
+      nextButton.classList.add("hidden");
+    }
+   
   }
 
   function truncateText(text, maxLength) {
@@ -395,5 +388,5 @@ include("../../partials/featureModalInfo.ejs") %>
     return text;
   }
 
-  fetchNewBlogs(1, 10);
+  fetchNewBlogs(1, 12);
 </script>

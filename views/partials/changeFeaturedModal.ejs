@@ -5,7 +5,7 @@
   <input type="text" id="modalChangeBlogInfoId" hidden />
 
   <div
-    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> backdrop-blur-sm p-4 rounded-lg w-full m-auto md:w-1/2"
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> backdrop-blur-sm p-4 rounded-lg w-full m-auto md:w-1/2 "
   >
     <div
       class="relative flex items-center bg-transparent  border  <%= user.settings.theme === 'dark' ? 'bg-dark-secondary text-dark-secondary' : 'border-fourth text-fourth' %>  rounded-lg px-4 md:py-2 lg:py-1 shadow-sm w-full"
@@ -22,7 +22,7 @@
         oninput="searchBlog(this.value)"
       />
     </div>
-    <div id="top-10"></div>
+    <div id="top-10" class="min-h-[40vh] h-full"></div>
   </div>
 </div>
 
@@ -56,8 +56,8 @@
 
           console.log(blog._id);
           blogDiv.innerHTML = `
-            <p>${blog.title}</p>
-             <button class="<%= user.settings.theme === 'dark' ? ' bg-dark-sixth text-dark-primary hover:bg-blue-400' : ' bg-blue-500 text-white hover:bg-blue-500' %> px-2 py-1 rounded-lg" onclick="selectBlog('${blog._id}')">Select</button>
+            <p class="break-words max-w-[70%] md:max-w-[90%] whitespace-normal ">${blog.title}</p>
+             <button class=" hover:bg-tertiary   hover:text-background <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : ' text-sixth bg-secondary' %> px-2 py-1 rounded-lg" onclick="selectBlog('${blog._id}')">Select</button>
           `;
           searchList.appendChild(blogDiv);
         });

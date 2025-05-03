@@ -12,7 +12,7 @@ const PaymentSchema = new Schema({
   },
   paymentStatus: {
     type: String,
-    enum: ["pending", "completed", "failed","expired"],
+    enum: ["pending", "completed", "failed","expired","refunded"],
     default: "pending",
   },
   transactionId: {
@@ -36,6 +36,13 @@ const PaymentSchema = new Schema({
     type: String,
     enum: ["featured", "subscription"],
     required: true,
+  },
+  saleId:{
+    type: String,
+    required: true,
+    unique: true,
+    description: "Unique identifier for the sale transaction.",
+    example: "sale_1234567890",
   },
   subscriptionDetails: {
     startDate: {

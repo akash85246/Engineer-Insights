@@ -4,7 +4,7 @@ const Mailgen = require("mailgen");
 const nodeConfig = {
   service: "gmail",
   port: 587,
-  secure: false, // Set to true if using SSL
+  secure: false, 
   auth: {
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,

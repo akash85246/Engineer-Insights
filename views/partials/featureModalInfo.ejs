@@ -3,7 +3,7 @@
   id="featureModalInfo"
 >
   <div
-    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> backdrop-blur-sm p-4 rounded-lg w-full m-auto md:w-1/2"
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-tertiary' %> backdrop-blur-sm p-4 rounded-lg w-full m-auto md:w-1/2"
   >
     <input type="text" id="modalBlogInfoId" hidden />
     <div id="blogContent">
@@ -70,18 +70,19 @@
         const currentDate = new Date();
 
         const differenceInMs =
-          currentDate - new Date(payment.featuredDetails.featuredAt);
+          currentDate - new Date(payment.blog.featuredDetails.featuredAt);
 
         const daysPassed = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
         let buttonHtml = "";
-        console.log(payment.featuredDetails.featureDuration);
-        if (payment.featuredDetails.featureDuration > daysPassed) {
+        console.log("feature duration",payment.featuredDetails.featureDuration);
+        console.log("days passed",daysPassed);
+        if ( daysPassed < 5) {
           buttonHtml = `
           <div class="flex justify-between items-center gap-1">
-          <button class="hover:bg-blue-300 hover:text-background   <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-gray-300  text-gray-700 ' %>  font-roboto md:font-bold font-semibold text-sm md:text-base p-2 md:py-2 md:px-4  rounded focus:outline-none focus:shadow-outline font-roboto" onclick="showChangeFeaturedModal('${blog._id}')">
+          <button class="hover:bg-fourth hover:text-background   <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-tertiary  text-sixth ' %>  font-roboto md:font-bold font-semibold text-sm md:text-base p-2 md:py-2 md:px-4  rounded focus:outline-none focus:shadow-outline font-roboto" onclick="showChangeFeaturedModal('${blog._id}')">
               Change Blog
           </button>
-          <button class="hover:bg-red-300   hover:text-background   font-roboto <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : ' text-sixth bg-fourth' %>  md:font-bold font-semibold text-sm md:text-base p-2 md:py-2 md:px-4 rounded outline-none font-roboto" onclick="removeFeatured('${blog._id}')">
+          <button class="hover:bg-tertiary   hover:text-background   font-roboto <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : ' text-sixth bg-secondary' %>  md:font-bold font-semibold text-sm md:text-base p-2 md:py-2 md:px-4 rounded outline-none font-roboto" onclick="removeFeatured('${blog._id}')">
               Remove from Featured
           </button>
           </div>
@@ -89,17 +90,17 @@
         }
 
         document.getElementById("blogContent").innerHTML = `
-            <h2 class="text-2xl font-bold mb-4 break-words <%= user.settings.theme === 'dark' ? 'text-dark-primary' : ' text-text' %>">${
+            <h2 class="text-2xl font-bold mb-4 break-words <%= user.settings.theme === 'dark' ? 'text-dark-primary' : ' text-tertiary' %>">${
               blog.title
             }</h2>
             <img src="${blog.blogPhoto}" alt="${
           blog.title
         }" class="mb-4 rounded-lg w-42  h-42"/>
-            <p class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-fourth' %>">Featured on: ${new Date(
+            <p class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-secondary' %>">Featured on: ${new Date(
               payment.featuredDetails.featuredAt
             ).toLocaleDateString()}</p>
-             <p class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-fourth' %>">Days passed since featured: ${daysPassed} days</p>
-    <p class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-fourth' %>">Amount deducted: ${
+             <p class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-secondary' %>">Days passed since featured: ${daysPassed} days</p>
+    <p class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-secondary' %>">Amount deducted: ${
       payment.currency
     } ${payment.amount}</p>
     ${buttonHtml}

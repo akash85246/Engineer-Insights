@@ -1,14 +1,18 @@
-<div class="md:max-w-4xl <%= user.settings.theme === 'dark' ? 'shadow-white-lg' : 'shadow-lg' %> m-auto p-2 pt-10 md:p-10 font-lora mb-5">
+<div
+  class="md:max-w-4xl <%= user.settings.theme === 'dark' ? 'shadow-white-lg' : 'shadow-lg' %> m-auto p-2 pt-10 md:p-10 font-lora mb-5"
+>
   <h1
     class="text-lg md:text-xl lg:text-2xl p-3 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %>"
   >
     Subscription Plans
   </h1>
-  <div class="grid grid-rows-2 sm:grid-rows-1 sm:grid-cols-2 gap-8 sm:gap-4 px-3">
+  <div
+    class="grid grid-rows-2 sm:grid-rows-1 sm:grid-cols-2 gap-8 sm:gap-4 px-3"
+  >
     <!-- Pro Membership Card -->
-    <div id="proMembershipCard" class="relative  perspective h-32 block">
+    <div id="proMembershipCard" class="relative perspective h-32 block">
       <div
-        class="border rounded-lg <%= user.settings.theme === 'dark' ? 'shadow-white-lg  bg-dark-sixth border-dark-secondary' : 'shadow-lg  bg-background border-sixth' %> w-full h-36 transition-transform duration-500 ease-in-out transform preserve-3d overflow-hidden"
+        class="border rounded-lg <%= user.settings.theme === 'dark' ? 'shadow-white-lg bg-dark-sixth border-dark-secondary' : 'shadow-lg bg-background border-sixth' %> w-full h-36 transition-transform duration-500 ease-in-out transform preserve-3d overflow-hidden"
         id="proMembershipContainer"
       >
         <!-- Front Side -->
@@ -18,32 +22,38 @@
         >
           <div class="flex justify-between items-center">
             <h1
-              class="text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-tertiary' %>"
+              class="text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-primary' %>"
             >
               Pro Membership
             </h1>
             <h1
-              class="text-xl font-bold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-tertiary' %>"
+              class="text-xl font-bold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-primary' %>"
             >
-              $10<span class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> text-sm">/weekly</span>
+              $10<span
+                class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-secondary' %> text-sm"
+                >/weekly</span
+              >
             </h1>
           </div>
           <p
-            class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> text-sm"
+            class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-tertiary' %> text-sm"
             id="timeLeftPro"
           >
             7 days remaining
           </p>
           <div class="flex gap-4 items-center mt-auto">
+            <% const action = user.subscription === 'regular' ?
+            'upgradeSubscription' : user.subscription === 'elite' ?
+            'changeSubscription' : 'refundSubscription'; %>
             <button
-              onclick="upgradeSubscription('pro')"
-              class=" <%= user.settings.theme === 'dark' ? 'border-dark-secondary text-dark-secondary' : 'bg-sixth text-fourth' %>  font-medium rounded-md px-4 py-2 transition hover:bg-blue-300 hover:text-background hover:border-background font-roboto"
+              onclick="<%= action %>('pro')"
+              class="<%= user.settings.theme === 'dark' ? 'border-dark-secondary text-dark-secondary' : 'bg-tertiary text-sixth' %> font-medium rounded-md px-4 py-2 transition hover:bg-blue-300 hover:text-background hover:border-background font-roboto"
               id="proUpgradeButton"
             >
               Upgrade
             </button>
             <p
-              class="text-sm <%= user.settings.theme === 'dark' ? 'text-tertiary' : 'text-fifth' %> cursor-pointer flex items-center font-roboto hover:text-fourth"
+              class="text-sm <%= user.settings.theme === 'dark' ? 'text-tertiary' : 'text-tertiary' %> cursor-pointer flex items-center font-roboto hover:text-fourth"
               id="proDetails"
             >
               <span class="mr-1">ⓘ</span> For more details, click here.
@@ -83,7 +93,7 @@
     <!-- Elite Membership Card -->
     <div id="eliteMembershipCard" class="relative perspective h-32 block">
       <div
-        class="border rounded-lg  w-full h-36 transition-transform duration-500 ease-in-out transform preserve-3d overflow-hidden <%= user.settings.theme === 'dark' ? ' bg-dark-sixth border-dark-secondary shadow-white-lg' : 'bg-background border-sixth shadow-lg' %>"
+        class="border rounded-lg w-full h-36 transition-transform duration-500 ease-in-out transform preserve-3d overflow-hidden <%= user.settings.theme === 'dark' ? ' bg-dark-sixth border-dark-secondary shadow-white-lg' : 'bg-background border-sixth shadow-lg' %>"
         id="eliteMembershipContainer"
       >
         <!-- Front Side -->
@@ -93,32 +103,39 @@
         >
           <div class="flex justify-between items-center">
             <h1
-              class="text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-tertiary' %>"
+              class="text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-primary' %>"
             >
               Elite Membership
             </h1>
             <h1
-              class="text-xl font-bold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-tertiary' %>"
+              class="text-xl font-bold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %>"
             >
-              $48<span class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> text-sm">/month</span>
+              $48<span
+                class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-secondary' %> text-sm"
+                >/month</span
+              >
             </h1>
           </div>
           <p
-            class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> text-sm"
+            class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-tertiary' %> text-sm"
             id="timeLeftElite"
           >
             30 days remaining
           </p>
           <div class="flex gap-4 items-center mt-auto">
+            <% const action2 = user.subscription === 'regular' ?
+            'upgradeSubscription' : user.subscription === 'pro' ?
+            'changeSubscription' : 'refundSubscription'; %>
+
             <button
-              onclick="upgradeSubscription('elite')"
-              class=" <%= user.settings.theme === 'dark' ? 'border-dark-secondary text-dark-secondary' : 'bg-fourth text-white' %> font-medium rounded-md px-4 py-2 transition hover:bg-blue-300 hover:text-background hover:border-background font-roboto"
+              onclick="<%= action2 %>('elite')"
+              class="<%= user.settings.theme === 'dark' ? 'border-dark-secondary text-dark-secondary' : 'bg-secondary text-sixth' %> font-medium rounded-md px-4 py-2 transition hover:bg-blue-300 hover:text-background hover:border-background font-roboto"
               id="eliteUpgradeButton"
             >
               Upgrade
             </button>
             <p
-              class="text-sm <%= user.settings.theme === 'dark' ? 'text-tertiary' : 'text-fifth' %> cursor-pointer flex items-center font-roboto hover:text-fourth"
+              class="text-sm <%= user.settings.theme === 'dark' ? 'text-tertiary' : 'text-tertiary' %> cursor-pointer flex items-center font-roboto hover:text-fourth"
               id="eliteDetails"
             >
               <span class="mr-1">ⓘ</span> For more details, click here.
@@ -280,7 +297,7 @@
           paymentHistory.innerHTML = `
           <table class="w-full border-collapse border border-gray-300">
             <thead>
-              <tr class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-secondary text-dark-secondary' : 'bg-sixth border-fourth text-fourth' %>">
+              <tr class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-secondary text-dark-secondary' : 'bg-sixth border-secondary text-secondary' %>">
                 <th class="border border-gray-300 p-3 text-left text-xxs whitespace-nowrap">Payment Type</th>
                 <th class="border border-gray-300 p-3 text-left text-xxs whitespace-nowrap">Transaction ID</th>
                 <th class="border border-gray-300 p-3 text-left text-xxs whitespace-nowrap">Payment Status</th>
@@ -323,13 +340,13 @@
             const tr = document.createElement("tr");
 
             tr.innerHTML = `
-            <td class="border border-sixth <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fourth' %> p-3 text-xxs">${paymentType}</td>
-            <td class="border border-sixth <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fourth' %> p-3 text-xxs">${transactionId}</td>
-            <td class="border border-sixth <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fourth' %> p-3 text-xxs">${paymentStatus}</td>
-            <td class="border border-sixth <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fourth' %> p-3 text-xxs">$${amount} ${currency}</td>
-            <td class="border border-sixth <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fourth' %> p-3 text-xxs">${startDate}</td>
-            <td class="border border-sixth <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fourth' %> p-3 text-xxs">${endDate}</td>
-            <td class="border border-sixth <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-fourth' %> p-3 text-xxs">${frequency}</td>
+            <td class="border  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xxs">${paymentType}</td>
+            <td class="border  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xxs">${transactionId}</td>
+            <td class="border  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xxs">${paymentStatus}</td>
+            <td class="border  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xxs">$${amount} ${currency}</td>
+            <td class="border  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xxs">${startDate}</td>
+            <td class="border  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xxs">${endDate}</td>
+            <td class="border <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xxs">${frequency}</td>
           `;
             tableBody.appendChild(tr);
           });
@@ -352,8 +369,6 @@
       `;
       });
   }
-
-  
 
   function renderPagination(currentPage, totalPages) {
     paginationDiv.innerHTML = "";
@@ -423,7 +438,7 @@
       "font-lora",
       "rounded-md"
     );
-    
+
     nextButton.addEventListener("click", () => {
       currentPage = parseInt(currentPage);
       console.log(currentPage, typeof currentPage);
@@ -451,27 +466,35 @@
     const eliteUpgradeButton = document.getElementById("eliteUpgradeButton");
 
     if (proMembershipButton && eliteUpgradeButton) {
-      proMembershipButton.disabled = true;
-      eliteUpgradeButton.disabled = true;
       proMembershipButton.classList.add(
         "bg-green-500",
-        "cursor-not-allowed",
         "hover:bg-red-300",
+        "bg-secondary",
         "hover:text-white",
         "hover:border-red-300",
         "text-green-100",
         "border-green-300"
       );
-      eliteUpgradeButton.classList.add(
-        "bg-sixth",
+      proMembershipButton.classList.remove(
+        "bg-tertiary",
         "text-fifth",
         "border-fifth",
-        "cursor-not-allowed",
+
         "hover:text-white",
         "hover:border-red-300",
         "hover:bg-red-300"
       );
-      proMembershipButton.innerText = "Selected";
+      eliteUpgradeButton.classList.add(
+        "bg-tertiary",
+        "text-fifth",
+        "border-fifth",
+
+        "hover:text-white",
+        "hover:border-red-300",
+        "hover:bg-red-300"
+      );
+      proMembershipButton.innerText = "Refund";
+      eliteUpgradeButton.innerText = "Change Plan";
     }
   } else if (Subscription === "elite") {
     const eliteMembershipHeader = document.querySelector(
@@ -481,27 +504,91 @@
     const eliteUpgradeButton = document.getElementById("eliteUpgradeButton");
 
     if (proMembershipButton && eliteUpgradeButton) {
-      proMembershipButton.disabled = true;
-      eliteUpgradeButton.disabled = true;
       proMembershipButton.classList.add(
         "bg-gray-500",
         "text-gray-300",
         "border-gray-300",
-        "cursor-not-allowed",
         "hover:text-white",
         "hover:border-red-500",
         "hover:bg-red-500"
       );
       eliteUpgradeButton.classList.add(
         "bg-green-500",
-        "cursor-not-allowed",
         "hover:bg-red-300",
         "hover:text-white",
         "hover:border-red-300",
         "text-green-100",
         "border-green-300"
       );
-      eliteUpgradeButton.innerText = "Selected";
+      eliteUpgradeButton.innerText = "Refund";
+      proMembershipButton.innerText = "Change Plan";
+    }
+  }
+
+  async function changeSubscription(plan) {
+    try {
+      const formData = new FormData();
+      formData.append("paymentType", "subscription");
+      formData.append("amount", plan == "pro" ? "0.01" : "0.05");
+      formData.append("subscriptionType", plan);
+      formData.append("currency", "USD");
+      const currentDate = new Date();
+      const endDate = new Date(
+        currentDate.setDate(currentDate.getDate() + (plan == "pro" ? 7 : 30))
+      );
+      const formattedEndDate = endDate.toISOString().split("T")[0];
+      formData.append("subscriptionDetails[endDate]", formattedEndDate);
+      formData.append(
+        "subscriptionDetails[frequency]",
+        plan == "pro" ? "weekly" : "monthly"
+      );
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = "/api/payment/changeSubscription";
+
+      for (let [key, value] of formData.entries()) {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+      }
+
+      const modalBlogIdInput = document.createElement("input");
+      modalBlogIdInput.type = "hidden";
+      modalBlogIdInput.name = "modalBlogId";
+      modalBlogIdInput.value = "";
+      form.appendChild(modalBlogIdInput);
+
+      document.body.appendChild(form);
+      form.submit();
+    } catch (error) {
+      console.error("Error during API call:", error);
+      alert("Failed to upgrade subscription. Please try again.");
+    }
+  }
+
+  async function refundSubscription(plan) {
+    const transactionId = "<%= payment ? payment.transactionId : '' %>";
+    console.log("Refunding subscription with transaction ID:", transactionId);
+    try {
+      const response = await fetch("/api/payment/refund", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ transactionId }),
+      });
+
+      if (response.ok) {
+        alert("Subscription cancelled successfully.");
+        window.location.reload();
+      } else {
+        alert("Failed to cancel subscription. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error cancelling subscription:", error);
+      alert("Failed to cancel subscription. Please try again.");
     }
   }
 </script>
