@@ -17,7 +17,7 @@
     window.onload = () => {
       const tags = "<%= profile.tags.join(',') %>" || "";
       const profile = <%- JSON.stringify(profile) %>;
-      console.log("Profile:", profile);
+      
       fetch(`/api/profile/search?tags=${tags}&id=${profile._id}`, {
         method: "GET",
         headers: {
@@ -46,8 +46,8 @@
   
             profileDiv.innerHTML = `
               <a href="/profile/${user.slug}" class="relative w-full h-full flex flex-col items-center font-roboto cursor-pointer">
-                <img src="${user.avatar || '/images/defaultProfile.png'}" alt="${user.username}" class="w-16 h-16 rounded-md object-cover mb-2"  draggable="false" />
-                <span class="block text-sm font-semibold  <%= profile.settings.theme === 'dark' ? 'text-fourth' : 'text-fifth' %>">${user.username}</span>
+                <img src="${user.avatar || '/images/defaultProfile.png'}" alt="${user.username}" class="w-16 h-16 rounded-md object-cover mb-2 border-gray-300 border"  draggable="false" />
+                <span class="block text-sm font-semibold  <%= profile.settings.theme === 'dark' ? 'text-fourth' : 'text-fifth' %> ">${user.username}</span>
               </a>
             `;
             carouselAuthorSlides.appendChild(profileDiv);

@@ -33,7 +33,9 @@ async function followandunfollow(req, res) {
 
       return res
         .status(200)
-        .json({ message: "Successfully unfollowed the author" });
+        .json({ message: "Successfully unfollowed the author", 
+        followingCount: user.following.length
+        });
     }
 
     user.following.push(author._id);
@@ -53,7 +55,9 @@ async function followandunfollow(req, res) {
     await author.save();
     return res
       .status(200)
-      .json({ message: "Successfully followed the author" });
+      .json({ message: "Successfully followed the author",
+        followingCount: user.following.length,
+       });
   } catch (error) {
     console.error("Error in follow function:", error);
     return res.status(500).json({ error: "Server error" });
@@ -62,10 +66,10 @@ async function followandunfollow(req, res) {
 
 async function getfollowers(req, res) {
   try {
-    const isAuthenticated = req.isAuthenticated();
-    if (!isAuthenticated) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+    // const isAuthenticated = req.isAuthenticated();
+    // if (!isAuthenticated) {
+    //   return res.status(401).json({ message: "Unauthorized" });
+    // }
 
     const slug = req.params.slug;
 
@@ -99,13 +103,14 @@ async function getfollowers(req, res) {
 
 async function getfollowing(req, res) {
   try {
-    const isAuthenticated = req.isAuthenticated();
-    if (!isAuthenticated) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    const userId = req.user._id;
+    // const isAuthenticated = req.isAuthenticated();
+    // if (!isAuthenticated) {
+    //   return res.status(401).json({ message: "Unauthorized" });
+    // }
 
-    const user = await UserModel.findById(userId);
+    const slug = req.params.slug;
+    const user = await UserModel.findOne({slug});
+
     if (!user) {
       return res.status(400).json({ error: "User not found" });
     }

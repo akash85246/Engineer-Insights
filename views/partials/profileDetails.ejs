@@ -11,12 +11,12 @@
   <div class="flex flex-col gap-2 md:gap-4 sm:mt-6 p-2 sm:p-0">
     <div class="flex justify-between">
       <h1
-        class="text-left text-base sm:text-lg md:text-base lg:text-lg font-semibold whitespace-nowrap flex gap-1 items-end <%= profile.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-white' %>"
+        class="text-left text-base sm:text-lg md:text-base lg:text-lg font-semibold whitespace-nowrap flex gap-1 items-end <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-white' %>"
       >
         <span><%= profile.firstname %></span>
         <span><%= profile.lastname %></span>
         <p
-          class="text-xs md:text-xxs lg:text-xs <%= profile.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %>"
+          class="text-xs md:text-xxs lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %>"
         >
           <% if (profile.subscription === "pro") { %>
           <img
@@ -87,6 +87,7 @@
       >
         <h2
           class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %>"
+          id="followingCountDetail"
         >
           <%= profile.following.length %>
         </h2>
@@ -105,7 +106,7 @@
           draggable="false"
           src="/images/icons/githubIcon.svg"
           alt="GitHub"
-          class="h-6 w-6 hover:scale-105 transition-transform mx-auto <%= profile.settings.theme === 'dark' ? '' : '' %> rounded-md bg-fourth p-1"
+          class="h-6 w-6 hover:scale-105 transition-transform mx-auto <%= user.settings.theme === 'dark' ? '' : '' %> rounded-md bg-fourth p-1"
         />
       </a>
       <% } else { %>
@@ -113,7 +114,7 @@
         draggable="false"
         src="/images/icons/noneIcon.svg"
         alt="no data"
-        class="h-6 w-6 rounded-md cursor-not-allowed transition-transform mx-auto <%= profile.settings.theme === 'dark' ? '' : 'invert bg-slate-300' %>"
+        class="h-6 w-6 rounded-md cursor-not-allowed transition-transform mx-auto <%= user.settings.theme === 'dark' ? '' : 'invert bg-slate-300' %>"
       />
       <% } %> <% if (profile.linkedin) { %>
       <a href="https://linkedin.com/in/<%= profile.linkedin %>" target="_blank">
@@ -121,7 +122,7 @@
           draggable="false"
           src="/images/icons/linkedinIcon.png"
           alt="LinkedIn"
-          class="h-6 w-6 rounded-md hover:scale-105 transition-transform mx-auto <%= profile.settings.theme === 'dark' ? '' : '' %>"
+          class="h-6 w-6 rounded-md hover:scale-105 transition-transform mx-auto <%= user.settings.theme === 'dark' ? '' : '' %>"
         />
       </a>
       <% } else { %>
@@ -129,7 +130,7 @@
         draggable="false"
         src="/images/icons/noneIcon.svg"
         alt="no data"
-        class="h-6 w-6 rounded-md cursor-not-allowed transition-transform mx-auto <%= profile.settings.theme === 'dark' ? '' : 'invert bg-slate-300' %>"
+        class="h-6 w-6 rounded-md cursor-not-allowed transition-transform mx-auto <%= user.settings.theme === 'dark' ? '' : 'invert bg-slate-300' %>"
       />
       <% } %> <% if (profile.twitter) { %>
       <a href="https://twitter.com/<%= profile.twitter %>" target="_blank">
@@ -137,7 +138,7 @@
           draggable="false"
           src="/images/icons/twitterIcon.png"
           alt="Twitter"
-          class="h-6 w-6 rounded-md hover:scale-105 transition-transform mx-auto <%= profile.settings.theme === 'dark' ? '' : '' %>"
+          class="h-6 w-6 rounded-md hover:scale-105 transition-transform mx-auto <%= user.settings.theme === 'dark' ? '' : '' %>"
         />
       </a>
       <% } else { %>
@@ -145,7 +146,7 @@
         draggable="false"
         src="/images/icons/noneIcon.svg"
         alt="no data"
-        class="h-6 w-6 rounded-md cursor-not-allowed transition-transform mx-auto <%= profile.settings.theme === 'dark' ? '' : 'invert bg-slate-300' %>"
+        class="h-6 w-6 rounded-md cursor-not-allowed transition-transform mx-auto <%= user.settings.theme === 'dark' ? '' : 'invert bg-slate-300' %>"
       />
       <% } %> <% if (profile.email) { %>
       <a href="mailto:<%= profile.email %>" target="_blank">
@@ -153,7 +154,7 @@
           draggable="false"
           src="/images/icons/emailIcon.png"
           alt="Email"
-          class="h-6 w-6 rounded-md hover:scale-105 transition-transform mx-auto <%= profile.settings.theme === 'dark' ? '' : '' %>"
+          class="h-6 w-6 rounded-md hover:scale-105 transition-transform mx-auto <%= user.settings.theme === 'dark' ? '' : '' %>"
         />
       </a>
       <% } else { %>
@@ -161,7 +162,7 @@
         draggable="false"
         src="/images/icons/noneIcon.svg"
         alt="no data"
-        class="h-6 w-6 rounded-md cursor-not-allowed transition-transform mx-auto <%= profile.settings.theme === 'dark' ? '' : 'invert bg-slate-300' %>"
+        class="h-6 w-6 rounded-md cursor-not-allowed transition-transform mx-auto <%= user.settings.theme === 'dark' ? '' : 'invert bg-slate-300' %>"
       />
       <% } %>
     </div>
@@ -187,7 +188,7 @@
       <div class="flex flex-wrap gap-2 w-full">
         <% profile.tags.forEach(function(tag) { %>
         <span
-          class="inline-block <%= profile.settings.theme === 'dark' ? 'text-dark-secondary border-dark-secondary' : ' border-sixth text-sixth ' %>bg-transparent bg-opacity-35 text-xs md:text-xxs lg:text-xs border sm:border rounded-md sm:rounded-lg px-1 sm:px-2 sm:py-1 hover:scale-105 transition-transform font-roboto uppercase"
+          class="inline-block <%= user.settings.theme === 'dark' ? 'text-dark-secondary border-dark-secondary' : ' border-sixth text-sixth ' %>bg-transparent bg-opacity-35 text-xs md:text-xxs lg:text-xs border sm:border rounded-md sm:rounded-lg px-1 sm:px-2 sm:py-1 hover:scale-105 transition-transform font-roboto uppercase"
         >
           <%= tag.trim() %>
         </span>
@@ -204,7 +205,7 @@
 
     <div class="sm:pb-5">
       <p
-        class="text-xs md:text-xs lg:text-sm <%= profile.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> flex items-center gap-2"
+        class="text-xs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> flex items-center gap-2"
       >
         <img
           draggable="false"
@@ -225,7 +226,7 @@
           class="hidden md:block transition-all duration-300 ease-in-out mt-2"
         >
           <div
-            class="text-xxs md:text-xs lg:text-sm <%= profile.settings.theme === 'dark' ? ' text-dark-secondary border-dark-tertiary' : 'text-fifth border-tertiary' %> border-t-2 pt-4"
+            class="text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-secondary border-dark-tertiary' : 'text-fifth border-tertiary' %> border-t-2 pt-4"
           >
             <span id="profileBio" class="break-words overflow-clip">
               <% if (profile.bio && profile.bio.trim()) { %> <%= profile.bio %>
@@ -254,7 +255,7 @@
             draggable="false"
             src="/images/icons/downArrow.png"
             alt=""
-            class="w-5 h-5 <%= profile.settings.theme === 'dark' ? ' invert' : '' %>"
+            class="w-5 h-5 <%= user.settings.theme === 'dark' ? ' invert' : '' %>"
             id="toggleImage"
           />
         </button>
@@ -280,7 +281,7 @@
       <!-- Name + Badge -->
       <div class="w-full col-span-3 flex gap-2 items-center justify-center">
         <h2
-          class="font-semibold text-base <%= profile.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-white' %>"
+          class="font-semibold text-base <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-white' %>"
         >
           <%= profile.firstname %> <%= profile.lastname %>
         </h2>
@@ -339,6 +340,7 @@
       >
         <h2
           class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %>"
+          id="followingCountDetailMobile"
         >
           <%= profile.following.length %>
         </h2>
@@ -360,7 +362,7 @@
     <div class="flex flex-wrap justify-center items-center gap-2 w-full">
       <% profile.tags.forEach(function(tag) { %>
       <span
-        class="inline-block <%= profile.settings.theme === 'dark' ? 'text-dark-secondary border-dark-secondary' : ' border-sixth text-sixth ' %>bg-transparent bg-opacity-35 text-sm border sm:border rounded-md sm:rounded-lg px-1 sm:px-2 sm:py-1 hover:scale-105 transition-transform font-roboto uppercase"
+        class="inline-block <%= user.settings.theme === 'dark' ? 'text-dark-secondary border-dark-secondary' : ' border-sixth text-sixth ' %>bg-transparent bg-opacity-35 text-sm border sm:border rounded-md sm:rounded-lg px-1 sm:px-2 sm:py-1 hover:scale-105 transition-transform font-roboto uppercase"
       >
         <%= tag.trim() %>
       </span>
@@ -396,7 +398,7 @@
 
   <div class="w-full mb-3">
     <p
-      class="text-sm break-words <%= profile.settings.theme === 'dark' ? ' text-dark-secondary border-dark-tertiary' : 'text-fifth border-tertiary' %> text-center"
+      class="text-sm break-words <%= user.settings.theme === 'dark' ? ' text-dark-secondary border-dark-tertiary' : 'text-fifth border-tertiary' %> text-center"
     >
       <% if (profile.bio && profile.bio.trim()) { %> <%= profile.bio %> <% }
       else { %>
@@ -501,6 +503,7 @@
 
   profileBio.innerText = truncatedBio;
   const profile = <%- JSON.stringify(profile) %>;
+
   if (profile) {
     window.toggleFollow =  async function toggleFollow(profileSlug) {
       event.preventDefault();
@@ -524,6 +527,11 @@
             followButton.innerText === "Follow" ? "Unfollow" : "Follow";
           followButtonMobile.innerText =
             followButtonMobile.innerText === "Follow" ? "Unfollow" : "Follow";
+
+            const followingCount = document.getElementById("followingCount");
+         followingCount.innerText = data.followingCount;
+
+
           if (followButton.innerText === "Follow" || followButtonMobile.innerText === "Follow") {
             gtag("event", "follow_user", {
               event_category: "Profile",
@@ -542,4 +550,3 @@
     }
   }
 </script>
-

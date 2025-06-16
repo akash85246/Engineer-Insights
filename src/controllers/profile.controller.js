@@ -467,25 +467,50 @@ async function getUserReports(req, res) {
 
 async function getUserFollowers(req, res) {
   try {
+    const slug = req.params.slug;
+
+    const defaultSettings = {
+      theme: "light",
+      notifications: false,
+    };
+
+    let user = { settings: defaultSettings };
     const isAuthenticated = req.isAuthenticated();
-    if (!isAuthenticated) {
-      return res.status(401).json({
-        success: false,
-        message: "Authentication token is missing.",
-      });
+    if (isAuthenticated) {
+      user = await UserModel.findById(req.user._id);
     }
-    const userId = req.user._id;
-    const user = await UserModel.findById(userId).lean();
+
+    const profile = await UserModel.findOne({ slug: slug });
+  
+
+    const featuredBlogs = await BlogModel.aggregate([
+      { $match: { featured: true, author: profile._id } },
+      {
+        $addFields: {
+          commentsCount: { $size: { $ifNull: ['$comments', []] } },
+          likesCount: { $size: { $ifNull: ['$likes', []] } }
+        }
+      },
+      {
+        $sort: {
+          createdAt: -1,
+          commentsCount: -1,
+          likesCount: -1
+        }
+      }
+    ]);
+
 
     res.renderWithProfileLayout("../pages/profile/follower", {
-      title: `${user.username}'s Followers`,
-      user: { ...user },
+      title: `${profile.username}'s Followers`,
+      user,
       isAuthenticated,
-      profile: { ...user },
+      profile,
       readerId: null,
+      featuredBlogs,
     });
   } catch (error) {
-    // console.error("Error fetching user:", error);
+    console.error("Error fetching user:", error);
     res.renderWithMainLayout("errors/500.ejs", {
       title: "Server Error",
       message: "An error occurred while fetching the user's profile.",
@@ -496,30 +521,46 @@ async function getUserFollowers(req, res) {
 
 async function getUserFollowing(req, res) {
   try {
-    const isAuthenticated = req.isAuthenticated();
-    if (!isAuthenticated) {
-      return res.status(401).json({
-        success: false,
-        message: "Authentication token is missing.",
-      });
-    }
-    const userId = req.user._id;
-    const user = await UserModel.findById(userId).lean();
+    const slug = req.params.slug;
 
-    if (!user) {
-      return res.status(404).render("errors/404.ejs", {
-        title: "User Not Found",
-        message: "The author you're looking for doesn't exist.",
-        isAuthenticated,
-      });
+    const defaultSettings = {
+      theme: "light",
+      notifications: false,
+    };
+
+    let user = { settings: defaultSettings };
+    const isAuthenticated = req.isAuthenticated();
+    if (isAuthenticated) {
+      user = await UserModel.findById(req.user._id);
     }
+    const profile = await UserModel.findOne({ slug: slug });
+  
+
+    const featuredBlogs = await BlogModel.aggregate([
+      { $match: { featured: true, author: profile._id } },
+      {
+        $addFields: {
+          commentsCount: { $size: { $ifNull: ['$comments', []] } },
+          likesCount: { $size: { $ifNull: ['$likes', []] } }
+        }
+      },
+      {
+        $sort: {
+          createdAt: -1,
+          commentsCount: -1,
+          likesCount: -1
+        }
+      }
+    ]);
+
 
     res.renderWithProfileLayout("../pages/profile/following", {
-      title: `${user.username}'s Following`,
-      user: { ...user },
+      title: `${profile.username}'s Following`,
+      user,
       readerId: null,
       isAuthenticated,
-      profile: { ...user },
+      profile,
+      featuredBlogs,
     });
   } catch (error) {
     console.error("Error fetching user:", error);

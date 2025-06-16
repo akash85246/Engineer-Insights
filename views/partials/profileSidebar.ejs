@@ -75,7 +75,8 @@
             class="text-center cursor-pointer p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md"
           >
             <h2
-              class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %>"
+              class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %> "
+              id="followingCount"
             >
               <%= user.following.length %>
             </h2>
