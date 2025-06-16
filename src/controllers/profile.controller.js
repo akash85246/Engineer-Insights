@@ -6,6 +6,7 @@ const NotificationModel = require("../models/Notification.model");
 const { fetchUserAnalytics } = require("../services/analytics");
 
 const ReportModel = require("../models/Report.model");
+const { comment } = require("postcss");
 
 async function getProfile(req, res, next) {
   try {
@@ -15,8 +16,9 @@ async function getProfile(req, res, next) {
       theme: "light",
       notifications: false,
     };
+
     const profile = await UserModel.findOne({ slug: slug });
-    console.log("profile", profile);
+    
     let user = null;
     let isAuthenticated = req.isAuthenticated();
     if (req.isAuthenticated()) {
@@ -26,11 +28,29 @@ async function getProfile(req, res, next) {
       user = { settings: defaultSettings };
     }
 
+    const featuredBlogs = await BlogModel.aggregate([
+      { $match: { featured: true, author: profile._id } },
+      {
+        $addFields: {
+          commentsCount: { $size: { $ifNull: ['$comments', []] } },
+          likesCount: { $size: { $ifNull: ['$likes', []] } }
+        }
+      },
+      {
+        $sort: {
+          createdAt: -1,
+          commentsCount: -1,
+          likesCount: -1
+        }
+      }
+    ]);
+
     res.renderWithProfileLayout("../pages/profile/profile", {
       title: `${profile.username}'s Profile`,
       profile,
       user,
       isAuthenticated,
+      featuredBlogs,
     });
   } catch (error) {
     console.error("Error fetching user profile:", error);
@@ -112,9 +132,10 @@ async function updateProfile(req, res) {
 }
 
 async function searchProfile(req, res) {
-  const { tags, username } = req.query;
+  const { tags, id } = req.query;
 
-  if (!tags && !username) {
+  console.log("Search query:", id, tags);
+  if (!tags && !id) {
     return res.status(200).json({ msg: "No search criteria provided" });
   }
 
@@ -129,8 +150,9 @@ async function searchProfile(req, res) {
       matchCriteria.matchedTagsCount = { $gt: 0 };
     }
 
-    if (username) {
-      matchCriteria.username = { $regex: new RegExp(username, "i") };
+    if (id) {
+      // matchCriteria.id = { $regex: new RegExp(id, "i") };
+      matchCriteria._id = { $ne: new mongoose.Types.ObjectId(id) }; 
     }
 
     const users = await UserModel.aggregate([

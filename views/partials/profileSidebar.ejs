@@ -1,178 +1,314 @@
-<div class="absolute h-full  pt-10 transition-transform transform -translate-x-full font-roboto" id="sidebar">
-<aside
-  
-  class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-primary text-background' %> backdrop-blur-sm bg-opacity-50 shadow-lg  sticky left-0 top-0   h-screen "
+<div
+  class="absolute h-full transition-transform transform -translate-x-full font-roboto <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-primary text-background' %> backdrop-blur-lg bg-opacity-80 md:backdrop-blur-md md:bg-opacity-50 shadow-lg"
+  id="sidebar"
 >
-  <div class="backdrop-blur-lg p-8 py-2 h-full">
-    <div class="profile-sidebar">
-      <div class="profile-sidebar-header border-b <%= user.settings.theme === 'dark' ? ' border-dark-tertiary' : ' border-tertiary' %>">
-        <div class="profile-sidebar-header-image mb-1 flex justify-center">
-          <img
-            src="<%= user.avatar ? user.avatar : '/images/defaultProfile.png' %>"
-            alt="Profile Image"
-            class="w-28 h-28 rounded-full border border-gray-300"
-          />
-        </div>
-        <div class="profile-sidebar-header-content text-center">
-          <p class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : ' text-fifth' %>  text-left text-xs my-1 font-lora">
-            @<%= user.username %>
-          </p>
-          <div
-            class="flex gap-2 items-center text-lg font-bold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-sixth' %> overflow-clip font-lora"
-          >
-            <h3><%= user.firstname %></h3>
-            <h3><%= user.lastname %></h3>
+  <aside class="sticky left-0 top-0 h-screen">
+    <div class="p-4 md:p-8 flex flex-col justify-between h-full">
+      <div class="profile-sidebar flex flex-col md:gap-4">
+        <div
+          class="profile-sidebar-header <%= user.settings.theme === 'dark' ? ' border-dark-tertiary' : ' border-tertiary' %> "
+        >
+          <div class="profile-sidebar-header-image mb-2 flex justify-center">
+            <img
+              src="<%= user.avatar ? user.avatar : '/images/defaultProfile.png' %>"
+              draggable="false"
+              alt="Profile Image"
+              class="w-20 h-20 md:w-full md:h-auto aspect-square rounded-md border border-gray-300"
+            />
+          </div>
+          <div class="profile-sidebar-header-content text-center">
+            <p
+              class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : ' text-fifth' %> text-left text-xs my-1 font-lora"
+            >
+              @<%= user.username %>
+            </p>
+            <div
+              class="flex gap-2 items-center text-lg font-bold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-sixth' %> overflow-clip font-lora"
+            >
+              <h3><%= user.firstname %></h3>
+              <h3><%= user.lastname %></h3>
+              <% if (user.subscription === "pro") { %>
+                <img src="images/icons/proIcon.svg" 
+                draggable="false" alt="pro icon" class="h-6 w-6" />
+                <% } else if (user.subscription === "elite") { %>
+                <img src="images/icons/eliteIcon.svg"
+                draggable="false" alt="elite icon" class="h-6 w-6" />
+                <% } %>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="grid grid-cols-3 gap-2 border-b  <%= user.settings.theme === 'dark' ? ' border-dark-tertiary' : '  border-tertiary' %>  py-2">
-        <a href="/profile/<%= user.slug%>" class="text-center cursor-pointer hover:scale-110">
-          <h2 class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %>">
-            <%= user.blogs.length %>
-          </h2>
-          <p class="<%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fifth' %> text-xs">Blogs</p>
-        </a>
-        <a
-          href="/followers"
-          class="text-center cursor-pointer hover:scale-110"
+        <div
+          class="grid grid-cols-3  border-y <%= user.settings.theme === 'dark' ? ' border-dark-tertiary' : ' border-tertiary' %> "
         >
-          <h2 class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %>">
-            <%= user.followers.length %>
-          </h2>
-          <p class="<%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fifth' %> text-xs">Followers</p>
-        </a>
-        <a
-          href="/following"
-          class="text-center cursor-pointer hover:scale-110"
-        >
-          <h2 class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %>">
-            <%= user.following.length %>
-          </h2>
-          <p class="<%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fifth' %> text-xs">Following</p>
-        </a>
-      </div>
-      <div class="profile-sidebar-content py-6">
-        <ul
-          class="space-y-2 sm:space-y-1 md:space-y-2 text-base md:text-sm lg:text-base"
-        >
-          <li class="flex items-center gap-2">
-            <img src="images/icons/profileIcon.png" alt="profile icon" class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"/>
-            <a href="/profile/<%= user.slug%>" class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %> hover:text-fifth"
-              >Profile</a
+          <a
+            href="/profile/<%= user.slug%>"
+            class="text-center cursor-pointer p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md"
+          >
+            <h2
+              class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %>"
             >
-          </li>
-          <li class="flex items-center gap-2">
-            <img
-              src="images/icons/editProfileIcon.png"
-              alt="edit profile icon"
-              class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"
-            />
-            <a
-              href="/profile/edit"
-              class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %> hover:text-fifth"
-              >Edit Profile</a
+              <%= user.blogs.length %>
+            </h2>
+            <p
+              class="<%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fifth' %> text-xs"
             >
-          </li>
-          <li class="flex items-center gap-2">
-            <img src="images/icons/savedBlogIcon.png" alt="draft icon" class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"/>
-            <a
-              href="/saveBlogs"
-              class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %> hover:text-fifth"
-              >Saved Blogs</a
+              Blogs
+            </p>
+          </a>
+          <a
+            href="/followers"
+            class="text-center cursor-pointer p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md"
+          >
+            <h2
+              class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %>"
             >
-          </li>
-          
-          <li class="flex items-center gap-2">
-            <img src="images/icons/draftIcon.png" alt="draft icon" class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"/>
-            <a
-              href="/drafts"
-              class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %> hover:text-fifth"
-              >Drafts</a
+              <%= user.followers.length %>
+            </h2>
+            <p
+              class="<%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fifth' %> text-xs"
             >
-          </li>
-          <li class="flex items-center gap-2">
-            <img src="images/icons/archiveIcon.png" alt="draft icon" class="w-5 h-5 <%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"/>
-            <a
-              href="/archived"
-              class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %> hover:text-fifth"
-              >Archived</a
+              Followers
+            </p>
+          </a>
+          <a
+            href="/following"
+            class="text-center cursor-pointer p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md"
+          >
+            <h2
+              class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %>"
             >
-          </li>
-          <li class="flex items-center gap-2">
-            <img src="images/icons/reportIcon.png" alt="report icon" class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"/>
-            <a
-              href="/reports"
-              class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %> hover:text-fifth"
-              >Reports</a
+              <%= user.following.length %>
+            </h2>
+            <p
+              class="<%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fifth' %> text-xs"
             >
-          </li>
-          <li class="flex items-center gap-2">
-            <img src="images/icons/analyticIcon.png" alt="analytic icon" class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"/>
-            <a
-              href="/analytics"
-              class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %> hover:text-fifth"
-              >Analytics</a
+              Following
+            </p>
+          </a>
+        </div>
+        <div class="profile-sidebar-content">
+          <ul class="text-base md:text-sm lg:text-base">
+            <li
+              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
             >
-          </li>
-          <li class="flex items-center gap-2">
-            <img src="images/icons/notifyIcon.png" alt="notification icon"  class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"/>
-            <a
-              href="/notifications"
-              class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %> hover:text-fifth"
-              >Notifications</a
+              <a
+                href="/profile/<%= user.slug%>"
+                class="flex items-center gap-2"
+              >
+                <img
+                  src="images/icons/profileIcon.svg"
+                  alt="profile icon"
+                  class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %> w-4 h-4"
+                  draggable="false"
+                />
+                <p
+                  class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %>"
+                >
+                  Profile
+                </p>
+              </a>
+            </li>
+            <li
+              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
             >
-          </li>
+              <a href="/profile/edit" class="flex items-center gap-2">
+                <img
+                  src="images/icons/editProfileIcon.svg"
+                  alt="edit profile icon"
+                  class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %> w-5 h-5"
+                  draggable="false"
+                />
+                <p
+                  class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %>"
+                >
+                  Edit Profile
+                </p>
+              </a>
+            </li>
+            <li
+              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+            >
+              <a href="/saveBlogs" class="flex items-center gap-2">
+                <img
+                  src="images/icons/savedBlogIcon.svg"
+                  alt="draft icon"
+                  class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %> w-4 h-4"
+                  draggable="false"
+                />
+                <p
+                  class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %>"
+                >
+                  Saved Blogs
+                </p>
+              </a>
+            </li>
 
-          <li class="flex items-center gap-2">
-            <img src="images/icons/logoutIcon.png" alt="log out icon" class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"/>
-            <button
-              onclick="openLogoutModal()"
-              class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %> hover:text-fifth"
+            <li
+              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
             >
-              Log Out
-            </button>
-          </li>
-        </ul>
-      </div>
+              <a href="/drafts" class="flex items-center gap-2">
+                <img
+                  src="images/icons/draftIcon.svg"
+                  alt="draft icon"
+                  class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %> w-5 h-5"
+                  draggable="false"
+                />
+                <p
+                  class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %> hover:text-fifth"
+                >
+                  Drafts
+                </p>
+              </a>
+            </li>
+            <li
+              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+            >
+              <a href="/archived" class="flex items-center gap-2">
+                <img
+                  src="images/icons/archiveIcon copy.svg"
+                  alt="draft icon"
+                  class="w-5 h-5 <%= user.settings.theme === 'dark' ? 'invert' : 'invert' %>"
+                  draggable="false"
+                />
+                <p
+                  class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %> hover:text-fifth"
+                >
+                  Archived
+                </p>
+              </a>
+            </li>
+            <li
+              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+            >
+              <a href="/reports" class="flex items-center gap-2">
+                <img
+                  src="images/icons/reportIcon.svg"
+                  alt="report icon"
+                  class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %> w-5 h-5"
+                  draggable="false"
+                />
+                <p
+                  href="/reports"
+                  class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %>"
+                >
+                  Reports
+                </p></a
+              >
+            </li>
+            <li
+              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+            >
+              <a href="/analytics" class="flex items-center gap-2">
+                <img
+                  src="images/icons/analyticIcon.svg"
+                  alt="analytic icon"
+                  class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %> w-5 h-5"
+                  draggable="false"
+                />
+                <p
+                  class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %>"
+                >
+                  Analytics
+                </p>
+              </a>
+            </li>
+            <li
+              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+            >
+              <a href="/notifications" class="flex items-center gap-2">
+                <img
+                  src="images/icons/notifyIcon.svg"
+                  alt="notification icon"
+                  class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %> w-5 h-5"
+                  draggable="false"
+                />
+                <p
+                  class="block <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %>"
+                >
+                  Notifications
+                </p>
+              </a>
+            </li>
 
-      <div class="grid grid-cols-2 gap-2 mt-2">
+            <li
+              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+            >
+              <button
+                onclick="openLogoutModal()"
+                class="<%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background' %> flex items-center gap-2 w-full"
+              >
+                <img
+                  src="images/icons/logoutIcon.svg"
+                  alt="log out icon"
+                  class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert' %> w-5 h-5"
+                  draggable="false"
+                />
+
+                Log Out
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
         <a
           href="/settings"
-          class="<%= user.settings.theme === 'dark' ? 'bg-dark-fifth hover:bg-dark-background' : 'bg-tertiary hover:bg-fourth hover:invert-0' %>  p-3 rounded-md flex justify-center items-center"
+          class="<%= user.settings.theme === 'dark' ? 'bg-dark-fifth hover:bg-dark-background' : 'bg-tertiary hover:bg-fourth hover:invert-0' %> p-3 rounded-md flex justify-center items-center"
         >
-          <img src="images/icons/settingIcon.png" alt="Settings" 
-          class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert ' %>"/>
+          <img
+            src="images/icons/settingIcon.svg"
+            alt="Settings"
+            draggable="false"
+            class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert ' %> w-6 h-6"
+          />
         </a>
         <a
           href="/contact"
-          class="<%= user.settings.theme === 'dark' ? 'bg-dark-fifth hover:bg-dark-background' : 'bg-tertiary hover:bg-fourth' %>  p-3 rounded-md flex justify-center items-center"
+          class="<%= user.settings.theme === 'dark' ? 'bg-dark-fifth hover:bg-dark-background' : 'bg-tertiary hover:bg-fourth' %> p-3 rounded-md flex justify-center items-center"
         >
-          <img src="images/icons/supportIcon.png" alt="Support" 
-          class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert ' %>"/>
+          <img
+            src="images/icons/supportIcon.svg"
+            alt="Support"
+            draggable="false"
+            class="<%= user.settings.theme === 'dark' ? 'invert' : 'invert ' %> w-7 h-7"
+          />
         </a>
       </div>
     </div>
-  </div>
-</aside>
+  </aside>
 </div>
 
 <div
   id="logoutModal"
-  class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %> backdrop-blur-sm bg-opacity-50 flex items-center justify-center hidden z-50 p-5 md:p-0"
+  class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %> backdrop-blur-sm bg-opacity-50 flex items-center justify-center hidden z-20 p-5 md:p-0"
 >
-  <div class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> p-4 rounded-lg w-full sm:w-1/2 lg:w-1/3">
-    <h2 class="text-xl font-semibold">Confirm Logout</h2>
-    <p class="mt-2">Are you sure you want to log out?</p>
-    <div class="mt-4 flex justify-end gap-4">
+  <div
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> p-4 rounded-lg w-full sm:w-1/2 lg:w-1/3"
+  >
+     <!-- Header -->
+     <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-semibold font-sans">Confirm Logout</h2>
+      <button
+        onclick="closeLogoutModal()"
+        class="text-gray-400 hover:text-red-500 transition duration-200 text-xl"
+        aria-label="Close"
+      >
+        &times;
+      </button>
+    </div>
+    <p class="text-sm mb-6 <%= user.settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-600' %>">Are you sure you want to log out?</p>
+    <div class="flex justify-end space-x-3">
       <button
         id="cancelLogoutButton"
-        class="px-4 py-2 bg-gray-500 text-white rounded"
+        class="px-4 py-2 rounded-md border border-gray-300 text-sm font-medium <%= user.settings.theme === 'dark' ? 'text-gray-300 hover:bg-dark-primary' : 'text-gray-700 hover:bg-gray-100' %> transition duration-200"
+        onclick="closeLogoutModal()"
       >
         Cancel
       </button>
       <button
         id="confirmLogoutButton"
-        class="px-4 py-2 bg-red-500 text-white rounded"
+        class="px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white text-sm font-medium shadow-md transition duration-200"
+        onclick="logout()"
       >
         Log Out
       </button>
@@ -184,6 +320,7 @@
   const sidebar = document.getElementById("sidebar");
   const toggleButton = document.getElementById("sidebarToggle");
   const toggleButtonIcon = document.getElementById("sidebarToggleIcon");
+  const logoutModal = document.getElementById("logoutModal");
 
   toggleButton.addEventListener("click", () => {
     sidebar.classList.toggle("-translate-x-full");
@@ -203,15 +340,32 @@
   });
 
   function openLogoutModal() {
-    document.getElementById("logoutModal").classList.remove("hidden");
+    logoutModal.classList.remove("hidden");
+    // Ensure the sidebar is closed when logout modal is opened
+    toggleButton.classList.remove("right-4");
+      sidebar.classList.add("-z-10");
+      sidebar.classList.remove("z-30");
+      toggleButtonIcon.src = "images/icons/sidebarIcon.svg";
+
   }
 
   function closeLogoutModal() {
-    document.getElementById("logoutModal").classList.add("hidden");
+    logoutModal.classList.add("hidden");
+    toggleButtonIcon.src = "images/icons/closeIcon.png";
+      toggleButton.classList.remove("shadow-lg");
+      sidebar.classList.add("z-30");
+      sidebar.classList.remove("-z-10");
   }
 
+  logoutModal.addEventListener("click", function (event) {
+    if (event.target === logoutModal) {
+      closeLogoutModal();
+    }
+  });
+
+
   function deleteAllCookies() {
-    console.log(document.cookie); 
+    console.log(document.cookie);
 
     document.cookie.split(";").forEach(function (c) {
       document.cookie = c
@@ -234,18 +388,10 @@
       } else {
         console.error("Logout failed");
       }
+      closeLogoutModal();
     } catch (error) {
       console.error("Error during logout:", error);
+      closeLogoutModal();
     }
   }
-
-  document
-    .getElementById("cancelLogoutButton")
-    .addEventListener("click", closeLogoutModal);
-  document
-    .getElementById("confirmLogoutButton")
-    .addEventListener("click", function () {
-      logout();
-      closeLogoutModal();
-    });
 </script>

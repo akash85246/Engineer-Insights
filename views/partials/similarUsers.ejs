@@ -1,4 +1,4 @@
-<div class="relative w-full group">
+<div class="relative w-full group hidden" id="similarAuthors">
     <h3 class="text-sm md:text-base lg:text-lg font-semibold  <%= profile.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-white' %> mb-2">Similar Authors</h3>
   
     <div
@@ -16,7 +16,9 @@
   <script>
     window.onload = () => {
       const tags = "<%= profile.tags.join(',') %>" || "";
-      fetch(`/api/profile/search?tags=${tags}`, {
+      const profile = <%- JSON.stringify(profile) %>;
+      console.log("Profile:", profile);
+      fetch(`/api/profile/search?tags=${tags}&id=${profile._id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -29,6 +31,7 @@
           return res.json();
         })
         .then((data) => {
+          document.getElementById("similarAuthors").classList.remove("hidden");
           const carouselAuthorSlides = document.getElementById("carouselAuthorSlides");
           const carouselAuthorContainer = document.getElementById("carouselAuthorSlidesContainer");
   
@@ -43,7 +46,7 @@
   
             profileDiv.innerHTML = `
               <a href="/profile/${user.slug}" class="relative w-full h-full flex flex-col items-center font-roboto cursor-pointer">
-                <img src="${user.avatar || '/images/defaultProfile.png'}" alt="${user.username}" class="w-16 h-16 rounded-full object-cover mb-2" />
+                <img src="${user.avatar || '/images/defaultProfile.png'}" alt="${user.username}" class="w-16 h-16 rounded-md object-cover mb-2"  draggable="false" />
                 <span class="block text-sm font-semibold  <%= profile.settings.theme === 'dark' ? 'text-fourth' : 'text-fifth' %>">${user.username}</span>
               </a>
             `;
@@ -77,7 +80,7 @@
           const profileList = document.getElementById("carouselAuthorSlides");
           const errorDiv = document.createElement("div");
           errorDiv.className = "text-red-500";
-          errorDiv.innerHTML = "No Similar Profiles Found";
+          document.getElementById("similarAuthors").classList.add("hidden");
           profileList.appendChild(errorDiv);
         });
     };

@@ -59,7 +59,7 @@ async function createPayment(req, res) {
       blogData.featuredDetails.featuredAt = new Date();
       await blogData.save();
 
-      return res.renderWithProfileLayout("../pages/payment/success.ejs", {
+      return res.renderWithMainLayout("../pages/payment/success.ejs", {
         title: "Free Blog Used",
         user,
         message: `Your free blog has been successfully published! You have ${freeBlogsLeft} free blogs remaining.`,
@@ -128,7 +128,7 @@ async function paymentSuccess(req, res) {
 
   paypal.payment.execute(paymentId, payerId, async (error, payment) => {
     if (error) {
-      res.renderWithProfileLayout("../pages/payment/failure.ejs", {
+      res.renderWithMainLayout("../pages/payment/failure.ejs", {
         title: "Payment Failure",
         user,
         isAuthenticated,
@@ -179,7 +179,7 @@ async function paymentSuccess(req, res) {
         await userData.save();
       }
 
-      res.renderWithProfileLayout("../pages/payment/success.ejs", {
+      res.renderWithMainLayout("../pages/payment/success.ejs", {
         title: "Payment Success",
         user,
         message: "Payment successful! Thank you for your purchase.",
@@ -198,7 +198,7 @@ async function paymentCancel(req, res) {
   const userId = req.user._id;
   const user = await UserModel.findById(userId);
 
-  res.renderWithProfileLayout("../pages/payment/cancel.ejs", {
+  res.renderWithMainLayout("../pages/payment/cancel.ejs", {
     title: "Payment Cancel",
     user,
     message: "Payment canceled. Please try again.",

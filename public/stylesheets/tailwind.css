@@ -50,3 +50,28 @@ overflow: scroll;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   display: none;
 }
+/* for featured blog posts */
+.story-dot {
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.4);
+  overflow: hidden;
+  position: relative;
+  border-radius: 4px;
+  flex: 1; /* ensures equal spacing */
+}
+
+.story-fill {
+  position: absolute;
+  height: 100%;
+  width: 0%;
+  background-color: white;
+  animation: fillStory 5s linear forwards;
+  top: 0;
+  left: 0;
+  border-radius: 4px;
+}
+
+@keyframes fillStory {
+  from { width: 0%; }
+  to { width: 100%; }
+}

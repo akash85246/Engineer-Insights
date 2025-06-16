@@ -15,10 +15,13 @@
         cursor: pointer;
       }
     </style>
-     <!-- fonts setup -->
-     <link rel="preconnect" href="https://fonts.googleapis.com">
-     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- fonts setup -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <script
@@ -40,16 +43,327 @@
   >
     <%- include("../partials/profileNavbar.ejs") %>
     <div class="relative flex">
-      <div
-        id="content"
-        class="flex-1 w-screen transition-all duration-300 h-full pt-11"
-      >
-        <%- include(view) %>
+      <div id="content" class="flex-1 w-screen transition-all duration-300">
+        <div
+          class="relative overflow-y-auto md:overflow-y-visible h-full md:flex "
+        >
+          <div
+            class="sticky top-0 z-0 md:w-[200px] lg:w-[300px] border-b md:border-r border-gray-200"
+          >
+            <%- include("../partials/profileDetails.ejs")%>
+          </div>
+          <div
+            class="relative z-10 w-full <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %>"
+          >
+            <%- include(view) %>
+          </div>
+        </div>
       </div>
       <% if(isAuthenticated) { %> <%- include("../partials/profileSidebar.ejs")
       %> <% } %>
     </div>
+    <!-- Popout Modal -->
+    <div
+      id="popout"
+      class="hidden fixed inset-0 z-10 flex items-center justify-center backdrop-blur-sm <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %> bg-opacity-50 p-5 md:p-0"
+    >
+      <div
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-gray-900' %> w-full sm:max-w-md lg:max-w-lg p-6 rounded-xl shadow-2xl transition-all duration-300"
+      >
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold font-sans">Manage User</h2>
+          <button
+            onclick="closeProfilePopout()"
+            class="text-gray-400 hover:text-red-500 transition duration-200 text-xl"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+        </div>
 
+        <!-- Body -->
+        <p
+          class="text-sm mb-6 <%= user.settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-600' %>"
+        >
+          If you block this user, you will no longer see any blogs from them.
+        </p>
+
+        <!-- Buttons -->
+        <div class="flex justify-end space-x-3">
+          <!-- Cancel Button (Secondary) -->
+          <button
+            onclick="closeProfilePopout()"
+            class="px-4 py-2 rounded-md border border-gray-300 text-sm font-medium <%= user.settings.theme === 'dark' ? 'text-gray-300 hover:bg-dark-primary' : 'text-gray-700 hover:bg-gray-100' %> transition duration-200"
+          >
+            Cancel
+          </button>
+
+          <!-- Block/Unblock Button (Primary) -->
+          <button
+            id="blockButton"
+            onclick="blockprofile('<%= profile._id %>')"
+            class="px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white text-sm font-medium shadow-md transition duration-200"
+          >
+            <%= (user.blockedprofiles && profile._id &&
+            user.blockedprofiles.some(blockedId => blockedId.toString() ===
+            profile._id.toString())) ? "Unblock" : "Block" %>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured Blog Popout Modal -->
+    <div
+      id="featuredBlogPopout"
+      class="hidden fixed top-0 inset-0 z-10 flex flex-col items-center justify-center <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : 'text-text bg-primary' %> bg-opacity-50 backdrop-blur-sm p-4"
+    >
+      <!-- Dots go just above the content -->
+      <div
+        id="dotsContainerFeature"
+        class="absolute bottom-[calc(90vh)] z-50 flex gap-2 w-[90vw] justify-center"
+      ></div>
+
+      <div
+        id="featuredBlogContent"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-gray-900' %> flex transition-transform duration-500 ease-in-out w-[90vw] overflow-x-scroll h-[80vh] snap-x snap-mandatory scroll-smooth"
+      ></div>
+    </div>
     <%- include("../partials/footer.ejs") %>
   </body>
 </html>
+<script>
+  function openPopout() {
+    const popout = document.getElementById("popout");
+    popout.classList.remove("hidden");
+    document.body.classList.add("overflow-hidden");
+  }
+
+  function closeProfilePopout() {
+    const popout = document.getElementById("popout");
+    popout.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden"); // enable scrolling
+  }
+
+  popout.addEventListener("click", function (event) {
+    if (event.target === popout) {
+      closeProfilePopout();
+    }
+  });
+
+  if (profile) {
+    window.blockprofile = async function blockprofile(id) {
+      try {
+        const response = await fetch(`/api/profile/block/${id}`, {
+          method: "PATCH",
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+
+          alert(data.message);
+
+          const blockButton = document.getElementById("blockButton");
+
+          blockButton.innerText =
+            blockButton.innerText === "Block" ? "Unblock" : "Block";
+          if (blockButton.innerText === "Block") {
+            gtag("event", "block_user", {
+              event_category: "Profile",
+              event_label: "User Blocked",
+              blocked_user_id: "<%= profile._id %>",
+              blocker_user_id: "<%= user._id %>",
+            });
+          }
+
+          closeProfilePopout();
+        } else {
+          console.log("Error blocking profile:", response);
+          closeProfilePopout();
+        }
+      } catch (error) {
+        console.log("Error:", error);
+        closeProfilePopout();
+      }
+    };
+  }
+</script>
+<script>
+              const user = <%- JSON.stringify(user) %>;
+             
+              window.openFeaturedPopout = async function openFeaturedPopout() {
+                document.body.classList.add("overflow-hidden"); // disable scrolling
+                const url = `/api/blog/search/user?author=<%= profile._id %>&featured=true`;
+                try {
+                  const container = document.getElementById("featuredBlogContent");
+                  container.innerHTML = "";
+                  let blogs = <%- JSON.stringify(featuredBlogs) %>;
+                  if ( blogs.length === 0) {
+                    container.innerHTML = `<p class="text-gray-500 text-center">No featured blogs yet.</p>`;
+                  } else {
+                    blogs.forEach((blog) => {
+                      const blogHTML = `
+                      <div
+                        class="w-full flex-shrink-0 snap-center  flex items-stretch bg-cover bg-center bg-no-repeat    flex flex-col justify-between"
+                        style="background-image: url('${blog.blogPhoto}');"
+                      >
+                        <div
+                          class="flex items-center justify-between bg-black/30 backdrop-blur-md           text-white p-3"
+                        >
+
+                          <a href="/profile/<%= profile.slug%>" class="flex items-center gap-3">
+                            <img
+                              src="<%= profile && profile.avatar ? profile.avatar : '/images/         defaultProfile.png' %>"
+                              alt="profile"
+                              class="w-10 h-10 rounded-md border-2 border-white"
+                            />
+                            <div class="leading-tight">
+                              <p class="text-sm font-semibold"><%= profile.username || 'User' %></p>
+                              <p class="text-xs opacity-80">
+                                <%= profile.firstname %> <%= profile.lastname %>
+                              </p>
+                            </div>
+                          </a>
+                          <div class="flex flex-col items-end">
+                            <span class="text-xs opacity-80">
+                              ${ new Date(blog.featuredDetails.featuredAt).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                              })
+                            }
+                            </span>
+                            <span class="text-xs opacity-80">${blog.readingTime}</span>
+                          </div>
+
+                        </div>
+
+                        <div class="bg-black/40 backdrop-blur-sm text-white p-4 space-y-2">
+                          <h3 class="text-lg font-bold break-words truncate">${blog.title}</h3>
+                          <p class="text-sm line-clamp-3 break-words">${blog.description}... <a
+                            href="/blog/${blog.slug}"
+                            class="inline-block text-sm font-medium text-blue-300 hover:underline mt-2"
+                          >
+                            read more
+                          </a></p>
+
+                        </div>
+                      </div>`;
+                      container.innerHTML += blogHTML;
+                    });
+                  }
+
+                  // Create dots based on the number of blogs
+
+                  initSlider(blogs.length);
+
+                  document.getElementById("featuredBlogPopout").classList.remove("hidden");
+                } catch (err) {
+                  console.error("Error fetching featured blogs:", err);
+                }
+              };
+
+              // Function to create dots for the featured blog popout
+          const container = document.getElementById("featuredBlogContent");
+          const dotsContainer = document.getElementById("dotsContainerFeature");
+
+          let currentIndex = 0;
+          let totalSlides = 0;
+          let timeout = null;
+
+          function createDots(count) {
+            totalSlides = count;
+            dotsContainer.innerHTML = "";
+            for (let i = 0; i < count; i++) {
+              const dot = document.createElement("div");
+              dot.className = "story-dot";
+
+              const fill = document.createElement("div");
+              fill.className = "story-fill";
+              fill.style.animationPlayState = i === 0 ? 'running' : 'paused';
+
+              dot.appendChild(fill);
+              dotsContainer.appendChild(dot);
+            }
+          }
+
+          function goToSlide(index) {
+        if (index < 0 || index >= totalSlides) return;
+        isAutoScrolling = true;
+
+        const slideWidth = container.offsetWidth;
+        container.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
+        currentIndex = index;
+        updateDots(index);
+        setTimeout(() => {
+          isAutoScrolling = false;
+        }, 500);
+      }
+
+          function updateDots(activeIndex) {
+            const dots = dotsContainer.querySelectorAll(".story-fill");
+            dots.forEach((dot, i) => {
+              dot.style.animation = 'none';
+              void dot.offsetWidth; // force reflow
+              if (i < activeIndex) {
+                dot.style.width = "100%";
+              } else if (i === activeIndex) {
+                dot.style.animation = `fillStory 5s linear forwards`;
+              } else {
+                dot.style.width = "0%";
+              }
+            });
+          }
+
+          function startAutoSlide() {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+      
+        if (currentIndex + 1 < totalSlides) {
+          goToSlide(currentIndex + 1);
+          startAutoSlide();
+        }
+      }, 5000);
+    }
+
+
+
+    container.addEventListener("scroll", () => {
+      if (isAutoScrolling) return; // Prevent triggering on programmatic scroll
+
+      const slideWidth = container.offsetWidth;
+      const newIndex = Math.round(container.scrollLeft / slideWidth);
+
+      if (newIndex !== currentIndex) {
+      
+        currentIndex = newIndex;
+        updateDots(newIndex);
+        startAutoSlide(); // Restart timer after manual scroll
+      }
+    });
+
+          // Call this after slides are loaded
+          function initSlider(slideCount) {
+            createDots(slideCount);
+            goToSlide(0);
+            startAutoSlide();
+          }
+
+        // Close the featured blog popout when clicking outside the content
+         const featuredBlogPopout = document.getElementById("featuredBlogPopout");
+
+         function closeFeaturedPopout() {
+    clearTimeout(timeout);
+    currentIndex = 0;
+    goToSlide(0); 
+    setTimeout(() => {
+      featuredBlogPopout.classList.add("hidden");
+      document.body.classList.remove("overflow-hidden");
+    }, 300);
+  }
+         featuredBlogPopout.addEventListener("click", function (event) {
+            if (event.target === featuredBlogPopout) {
+              closeFeaturedPopout();
+            }
+       });
+</script>
