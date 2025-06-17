@@ -68,10 +68,30 @@ async function getUpdateProfile(req, res) {
     const user = await UserModel.findById(userId).lean();
     const isAuthenticated = req.isAuthenticated();
 
+    const featuredBlogs = await BlogModel.aggregate([
+      { $match: { featured: true, author: user._id } },
+      {
+        $addFields: {
+          commentsCount: { $size: { $ifNull: ['$comments', []] } },
+          likesCount: { $size: { $ifNull: ['$likes', []] } }
+        }
+      },
+      {
+        $sort: {
+          createdAt: -1,
+          commentsCount: -1,
+          likesCount: -1
+        }
+      }
+    ]);
+
+
     res.renderWithProfileLayout("../pages/profile/editProfile", {
       title: "Edit Profile",
       user: user,
+      profile: { ...user },
       isAuthenticated,
+      featuredBlogs:false,
     });
   } catch (error) {
     console.error("Error fetching user profile:", error);
@@ -84,12 +104,12 @@ async function updateProfile(req, res) {
     if (!req.isAuthenticated()) {
       return res.status(401).json({ error: "Authentication token is missing" });
     }
-
     const userId = req.user._id;
 
     const body = { ...req.body };
+    console.log(body);
 
-    if (body.tags) {
+    if (body.tags ) {
       body.tags = body.tags
         .split(",")
         .map((tag) => tag.trim())
@@ -102,25 +122,26 @@ async function updateProfile(req, res) {
       body.avatar = imageUrl;
       body.avatarId = imageId;
 
-      const result = await UserModel.updateOne({ _id: userId }, { $set: body });
+      const result = await UserModel.findOneAndUpdate({ _id: userId },body,{ new: true, runValidators: true });
 
-      if (result.modifiedCount > 0) {
-        return res.status(200).json({
-          msg: "Profile updated successfully",
-        });
+      if (result) {
+        req.user = result.toObject();
+        return res.status(200).json({ message: "Profile updated successfully", slug: req.user.slug });
       } else {
-        return res.status(404).json({ msg: "No record found to update" });
+        return res.status(404).json({ message: "No record found to update" });
       }
     } else {
-      const result = await UserModel.updateOne({ _id: userId }, { $set: body });
-      req.user = result;
-
-      if (result.modifiedCount > 0) {
-        const updatedUser = await UserModel.findById(userId).lean();
-        req.user = updatedUser;
-        return res.status(200).json({ msg: "Profile updated successfully" });
+      const result = await UserModel.findOneAndUpdate(
+        { _id: userId },
+        body,
+        { new: true, runValidators: true }
+      );
+      
+      if (result) {
+        req.user = result.toObject();
+        return res.status(200).json({ message: "Profile updated successfully",slug: req.user.slug });
       } else {
-        return res.status(404).json({ msg: "No record found to update" });
+        return res.status(404).json({ message: "No record found to update" });
       }
     }
   } catch (error) {
@@ -131,12 +152,45 @@ async function updateProfile(req, res) {
   }
 }
 
+async function checkUsernameAvailability(req, res) {
+  try {
+    const username = req.params.username;
+    console.log("Checking availability for username:", username);
+    if (!username) {
+      return res.status(400).json({ error: "Username is required" });
+    }
+
+    let loginUser= null;
+    const isAuthenticated = req.isAuthenticated();
+    if(isAuthenticated) {
+      const userId = req.user._id;
+      loginUser = await UserModel.findById(userId).lean();
+    }
+
+    let user = await UserModel.findOne({ username: username });
+    if(isAuthenticated && username == loginUser.username) {
+      return res.status(200).json({ available: true });
+    }
+
+    if (user) {
+      return res.status(200).json({ available: false });
+    } else {
+      return res.status(200).json({ available: true });
+    }
+  } catch (error) {
+    console.error("Error checking username availability:", error);
+    return res
+      .status(500)
+      .json({ error: "Internal server error", details: error.message });
+  }
+}
+
 async function searchProfile(req, res) {
   const { tags, id } = req.query;
 
   console.log("Search query:", id, tags);
   if (!tags && !id) {
-    return res.status(200).json({ msg: "No search criteria provided" });
+    return res.status(200).json({message: "No search criteria provided" });
   }
 
   const tagArray = tags
@@ -1309,8 +1363,10 @@ async function getRecent(req, res) {
 }
 
 module.exports = {
+
   getProfile,
   updateProfile,
+  checkUsernameAvailability,
   searchProfile,
   getUpdateProfile,
   getAuthorBySlug,

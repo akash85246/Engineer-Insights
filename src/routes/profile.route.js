@@ -5,6 +5,8 @@ const profileController = require("../controllers/profile.controller");
 const { Auth } = require("../middleware/auth");
 router.get("/search", profileController.searchProfile);
 router.get("/search/saveBlogs",profileController.getSavedBlogs);
+router.get("/available/:username", profileController.checkUsernameAvailability);
+
 
 router.get("/usersBlocked",profileController.getAllBlockedUsers);
 

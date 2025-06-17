@@ -1,12 +1,45 @@
 <div
   class="p-4 sm:p-4 md:p-6 lg:p-8 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'bg-primary ' %> sticky top-0 md:block gap-1 sm:gap-2 md:gap-4 md:min-h-screen font-lora hidden"
 >
+<% if (featuredBlogs) { %>
   <img
     draggable="false"
     src="<%= profile && profile.avatar ? profile.avatar : '/images/defaultProfile.png' %>"
     alt="profile photo"
     class="max-w-45 w-full sm:max-w-full h-40 w-30 sm:h-52 rounded-md shadow-md object-cover border aspect-square border-gray-300"
   />
+<% } else { %>
+
+  <div class="relative">
+    <img
+      src="<%= profile.avatar ? profile.avatar : '/images/defaultProfile.png' %>"
+      alt="Profile Photo"
+      id="profileImage"
+      class="max-w-45 w-full sm:max-w-full h-40 w-30 sm:h-52 rounded-md shadow-md object-cover border aspect-square border-gray-300"
+    />
+  
+    <div class="absolute top-2 right-2 flex flex-col justify-center">
+      <button
+        type="button"
+        class="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition"
+        onclick="document.getElementById('avatar').click();"
+      >
+        <img src="/images/icons/editDarkIcon.svg" alt="Edit Icon" class="w-8 h-8 invert transition-all duration-300 hover:scale-105" />
+      </button>
+  
+      <input
+        type="file"
+        name="avatar"
+        id="avatar"
+        accept="image/*"
+        class="hidden"
+        onchange="handleFileChange(event)"
+      />
+    </div>
+  </div>
+
+ 
+<% } %>
 
   <div class="flex flex-col gap-2 md:gap-4 sm:mt-6 p-2 sm:p-0">
     <div class="flex justify-between">
@@ -184,7 +217,7 @@
       <!-- <h3 class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-white mb-2 hidden sm:block">
         profile's Tags
       </h3> -->
-      <% if (Array.isArray(profile.tags) && profile.tags.length > 0) { %>
+      <% if (Array.isArray(profile.tags) && profile.tags.filter(tag => tag.trim().length > 0).length > 0) { %>
       <div class="flex flex-wrap gap-2 w-full">
         <% profile.tags.forEach(function(tag) { %>
         <span
@@ -269,6 +302,7 @@
   class="flex flex-col items-center p-4 md:hidden text-sm pt-8 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'bg-primary ' %> top-0"
 >
   <div class="w-full mb-4 font-roboto flex justify-evenly mt-5">
+    <% if (featuredBlogs) { %>
     <img
       draggable="false"
       src="<%= profile && profile.avatar ? profile.avatar : '/images/defaultProfile.png' %>"
@@ -277,6 +311,40 @@
       id="profileImage"
       onclick="openFeaturedPopout('<%= profile.slug %>')"
     />
+    <% } else { %>
+
+      <div class="relative">
+        <img
+          src="<%= profile.avatar ? profile.avatar : '/images/defaultProfile.png' %>"
+          alt="Profile Photo"
+          id="profileImageMobile"
+          class="w-24 h-24 sm:w-28 sm:h-28 rounded-md border-2 border-gray-300 object-cover cursor-pointer shadow-md "
+        />
+      
+        <div class="absolute top-1 right-1 flex flex-col justify-center">
+          <button
+            type="button"
+            class="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition"
+            onclick="document.getElementById('avatar').click();"
+          >
+            <img src="/images/icons/editDarkIcon.svg" alt="Edit Icon" class="w-5 h-5 invert transition-all duration-300 hover:scale-105" />
+          </button>
+      
+          <input
+            type="file"
+            name="avatar"
+            id="avatar"
+            accept="image/*"
+            class="hidden"
+            onchange="handleFileChange(event)"
+          />
+        </div>
+      </div>
+    
+     
+    <% } %>
+
+
     <div class="grid grid-cols-3 text-center">
       <!-- Name + Badge -->
       <div class="w-full col-span-3 flex gap-2 items-center justify-center">

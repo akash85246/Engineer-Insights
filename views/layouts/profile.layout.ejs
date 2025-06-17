@@ -45,7 +45,7 @@
     <div class="relative flex">
       <div id="content" class="flex-1 w-screen transition-all duration-300">
         <div
-          class="relative overflow-y-auto md:overflow-y-visible h-full md:flex "
+          class="relative overflow-y-auto md:overflow-y-visible h-full md:flex"
         >
           <div
             class="sticky top-0 z-0 md:w-[200px] lg:w-[300px] border-b md:border-r border-gray-200"
@@ -189,9 +189,11 @@
   }
 </script>
 <script>
-              const user = <%- JSON.stringify(user) %>;
-             
-              window.openFeaturedPopout = async function openFeaturedPopout() {
+  const user = <%- JSON.stringify(user) %>;
+  const featuredBlogs = <%- typeof featuredBlogs !== 'undefined' ? JSON.stringify(featuredBlogs) : '[]' %>;
+  console.log("Featured Blogs:", featuredBlogs);
+  if (featuredBlogs && featuredBlogs.length > 0) {
+  window.openFeaturedPopout = async function openFeaturedPopout() {
                 document.body.classList.add("overflow-hidden"); // disable scrolling
                 const url = `/api/blog/search/user?author=<%= profile._id %>&featured=true`;
                 try {
@@ -262,8 +264,8 @@
                   console.error("Error fetching featured blogs:", err);
                 }
               };
-
-              // Function to create dots for the featured blog popout
+   }
+  // Function to create dots for the featured blog popout
           const container = document.getElementById("featuredBlogContent");
           const dotsContainer = document.getElementById("dotsContainerFeature");
 
@@ -318,7 +320,7 @@
           function startAutoSlide() {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-      
+
         if (currentIndex + 1 < totalSlides) {
           goToSlide(currentIndex + 1);
           startAutoSlide();
@@ -335,7 +337,7 @@
       const newIndex = Math.round(container.scrollLeft / slideWidth);
 
       if (newIndex !== currentIndex) {
-      
+
         currentIndex = newIndex;
         updateDots(newIndex);
         startAutoSlide(); // Restart timer after manual scroll
@@ -355,7 +357,7 @@
          function closeFeaturedPopout() {
     clearTimeout(timeout);
     currentIndex = 0;
-    goToSlide(0); 
+    goToSlide(0);
     setTimeout(() => {
       featuredBlogPopout.classList.add("hidden");
       document.body.classList.remove("overflow-hidden");

@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema(
         /^(?!\s)[a-zA-Z0-9\s]{3,20}(?<!\s)$/,
         "Username must contain only alphanumeric characters and spaces",
       ],
+      unique: true,
     },
     blockedUsers: {
       type: [mongoose.Schema.Types.ObjectId],
@@ -110,11 +111,7 @@ const UserSchema = new mongoose.Schema(
       ref: "Blog",
       default: [],
     },
-    blockedUsers: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "User",
-      default: [],
-    },
+   
     reports: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -164,11 +161,7 @@ const UserSchema = new mongoose.Schema(
       enum: ["regular", "pro", "elite"],
       default: "regular",
     },
-    blockedUsers: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "User",
-      default: [],
-    },
+  
   },
   {
     timestamps: true,
@@ -184,27 +177,24 @@ UserSchema.pre("save", async function (next) {
     this.recentViews = this.recentViews.slice(-10);
   }
 
-  if (this.isModified("username")) {
-    let isUnique = false;
-    let usernameToCheck = this.username;
-    let counter = 1;
-
-    while (!isUnique) {
-      const existingUser = await mongoose.models.User.findOne({
-        username: usernameToCheck,
-        _id: { $ne: this._id },
-      });
-
-      if (existingUser) {
-        usernameToCheck = `${this.username}${counter}`;
-        counter += 1;
-      } else {
-        isUnique = true;
-      }
-    }
-    this.username = usernameToCheck;
-    this.slug = slugify(this.username, { lower: true, strict: true });
-  }
   next();
 });
+
+UserSchema.pre("findOneAndUpdate", function (next) {
+  const update = this.getUpdate();
+  console.log("Triggered middleware: ", update); 
+  if (update && update.username) {
+    const trimmedUsername = update.username.trim();
+    update.username = trimmedUsername;
+    const slug = slugify(trimmedUsername, {
+      lower: true,
+      strict: true,
+      trim: true,
+    });
+    update.slug = slug.length > 0 ? slug : `user-${this.getQuery()._id}`;
+  }
+
+  next();
+});
+
 module.exports = mongoose.models.User || mongoose.model("User", UserSchema);

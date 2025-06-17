@@ -1,8 +1,10 @@
-<form class="grid grid-cols-2 gap-1 sm:gap-1 md:gap-2 text-lg font-lora">
-  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+<form
+  class="grid grid-cols-2 gap-x-1 sm:gap-x-1 md:gap-x-2 text-lg font-lora w-full"
+>
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="name"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
       >Name</label
     >
     <input
@@ -12,19 +14,19 @@
       minlength="2"
       maxlength="10"
       value="<%= user.firstname %>"
-      class="userInfo px-3 py-2 border rounded-md shadow-sm outline-none text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %>"
+      class="userInfo px-3 py-2 border rounded-md shadow-sm outline-none text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %>"
       placeholder="Enter your name"
       autocapitalize="words"
       autofocus
       required
     />
-    <span class="text-red-500 text-xs error"></span>
+    <span class="text-red-500 text-xs error min-h-[1rem] block"></span>
   </div>
 
-  <div class="flex flex-col gap-2 col-span-2 sm:col-span-1">
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="lastname"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : 'text-fourth' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : 'text-tertiary' %> text-xs md:text-sm lg:text-base"
       >Last Name</label
     >
     <input
@@ -34,21 +36,21 @@
       minlength="2"
       maxlength="10"
       value="<%= user.lastname %>"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
       placeholder="Enter your last name"
       autocapitalize="words"
       autofocus
       required
     />
-    <span class="text-red-500 text-xs error"></span>
+    <span class="text-red-500 text-xs error min-h-[1rem] block"></span>
   </div>
 
   <div
-    class="flex flex-col col-span-2 sm:col-span-1 gap-2 text-xs md:text-sm lg:text-base"
+    class="flex flex-col col-span-2 sm:col-span-1 gap-1 text-xs md:text-sm lg:text-base"
   >
     <label
       for="phoneNumber"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %>"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %>"
       >Phone Number</label
     >
     <input
@@ -57,18 +59,18 @@
       name="phoneNumber"
       maxlength="10"
       value="<%= user.phone %>"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
       autocapitalize="words"
       autofocus
       placeholder="Enter your phone number"
     />
-    <span class="text-red-500 text-xs error"></span>
+    <span class="text-red-500 text-xs error min-h-[1rem] block"></span>
   </div>
 
-  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="username"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
       >Userame</label
     >
     <input
@@ -76,21 +78,21 @@
       id="username"
       name="username"
       minlength="2"
-      maxlength="10"
+      maxlength="20"
       value="<%= user.username %>"
-      class="userInfo px-3 py-2 border rounded-md shadow-sm outline-none text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %>"
+      class="userInfo px-3 py-2 border rounded-md shadow-sm outline-none text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %>"
       placeholder="Enter your name"
       autocapitalize="words"
       autofocus
       required
     />
-    <span class="text-red-500 text-xs error"></span>
+    <span class="text-red-500 text-xs error min-h-[1rem] block" id="usernameError"></span>
   </div>
 
-  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="tags"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
       >Tags</label
     >
     <input
@@ -98,16 +100,16 @@
       id="tag"
       value="<%= user.tags %>"
       name="tags"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
       placeholder="Enter tags separated by commas"
     />
-    <span class="text-red-500 text-xs error"></span>
+    <span class="text-red-500 text-xs error min-h-[1rem] block" id="tagError"></span>
   </div>
 
-  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="linkedin"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
       >LinkedIn</label
     >
     <input
@@ -115,18 +117,18 @@
       id="linkedin"
       name="linkedin"
       value="<%= user.linkedin %>"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
       autocapitalize="words"
       autofocus
       placeholder="Enter your LinkedIn profile name"
     />
-    <span class="text-red-500 text-xs error"></span>
+    <span class="text-red-500 text-xs error min-h-[1rem] block"></span>
   </div>
 
-  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="github"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
       >Github</label
     >
     <input
@@ -134,18 +136,18 @@
       id="github"
       name="github"
       value="<%= user.github %>"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
       autocapitalize="words"
       autofocus
       placeholder="Enter your Github profile name"
     />
-    <span class="text-red-500 text-xs error"></span>
+    <span class="text-red-500 text-xs error min-h-[1rem] block"></span>
   </div>
 
-  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="twitter"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
       >Twitter</label
     >
     <input
@@ -153,45 +155,45 @@
       id="twitter"
       name="twitter"
       value="<%= user.twitter %>"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
       autocapitalize="words"
       autofocus
       placeholder="Enter your Twitter profile name"
     />
-    <span class="text-red-500 text-xs error"></span>
+    <span class="text-red-500 text-xs error min-h-[1rem] block"></span>
   </div>
 
-  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="country"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
       >Country</label
     >
     <select
       id="country"
       name="country"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
     >
       <option class=" ">Select a country</option>
     </select>
   </div>
 
-  <div class="flex flex-col col-span-2 sm:col-span-1 gap-2">
+  <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="state"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-fourth' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
       >State</label
     >
     <select
       id="state"
       name="state"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
     >
       <option>Select a state</option>
     </select>
   </div>
 
-  <div class="flex flex-col gap-2 col-span-2">
+  <div class="flex flex-col sm:gap-1 gap-1 col-span-2 mt-[1rem]">
     <label
       for="bio"
       class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
@@ -202,11 +204,22 @@
       name="bio"
       rows="7"
       maxlength="600"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-tertiary text-tertiary' %> border text-xs md:text-sm lg:text-base resize-none"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base resize-none"
       placeholder="Tell us about yourself"
-    ><%= user.bio %></textarea
     >
-    <span class="text-red-500 text-xs error"></span>
+<%= user.bio %></textarea
+    >
+    <span class="text-red-500 text-xs error min-h-[1rem] block"></span>
+  </div>
+  <p></p>
+  <div>
+    <button
+      class="<%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-fifth text-background bg-tertiary' %> border hover:bg-blue-400 font-roboto py-2 px-4 rounded w-full text-sm sm:text-sm lg:text-base mt-2 col-span-2 z-50 transition-all duration-300 ease-in-out disabled:cursor-not-allowed disabled:bg-red-500 disabled:hover:bg-red-500"
+      id="saveProfile"
+      type="submit"
+    >
+      Save Changes
+    </button>
   </div>
 </form>
 
@@ -261,77 +274,248 @@
   });
 
   const inputs = document.querySelectorAll(".userInfo");
-const saveProfile = document.getElementById("saveProfile");
-
-inputs.forEach((input) => {
-  input.addEventListener("input", function () {
-    validateInput(input);
-    updateFormValidity();
-  });
-});
-
-const regexPatterns = {
-  firstname: /^[a-zA-Z]+$/,
-  lastname: /^[a-zA-Z\s]+$/,
-  username: /^(?!\s)[a-zA-Z0-9\s]{3,20}(?<!\s)$/,
-  phoneNumber: /^[0-9]{10}$/,
-  linkedin: /^[a-zA-Z0-9-]+$/,
-  github: /^[a-zA-Z0-9-]+$/,
-  twitter: /^[a-zA-Z0-9_]+$/,
-  tags: /^[a-zA-Z0-9,\s]+$/,
-  bio: /^(?!.*\s{2})[a-zA-Z0-9\s\S]{0,600}$/,
-};
-
-function validateInput(input) {
-  const errorSpan = input.nextElementSibling;
-  const fieldName = input.name;
-  const regex = regexPatterns[fieldName];
-  if (regex && regex.test(input.value)) {
-    errorSpan.textContent = "";
-    input.classList.remove("border-red-500");
-    input.classList.add("border-gray-300");
-    return true;
-  } else {
-    errorSpan.textContent = "Invalid input";
-    input.classList.remove("border-gray-300");
-    input.classList.add("border-red-500");
-    return false;
-  }
-}
-
-function updateFormValidity() {
-  let allValid = true;
+  const saveProfile = document.getElementById("saveProfile");
 
   inputs.forEach((input) => {
-    const fieldName = input.name;
-    const regex = regexPatterns[fieldName];
-    if (regex && !regex.test(input.value)) {
-      allValid = false;
-    }
+    input.addEventListener("input", function () {
+      validateInput(input);
+      updateFormValidity();
+    });
   });
 
-  const isDarkMode = "<%= user.settings.theme === 'dark' %>";
+  const regexPatterns = {
+    firstname: /^[a-zA-Z]+$/,
+    lastname: /^[a-zA-Z\s]+$/,
+    username: /^(?!\s)[a-zA-Z0-9\s]{3,20}(?<!\s)$/,
+    phoneNumber: /^[0-9]{10}$/,
+    linkedin: /^[a-zA-Z0-9-]+$/,
+    github: /^[a-zA-Z0-9-]+$/,
+    twitter: /^[a-zA-Z0-9_]+$/,
+    tags: /^([a-zA-Z0-9]+(?:\s*[,\s]\s*[a-zA-Z0-9]+)*)?$/,
+    bio: /^(?!.*\s{2})[a-zA-Z0-9\s\S]{0,600}$/,
+  };
 
-  if (allValid) {
-    saveProfile.disabled = false;
-    saveProfile.classList.remove("cursor-not-allowed", "bg-red-500");
-
-    if (isDarkMode) {
-      saveProfile.classList.add("bg-dark-fifth");
-    } else {
-      saveProfile.classList.add("bg-tertiary");
-    }
-    saveProfile.classList.add("hover:bg-blue-700");
-  } else {
-    saveProfile.disabled = true;
-    saveProfile.classList.add("cursor-not-allowed", "bg-red-500");
-
-    if (isDarkMode) {
-      saveProfile.classList.remove("bg-dark-fifth");
-    } else {
-      saveProfile.classList.remove("bg-tertiary");
-    }
-    saveProfile.classList.remove("hover:bg-blue-700");
+  function validateInput(input) {
+    const errorSpan = input.nextElementSibling;
+    const fieldName = input.name;
+    const regex = regexPatterns[fieldName];
+    if (fieldName === "tags") {
+    return validateTags(); 
   }
+
+    if (regex && regex.test(input.value)) {
+      errorSpan.textContent = "";
+      input.classList.remove("border-red-500");
+      input.classList.add("border-gray-300");
+      return true;
+    } else {
+      errorSpan.textContent = "Invalid input";
+      input.classList.remove("border-gray-300");
+      input.classList.add("border-red-500");
+      return false;
+    }
+  }
+
+  function updateFormValidity() {
+    let allValid = true;
+
+    inputs.forEach((input) => {
+      const fieldName = input.name;
+      const regex = regexPatterns[fieldName];
+      if (regex && !regex.test(input.value)) {
+        allValid = false;
+      }
+    });
+
+    const isDarkMode = "<%= user.settings.theme === 'dark' %>";
+
+   
+    if (allValid && (tagFlag && ussernameFlag)) {
+      
+      saveProfile.disabled = false;
+      saveProfile.classList.remove("cursor-not-allowed", "bg-red-500");
+
+      if (isDarkMode) {
+        saveProfile.classList.add("bg-dark-fifth");
+      } else {
+        saveProfile.classList.add("bg-tertiary");
+      }
+      saveProfile.classList.add("hover:bg-blue-700");
+    } else {
+      saveProfile.disabled = true;
+      saveProfile.classList.add("cursor-not-allowed", "bg-red-500");
+
+      if (isDarkMode) {
+        saveProfile.classList.remove("bg-dark-fifth");
+      } else {
+        saveProfile.classList.remove("bg-tertiary");
+      }
+      saveProfile.classList.remove("hover:bg-blue-700");
+    }
+  }
+
+  let tagFlag = true;
+  let ussernameFlag = true;
+
+  const tagInput = document.getElementById("tag");
+const tagError = document.getElementById("tagError");
+
+function validateTags() {
+  const tags = tagInput.value
+    .split(",")
+    .map((tag) => tag.trim())
+    .filter((tag) => tag !== "");
+
+  const regex = regexPatterns["tags"];
+  const isValidFormat = regex.test(tagInput.value);
+  const isWithinLimit = tags.length <= 10;
+
+  if (!isWithinLimit) {
+    tagError.textContent = "You can only enter up to 10 tags.";
+    tagInput.classList.add("border-red-500");
+    return false;
+  }
+
+  if (!isValidFormat) {
+    tagError.textContent = "Invalid tags format.";
+    tagInput.classList.add("border-red-500");
+    return false;
+  }
+
+  tagError.textContent = "";
+  tagInput.classList.remove("border-red-500");
+  tagInput.classList.add("border-gray-300");
+  return true;
 }
+
+// Trigger validation on input
+tagInput.addEventListener("input", validateTags);
+
+  const usernameInput = document.getElementById("username");
+const usernameError = document.getElementById("usernameError");
+
+usernameInput.addEventListener("input", async () => {
+  const username = usernameInput.value.trim();
+
+  if (!username) {
+    usernameError.textContent = "Username cannot be empty.";
+    usernameError.classList.remove("text-green-500");
+    usernameError.classList.add("text-red-500");
+    return;
+  }
+ 
+
+  try {
+    const response = await fetch(`/api/profile/available/${username}`, {
+      method: "GET",
+    });
+
+    const data = await response.json();
+
+    if (data.available) {
+      usernameError.textContent = "Username is available!";
+      usernameError.classList.remove("text-red-500");
+      usernameError.classList.add("text-green-500");
+      ussernameFlag = false;
+    } else {
+      usernameError.textContent = "Username is already taken.";
+      usernameError.classList.remove("text-green-500");
+      usernameError.classList.add("text-red-500");
+      ussernameFlag = true;
+    }
+  } catch (error) {
+    console.error("Error checking username:", error);
+    usernameError.textContent = "Error checking username. Please try again.";
+    usernameError.classList.remove("text-green-500");
+    usernameError.classList.add("text-red-500");
+    ussernameFlag = false;
+  }
+});
+</script>
+<script>
+  function handleFileChange(event) {
+    const fileInput = event.target;
+    const file = fileInput.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const profileImage = document.getElementById("profileImage");
+        const profileImageMobile = document.getElementById("profileImageMobile");
+        profileImageMobile.src = e.target.result;
+        profileImage.src = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }
+
+  document.getElementById("saveProfile").onclick = async function (e) {
+    e.preventDefault();
+   
+
+    const formData = new FormData();
+
+    const tagsInput = document.getElementById("tag").value;
+
+    // if (!tagsInput) {
+    //   alert("Please enter at least one tag");
+    //   return;
+    // }
+    
+
+    const tagsArray = tagsInput
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.length > 0);
+    
+
+    formData.append("firstname", document.getElementById("firstname").value);
+    formData.append("lastname", document.getElementById("lastname").value);
+    formData.append("phone", document.getElementById("phoneNumber").value);
+    formData.append("linkedin", document.getElementById("linkedin").value);
+    formData.append("twitter", document.getElementById("twitter").value);
+    formData.append("github", document.getElementById("github").value);
+    formData.append("bio", document.getElementById("bio").value.trim());
+    formData.append("tags", tagsArray.join(","));
+    formData.append("country", document.getElementById("country").value);
+    formData.append("state", document.getElementById("state").value);
+    formData.append("username", document.getElementById("username").value);
+
+    const avatarFile = document.getElementById("avatar").files[0];
+    if (avatarFile) {
+      if (avatarFile.size > 8000000) {
+        alert("File size is too large. Please upload a file smaller than 8MB.");
+        return;
+      }
+      formData.append("avatar", avatarFile);
+    }
+
+    const response = await  fetch("/api/profile/edit?_method=PUT", {
+      method: "POST",
+      body: formData,
+    });
+     
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || "Failed to save profile details");
+    }
+
+    const data = await response.json();
+
+    window.location.href = `/profile/${data.slug}`;
+
+
+  };
+
+  // function logFormData(formData) {
+  //   for (let [key, value] of formData.entries()) {
+  //     if (value instanceof File) {
+  //       console.log(`${key}: ${value.name} (${value.size} bytes)`);
+  //     } else {
+  //       console.log(`${key}: ${value}`);
+  //     }
+  //   }
+  // }
 </script>
