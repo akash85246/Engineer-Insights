@@ -237,6 +237,7 @@ router.get(
   blogController.getArticleBySlug
 );
 
+
 //profile routes
 router.get("/profile/edit", profileController.getUpdateProfile);
 router.get("/drafts", profileController.getAuthorDrafts);

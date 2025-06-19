@@ -68,22 +68,7 @@ async function getUpdateProfile(req, res) {
     const user = await UserModel.findById(userId).lean();
     const isAuthenticated = req.isAuthenticated();
 
-    const featuredBlogs = await BlogModel.aggregate([
-      { $match: { featured: true, author: user._id } },
-      {
-        $addFields: {
-          commentsCount: { $size: { $ifNull: ['$comments', []] } },
-          likesCount: { $size: { $ifNull: ['$likes', []] } }
-        }
-      },
-      {
-        $sort: {
-          createdAt: -1,
-          commentsCount: -1,
-          likesCount: -1
-        }
-      }
-    ]);
+    
 
 
     res.renderWithProfileLayout("../pages/profile/editProfile", {
@@ -369,10 +354,7 @@ async function savedBlogs(req, res) {
   try {
     const isAuthenticated = req.isAuthenticated();
     if (!isAuthenticated) {
-      return res.status(401).json({
-        success: false,
-        message: "Authentication token is missing.",
-      });
+      return res.redirect("/signin");
     }
     const userId = req.user._id;
     const user = await UserModel.findById(userId)
@@ -390,11 +372,29 @@ async function savedBlogs(req, res) {
       });
     }
 
+    const featuredBlogs = await BlogModel.aggregate([
+      { $match: { featured: true, author: user._id } },
+      {
+        $addFields: {
+          commentsCount: { $size: { $ifNull: ['$comments', []] } },
+          likesCount: { $size: { $ifNull: ['$likes', []] } }
+        }
+      },
+      {
+        $sort: {
+          createdAt: -1,
+          commentsCount: -1,
+          likesCount: -1
+        }
+      }
+    ]);
+
     res.renderWithProfileLayout("../pages/profile/saved", {
       title: `${user.username}'s Saved Blogs`,
       profile: { ...user },
       user,
       isAuthenticated,
+      featuredBlogs,
     });
   } catch (error) {
     // console.error("Error fetching user:", error);
@@ -419,11 +419,15 @@ async function getSavedBlogs(req, res) {
 
     const userId = req.user._id;
     const user = await UserModel.findById(userId)
-      .populate(
-        "savedBlogs",
-        "author title description blogPhoto tags createdAt slug"
-      )
-      .lean();
+  .populate({
+    path: "savedBlogs",
+    select: "author title description blogPhoto tags createdAt slug subauthors likes",
+    populate: {
+      path: "author",
+      select: "username firstname lastname  avatar slug"
+    }
+  })
+  .lean();
 
     if (!user) {
       return res.status(404).json({

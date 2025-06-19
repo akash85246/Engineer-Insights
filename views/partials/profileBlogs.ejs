@@ -39,18 +39,24 @@
       const slidesHtml = blogData
         .map((blog) => {
           let isSubAuthor = false;
-          let canEdit = false;
+          let isAuthor = false;
+          const userId = <%- JSON.stringify(user._id) %>;
           const isAuthenticated = "<%= isAuthenticated %>" == "true";
-          console.log("is", isAuthenticated);
           if (isAuthenticated) {
-            console.log("is inside ", isAuthenticated);
-            canEdit = "<%= JSON.stringify(user._id ===  profile._id)%>";
+            isAuthor = userId.toString() == blog.author._id;
             isSubAuthor = JSON.stringify(
               blog.subauthors.some(
-                (subauthorId) => subauthorId.toString() === "<%= user._id%>"
+                (subauthorId) => subauthorId.toString() === userId.toString()
               )
             );
           }
+          console.log("blog.subauthors", blog.subauthors);
+          console.log("user._id", user._id);
+          console.log("blog.author._id", blog.author._id);
+          console.log("isAuthenticated", isAuthenticated);
+
+          console.log("isSubAuthor", isSubAuthor);
+          console.log("isAuthor", isAuthor);
 
           return `
         <div class="w-full flex-shrink-0  " id="blog-${
@@ -101,27 +107,27 @@
                     </div>
                   </div>
                   <div class ="relative">
-                  <button onclick='openBlogMore(${isSubAuthor}, ${canEdit}, "${
+                  <button onclick='openBlogMore(${isSubAuthor}, ${isAuthor}, "${
             blog.slug
           }")'>
                       <img src="images/icons/verticalMoreIcon.svg" alt="More"
                         class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7">
                     </button>
                   ${
-                    isSubAuthor || canEdit
+                    isSubAuthor || isAuthor
                       ? `
-                      <div  class="absolute bottom-10 right-0 flex gap-2 flex-col hidden rounded-md p-2 
-    <%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-tertiary' %> box-border min-w-28 flex-col-reverse"
+                      <div  class="absolute bottom-10 right-0 flex flex-col gap-2 rounded-md p-2 shadow-md z-50
+    <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-fifth text-primary' %> min-w-[120px] hidden"
   id="blogMoreOptions-${blog.slug}">
                          ${
-                           canEdit
+                           isAuthor
                              ? `
-                             <button onclick="openDeleteModal('${blog.slug}')"   class="flex items-center justify-between px-3 py-1 rounded-md text-sm sm:text-xs md:text-xs lg:text-sm transition-all
-        <%= user.settings.theme === 'dark'
-          ? 'bg-dark-fifth text-dark-primary hover:bg-red-600'
-          : 'bg-fourth text-sixth border border-sixth hover:bg-red-200' %> focus:outline-none box-border">
+                             <button onclick="openDeleteModal('${blog.slug}')"  class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+      <%= user.settings.theme === 'dark'
+        ? 'hover:bg-red-600 text-dark-primary'
+        : 'hover:bg-red-200 text-primary' %>">
                               <img src="images/icons/deleteDarkIcon.svg" alt="Delete Blog"
-                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 invert">
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 ">
                               <span>Delete</span>
                               </button>
                              `
@@ -129,10 +135,10 @@
                          }
                          <a href="/blog/edit/${
                            blog.slug
-                         }"  class="flex items-center justify-between px-3 py-1 rounded-md text-sm sm:text-xs md:text-xs lg:text-sm transition-all
+                         }"  class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
       <%= user.settings.theme === 'dark'
-        ? 'bg-dark-fourth text-dark-text hover:bg-blue-600'
-        : 'bg-sixth text-fourth border border-fourth hover:bg-blue-200' %> focus:outline-none box-border"> <img src="images/icons/editDarkIcon.svg" alt="Edit Blog"
+        ? 'hover:bg-blue-600 text-dark-primary'
+        : 'hover:bg-blue-200 text-primary' %>"> <img src="images/icons/editDarkIcon.svg" alt="Edit Blog"
                         class="w-4 h-4 transition-transform duration-200 group-hover:scale-110"> 
                          <span>Edit</span>
                          </a>
@@ -156,7 +162,7 @@
       document.getElementById("currentPage").innerText = `Page ${currentPage}`;
     }
 
-    window.openBlogMore = function openBlogMore(isSubAuthor, canEdit, slug) {
+    window.openBlogMore = function openBlogMore(isSubAuthor, isAuthor, slug) {
       const blogMoreOptions = document.getElementById(
         "blogMoreOptions-" + slug
       );
@@ -165,9 +171,9 @@
     };
 
     window.hideBlogOptions = function hideBlogOptions(slug) {
-      const optionsEl = document.getElementById(`blogMoreOptions-${slug}`);
-      if (optionsEl) {
-        optionsEl.classList.add("hidden");
+      const options = document.getElementById(`blogMoreOptions-${slug}`);
+      if (options) {
+        options.classList.add("hidden");
       }
     };
 

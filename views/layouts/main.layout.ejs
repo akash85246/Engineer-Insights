@@ -27,16 +27,20 @@
     async
     src="https://www.googletagmanager.com/gtag/js?id=G-FG5BN3EY26"
   ></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
-    gtag("config", "<%= user.googleAnalyticsId %>", {
-      user_id: "<%= user._id %>",
-    });
-  </script>
+  <% if (user && user.user_id && user.googleAnalyticsId) { %>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+    
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+    
+      gtag("js", new Date());
+      gtag("config", "<%= user.googleAnalyticsId %>", {
+        user_id: "<%= user._id %>",
+      });
+    </script>
+    <% } %>
   <body
     class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-text' %>"
   >

@@ -1,15 +1,15 @@
 <h1
-  class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-10 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-tertiary bg-white bg-background' %> sticky top-0"
+  class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-2 md:px-2 lg:px-5 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-secondary bg-white bg-background' %> sticky top-0 z-10"
 >
   Saved Blogs
   <span
     id="currentPage"
-    class="text-xs sm:text-sm md:text-base lg:text-lg <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-primary' %>"
+    class="text-xs sm:text-sm md:text-base lg:text-lg <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-tertiary' %>"
   ></span>
 </h1>
 
 <div
-  class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 px-3 md:px-5 lg:px-10"
+class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-1 md:gap-2 px-1 md:px-2 lg:px-5 "
   id="allBlog"
 ></div>
 
@@ -32,19 +32,39 @@
       }
 
       const slidesHtml = blogData
-        .map(
-          (blog) => `
-            <div class="w-full flex-shrink-0">
+        .map((blog) => {
+          let isSubAuthor = false;
+          let isAuthor = false;
+          let isLiked = false;
+          const userId = <%- JSON.stringify(user._id) %>;
+          if (blog.likes && blog.likes.length > 0) { isLiked = blog.likes.some((like) => like.toString() === userId.toString());}
+
+
+
+          const isAuthenticated = "<%= isAuthenticated %>" == "true";
+          if (isAuthenticated) {
+            isAuthor = "<%= JSON.stringify(user._id )%>" === blog.author._id;
+
+            isSubAuthor =
+              JSON.stringify(
+                blog.subauthors.some(
+                  (subauthorId) => subauthorId.toString() === "<%= user._id%>"
+                )
+              ) === "true";
+          }
+
+          return `
+            <div class="w-full flex-shrink-0" id="blog-${blog.slug}" onmouseleave="hideBlogOptions('${blog.slug}')">
                 <div class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
                   blog.blogPhoto
-                }')">
-                  <div class="rounded-lg shadow-lg overflow-hidden w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-3 h-full flex flex-col justify-between">
+                }')" >
+                  <div class="rounded-lg shadow-lg overflow-hidden w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-2 sm:p-3 h-full flex flex-col justify-between">
                     <div class="flex justify-end ">
-                      <p class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-primary' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs  md:text-xxs  lg:text-xs font-semibold font-roboto uppercase">
+                      <p class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-primary' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase">
                          ${truncateText(blog.tags[0], 10)}</p>
                     </div>
                     <div class="flex flex-col gap-2">
-                      <div class="h-20  md:h-24  lg:h-28"></div>
+                      <div class="h-10 sm:h-20 md:h-18 lg:h-28"></div>
                       <p class="text-xs font-lora  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %>">${new Date(
                         blog.createdAt
                       ).toLocaleDateString("en-US", {
@@ -52,12 +72,11 @@
                         month: "numeric",
                         year: "numeric",
                       })}</p>
-                      <h5 class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold  <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal font-lora">${truncateText(
+                      <h5 class="text-sm sm:text-sm md:text-base lg:text-lg font-semibold  <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal font-lora">${truncateText(
                         blog.title,
                         50
                       )}</h5>
-                      <p class="text-xxxs sm:text-xxs 
-                      md:text-xs lg:text-sm  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %> break-words whitespace-normal">${truncateText(
+                      <p class="text-xs sm:text-xxs md:text-xs lg:text-sm  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %> break-words whitespace-normal">${truncateText(
                         blog.description,
                         100
                       )}
@@ -65,24 +84,93 @@
                         blog.slug
                       }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> hover:text-highlight    font-roboto text-center   font-medium">read more</a></span>
                       </p>
-                      <div class="flex justify-between items-center ">
+                      <div class="flex justify-between items-center relative ">
+                         <a class="p-2 flex    items-center            gap-2 mt-auto cursor-pointer" href="/profile/${
+                           blog.author.slug
+                         }">
+                                <img src="${
+                                  blog.author.avatar
+                                }" alt="author" class=" h-8 w-8 md:w-10 wd:h-10 rounded-md" />
+                                <div>
+                                  <p class="text-xxs sm:text-xs md:text-sm lg:text-md font-roboto <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-background' %>">
+                                    ${blog.author.username}
+                                 </p>
+                                  <p class="text-xxxs sm:text-xxs md:text-xs lg:text-xs font-roboto text-sixth">
+                                    ${blog.author.firstname} ${
+            blog.author.lastname
+          }
+                                  </p>
+                                </div>
+                             </a>
+                             <button onclick='openBlogMore("${blog.slug}")'>
+                                      <img src="images/icons/verticalMoreIcon.svg"      alt="More"
+                                        class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6                lg:w-7 lg:h-7">
+                                    </button>
 
-                        <div class="flex gap-2">
-                         <button onclick="openDeleteModal('${
+
+                      <div  class="absolute bottom-10 right-0 flex flex-col gap-2 rounded-md p-2 shadow-md z-50
+                        <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-fifth text-primary' %> hidden"
+                        id="blogMoreOptions-${blog.slug}">
+                        ${isSubAuthor || isAuthor? `
+                         ${
+                           isAuthor
+                             ? `
+                             <button onclick="openDeleteModal('${blog.slug}')"  class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+      <%= user.settings.theme === 'dark'
+        ? 'hover:bg-red-600 text-dark-primary'
+        : 'hover:bg-red-200 text-primary' %>">
+                              <img src="images/icons/deleteDarkIcon.svg" alt="Delete Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 invert">
+                              <span>Delete</span>
+                              </button>
+                             `
+                             : ""
+                         }
+                         <a href="/blog/edit/${
                            blog.slug
-                         }')"  class=" px-3 hover:bg-red-300 focus:outline-none text-sm md:text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-fourth' %> rounded-md">Delete</button>
+                         }"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+      <%= user.settings.theme === 'dark'
+        ? 'hover:bg-blue-600 text-dark-primary'
+        : 'hover:bg-blue-200 text-primary' %>"> <img src="images/icons/editDarkIcon.svg" alt="Edit Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110">
+                         <span>Edit</span>
+                         </a>
 
-                       <a href="/blog/edit/${
-                         blog.slug
-                       }"  class=" px-3 rounded-md focus:outline-none flex items-center text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300">Edit</a>
-                      </div>
+                    `
+       : ""
+   }
+                      <button onclick="likeBlog('${
+                        blog.slug
+                      }',${isLiked})" class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+      <%= user.settings.theme === 'dark'
+        ? 'hover:bg-red-600 text-dark-primary'
+        : 'hover:bg-red-200 text-primary' %>">
+                              <img src="${
+                                isLiked
+                                  ? "images/icons/likeIcon.svg"
+                                  : "images/icons/unlikeIcon.svg"
+                              }" id="likeIcon-${blog.slug}" alt="Like Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110  ">
+                              <span id="likeText-${blog.slug}">${
+            isLiked ? "Unlike" : "Like"
+          }</span>
+                              </button>
+                              <button onclick="unSaveBlog('${blog.slug}')"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+      <%= user.settings.theme === 'dark'
+        ? 'hover:bg-red-600 text-dark-primary'
+        : 'hover:bg-red-200 text-primary' %>">
+                              <img src="images/icons/unbookMark.svg" alt="Unsave Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 ">
+                              <span>Unsave</span>
+                              </button>
+                                            </div>
                       </div>
                     </div>
                   </div>
                 </div>
             </div>
-          `
-        )
+          `;
+        })
         .join("");
 
       allBlogContainer.innerHTML = slidesHtml;
@@ -90,7 +178,7 @@
       document.querySelectorAll(".remove-button").forEach((button) => {
         button.addEventListener("click", async function () {
           const slug = this.getAttribute("data-slug");
-          console.log("slug", slug);
+       
           try {
             const response = await fetch(`/blog/saveBlog/${slug}`, {
               method: "PUT",
@@ -118,28 +206,190 @@
       document.getElementById("currentPage").innerText = `Page ${currentPage}`;
     }
 
-    function renderPagination(totalPages) {
-      const pagingContainer = document.getElementById("pagingContainer");
-      pagingContainer.innerHTML = "";
+    window.likeBlog = async function likeBlog(slug, isLiked) {
+      const likeImg = document.getElementById("likeIcon-" + slug);
+      const likeText = document.getElementById("likeText-" + slug);
+      isLiked = likeText.innerText === "Unlike";
 
-      for (let i = 1; i <= totalPages; i++) {
-        const pageBtn = document.createElement("button");
-        pageBtn.className =
-          "px-3 py-1 rounded-md border bg-white text-gray-800 hover:bg-gray-100";
-        pageBtn.innerText = i;
+      if (isLiked) {
+        likeImg.src = "images/icons/unlikeIcon.svg";
+        likeText.innerText = "Like";
+      } else {
+        likeImg.src = "images/icons/likeIcon.svg";
+        likeText.innerText = "Unlike";
+      }
+      try {
+        const response = await fetch(`/api/blog/like/${slug}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        });
 
-        pageBtn.onclick = function () {
-          currentPage = i;
-          fetchBlogs();
+        if (!response.ok) {
+          likeImg.src = isLiked
+            ? "images/icons/likeIcon.svg"
+            : "images/icons/unlikeIcon.svg";
+          likeImg.alt = isLiked ? "Like icon" : "Unlike icon";
+          likeText.innerText = isLiked ? "Like" : "Unlike";
+
+          throw new Error("Failed to like/unlike the blog");
+        }
+
+        const result = await response.json();
+       
+        if (!result.liked) {
+          likeImg.src = "images/icons/unlikeIcon.svg";
+          likeImg.alt = "Unlike icon";
+          likeText.innerText = "Like";
+        } else {
+          likeImg.src = "images/icons/likeIcon.svg";
+          likeImg.alt = "Like icon";
+          likeText.innerText = "Unlike";
+        }
+      } catch (error) {
+        // console.error("Error liking/unliking the blog:", error);
+        likeImg.src = isLiked
+          ? "images/icons/likeIcon.svg"
+          : "images/icons/unlikeIcon.svg";
+        likeImg.alt = isLiked ? "Like icon" : "Unlike icon";
+        likeText.innerText = isLiked ? "Like" : "Unlike";
+      }
+    };
+    
+    window.unSaveBlog = async function unSaveBlog(slug) {
+      try {
+        const response = await fetch(`/api/blog/saveBlog/${slug}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          });
+
+            if (!response.ok) {
+              throw new Error("Failed to archive the blog");
+            }
+
+            const result = await response.json();
+
+            if (!result.saved) {
+              const blogElement = document.getElementById(`blog-${slug}`);
+              if (blogElement) {
+                fetchBlogs(1); 
+              }
+            
+             
+            }
+      } catch (error) {
+        console.error("Error unarchiving the blog:", error);
+      }
+    };
+
+    window.openBlogMore = function openBlogMore(slug) {
+      const blogMoreOptions = document.getElementById(
+        "blogMoreOptions-" + slug
+      );
+      blogMoreOptions.classList.toggle("hidden");
+    };
+
+    window.hideBlogOptions = function hideBlogOptions(slug) {
+      const options = document.getElementById(`blogMoreOptions-${slug}`);
+      if (options) {
+        options.classList.add("hidden");
+      }
+    };
+
+    function renderPagination(totalPages, currentPage) {
+      const paginationElement = document.getElementById("pagingContainer");
+      paginationElement.innerHTML = "";
+      const maxVisiblePages = 5;
+      let startPage = Math.max(
+        currentPage - Math.floor(maxVisiblePages / 2),
+        1
+      );
+      let endPage = startPage + maxVisiblePages - 1;
+
+      if (endPage > totalPages) {
+        endPage = totalPages;
+        startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+      }
+
+      if (totalPages < 1) {
+        const displayBlogsElement = document.getElementById("displayBlogs");
+        const noBlogCard = `
+      <div class="border-2 border border-gray-300 rounded-lg p-6 text-center                text-gray-500 font-lora font-thin min-h-[400px] flex flex-col               items-center justify-center shadow-lg">
+                  <img
+      src="/images/icons/blogNotFound.svg" class="" />
+                <p class="text-lg">No blogs yet—be the pioneer!</p>
+              </div>
+            `.trim();
+        displayBlogsElement.innerHTML += noBlogCard;
+        return;
+      }
+
+      const prevButton = document.createElement("button");
+      prevButton.innerText = "Prev";
+      prevButton.classList.add(
+        "px-3",
+        "py-1",
+        "ml-2",
+        "bg-fourth",
+        "rounded-md",
+        "text-secondary",
+        "hover:bg-fifth",
+        "hover:text-fourth"
+      );
+
+      prevButton.disabled = currentPage === 1;
+      prevButton.addEventListener("click", () => fetchBlogs(currentPage - 1));
+      paginationElement.appendChild(prevButton);
+
+      for (let i = startPage; i <= endPage; i++) {
+        const pageButton = document.createElement("button");
+        pageButton.innerText = i;
+        pageButton.classList.add(
+          "px-3",
+          "py-1",
+          "mx-1",
+          i === currentPage ? "bg-secondary" : "bg-fourth",
+          i === currentPage ? "text-background" : "text-secondary",
+          "rounded-md"
+        );
+        if (i === currentPage) {
+          pageButton.classList.add("bg-secondary", "text-white");
+        } else {
+          pageButton.classList.add("hover:bg-fifth", "hover:text-fourth");
+        }
+        pageButton.onclick = () => {
+          fetchBlogs(i);
         };
-
-        pagingContainer.appendChild(pageBtn);
+        paginationElement.appendChild(pageButton);
+      }
+      const nextButton = document.createElement("button");
+      nextButton.innerText = "Next";
+      nextButton.classList.add(
+        "px-3",
+        "py-1",
+        "ml-2",
+        "bg-fourth",
+        "rounded-md",
+        "text-secondary",
+        "hover:bg-fifth",
+        "hover:text-fourth"
+      );
+      // nextButton.disabled = currentPage === totalPages;
+      nextButton.addEventListener("click", () => {
+       
+        fetchBlogs(currentPage + 1);
+      });
+      paginationElement.appendChild(nextButton);
+      if (currentPage == 1) {
+        prevButton.style.display = "none";
+      }
+      if (currentPage >= totalPages) {
+        nextButton.style.display = "none";
       }
     }
 
-    function fetchBlogs() {
+    function fetchBlogs(page) {
       fetch(
-        `/api/profile/search/saveBlogs?page=${currentPage}&limit=${blogsPerPage}&status=archived`
+        `/api/profile/search/saveBlogs?page=${page}&limit=${blogsPerPage}`
       )
         .then((response) => {
           if (!response.ok) {
@@ -150,7 +400,11 @@
         .then((data) => {
           const { savedBlogs, totalPages } = data;
           renderBlogs(savedBlogs);
-          renderPagination(totalPages);
+          const currentPage = page;
+          renderPagination(totalPages, currentPage);
+          document.getElementById(
+            "currentPage"
+          ).innerText = `Page ${currentPage}`;
         })
         .catch((error) => {
           console.error("Error fetching blogs:", error);
@@ -166,6 +420,6 @@
       return text;
     }
 
-    fetchBlogs();
+    fetchBlogs(1);
   });
 </script>

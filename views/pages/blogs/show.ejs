@@ -50,7 +50,7 @@
       class="rounded-lg hover:scale-110 flex items-center justify-center transition-transform duration-200 ease-in-out z-100"
     >
       <img
-        src="<%= userSavedBlog ? 'images/icons/bookMark.svg' : 'images/icons/unbookMark.svg' %>"
+        src="<%= userSavedBlog ? 'images/icons/unbookMark.svg' : 'images/icons/bookMark.svg' %>"
         alt="<%= userSavedBlog ? 'Saved blog icon' : 'Unsaved blog icon' %>"
         id="saveBlogIcon"
         class="w-5 h-5 md:w-6 md:h-6 <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
@@ -693,7 +693,6 @@ include("../../partials/reportPopout.ejs") %>
         if(wasLiked){
             likeCount.textContent = countLike - 1;
             if(countLike-1<=0){
-            console.log("countLike",countLike);
             likeCount.textContent = 0;
             wasLiked = false;
             return;
@@ -776,7 +775,7 @@ include("../../partials/reportPopout.ejs") %>
           const result = await response.json();
 
           if (result.saved) {
-            saveIcon.src = "images/icons/bookMark.svg";
+            saveIcon.src = "images/icons/unbookMark.svg";
             saveIcon.alt = "Saved blog icon";
             gtag("config", "<%= blog.author.googleAnalyticsId %>");
           gtag('event', 'save_blog', {
@@ -786,7 +785,7 @@ include("../../partials/reportPopout.ejs") %>
             user_id:"<%= blog.author._id %>"
           });
           } else {
-            saveIcon.src = "images/icons/unbookMark.svg";
+            saveIcon.src = "images/icons/bookMark.svg";
             saveIcon.alt = "Unsaved blog icon";
           }
         } catch (error) {
