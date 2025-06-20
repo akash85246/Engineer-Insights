@@ -532,9 +532,14 @@
     authorSuggestions.innerHTML = "";
 
     if (query) {
+      const user = <%- JSON.stringify(user) %>;
       try {
-        const response = await fetch(`/api/profile/search?username=${query}`);
-        const authorsList = await response.json();
+        const response = await fetch(`/api/profile/search?username=${query}&id=${user._id}`);
+        console.log("response", response);
+        let authorsList = await response.json();
+        if(selectedAuthors.length > 0) {
+          authorsList = authorsList.filter(author => !selectedAuthors.some(selected => selected.id === author._id));
+        }
 
         if (authorsList && authorsList.length > 0) {
           authorsList.forEach((author) => {

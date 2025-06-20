@@ -40,9 +40,12 @@
         .map((blog) => {
           let isSubAuthor = false;
           let isAuthor = false;
-          const userId = <%- JSON.stringify(user._id) %>;
-          const isAuthenticated = "<%= isAuthenticated %>" == "true";
+          let userId = null;
+          const isAuthenticated = "<%- isAuthenticated %>" == "true";
+          
           if (isAuthenticated) {
+            const userId = "<%- user._id %>"; 
+            console.log("userId", userId);
             isAuthor = userId.toString() == blog.author._id;
             isSubAuthor = JSON.stringify(
               blog.subauthors.some(
@@ -50,13 +53,7 @@
               )
             );
           }
-          console.log("blog.subauthors", blog.subauthors);
-          console.log("user._id", user._id);
-          console.log("blog.author._id", blog.author._id);
-          console.log("isAuthenticated", isAuthenticated);
-
-          console.log("isSubAuthor", isSubAuthor);
-          console.log("isAuthor", isAuthor);
+          
 
           return `
         <div class="w-full flex-shrink-0  " id="blog-${
@@ -107,12 +104,13 @@
                     </div>
                   </div>
                   <div class ="relative">
-                  <button onclick='openBlogMore(${isSubAuthor}, ${isAuthor}, "${
+                    ${(isAuthenticated)?
+                  `<button onclick='openBlogMore(${isSubAuthor}, ${isAuthor}, "${
             blog.slug
           }")'>
                       <img src="images/icons/verticalMoreIcon.svg" alt="More"
                         class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7">
-                    </button>
+                    </button>`:""}
                   ${
                     isSubAuthor || isAuthor
                       ? `
@@ -166,7 +164,7 @@
       const blogMoreOptions = document.getElementById(
         "blogMoreOptions-" + slug
       );
-      console.log("blogMoreOptions", blogMoreOptions);
+     
       blogMoreOptions.classList.toggle("hidden");
     };
 

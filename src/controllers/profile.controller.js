@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Types } = mongoose;
 const UserModel = require("../models/User.model");
 const CommentModel = require("../models/Comment.model");
 const BlogModel = require("../models/Blog.model");
@@ -18,7 +19,7 @@ async function getProfile(req, res, next) {
     };
 
     const profile = await UserModel.findOne({ slug: slug });
-    
+
     let user = null;
     let isAuthenticated = req.isAuthenticated();
     if (req.isAuthenticated()) {
@@ -32,17 +33,17 @@ async function getProfile(req, res, next) {
       { $match: { featured: true, author: profile._id } },
       {
         $addFields: {
-          commentsCount: { $size: { $ifNull: ['$comments', []] } },
-          likesCount: { $size: { $ifNull: ['$likes', []] } }
-        }
+          commentsCount: { $size: { $ifNull: ["$comments", []] } },
+          likesCount: { $size: { $ifNull: ["$likes", []] } },
+        },
       },
       {
         $sort: {
           createdAt: -1,
           commentsCount: -1,
-          likesCount: -1
-        }
-      }
+          likesCount: -1,
+        },
+      },
     ]);
 
     res.renderWithProfileLayout("../pages/profile/profile", {
@@ -68,15 +69,12 @@ async function getUpdateProfile(req, res) {
     const user = await UserModel.findById(userId).lean();
     const isAuthenticated = req.isAuthenticated();
 
-    
-
-
     res.renderWithProfileLayout("../pages/profile/editProfile", {
       title: "Edit Profile",
       user: user,
       profile: { ...user },
       isAuthenticated,
-      featuredBlogs:false,
+      featuredBlogs: false,
     });
   } catch (error) {
     console.error("Error fetching user profile:", error);
@@ -94,7 +92,7 @@ async function updateProfile(req, res) {
     const body = { ...req.body };
     console.log(body);
 
-    if (body.tags ) {
+    if (body.tags) {
       body.tags = body.tags
         .split(",")
         .map((tag) => tag.trim())
@@ -107,24 +105,36 @@ async function updateProfile(req, res) {
       body.avatar = imageUrl;
       body.avatarId = imageId;
 
-      const result = await UserModel.findOneAndUpdate({ _id: userId },body,{ new: true, runValidators: true });
+      const result = await UserModel.findOneAndUpdate({ _id: userId }, body, {
+        new: true,
+        runValidators: true,
+      });
 
       if (result) {
         req.user = result.toObject();
-        return res.status(200).json({ message: "Profile updated successfully", slug: req.user.slug });
+        return res
+          .status(200)
+          .json({
+            message: "Profile updated successfully",
+            slug: req.user.slug,
+          });
       } else {
         return res.status(404).json({ message: "No record found to update" });
       }
     } else {
-      const result = await UserModel.findOneAndUpdate(
-        { _id: userId },
-        body,
-        { new: true, runValidators: true }
-      );
-      
+      const result = await UserModel.findOneAndUpdate({ _id: userId }, body, {
+        new: true,
+        runValidators: true,
+      });
+
       if (result) {
         req.user = result.toObject();
-        return res.status(200).json({ message: "Profile updated successfully",slug: req.user.slug });
+        return res
+          .status(200)
+          .json({
+            message: "Profile updated successfully",
+            slug: req.user.slug,
+          });
       } else {
         return res.status(404).json({ message: "No record found to update" });
       }
@@ -145,15 +155,15 @@ async function checkUsernameAvailability(req, res) {
       return res.status(400).json({ error: "Username is required" });
     }
 
-    let loginUser= null;
+    let loginUser = null;
     const isAuthenticated = req.isAuthenticated();
-    if(isAuthenticated) {
+    if (isAuthenticated) {
       const userId = req.user._id;
       loginUser = await UserModel.findById(userId).lean();
     }
 
     let user = await UserModel.findOne({ username: username });
-    if(isAuthenticated && username == loginUser.username) {
+    if (isAuthenticated && username == loginUser.username) {
       return res.status(200).json({ available: true });
     }
 
@@ -171,11 +181,11 @@ async function checkUsernameAvailability(req, res) {
 }
 
 async function searchProfile(req, res) {
-  const { tags, id } = req.query;
+  const { tags, id, username } = req.query;
 
-  console.log("Search query:", id, tags);
-  if (!tags && !id) {
-    return res.status(200).json({message: "No search criteria provided" });
+  console.log("Search query:", id, tags, username);
+  if (!tags && !id && !username) {
+    return res.status(200).json({ message: "No search criteria provided" });
   }
 
   const tagArray = tags
@@ -189,53 +199,64 @@ async function searchProfile(req, res) {
       matchCriteria.matchedTagsCount = { $gt: 0 };
     }
 
-    if (id) {
+    if (id && Types.ObjectId.isValid(id)) {
       // matchCriteria.id = { $regex: new RegExp(id, "i") };
-      matchCriteria._id = { $ne: new mongoose.Types.ObjectId(id) }; 
+      matchCriteria._id = { $ne: new mongoose.Types.ObjectId(id) };
     }
+    if (username) {
+      matchCriteria.username = { $regex: new RegExp(username, "i") };
+    }
+    let users;
 
-    const users = await UserModel.aggregate([
-      {
-        $addFields: {
-          matchedTagsCount: {
-            $size: {
-              $filter: {
-                input: {
-                  $map: {
-                    input: "$tags",
-                    as: "tag",
-                    in: { $toLower: "$$tag" },
+    // if (tags !== undefined) {
+      users = await UserModel.aggregate([
+        {
+          $addFields: {
+            matchedTagsCount: {
+              $size: {
+                $filter: {
+                  input: {
+                    $map: {
+                      input: "$tags",
+                      as: "tag",
+                      in: { $toLower: "$$tag" },
+                    },
                   },
+                  as: "tag",
+                  cond: { $in: ["$$tag", tagArray] },
                 },
-                as: "tag",
-                cond: { $in: ["$$tag", tagArray] },
               },
             },
           },
         },
-      },
-      {
-        $match: matchCriteria,
-      },
-      {
-        $sort: { matchedTagsCount: -1 },
-      },
-      {
-        $project: {
-          username: 1,
-          email: 1,
-          tags: 1,
-          matchedTagsCount: 1,
-          firstname: 1,
-          lastname: 1,
-          avatar: 1,
-          bio: 1,
-          slug: 1,
+        {
+          $match: matchCriteria,
         },
-      },
-    ]);
+        {
+          $sort: { matchedTagsCount: -1 },
+        },
+        {
+          $project: {
+            username: 1,
+            email: 1,
+            tags: 1,
+            matchedTagsCount: 1,
+            firstname: 1,
+            lastname: 1,
+            avatar: 1,
+            bio: 1,
+            slug: 1,
+          },
+        },
+      ]);
+    // } else {
 
-    res.json(users);
+    //   const users = await UserModel.find(matchCriteria)
+    //     .select("username email tags firstname lastname avatar bio slug")
+    //     .lean();
+     // }
+      res.json(users);
+   
   } catch (err) {
     console.error("Error in searchProfile:", err);
     res
@@ -317,29 +338,45 @@ async function getAuthorBySlug(req, res) {
 
 async function getAuthorDrafts(req, res) {
   try {
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({
-        success: false,
-        message: "Authentication token is missing.",
-      });
-    }
-
     const isAuthenticated = req.isAuthenticated();
+
+    if (!isAuthenticated) {
+      return res.redirect("/signin");
+    }
 
     const user = await UserModel.findById(req.user._id).lean();
 
     if (!user) {
-      return res.status(404).render("errors/404.ejs", {
+      return res.renderWithMainLayout("errors/404.ejs", {
         title: "User Not Found",
         message: "The author you're looking for doesn't exist.",
+        isAuthenticated,
       });
     }
+
+    const featuredBlogs = await BlogModel.aggregate([
+      { $match: { featured: true, author: user._id } },
+      {
+        $addFields: {
+          commentsCount: { $size: { $ifNull: ["$comments", []] } },
+          likesCount: { $size: { $ifNull: ["$likes", []] } },
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
+          commentsCount: -1,
+          likesCount: -1,
+        },
+      },
+    ]);
 
     res.renderWithProfileLayout("../pages/profile/draft", {
       title: `${user.username}'s Drafts`,
       user: { ...user },
       isAuthenticated,
       profile: { ...user },
+      featuredBlogs,
     });
   } catch (error) {
     console.error("Error fetching user:", error);
@@ -376,17 +413,17 @@ async function savedBlogs(req, res) {
       { $match: { featured: true, author: user._id } },
       {
         $addFields: {
-          commentsCount: { $size: { $ifNull: ['$comments', []] } },
-          likesCount: { $size: { $ifNull: ['$likes', []] } }
-        }
+          commentsCount: { $size: { $ifNull: ["$comments", []] } },
+          likesCount: { $size: { $ifNull: ["$likes", []] } },
+        },
       },
       {
         $sort: {
           createdAt: -1,
           commentsCount: -1,
-          likesCount: -1
-        }
-      }
+          likesCount: -1,
+        },
+      },
     ]);
 
     res.renderWithProfileLayout("../pages/profile/saved", {
@@ -419,15 +456,16 @@ async function getSavedBlogs(req, res) {
 
     const userId = req.user._id;
     const user = await UserModel.findById(userId)
-  .populate({
-    path: "savedBlogs",
-    select: "author title description blogPhoto tags createdAt slug subauthors likes",
-    populate: {
-      path: "author",
-      select: "username firstname lastname  avatar slug"
-    }
-  })
-  .lean();
+      .populate({
+        path: "savedBlogs",
+        select:
+          "author title description blogPhoto tags createdAt slug subauthors likes",
+        populate: {
+          path: "author",
+          select: "username firstname lastname  avatar slug",
+        },
+      })
+      .lean();
 
     if (!user) {
       return res.status(404).json({
@@ -462,10 +500,7 @@ async function getSavedBlogs(req, res) {
 async function getArchivedBlogs(req, res) {
   const isAuthenticated = req.isAuthenticated();
   if (!isAuthenticated) {
-    return res.status(401).json({
-      success: false,
-      message: "Authentication token is missing.",
-    });
+    return res.redirect("/signin");
   }
 
   const user = await UserModel.findById(req.user._id).lean();
@@ -478,24 +513,37 @@ async function getArchivedBlogs(req, res) {
     });
   }
 
+  const featuredBlogs = await BlogModel.aggregate([
+    { $match: { featured: true, author: user._id } },
+    {
+      $addFields: {
+        commentsCount: { $size: { $ifNull: ["$comments", []] } },
+        likesCount: { $size: { $ifNull: ["$likes", []] } },
+      },
+    },
+    {
+      $sort: {
+        createdAt: -1,
+        commentsCount: -1,
+        likesCount: -1,
+      },
+    },
+  ]);
+
   res.renderWithProfileLayout("../pages/profile/archived", {
     title: `${user.username}'s Archieve`,
     user: { ...user },
     isAuthenticated,
     profile: { ...user },
+    featuredBlogs,
   });
 }
-
-
 
 async function getUserReports(req, res) {
   try {
     const isAuthenticated = req.isAuthenticated();
     if (!isAuthenticated) {
-      return res.status(401).json({
-        success: false,
-        message: "Authentication token is missing.",
-      });
+      return res.redirect("/signin");
     }
     const user = await UserModel.findById(req.user._id).lean();
 
@@ -507,11 +555,29 @@ async function getUserReports(req, res) {
       });
     }
 
+    const featuredBlogs = await BlogModel.aggregate([
+      { $match: { featured: true, author: user._id } },
+      {
+        $addFields: {
+          commentsCount: { $size: { $ifNull: ["$comments", []] } },
+          likesCount: { $size: { $ifNull: ["$likes", []] } },
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
+          commentsCount: -1,
+          likesCount: -1,
+        },
+      },
+    ]);
+
     res.renderWithProfileLayout("../pages/profile/report", {
       title: `${user.username}'s Reports`,
       user: { ...user },
       isAuthenticated,
       profile: { ...user },
+      featuredBlogs,
     });
   } catch (error) {
     console.error("Error fetching user:", error);
@@ -539,25 +605,23 @@ async function getUserFollowers(req, res) {
     }
 
     const profile = await UserModel.findOne({ slug: slug });
-  
 
     const featuredBlogs = await BlogModel.aggregate([
       { $match: { featured: true, author: profile._id } },
       {
         $addFields: {
-          commentsCount: { $size: { $ifNull: ['$comments', []] } },
-          likesCount: { $size: { $ifNull: ['$likes', []] } }
-        }
+          commentsCount: { $size: { $ifNull: ["$comments", []] } },
+          likesCount: { $size: { $ifNull: ["$likes", []] } },
+        },
       },
       {
         $sort: {
           createdAt: -1,
           commentsCount: -1,
-          likesCount: -1
-        }
-      }
+          likesCount: -1,
+        },
+      },
     ]);
-
 
     res.renderWithProfileLayout("../pages/profile/follower", {
       title: `${profile.username}'s Followers`,
@@ -592,25 +656,23 @@ async function getUserFollowing(req, res) {
       user = await UserModel.findById(req.user._id);
     }
     const profile = await UserModel.findOne({ slug: slug });
-  
 
     const featuredBlogs = await BlogModel.aggregate([
       { $match: { featured: true, author: profile._id } },
       {
         $addFields: {
-          commentsCount: { $size: { $ifNull: ['$comments', []] } },
-          likesCount: { $size: { $ifNull: ['$likes', []] } }
-        }
+          commentsCount: { $size: { $ifNull: ["$comments", []] } },
+          likesCount: { $size: { $ifNull: ["$likes", []] } },
+        },
       },
       {
         $sort: {
           createdAt: -1,
           commentsCount: -1,
-          likesCount: -1
-        }
-      }
+          likesCount: -1,
+        },
+      },
     ]);
-
 
     res.renderWithProfileLayout("../pages/profile/following", {
       title: `${profile.username}'s Following`,
@@ -633,6 +695,11 @@ async function getUserFollowing(req, res) {
 async function getUserNotification(req, res) {
   try {
     const isAuthenticated = req.isAuthenticated();
+
+    if (!isAuthenticated) {
+      return res.redirect("/signin");
+    }
+
     const user = await UserModel.findById(req.user._id).lean();
 
     if (!user) {
@@ -643,11 +710,29 @@ async function getUserNotification(req, res) {
       });
     }
 
+    const featuredBlogs = await BlogModel.aggregate([
+      { $match: { featured: true, author: user._id } },
+      {
+        $addFields: {
+          commentsCount: { $size: { $ifNull: ["$comments", []] } },
+          likesCount: { $size: { $ifNull: ["$likes", []] } },
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
+          commentsCount: -1,
+          likesCount: -1,
+        },
+      },
+    ]);
+
     res.renderWithProfileLayout("../pages/profile/notification", {
       title: `${user.username}'s Notifications`,
       user: { ...user },
       isAuthenticated,
       profile: { ...user },
+      featuredBlogs,
     });
   } catch (error) {
     console.error("Error fetching user:", error);
@@ -675,11 +760,31 @@ async function getSettings(req, res) {
         isAuthenticated,
       });
     }
+
+    const featuredBlogs = await BlogModel.aggregate([
+      { $match: { featured: true, author: user._id } },
+      {
+        $addFields: {
+          commentsCount: { $size: { $ifNull: ["$comments", []] } },
+          likesCount: { $size: { $ifNull: ["$likes", []] } },
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
+          commentsCount: -1,
+          likesCount: -1,
+        },
+      },
+    ]);
+
     res.renderWithProfileLayout("../pages/profile/setting", {
       title: `${user.username}'s Settings`,
       user: { ...user },
+      profile: { ...user },
       setting: user.settings,
       isAuthenticated,
+      featuredBlogs,
     });
   } catch (error) {
     console.error("Error fetching user:", error);
@@ -1367,7 +1472,6 @@ async function getRecent(req, res) {
 }
 
 module.exports = {
-
   getProfile,
   updateProfile,
   checkUsernameAvailability,

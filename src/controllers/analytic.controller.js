@@ -57,7 +57,7 @@ async function updateEngagementScores() {
           BlogModel.findById(blog._id).select("reports").lean(),
         ]);
         const wordsPerMinute = 200;
-        if(!blog.markdown){
+        if (!blog.markdown) {
           return;
         }
         const wordCount = blog.markdown.split(/\s+/).length;
@@ -412,13 +412,32 @@ async function getAnalytics(req, res) {
       .sort({ createdAt: -1 })
       .limit(1)
       .lean();
+
+    const featuredBlogs = await BlogModel.aggregate([
+      { $match: { featured: true, author: user._id } },
+      {
+        $addFields: {
+          commentsCount: { $size: { $ifNull: ["$comments", []] } },
+          likesCount: { $size: { $ifNull: ["$likes", []] } },
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
+          commentsCount: -1,
+          likesCount: -1,
+        },
+      },
+    ]);
+
     res.renderWithProfileLayout("../pages/profile/analytic", {
       title: `${user.username}'s Analytics`,
       user: { ...user },
       isAuthenticated,
       profile: { ...user },
       readerId: null,
-      analytics: {...analytics, recentBlog: recentBlog[0]},
+      analytics: { ...analytics, recentBlog: recentBlog[0] },
+      featuredBlogs: featuredBlogs,
     });
   } catch (error) {
     console.error("Error fetching user:", error);

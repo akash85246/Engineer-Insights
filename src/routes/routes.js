@@ -16,14 +16,17 @@ router.get("/signin", async (req, res) => {
       notifications: true,
     },
   };
+  const isAuthenticated = req.isAuthenticated();
 
-  if (req.isAuthenticated()) {
+  if (isAuthenticated) {
     return res.redirect("/");
   }
 
   res.renderWithAuthLayout("../pages/authorisation/signin", {
     title: "Sign In",
     user: user,
+    isAuthenticated,
+
   });
 });
 
@@ -62,13 +65,17 @@ router.get("/signup", (req, res) => {
     },
   };
 
-  if (req.isAuthenticated()) {
+  const isAuthenticated = req.isAuthenticated();
+  if (isAuthenticated) {
     return res.redirect("/");
   }
+
+ 
 
   res.renderWithAuthLayout("../pages/authorisation/signup", {
     title: "Sign Up",
     user: user,
+    isAuthenticated,
   });
 });
 
@@ -79,20 +86,22 @@ router.get("/recovery", (req, res) => {
       notifications: true,
     },
   };
-
-  if (req.isAuthenticated()) {
+  const isAuthenticated = req.isAuthenticated();
+  if (isAuthenticated) {
     return res.redirect("/");
   }
 
   res.renderWithAuthLayout("../pages/authorisation/recovery", {
     title: "Recovery Password",
     user: user,
+    isAuthenticated,
   });
 });
 
 router.get("/reset", (req, res) => {
   const { username } = req.query;
-  if (req.isAuthenticated()) {
+  const isAuthenticated = req.isAuthenticated();
+  if (isAuthenticated) {
     return res.redirect("/");
   }
   if (!req.session.twoFactor || req.session.twoFactor.username !== username) {
@@ -110,12 +119,14 @@ router.get("/reset", (req, res) => {
     title: "Reset Password",
     username: username,
     user: user,
+    isAuthenticated,
   });
 });
 
 router.get("/verify", (req, res) => {
   const { username } = req.query;
-  if (req.isAuthenticated()) {
+  const isAuthenticated = req.isAuthenticated();
+  if (isAuthenticated) {
     return res.redirect("/");
   }
   if (!req.session.twoFactor || req.session.twoFactor.username !== username) {
@@ -133,6 +144,7 @@ router.get("/verify", (req, res) => {
     title: "Verify User",
     username: username,
     user: user,
+    isAuthenticated,
   });
 });
 

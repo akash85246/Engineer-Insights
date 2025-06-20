@@ -13,7 +13,6 @@ const {
 
 async function limitBlogCreate(req, res, next) {
   if (!req.isAuthenticated() || req.user.subscription === "elite") {
-   
     return next();
   }
 
@@ -268,9 +267,8 @@ async function getArticleBySlug(req, res, next) {
             canEdit = blog.subauthors.some((subauthorId) =>
               subauthorId.equals(new ObjectId(userId))
             );
-            
           }
-        
+
           userAlreadyReported = blog.reports.some((report) =>
             report.equals(userId)
           );
@@ -664,7 +662,11 @@ async function searchUserBlogs(req, res) {
       limit = 10,
     } = req.query;
 
-    let userId = author;
+    let userId = null;
+    const isAuthenticated = req.isAuthenticated();
+    if (isAuthenticated) {
+      userId = req.user._id;
+    }
 
     const searchCriteria = {};
 
@@ -672,7 +674,7 @@ async function searchUserBlogs(req, res) {
       searchCriteria.status = status;
     }
 
-    if (author) {
+    if (author && status !== "draft") {
       const authorArray = author.split(",").map((auth) => auth.trim());
       searchCriteria.author = { $in: authorArray };
     }
@@ -714,6 +716,19 @@ async function searchUserBlogs(req, res) {
       searchCriteria.editorspick = editorspick === "true";
     }
 
+    if (status === "draft" && isAuthenticated) {
+      searchCriteria.status = "draft";
+
+      const authorArray = author?.split(",").map((auth) => auth.trim()) || [];
+
+      console.log(userId, authorArray);
+      searchCriteria.$or = [
+        { author: { $in: authorArray } },
+        { subauthors: { $in: [userId] } },
+      ];
+    }
+    console.log("searchCriteria", searchCriteria);
+
     const skip = (parseInt(page, 10) - 1) * parseInt(limit, 10);
 
     const blogs = await BlogModel.find(searchCriteria)
@@ -721,6 +736,8 @@ async function searchUserBlogs(req, res) {
       .sort({ likes: -1, createdAt: -1 })
       .skip(skip)
       .limit(parseInt(limit, 10));
+
+    console.log("blogs", blogs);
 
     const totalBlogs = await BlogModel.countDocuments(searchCriteria);
     const totalPages = Math.ceil(totalBlogs / parseInt(limit, 10));
@@ -812,7 +829,6 @@ async function archiveBlog(req, res) {
 
 async function limitSavedBlogs(req, res, next) {
   const slug = req.params.slug;
- 
 
   if (!req.isAuthenticated() || req.user.subscription === "elite") {
     return next();
@@ -1323,8 +1339,7 @@ async function getSimilarBlogs(blogId, userId) {
     const blog = await BlogModel.findById(blogId).select(
       "category tags author subauthors"
     );
-    
-  
+
     const similarBlogs = await BlogModel.find({
       category: blog.category,
       _id: { $ne: blog._id },
@@ -1332,17 +1347,19 @@ async function getSimilarBlogs(blogId, userId) {
       author: { $ne: userId },
       subAuthors: { $nin: [userId] },
       tags: { $in: blog.tags },
-
     })
-      .populate("author", "username avatar firstname lastname slug blockedUsers")
+      .populate(
+        "author",
+        "username avatar firstname lastname slug blockedUsers"
+      )
       .sort({ createdAt: -1 })
       .lean();
 
-    var filteredBlogs = (await filterBlogsByBlockedUsers(similarBlogs, userId)) || [];
+    var filteredBlogs =
+      (await filterBlogsByBlockedUsers(similarBlogs, userId)) || [];
     filteredBlogs = (await filterBlogsByAudience(filteredBlogs, userId)) || [];
     filteredBlogs = (await filterBlogsByStatus(filteredBlogs, userId)) || [];
     filteredBlogs = filteredBlogs.slice(0, 20);
-
 
     return filteredBlogs;
   } catch (error) {
