@@ -1,27 +1,23 @@
-<h1
-  class="text-base sm:text-lg md:text-xl lg:text-2xl <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-tertiary bg-white bg-background' %> sticky top-0 font lora z-10 font-semibold mt-8 md:mt-0 p-3  md:px-10"
+<div
+  class="relative overflow-x-scroll box-border overflow-y-visible z-[1] pb-20 <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-tertiary' %> border rounded-md"
 >
-  Blogs Reported
-</h1>
-
-<div class="relative overflow-x-scroll px-5">
   <table
-    class="table-auto w-full overflow-x-scroll text-xs md:text-sm lg:text-base"
+    class="table-auto w-full overflow-x-scroll text-xs md:text-sm lg:text-base overflow-visible"
   >
-    <thead>
+    <thead class="">
       <tr
-        class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background  text-secondary' %>"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background text-secondary' %>"
       >
-        <th class="px-4 py-2">Blog</th>
-        <th class="px-4 py-2">Title</th>
-        <th class="px-4 py-2 whitespace-nowrap">Reported On</th>
-        <th class="px-4 py-2 whitespace-nowrap">Time Left</th>
-        <th class="px-4 py-2">Details</th>
-        <th class="px-4 py-2">Action Required</th>
-        <th class="px-4 py-2">Status</th>
+        <th class="p-1 md:p-2 lg:px-4 lg:py-2 font-normal">Blog</th>
+        <th class="p-1 md:p-2 lg:px-4 lg:py-2 font-normal">Title</th>
+        <th class="p-1 md:p-2 lg:px-4 lg:py-2 whitespace-nowrap font-normal">
+          Time
+        </th>
+        <th class="p-1 md:p-2 lg:px-4 lg:py-2 font-normal">Status</th>
+        <th class="p-1 md:p-2 lg:px-4 lg:py-2"></th>
       </tr>
     </thead>
-    <tbody id="userReportsTableBody"></tbody>
+    <tbody id="userReportsTableBody" class="overflow-visible"></tbody>
   </table>
 </div>
 
@@ -29,55 +25,77 @@
 
 <div
   id="reportDetailsModal"
-  class="fixed  inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : ' text-text bg-primary' %> backdrop-blur-sm bg-opacity-50 flex items-center justify-center hidden z-50"
+ class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %> backdrop-blur-sm bg-opacity-50 flex items-center justify-center hidden z-20 p-5 md:p-0"
+ onclick="closeBlogModal()"
 >
   <div
-    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-primary' : 'bg-background text-text' %> p-6 rounded-lg w-1/2"
+   class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> p-4 rounded-lg w-full sm:w-1/2 lg:w-1/3"
+   onclick="event.stopPropagation()"
   >
-    <h2 class="text-xl font-semibold" id="modalInfoTitle"></h2>
-    <p id="modalInfoDescription" class="mt-2 <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'bg-background text-text' %>"></p>
-    <button
-      id="closeBlogModal"
-      class="mt-4 px-4 py-2  <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary hover:bg-blue-400' : 'text-white bg-primary hover:bg-blue-500' %> rounded"
-    >
-      Close
-    </button>
+    <div class="flex justify-between items-center">
+      <h2 class="text-xl font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-primary' %>" id="modalInfoTitle"></h2>
+      <p  class="text-base <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %>" id="reportBlogCreatedAt"></p>
+    </div>
+
+    <textarea
+      id="modalInfoDescription"
+      class="mt-2 resize-none w-full bg-transparent <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-secondary' %>"
+      row-5
+      readonly
+    ></textarea>
+    <div class="flex w-full justify-end">
+      <button
+        id="closeBlogModal"
+         class="px-4 py-2 rounded-md border border-gray-300 text-sm font-medium <%= user.settings.theme === 'dark' ? 'text-gray-300 hover:bg-dark-primary' : 'text-gray-700 hover:bg-gray-100' %> transition duration-200"
+         onclick="closeBlogModal()"
+      >
+        Close
+      </button>
+    </div>
   </div>
 </div>
 
 <div
   id="deleteBlogModal"
-  class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : ' text-text bg-primary' %> backdrop-blur-sm bg-opacity-50 flex items-center justify-center hidden z-50 p-5 md:p-0"
+  class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %> backdrop-blur-sm bg-opacity-50 flex items-center justify-center hidden z-20 p-5 md:p-0"
+  onclick="closeDeleteBlogModal()"
 >
   <div
-    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> p-6 rounded-lg shadow-lg w-full max-w-md relative"
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> p-4 rounded-lg w-full sm:w-1/2 lg:w-1/3"
+    onclick="event.stopPropagation()"
   >
+  <div class="flex items-center justify-between mb-4">
     <h2
-      class="text-xl font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-secondary' %> mb-4"
+      class="text-xl font-semibold font-sans"
     >
       Delete Blog
     </h2>
+    <button
+        onclick="closeDeleteBlogModal()"
+        class="text-gray-400 hover:text-red-500 transition duration-200 text-xl"
+        aria-label="Close"
+      >
+        &times;
+      </button>
+    </div>
 
-    <p id="deletemodalInfoDescription" class="text-fourth mb-4"></p>
+    <p id="deletemodalInfoDescription" class="text-sm mb-6 <%= user.settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-600' %>"></p>
 
     <form id="deleteBlogForm">
-      <div class="form-group mb-6">
-        
-      </div>
+      <div class="form-group mb-6"></div>
 
-      <div class="flex items-center justify-between">
-        
+      <div class="mt-4 flex justify-end gap-4">
         <button
           type="button"
           id="closeBlogModalBtn"
-          class="hover:bg-blue-300 hover:text-background   <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-gray-300  text-gray-700 ' %>  font-roboto font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+         class="px-4 py-2 rounded-md border border-gray-300 text-sm font-medium <%= user.settings.theme === 'dark' ? 'text-gray-300 hover:bg-dark-primary' : 'text-gray-700 hover:bg-gray-100' %> transition duration-200"
         >
           Cancel
         </button>
         <button
           type="submit"
           id="confirmDeleteButton"
-          class="hover:bg-red-300   hover:text-background   font-roboto <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : ' text-fifth border-fifth' %>  font-bold py-2 px-4 rounded outline-none"
+          class="px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white text-sm font-medium shadow-md transition duration-200"
         >
           Delete
         </button>
@@ -98,7 +116,7 @@
       currentDate.getTime();
     if (timeDiff > 0) {
       const daysLeft = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-      return `${daysLeft} days left`;
+      return `${daysLeft} days`;
     } else {
       return "Time's up!";
     }
@@ -112,10 +130,11 @@
     reportId,
     slug
   ) {
-    console.log("reason:",reason,"\ndescription",description,"\nreportCreatedAt",reportCreatedAt,"\nblogUpdatedAt",blogUpdatedAt,"\nreportId",reportId,"\nslug",slug);
-
     document.getElementById("modalInfoTitle").innerText = reason;
     document.getElementById("modalInfoDescription").innerText = description;
+    document.getElementById("reportBlogCreatedAt").innerText = new Date(
+      reportCreatedAt
+    ).toLocaleDateString();
 
     document.getElementById("reportDetailsModal").classList.remove("hidden");
 
@@ -136,13 +155,11 @@
       );
 
       goToBlogBtn.innerText = "Go to Blog";
-      console.log(
-        "reason\n",reason,"description\n",description,"reportCreatedAt\n",reportCreatedAt,"blogUpdatedAt\n",blogUpdatedAt,"reportId\n",reportId,"slug\n",slug);
+
       goToBlogBtn.onclick = function () {
         window.location.href = `/blog/${slug}`;
       };
 
-     
       const deleteReportBtn = document.createElement("button");
       deleteReportBtn.classList.add(
         "px-4",
@@ -156,19 +173,18 @@
         deleteReport(reportId);
       };
 
-     
       actionButtonContainer.appendChild(goToBlogBtn);
       actionButtonContainer.appendChild(deleteReportBtn);
     }
   }
 
-  
-
   function closeBlogModal() {
     document.getElementById("reportDetailsModal").classList.add("hidden");
   }
 
-  async function loadUserReports(page = 1, pageSize = 10) {
+  const blogReportsPerPage = 10;
+
+  async function loadUserReports(page = 1) {
     const userReportsTableBody = document.getElementById(
       "userReportsTableBody"
     );
@@ -176,7 +192,7 @@
 
     try {
       const response = await fetch(
-        `/api/reports/user?page=${page}&pageSize=${pageSize}`,
+        `/api/reports/user?page=${page}&pageSize=${blogReportsPerPage}`,
         {
           method: "GET",
           headers: {
@@ -184,102 +200,242 @@
           },
         }
       );
-       
 
       if (response.ok) {
-
         const data = await response.json();
         const reports = data.reports;
         const totalReports = data.totalReports;
-        if(totalReports==0){
+        if (totalReports == 0) {
           userReportsTableBody.innerHTML = `<tr class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background  text-secondary' %>">
           <td class="border <%=
             user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth'
-          %> px-4 py-2 mx-auto text-center w-96 overflow-x-scroll whitespace-nowrap text-xs md:text-sm lg:text-base " colspan="7">No reports found</td>
+          %> p-2 md:px-4 md:py-2 mx-auto text-center  overflow-x-scroll whitespace-nowrap text-xs md:text-sm lg:text-base " colspan="7">No reports found</td>
         </tr>`;
-        return;
+          return;
         }
         userReportsTableBody.innerHTML = "";
 
+        const statusStyles = {
+          Pending: "bg-yellow-200 text-yellow-800",
+          Resolved: "bg-green-200 text-green-800",
+          Reviewed: "bg-blue-200 text-blue-800",
+          Deleted: "bg-red-200 text-red-800",
+        };
+
         reports.forEach((report) => {
           const timeLeft = calculateTimeLeft(report.createdAt);
-          console.log(report,report.blogId.slug);
+
           const row = `
-            <tr data-blog-slug="${report.blogId.slug}" class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background  text-secondary' %>">
-              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %>">
+            <tr data-blog-slug="${
+              report.blogId.slug
+            }" class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background  text-secondary' %>  border-y  <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> -z-10" onmouseleave="BlogHideReportOptions('${
+            report._id
+          }')" id="reportBlogRow-${report._id}">
+              <td class="p-2 md:px-4 md:py-2">
                 <a href="/blog/${report.blogId.slug}" target="_blank">
                   <img src="${report.blogId.blogPhoto}" alt="${
             report.blogId.title
-          }" class="object-cover w-full h-10">
+          }" class="object-cover w-10 md:w-full h-10">
                 </a>
               </td>
-              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 mx-auto text-center w-96 overflow-x-scroll whitespace-nowrap text-xs md:text-sm lg:text-base ">${truncateText(
+              <td class=" p-2 md:px-4 md:py-2 mx-auto text-center  overflow-x-scroll whitespace-nowrap text-xs md:text-sm lg:text-base ">${truncateText(
                 report.blogId.title,
-                30
+                15
               )}</td>
-              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 mx-auto text-center text-xs md:text-sm lg:text-base">${new Date(
-                report.createdAt
-              ).toLocaleDateString()}</td>
-              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 mx-auto text-center whitespace-nowrap">${timeLeft}</td>
-              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 text-center">
-                <button class="<%= user.settings.theme === 'dark' ? 'text-dark-tertiary' : 'text-fourth' %> font-roboto hover:text-highlight text-xs md:text-sm lg:text-base" onclick="showInfoModal('${
-                  report.reason
-                }', '${report.description}','${report.createdAt}','${
-            report.blogId.lastModified
-          }','${report._id}','${report.blogId.slug}')">View</button>
-              </td>
-              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 mx-auto text-center min-w-60">
-                <div class="grid grid-cols-2">
-                   <button class=" py-1 px-4 mr-2 rounded-md focus:outline-none flex items-center text-sm sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300 text-center flex justify-center item-center hover:text-white font-roboto"  onclick="handleEditAndUpdateStatus('${
-                     report._id
-                   }','${report.blogId.slug}')" >Edit</button>
-                <button class="delete-blog py-1 px-4 hover:bg-red-300 focus:outline-none text-sm md:text-sm sm:text-xxs md:text-xs lg:text-sm font-roboto <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-fourth' %> rounded-md hover:text-white" data-blog-slug="${
-                  report.blogId.slug
-                }" id="${report._id}" >Delete</button>
-                </div>
-              </td>
-              <td class="border <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> px-4 py-2 mx-auto text-center">
+              
+              <td class=" p-2 md:px-4 md:py-2 mx-auto text-center whitespace-nowrap">${timeLeft}</td>
+              
+              <td class=" p-2 md:px-4 md:py-2  mx-auto text-center text-xs md:text-sm lg:text-base ${
+                statusStyles[report.status] || "bg-gray-200 text-gray-800"
+              } ">
                 ${report.status}
                 </td>
+                 <td class=" p-2 md:px-4 md:py-2 mx-auto text-center  relative overflow-visible z-10 min-w-[48px] whitespace-nowrap">
+
+                 <button onclick='openReportBlogMore("${report._id}")'>
+                                      <img src="images/icons/verticalMoreIcon.svg"      alt="More"
+                                        class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6                lg:w-7 lg:h-7 invert z-0">
+                  </button>
+
+                  <div
+                   class="absolute top-0 right-10 md:right-12 lg:right-14 z-50 p-2 space-y-2 bg-white dark:bg-dark-fifth rounded-lg shadow-lg                 border border-gray-200 dark:border-dark-secondary w-32 md:w-36 lg:w-40  hidden z-50"
+                    id="blogReportOptions-${report._id}"
+                    onhover="openReportBlogMore("${report._id}")"
+                  >       
+                    <button
+                    onclick="showInfoModal('${report.reason}', '${
+            report.description
+          }','${report.createdAt}','${report.blogId.lastModified}','${
+            report._id
+          }','${report.blogId.slug}')"
+                    class="w-full flex items-center gap-2 py-2 px-3 sm:px-4 rounded-md text-xs md:text-sm lg:text-base font-medium transition-colors duration-200
+    bg-blue-600 text-white hover:bg-blue-700"
+                  >
+                    <img
+                      src="images/icons/reportFlagIcon.svg"
+                      alt="View Report"
+                      class="w-4 h-4"
+                    />
+                    View
+                  </button>
+
+                  <button
+                    onclick="handleEditAndUpdateStatus('${report._id}','${
+            report.blogId.slug
+          }')"
+                    class="w-full flex items-center gap-2 py-2 px-3 sm:px-4 rounded-md text-xs md:text-sm lg:text-base font-medium transition-colors duration-200
+    bg-gray-100 text-gray-800 hover:bg-gray-200"
+                  >
+                    <img
+                      src="images/icons/editDarkIcon.svg"
+                      alt="Edit Blog"
+                      class="w-4 h-4 "
+                    />
+                    Edit
+                  </button>
+
+  
+                  <button
+                    class="delete-blog w-full flex items-center gap-2 py-2 px-3 sm:px-4 rounded-md text-xs md:text-sm lg:text-base font-medium transition-colors duration-200
+    bg-red-100 text-red-700 hover:bg-red-200"
+                    data-blog-slug="${report.blogId.slug}"
+                    id="${report._id}"
+                  >
+                    <img
+                      src="images/icons/deleteDarkIcon.svg"
+                      alt="Delete Blog"
+                      class="w-4 h-4"
+                    />
+                    Delete
+                  </button>
+                </div>
+              </td>
             </tr>
           `;
           userReportsTableBody.insertAdjacentHTML("beforeend", row);
         });
 
-        const totalPages = Math.ceil(totalReports / pageSize);
-        userPagination.innerHTML = `
-          ${
-            page > 1
-              ? `<button class="px-3 py-1 border rounded" onclick="loadUserReports(${
-                  page - 1
-                }, ${pageSize})">Prev</button>`
-              : ""
-          }
-          ${Array.from({ length: totalPages }, (_, i) => i + 1)
-            .map(
-              (num) => `
-            <button class="px-3 py-1 border rounded ${
-              num === page ? "bg-tertiary text-white" : "bg-gray-200"
-            }" onclick="loadUserReports(${num}, ${pageSize})">${num}</button>
-          `
-            )
-            .join("")}
-          ${
-            page < totalPages
-              ? `<button class="px-3 py-1 border rounded" onclick="loadUserReports(${
-                  page + 1
-                }, ${pageSize})">Next</button>`
-              : ""
-          }
-        `;
+        const totalPages = Math.ceil(totalReports / blogReportsPerPage);
+        setupReportPagination(totalPages, page);
       } else {
         console.error("Failed to fetch reports:", response.statusText);
-
       }
     } catch (error) {
       console.error("Error loading reports:", error);
     }
   }
+
+  function setupReportPagination(totalPages, currentPage) {
+    const paginationElement = document.getElementById("userPagination");
+    paginationElement.innerHTML = "";
+    const maxVisiblePages = 5;
+    let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1);
+    let endPage = startPage + maxVisiblePages - 1;
+
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+    }
+
+    if (totalPages < 1) {
+      const displayBlogsElement = document.getElementById("displayBlogs");
+      const noBlogCard = `
+      <div class="border-2 border border-gray-300 rounded-lg p-6 text-center                text-gray-500 font-lora font-thin min-h-[400px] flex flex-col               items-center justify-center shadow-lg">
+                  <img
+      src="/images/icons/blogNotFound.svg" class="" />
+                <p class="text-lg">No blogs yet—be the pioneer!</p>
+              </div>
+            `.trim();
+      displayBlogsElement.innerHTML += noBlogCard;
+      return;
+    }
+
+    const prevButton = document.createElement("button");
+    prevButton.innerText = "Prev";
+    prevButton.classList.add(
+      "px-3",
+      "py-1",
+      "ml-2",
+      "bg-fourth",
+      "rounded-md",
+      "text-secondary",
+      "hover:bg-fifth",
+      "hover:text-fourth"
+    );
+
+    prevButton.disabled = currentPage === 1;
+    prevButton.addEventListener("click", () =>
+      loadUserReports(currentPage - 1)
+    );
+    paginationElement.appendChild(prevButton);
+
+    for (let i = startPage; i <= endPage; i++) {
+      const pageButton = document.createElement("button");
+      pageButton.innerText = i;
+      pageButton.classList.add(
+        "px-3",
+        "py-1",
+        "mx-1",
+        i === currentPage ? "bg-secondary" : "bg-fourth",
+        i === currentPage ? "text-background" : "text-secondary",
+        "rounded-md"
+      );
+      if (i === currentPage) {
+        pageButton.classList.add("bg-secondary", "text-white");
+      } else {
+        pageButton.classList.add("hover:bg-fifth", "hover:text-fourth");
+      }
+      pageButton.onclick = () => {
+        loadUserReports(i);
+      };
+      paginationElement.appendChild(pageButton);
+    }
+    const nextButton = document.createElement("button");
+    nextButton.innerText = "Next";
+    nextButton.classList.add(
+      "px-3",
+      "py-1",
+      "ml-2",
+      "bg-fourth",
+      "rounded-md",
+      "text-secondary",
+      "hover:bg-fifth",
+      "hover:text-fourth"
+    );
+    // nextButton.disabled = currentPage === totalPages;
+    nextButton.addEventListener("click", () => {
+      loadUserReports(currentPage + 1);
+    });
+    paginationElement.appendChild(nextButton);
+    if (currentPage == 1) {
+      prevButton.style.display = "none";
+    }
+    if (currentPage >= totalPages) {
+      nextButton.style.display = "none";
+    }
+  }
+
+  window.openReportBlogMore = function openReportBlogMore(reportId) {
+    const moreOptions = document.getElementById(
+      `blogReportOptions-${reportId}`
+    );
+
+    const row = document.getElementById(`reportBlogRow-${reportId}`);
+
+    if (moreOptions) {
+      moreOptions.classList.toggle("hidden");
+      row.classList.toggle("-z-10");
+    } else {
+      console.error("More options element not found for report ID:", reportId);
+    }
+  };
+
+  window.BlogHideReportOptions = function hideReportOptions(slug) {
+    const options = document.getElementById(`blogReportOptions-${slug}`);
+    if (options) {
+      options.classList.add("hidden");
+    }
+  };
 
   function updateStatus(id, status) {
     const url = `/reports/update-status/${id}`;
@@ -324,7 +480,7 @@
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-        }
+        },
       });
 
       if (response.ok) {
@@ -374,9 +530,7 @@
       }
     });
 
-    document
-      .getElementById("closeBlogModal")
-      .addEventListener("click", closeBlogModal);
+    
     document
       .getElementById("closeBlogModalBtn")
       .addEventListener("click", closeDeleteBlogModal);
@@ -388,12 +542,9 @@
       .getElementById("deleteBlogForm")
       .addEventListener("submit", async (event) => {
         event.preventDefault();
-       
+
         if (currentBlogSlug) {
-          await deleteBlog(
-            currentReport_Id,
-            currentBlogSlug
-          );
+          await deleteBlog(currentReport_Id, currentBlogSlug);
         }
       });
   });
