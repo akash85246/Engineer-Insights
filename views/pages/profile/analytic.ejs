@@ -1,20 +1,29 @@
-<div
-  class="grid grid-cols-1 sm:grid-cols-7 md:grid-cols-8 lg:grid-cols-5 font-lora"
->
-  <div class="sm:col-span-2 md:col-span-2 lg:col-span-1">
-    <%- include("../../partials/profileDetails.ejs")%>
-  </div>
-  <div class="sm:col-span-5 md:col-span-6 lg:col-span-4">
+<%- include("../../partials/profileFeaturedBlog.ejs")%>
+
+  <div class="">
     <div class="grid grid-cols-2">
       <div>
         <div
           id="engagement_score_chart"
-          style="width: 100%; height: auto; min-height: 400px"
-          class="px-8 py-8"
+          class="w-full h-[250px] sm:h-[400px] md:h-[450px] lg:h-[500px] p-2 md:p-4 lg:p-8 flex justify-center items-center"
+          style="aspect-ratio: 1 / 1;"
         ></div>
         <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
         <script>
           document.addEventListener("DOMContentLoaded", function () {
+
+            const screenWidth = window.innerWidth;
+
+          let pieRadius = ['50%', '90%'];
+          let pieCenter = ['40%', '50%'];
+
+          if (screenWidth < 400) {
+            pieRadius = ['30%', '60%'];
+            pieCenter = ['45%', '50%'];
+          } else if (screenWidth < 768) {
+            pieRadius = ['40%', '75%'];
+            pieCenter = ['42%', '50%'];
+          }
 
             let events = ["touchstart", "touchmove", "mousewheel", "wheel"];
             events.forEach(function (eventName) {
@@ -34,22 +43,24 @@
             }
 
             const totalEngagement="<%= analytics.engagementScore %>";
+            
             var engagementChart = echarts.init(chartDom);
             var option = {
               tooltip: {
                 trigger: "item",
               },
-              legend: {
-                orient: "vertical",
-                left: "right",
-                top: "bottom",
-              },
+              // legend: {
+              //   orient: "vertical",
+              //   left: "right",
+              //   top: "bottom",
+              // },
               series: [
                 {
                   name: "Engagement",
                   type: 'pie',
-                  radius: ['50%', '90%'],
-                  center: ["40%", "50%"],
+                   radius: pieRadius,
+                  // center: pieCenter,
+                  center:  ["50%", "50%"],
                   avoidLabelOverlap: false,
                   padAngle: 5,
                   itemStyle: {
@@ -90,110 +101,114 @@
               ],
               graphic: {
                 type: "text",
-               left: "32%",
+                left: "middle",
                 top: "middle",
                 style: {
-                text: totalEngagement.toString(),
-                fontSize: 50,
-                fontWeight: "bold",
-                fontStyle:"italic",
-                fill: "#333",
+                  text: totalEngagement.toString(),
+                  fontSize: window.innerWidth < 640 ? 20 : window.innerWidth < 768 ? 30 : 50,
+                  fontWeight: "bold",
+                  fontStyle: "italic",
+                  fill: "#333",
                 },
               },
             };
 
             engagementChart.setOption(option);
+
+            window.addEventListener("resize", function () {
+               engagementChart.resize();
+            });
           });
         </script>
       </div>
-      <ul class="grid grid-cols-2 gap-6 p-8">
+      <ul class="grid grid-cols-2 gap-2 p-2 md:gap-4 md:p-4 lg:gap-6 lg:p-8">
         <li
-          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-6 hover:scale-105 duration-300"
+          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-2 md:p-4 lg:p-6 hover:scale-105 duration-300"
         >
-          <p class="absolute top-2 left-2 text-xs text-gray-500 opacity-70">
+          <p class="absolute top-2 left-2 text-xxs  md:text-xs text-gray-500 opacity-70">
             TOTAL BLOGS
           </p>
           <h3
-            class="text-5xl font-extrabold text-green-500 mt-2 drop-shadow-md"
+            class="text-lg sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-green-500 mt-2 drop-shadow-md"
           >
             <%= analytics.blogsCount %>
           </h3>
           <div
-            class="w-12 h-12 flex items-center justify-center bg-green-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
+            class="h-8 w-8 md:w-12 md:h-12 flex items-center justify-center bg-green-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
           >
             <img
               src="../../images/analyticImages/blog.png"
               alt="Blogs"
-              class="w-7 h-7"
+              class="h-5 w-5  md:w-7 md:h-7"
             />
           </div>
         </li>
 
         <li
-          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-6 hover:scale-105 duration-300"
+          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-2 md:p-4 lg:p-6 hover:scale-105 duration-300"
         >
-          <p class="absolute top-2 left-2 text-xs text-gray-500 opacity-70">
+          <p class="absolute top-2 left-2 text-xxs  md:text-xs text-gray-500 opacity-70">
             TOTAL LIKES
           </p>
-          <h3 class="text-5xl font-extrabold text-red-500 mt-2 drop-shadow-md">
+          <h3 class="text-lg sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-red-500 mt-2 drop-shadow-md">
             <%= analytics.likesCount %>
           </h3>
           <div
-            class="w-12 h-12 flex items-center justify-center bg-red-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
+            class="h-8 w-8 md:w-12 md:h-12 flex items-center justify-center bg-red-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
           >
             <img
               src="../../images/analyticImages/like.png"
               alt="Likes"
-              class="w-7 h-7"
+              class="h-5 w-5  md:w-7 md:h-7"
             />
           </div>
         </li>
 
         <li
-          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-6 hover:scale-105 duration-300"
+          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-2 md:p-4 lg:p-6 hover:scale-105 duration-300"
         >
-          <p class="absolute top-2 left-2 text-xs text-gray-500 opacity-70">
+          <p class="absolute top-2 left-2 text-xxs  md:text-xs text-gray-500 opacity-70">
             TOTAL REPORTS
           </p>
           <h3
-            class="text-5xl font-extrabold text-yellow-500 mt-2 drop-shadow-md"
+            class="text-lg sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-yellow-500 mt-2 drop-shadow-md"
           >
             <%= analytics.reportsCount %>
           </h3>
           <div
-            class="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
+            class="h-8 w-8 md:w-12 md:h-12 flex items-center justify-center bg-yellow-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
           >
             <img
               src="../../images/analyticImages/report.png"
               alt="Reports"
-              class="w-7 h-7"
+              class="h-5 w-5  md:w-7 md:h-7"
             />
           </div>
         </li>
         <li
-          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-6 hover:scale-105 duration-300"
+          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-2 md:p-4 lg:p-6 hover:scale-105 duration-300"
         >
-          <p class="absolute top-2 left-2 text-xs text-gray-500 opacity-70">
+          <p class="absolute top-2 left-2 text-xxs  md:text-xs text-gray-500 opacity-70">
             TOTAL COMMENTS
           </p>
-          <h3 class="text-5xl font-extrabold text-blue-500 mt-2 drop-shadow-md">
+          <h3 class="text-lg sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-blue-500 mt-2 drop-shadow-md">
             <%= analytics.commentsCount %>
           </h3>
           <div
-            class="w-12 h-12 flex items-center justify-center bg-blue-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
+            class="h-8 w-8 md:w-12 md:h-12 flex items-center justify-center bg-blue-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
           >
             <img
               src="../../images/analyticImages/comment.png"
               alt="Comments"
-              class="w-7 h-7"
+              class="h-5 w-5  md:w-7 md:h-7"
             />
           </div>
         </li>
       </ul>
     </div>
-    <ul class="grid grid-cols-4 grid-rows-2 gap-6 p-6">
+    <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 gap-2 p-2 md:gap-4 md:p-4 lg:gap-6 lg:p-6">
       <li
-        class="text-center text-4xl flex flex-col justify-between items-center font-roboto"
+        class="text-center text-lg sm:text-2xl md:text-3xl lg:text-4xl flex flex-col justify-between items-center font-roboto shadow-md"
       >
         Top Performing Blogs
         <img
@@ -201,7 +216,8 @@
           alt="top performing blogs"
         />
       </li>
-      <li class="w-full flex-shrink-0">
+
+      <li class="w-full flex-shrink-0 shadow-md">
         <div
           class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full"
           style="
@@ -213,12 +229,12 @@
             <% if (analytics.mostLikedBlog) { %>
               <div class="flex justify-end">
                 <p
-                  class="px-3 py-1.5 text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-pink-600 to-red-500 border-red-400' : 'bg-gradient-to-r from-red-400 to-orange-300 border-orange-300' %> text-white tracking-wider"
+                  class="px-1  md:px-2 lg:px-3 py-1 md:py-1.5 text-xxs sm:text-xs md:text-sm lg:text-base  font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-pink-600 to-red-500 border-red-400' : 'bg-gradient-to-r from-red-400 to-orange-300 border-orange-300' %> text-white tracking-wider"
                 >
                   ❤️ MOST LIKED
                 </p>
                 <p
-                  class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
+                  class="p-1 sm:px-2 sm:py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
                 >
                   <%= analytics.mostLikedBlog.tags[0] %>
                 </p>
@@ -231,14 +247,14 @@
                   <%= new Date(analytics.mostLikedBlog.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "numeric" }) %>
                 </p>
                 <h5
-                  class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
+                  class="text-sm sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
                 >
                   <%= analytics.mostLikedBlog.title.length > 50 ?
                   analytics.mostLikedBlog.title.substring(0, 50) + '...' :
                   analytics.mostLikedBlog.title %>
                 </h5>
                 <p
-                  class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
+                  class="text-xs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
                 >
                   <%= analytics.mostLikedBlog.description.length > 100 ?
                   analytics.mostLikedBlog.description.substring(0, 100) + '...' :
@@ -262,10 +278,11 @@
           </div>
         </div>
       </li>
-      <li class="w-full flex-shrink-0">
+      <li class="w-full flex-shrink-0 shadow-md">
         <div
           class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full"
-          style="background-image: url('<%= ((analytics.mostLikedBlog && analytics.mostLikedBlog.blogPhoto) ? analytics.mostLikedBlog.blogPhoto : "") %>');"
+          
+          style="background-image: url('<%= ((analytics.mostCommentedBlog && analytics.mostCommentedBlog.blogPhoto) ? analytics.mostCommentedBlog.blogPhoto : "") %>');"
         >
           <div
             class="rounded-lg shadow-lg w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-3 h-full flex flex-col justify-between relative"
@@ -273,12 +290,12 @@
             <% if (analytics.mostCommentedBlog) { %>
               <div class="flex justify-end">
                 <p
-                  class="px-3 py-1.5 text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-blue-700 to-blue-500 border-blue-400' : 'bg-gradient-to-r from-sky-400 to-blue-300 border-blue-300' %> text-white tracking-wider"
+                  class="px-1  md:px-2 lg:px-3 py-1 md:py-1.5 text-xxs sm:text-xs md:text-sm lg:text-base  font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-blue-700 to-blue-500 border-blue-400' : 'bg-gradient-to-r from-sky-400 to-blue-300 border-blue-300' %> text-white tracking-wider"
                 >
                   💬 MOST COMMENTED
                 </p>
                 <p
-                  class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
+                 class="p-1 sm:px-2 sm:py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
                 >
                   <%= analytics.mostCommentedBlog.tags[0] %>
                 </p>
@@ -291,14 +308,14 @@
                   <%= new Date(analytics.mostCommentedBlog.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "numeric" }) %>
                 </p>
                 <h5
-                  class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
+                  class="text-sm sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
                 >
                   <%= analytics.mostCommentedBlog.title.length > 50 ?
                   analytics.mostCommentedBlog.title.substring(0, 50) + '...' :
                   analytics.mostCommentedBlog.title %>
                 </h5>
                 <p
-                  class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
+                  class="text-xs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
                 >
                   <%= analytics.mostCommentedBlog.description.length > 100 ?
                   analytics.mostCommentedBlog.description.substring(0, 100) + '...' :
@@ -314,15 +331,14 @@
                 </p>
               </div>
             <% } else { %>
-              <!-- Blank Card Content -->
-              <div class="h-full flex items-center justify-center text-gray-400 font-semibold">
+              <div class="h-full flex items-center text-center justify-center text-gray-400 font-semibold">
                 No Most Commented Blog Found
               </div>
             <% } %>
           </div>
         </div>
       </li>
-      <li class="w-full flex-shrink-0">
+      <li class="w-full flex-shrink-0 shadow-md">
         <div
           class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full"
           style="
@@ -335,12 +351,12 @@
             <% if (analytics.mostViewedBlog) { %>
               <div class="flex justify-end">
                 <p
-                  class="px-3 py-1.5 text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-green-600 to-green-500 border-green-400' : 'bg-gradient-to-r from-teal-400 to-green-300 border-green-300' %> text-white tracking-wider flex items-center gap-1"
+                  class="px-1  md:px-2 lg:px-3 py-1 md:py-1.5 text-xxs sm:text-xs md:text-sm lg:text-base  font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-green-600 to-green-500 border-green-400' : 'bg-gradient-to-r from-teal-400 to-green-300 border-green-300' %> text-white tracking-wider flex items-center gap-1"
                 >
                   👀 MOST VIEWED
                 </p>
                 <p
-                  class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
+                 class="p-1 sm:px-2 sm:py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
                 >
                   <%= analytics.mostViewedBlog.tags[0] %>
                 </p>
@@ -353,14 +369,14 @@
                   <%= new Date(analytics.mostViewedBlog.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "numeric" }) %>
                 </p>
                 <h5
-                  class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
+                  class="text-sm sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
                 >
                   <%= analytics.mostViewedBlog.title.length > 50 ?
                   analytics.mostViewedBlog.title.substring(0, 50) + '...' :
                   analytics.mostViewedBlog.title %>
                 </h5>
                 <p
-                  class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
+                  class="text-xs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
                 >
                   <%= analytics.mostViewedBlog.description.length > 100 ?
                   analytics.mostViewedBlog.description.substring(0, 100) + '...' :
@@ -377,7 +393,7 @@
               </div>
             <% } else { %>
               <!-- Blank Card Content -->
-              <div class="h-full flex items-center justify-center text-gray-400 font-semibold">
+              <div class="h-full text-center flex items-center justify-center text-gray-400 font-semibold">
                 No Most Viewed Blog Found
               </div>
             <% } %>
@@ -385,7 +401,7 @@
         </div>
       </li>
 
-      <li class="w-full flex-shrink-0">
+      <li class="w-full flex-shrink-0 shadow-md">
         <div
           class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full"
           style="
@@ -398,12 +414,12 @@
             <% if (analytics.mostSavedBlog) { %>
               <div class="flex justify-end">
                 <p
-                  class="px-3 py-1.5 text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-yellow-600 to-yellow-500 border-yellow-400' : 'bg-gradient-to-r from-yellow-400 to-amber-300 border-amber-300' %> text-white tracking-wider flex items-center gap-1"
+                  class="px-1  md:px-2 lg:px-3 py-1 md:py-1.5 text-xxs sm:text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-yellow-600 to-yellow-500 border-yellow-400' : 'bg-gradient-to-r from-yellow-400 to-amber-300 border-amber-300' %> text-white tracking-wider flex items-center gap-1"
                 >
                   🔖 MOST SAVED
                 </p>
                 <p
-                  class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
+                 class="p-1 sm:px-2 sm:py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
                 >
                   <%= analytics.mostSavedBlog.tags[0] %>
                 </p>
@@ -416,14 +432,14 @@
                   <%= new Date(analytics.mostSavedBlog.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "numeric" }) %>
                 </p>
                 <h5
-                  class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
+                  class="text-sm sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
                 >
                   <%= analytics.mostSavedBlog.title.length > 50 ?
                   analytics.mostSavedBlog.title.substring(0, 50) + '...' :
                   analytics.mostSavedBlog.title %>
                 </h5>
                 <p
-                  class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
+                  class="text-xs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
                 >
                   <%= analytics.mostSavedBlog.description.length > 100 ?
                   analytics.mostSavedBlog.description.substring(0, 100) + '...' :
@@ -440,7 +456,7 @@
               </div>
             <% } else { %>
               <!-- Blank Card Content -->
-              <div class="h-full flex items-center justify-center text-gray-400 font-semibold">
+              <div class="h-full text-center flex items-center justify-center text-gray-400 font-semibold">
                 No Most Saved Blog Found
               </div>
             <% } %>
@@ -448,7 +464,7 @@
         </div>
       </li>
 
-      <li class="w-full flex-shrink-0">
+      <li class="w-full flex-shrink-0 shadow-md">
         <div
           class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full"
           style="
@@ -461,12 +477,12 @@
             <% if (analytics.mostReportedBlog) { %>
               <div class="flex justify-end">
                 <p
-                  class="px-3 py-1.5 text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-red-700 to-red-500 border-red-400' : 'bg-gradient-to-r from-rose-400 to-red-300 border-red-300' %> text-white tracking-wider flex items-center gap-1"
+                  class="px-1  md:px-2 lg:px-3 py-1 md:py-1.5 text-xxs sm:text-xs md:text-sm lg:text-base  font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg bg-opacity-80 <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-red-700 to-red-500 border-red-400' : 'bg-gradient-to-r from-rose-400 to-red-300 border-red-300' %> text-white tracking-wider flex items-center gap-1"
                 >
                   🚨 MOST REPORTED
                 </p>
                 <p
-                  class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
+                 class="p-1 sm:px-2 sm:py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
                 >
                   <%= analytics.mostReportedBlog.tags[0] %>
                 </p>
@@ -479,14 +495,14 @@
                   <%= new Date(analytics.mostReportedBlog.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "numeric" }) %>
                 </p>
                 <h5
-                  class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
+                  class="text-sm sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
                 >
                   <%= analytics.mostReportedBlog.title.length > 50 ?
                   analytics.mostReportedBlog.title.substring(0, 50) + '...' :
                   analytics.mostReportedBlog.title %>
                 </h5>
                 <p
-                  class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
+                  class="text-xs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
                 >
                   <%= analytics.mostReportedBlog.description.length > 100 ?
                   analytics.mostReportedBlog.description.substring(0, 100) + '...' :
@@ -503,7 +519,7 @@
               </div>
             <% } else { %>
               <!-- Blank Card Content -->
-              <div class="h-full flex items-center justify-center text-gray-400 font-semibold">
+              <div class="h-full text-center flex items-center justify-center text-gray-400 font-semibold">
                 No Most Reported Blog Found
               </div>
             <% } %>
@@ -511,7 +527,7 @@
         </div>
       </li>
 
-      <li class="w-full flex-shrink-0">
+      <li class="w-full flex-shrink-0 shadow-md">
         <div
           class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full"
           style="
@@ -524,12 +540,12 @@
             <% if (analytics.mostReadBlog) { %>
               <div class="flex justify-end">
                 <p
-                  class="px-3 py-1.5 text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg transition-all duration-300 ease-in-out <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-purple-700 to-purple-500 border-purple-400' : 'bg-gradient-to-r from-indigo-500 to-blue-400 border-blue-300' %> text-white tracking-wider"
+                  class="px-1  md:px-2 lg:px-3 py-1 md:py-1.5 text-xxs sm:text-xs md:text-sm lg:text-base  font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg transition-all duration-300 ease-in-out <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-purple-700 to-purple-500 border-purple-400' : 'bg-gradient-to-r from-indigo-500 to-blue-400 border-blue-300' %> text-white tracking-wider"
                 >
                   🏆 LONGEST BLOG
                 </p>
                 <p
-                  class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
+                 class="p-1 sm:px-2 sm:py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
                 >
                   <%= analytics.mostReadBlog.tags[0] %>
                 </p>
@@ -542,14 +558,14 @@
                   <%= new Date(analytics.mostReadBlog.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "numeric" }) %>
                 </p>
                 <h5
-                  class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
+                  class="text-sm sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
                 >
                   <%= analytics.mostReadBlog.title.length > 50 ?
                   analytics.mostReadBlog.title.substring(0, 50) + '...' :
                   analytics.mostReadBlog.title %>
                 </h5>
                 <p
-                  class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
+                  class="text-xs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
                 >
                   <%= analytics.mostReadBlog.description.length > 100 ?
                   analytics.mostReadBlog.description.substring(0, 100) + '...' :
@@ -566,7 +582,7 @@
               </div>
             <% } else { %>
               <!-- Blank Card Content -->
-              <div class="h-full flex items-center justify-center text-gray-400 font-semibold">
+              <div class="h-full flex text-center items-center justify-center text-gray-400 font-semibold">
                 No Longest Blog Found
               </div>
             <% } %>
@@ -574,7 +590,7 @@
         </div>
       </li>
 
-      <li class="w-full flex-shrink-0">
+      <li class="w-full flex-shrink-0 shadow-md">
         <div
           class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full"
           style="background-image: url('<%= analytics.recentBlog ? analytics.recentBlog.blogPhoto : '' %>')"
@@ -585,12 +601,12 @@
             <% if (analytics.recentBlog) { %>
               <div class="flex justify-end">
                 <p
-                  class="px-3 py-1.5 text-xs md:text-sm lg:text-base font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg transition-all duration-300 ease-in-out <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-cyan-600 to-blue-500 border-cyan-400' : 'bg-gradient-to-r from-sky-400 to-indigo-300 border-indigo-300' %> text-white tracking-wider"
+                  class="px-1  md:px-2 lg:px-3 py-1 md:py-1.5 text-xxs sm:text-xs md:text-sm lg:text-base  font-semibold font-roboto uppercase absolute top-0 left-0 rounded-tl-md rounded-br-md border-2 shadow-lg transition-all duration-300 ease-in-out <%= user.settings.theme === 'dark' ? 'bg-gradient-to-r from-cyan-600 to-blue-500 border-cyan-400' : 'bg-gradient-to-r from-sky-400 to-indigo-300 border-indigo-300' %> text-white tracking-wider"
                 >
                   🆕 RECENT BLOG
                 </p>
                 <p
-                  class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
+                 class="p-1 sm:px-2 sm:py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase"
                 >
                   <%= analytics.recentBlog.tags[0] %>
                 </p>
@@ -603,14 +619,14 @@
                   <%= new Date(analytics.recentBlog.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "numeric", year: "numeric" }) %>
                 </p>
                 <h5
-                  class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
+                  class="text-sm sm:text-sm md:text-base lg:text-lg font-semibold text-background break-words whitespace-normal font-lora"
                 >
                   <%= analytics.recentBlog.title.length > 50 ?
                   analytics.recentBlog.title.substring(0, 50) + '...' :
                   analytics.recentBlog.title %>
                 </h5>
                 <p
-                  class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
+                  class="text-xs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> break-words whitespace-normal"
                 >
                   <%= analytics.recentBlog.description.length > 100 ?
                   analytics.recentBlog.description.substring(0, 100) + '...' :
@@ -627,7 +643,7 @@
               </div>
             <% } else { %>
               <!-- Placeholder Content for No Recent Blog -->
-              <div class="h-full flex items-center justify-center text-gray-400 font-semibold">
+              <div class="h-full flex text-center items-center justify-center text-gray-400 font-semibold">
                 No Recent Blog Found
               </div>
             <% } %>
@@ -636,30 +652,37 @@
       </li>
     </ul>
 
-    <div class="w-full relative">
-      <div class="flex justify-center gap-2 mb-4 absolute top-0 right-5 z-50">
+    <!-- user engagement-trend -->
+    <div class="w-full relative mt-2 md:mt-6">
+      <div class="flex justify-center gap-1 sm:gap-2 mb-4 absolute top-0 right-5 z-50">
+        <select
+          id="year-selector"
+          class="p-1 sm:p-2 md:px-4 md:py-2 text-xs sm:text-sm  md:text-base border border-gray-300 rounded-md bg-white text-gray-700 shadow-sm  hover:border-gray-400 focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all duration-200 font-roboto"
+        >
+        </select>
         <select
           id="timeframe-selector"
-          class="px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 shadow-sm hover:border-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 font-roboto"
+          class="p-1 sm:p-2 md:px-4 md:py-2 text-xs sm:text-sm  md:text-base border border-gray-300 rounded-md bg-white text-gray-700 shadow-sm hover:border-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 font-roboto"
         >
           <option value="hourly">Hourly</option>
           <option value="daily" selected>Daily</option>
-          <option value="monthly">Monthly</option>
+          <option value="monthly" >Monthly</option>
         </select>
 
         <select
           id="minInterval"
-          class="px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 shadow-sm hover:border-gray-400 focus:ring-2 focus:ring-green-500 focus:outline-none transition-all duration-200 font-roboto"
+          class="p-1 sm:p-2 md:px-4 md:py-2 text-xs sm:text-sm  md:text-base border border-gray-300 rounded-md bg-white text-gray-700 shadow-sm hover:border-gray-400 focus:ring-2 focus:ring-green-500 focus:outline-none transition-all duration-200 font-roboto"
         >
           <option value="1">1</option>
-          <option value="5">5</option>
           <option value="10">10</option>
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
+
+
       </div>
 
-      <div id="engagement-trend" class="w-[80vw] h-80"></div>
+      <div id="engagement-trend" class="w-full  md:w-[80vw] h-80"></div>
 
       <script>
           document.addEventListener("DOMContentLoaded", function () {
@@ -673,27 +696,34 @@
             var engagementChart = echarts.init(engagementDom);
             var engagementData = <%- JSON.stringify(analytics.engagementTrend) %>;
 
-            function groupDataByHour(data) {
-              let hourlyData = {};
-              data.forEach(entry => {
-                let key = `${new Date(entry.date).toLocaleDateString()} ${entry.hour}:00`;
-                if (!hourlyData[key]) {
-                  hourlyData[key] = { views: 0, likes: 0, comments: 0, saves: 0, reports: 0 };
-                }
-                hourlyData[key].views += entry.views;
-                hourlyData[key].likes += entry.likes;
-                hourlyData[key].comments += entry.comments;
-                hourlyData[key].saves += entry.saves;
-                hourlyData[key].reports += entry.reports;
-              });
+           function groupDataByHour(data, filterYear) {
+            let hourlyData = {};
+            data.forEach(entry => {
+              const dateObj = new Date(entry.date);
+              if (filterYear && dateObj.getFullYear() !== +filterYear) return;
 
-              return Object.entries(hourlyData).map(([date, values]) => ({ date, ...values }));
-            }
+              let key = `${dateObj.toLocaleDateString()} ${entry.hour}:00`;
+              if (!hourlyData[key]) {
+                hourlyData[key] = { views: 0, likes: 0, comments: 0, saves: 0, reports: 0 };
+              }
+              hourlyData[key].views += entry.views;
+              hourlyData[key].likes += entry.likes;
+              hourlyData[key].comments += entry.comments;
+              hourlyData[key].saves += entry.saves;
+              hourlyData[key].reports += entry.reports;
+            });
 
-            function groupDataByDay(data) {
+            return Object.entries(hourlyData).map(([date, values]) => ({ date, ...values }));
+          }
+ 
+
+            function groupDataByDay(data, filterYear) {
               let dailyData = {};
               data.forEach(entry => {
-                let key = new Date(entry.date).toLocaleDateString();
+                const dateObj = new Date(entry.date);
+                if (filterYear && dateObj.getFullYear() !== +filterYear) return;
+
+                const key = dateObj.toLocaleDateString();
                 if (!dailyData[key]) {
                   dailyData[key] = { views: 0, likes: 0, comments: 0, saves: 0, reports: 0 };
                 }
@@ -707,33 +737,61 @@
               return Object.entries(dailyData).map(([date, values]) => ({ date, ...values }));
             }
 
-            function groupDataByMonth(data) {
+            function groupDataByMonth(data, filterYear) {
               let monthlyData = {};
               data.forEach(entry => {
-                let dateObj = new Date(entry.date);
+                const dateObj = new Date(entry.date);
+                if (filterYear && dateObj.getFullYear() !== +filterYear) return;
+
                 let key = `${dateObj.getFullYear()}-${dateObj.getMonth() + 1}`;
                 if (!monthlyData[key]) {
                   monthlyData[key] = { views: 0, likes: 0, comments: 0, saves: 0, reports: 0 };
-                }
+                  }
                 monthlyData[key].views += entry.views;
                 monthlyData[key].likes += entry.likes;
                 monthlyData[key].comments += entry.comments;
                 monthlyData[key].saves += entry.saves;
                 monthlyData[key].reports += entry.reports;
-              });
+                });
 
-              return Object.entries(monthlyData).map(([date, values]) => ({ date, ...values }));
+               return Object.entries(monthlyData).map(([date, values]) => ({ date, ...values }));
+              }
+
+            function getAvailableYears(data) {
+              const years = new Set();
+              data.forEach(entry => {
+                const year = new Date(entry.date).getFullYear();
+                years.add(year);
+              });
+              return Array.from(years).sort((a, b) => b - a); // descending order
             }
 
+            // Populate year selector
+            const yearSelector = document.getElementById("year-selector");
+            const availableYears = getAvailableYears(engagementData);
+            availableYears.forEach(year => {
+              const option = document.createElement("option");
+              option.value = year;
+              option.textContent = year;
+              yearSelector.appendChild(option);
+            });
+
+            // Set default to current year
+            const currentYear = new Date().getFullYear();
+            yearSelector.value = currentYear;
+
             function updateChart(mode, minInterval) {
-              let filteredData;
-              if (mode === "hourly") {
-                filteredData = groupDataByHour(engagementData);
-              } else if (mode === "daily") {
-                filteredData = groupDataByDay(engagementData);
-              } else {
-                filteredData = groupDataByMonth(engagementData);
-              }
+              const selectedYear = document.getElementById("year-selector").value;
+
+             let filteredData;
+            if (mode === "hourly") {
+            filteredData = groupDataByHour(engagementData, selectedYear);
+            } else if (mode === "daily") {
+            filteredData = groupDataByDay(engagementData, selectedYear);
+            } else {
+            filteredData = groupDataByMonth(engagementData, selectedYear);
+            }
+
 
               let dates = filteredData.map(entry => entry.date);
               let views = filteredData.map(entry => entry.views);
@@ -742,12 +800,21 @@
               let saves = filteredData.map(entry => entry.saves);
               let reports = filteredData.map(entry => entry.reports);
 
+              function getResponsiveFontSize(baseSize = 14) {
+                const screenWidth = window.innerWidth;
+                if (screenWidth < 480) return baseSize * 0.8;       // Mobile
+                if (screenWidth < 768) return baseSize * 0.9;       // Tablet
+                if (screenWidth < 1024) return baseSize;            // Small screens
+                return baseSize * 1.1;                              // Larger screens
+              }
+
               var option = {
                 title: {
-                  text: `User Engagement Trend (${mode.toUpperCase()})`,
+                  text: `User Engagement`,
                   left: "2%",
-                  textStyle: { fontSize: 16 ,
-                    color: "#495057"
+                  textStyle: { 
+                    fontSize: getResponsiveFontSize(16) ,
+                    color: "#8E8C89"
                   },
 
                 },
@@ -756,7 +823,10 @@
                 },
                 legend: {
                   data: ["Views", "Likes", "Comments", "Saves", "Reports"],
-                  bottom: 0
+                  bottom: -2,
+                  textStyle: {
+                  fontSize: getResponsiveFontSize(12)
+                }
                 },
                 grid: {
                   left: "3%",
@@ -767,7 +837,11 @@
                 xAxis: {
                   type: "category",
                   data: dates,
-                  axisLabel: { rotate: 0 },
+                  axisLabel: { rotate: 0 ,
+                    textStyle: {
+                      fontSize: getResponsiveFontSize(12),
+                    }
+                  },
                   show: true,
                   lineStyle: {
                   color: "#333",
@@ -777,6 +851,11 @@
                 yAxis: {
                   type: "value",
                   minInterval: minInterval ||1,
+                  axisLabel: {
+                  textStyle: {
+                  fontSize: getResponsiveFontSize(12),     
+                  }
+                },
                   axisLine: {
                   show: true,
                   lineStyle: {
@@ -842,24 +921,31 @@
               console.log(this.value);
           updateChart(document.getElementById("timeframe-selector").value, this.value);
         });
-
+        document.getElementById("year-selector").addEventListener("change", function () {
+          updateChart(
+            document.getElementById("timeframe-selector").value,
+            document.getElementById("minInterval").value
+          );
+        });
             updateChart("daily", 1);
           });
       </script>
     </div>
 
-    <div class="p-6 bg-white rounded-lg flex flex-col">
+    <div class="p-2 md:p-4 lg:p-6 bg-white rounded-lg flex flex-col mt-2 md:mt-6">
       <h2
-        class="text-tertiary font-bold text-base tracking-wide mb-3 font-roboto"
+        class="text-tertiary font-bold text-sm md:text-base tracking-wide mb-3 font-roboto"
       >
         Popular Tags
       </h2>
-      <ul class="flex flex-wrap gap-3">
+      <ul class="flex flex-wrap gap-1 md:gap-2">
         <%- analytics.popularTags.map(({ tag, count }) => { return `
           <li
-            class="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-3 py-1 rounded-lg text-sm font-semibold shadow-md transition-transform transform hover:scale-110 uppercase"
+            class="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-2 md:px-3 py-1 rounded-lg text-sm font-semibold shadow-md transition-transform transform hover:scale-110 uppercase"
           >
-            <a href="/blog/all/${tag}">${tag} <span class="text-gray-200 text-xs">(${count})</span></a>
+            <a href="/blog/all/${tag}"> ${tag} 
+              <span class="text-gray-200 text-xs"> (${count}) </span>
+            </a>
           </li>
         `; }).join("") %>
       </ul>
@@ -870,4 +956,4 @@
     <%- include("../../partials/deviceInfo.ejs") %>
     <%- include("../../partials/traffic.ejs") %>
   </div>
-</div>
+

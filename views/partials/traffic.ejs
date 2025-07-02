@@ -1,5 +1,5 @@
-<div class="p-6 grid grid-cols-2 gap-6">
-  <div id="trafficChart" style=" height: 400px"></div>
+<div class=" grid sm:grid-cols-2 gap-2 p-2 md:gap-4 md:p-4 lg:gap-6 lg:p-6">
+  <div id="trafficChart" class="h-64 sm:h-72 md:h-80 lg:h-96 w-full"></div>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const referralTraffic = <%- JSON.stringify(analytics.referralTraffic) %>;
@@ -11,12 +11,40 @@
       const categories = Object.keys(referralTraffic);
       const chart = echarts.init(document.getElementById("trafficChart"));
 
+         function getResponsiveFontSize(baseSize = 14) {
+                const screenWidth = window.innerWidth;
+                if (screenWidth < 480) return baseSize * 0.8;
+                if (screenWidth < 768) return baseSize * 0.9;
+                if (screenWidth < 1024) return baseSize;
+                return baseSize * 1.1;
+     }
+
       chart.setOption({
-        title: { text: "Website Traffic Sources", left: "center" },
+        title: { text: "Website Traffic Sources", left: "center", textStyle: {
+                    fontSize: getResponsiveFontSize(16),
+                    fontWeight: "bold" ,
+                    color: "#8E8C89",
+                }, },
         tooltip: { trigger: "axis" },
-        legend: { bottom: 0, data: ["Referral", "Search", "Social"] },
-        xAxis: { type: "category", data: categories },
-        yAxis: { type: "value" },
+        legend: { bottom: 0, data: ["Referral", "Search", "Social"] ,
+          textStyle: {
+                    fontSize: getResponsiveFontSize(14),
+                    color: "#8E8C89",
+                },
+        },
+        xAxis: { type: "category", data: categories,
+          axisLabel: {
+            fontSize: getResponsiveFontSize(12),
+            color: "#8E8C89",
+          },
+        },
+        yAxis: { type: "value" ,
+          axisLabel: {
+            fontSize: getResponsiveFontSize(12),
+            color: "#8E8C89",
+          },
+          splitLine: { lineStyle: { color: "#E0E0E0" } },
+        },
         series: [
           {
             name: "Referral",
@@ -41,14 +69,31 @@
     });
   </script>
 
-  <div id="referralChart" style=" height: 400px"></div>
+  <div id="referralChart" class="h-64 sm:h-72 md:h-80 lg:h-96 w-full mt-2 sm:mt-0"></div>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const referralTraffic = <%- JSON.stringify(analytics.referralTraffic) %>;
 
+      function getResponsiveFontSize(baseSize = 14) {
+                const screenWidth = window.innerWidth;
+                if (screenWidth < 480) return baseSize * 0.8;   
+                if (screenWidth < 768) return baseSize * 0.9;       
+                if (screenWidth < 1024) return baseSize;            
+                return baseSize * 1.1;                              
+     }
+
+
       const chart = echarts.init(document.getElementById("referralChart"));
       chart.setOption({
-        title: { text: "Referral Traffic Breakdown", left: "center" },
+        title: { 
+          text: "Referral Traffic Breakdown", 
+          left: "center",
+           textStyle: { 
+                    fontSize: getResponsiveFontSize(16),
+                    fontWeight: "bold" ,
+                    color: "#8E8C89",
+          },
+         },
         tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
         series: [
           {

@@ -895,9 +895,6 @@ video {
 .h-12 {
   height: 3rem;
 }
-.h-14 {
-  height: 3.5rem;
-}
 .h-16 {
   height: 4rem;
 }
@@ -925,6 +922,9 @@ video {
 .h-40 {
   height: 10rem;
 }
+.h-48 {
+  height: 12rem;
+}
 .h-5 {
   height: 1.25rem;
 }
@@ -934,6 +934,9 @@ video {
 .h-60 {
   height: 15rem;
 }
+.h-64 {
+  height: 16rem;
+}
 .h-7 {
   height: 1.75rem;
 }
@@ -942,6 +945,9 @@ video {
 }
 .h-80 {
   height: 20rem;
+}
+.h-\[250px\] {
+  height: 250px;
 }
 .h-\[35vh\] {
   height: 35vh;
@@ -1027,9 +1033,6 @@ video {
 .w-12 {
   width: 3rem;
 }
-.w-14 {
-  width: 3.5rem;
-}
 .w-16 {
   width: 4rem;
 }
@@ -1077,9 +1080,6 @@ video {
 }
 .w-96 {
   width: 24rem;
-}
-.w-\[80vw\] {
-  width: 80vw;
 }
 .w-\[90vw\] {
   width: 90vw;
@@ -1131,9 +1131,6 @@ video {
 }
 .max-w-lg {
   max-width: 32rem;
-}
-.max-w-md {
-  max-width: 28rem;
 }
 .max-w-sm {
   max-width: 24rem;
@@ -2151,10 +2148,6 @@ video {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
-.py-8 {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
 .\!pb-0 {
   padding-bottom: 0px !important;
 }
@@ -2231,10 +2224,6 @@ video {
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
-}
-.text-5xl {
-  font-size: 3rem;
-  line-height: 1;
 }
 .text-\[11px\] {
   font-size: 11px;
@@ -3314,6 +3303,11 @@ overflow: scroll;
   --tw-ring-color: rgb(249 115 22 / var(--tw-ring-opacity, 1));
 }
 
+.focus\:ring-purple-500:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(168 85 247 / var(--tw-ring-opacity, 1));
+}
+
 .focus\:ring-red-500:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(239 68 68 / var(--tw-ring-opacity, 1));
@@ -3476,10 +3470,6 @@ overflow: scroll;
     grid-column: span 1 / span 1;
   }
 
-  .sm\:col-span-2 {
-    grid-column: span 2 / span 2;
-  }
-
   .sm\:col-span-3 {
     grid-column: span 3 / span 3;
   }
@@ -3495,6 +3485,10 @@ overflow: scroll;
 
   .sm\:mb-52 {
     margin-bottom: 13rem;
+  }
+
+  .sm\:mt-0 {
+    margin-top: 0px;
   }
 
   .sm\:mt-6 {
@@ -3533,8 +3527,16 @@ overflow: scroll;
     height: 13rem;
   }
 
+  .sm\:h-72 {
+    height: 18rem;
+  }
+
   .sm\:h-80 {
     height: 20rem;
+  }
+
+  .sm\:h-\[400px\] {
+    height: 400px;
   }
 
   .sm\:h-\[40vh\] {
@@ -3609,10 +3611,6 @@ overflow: scroll;
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .sm\:grid-cols-7 {
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-  }
-
   .sm\:grid-rows-1 {
     grid-template-rows: repeat(1, minmax(0, 1fr));
   }
@@ -3668,6 +3666,10 @@ overflow: scroll;
 
   .sm\:p-1 {
     padding: 0.25rem;
+  }
+
+  .sm\:p-2 {
+    padding: 0.5rem;
   }
 
   .sm\:p-3 {
@@ -3736,6 +3738,16 @@ overflow: scroll;
     padding-top: 0.5rem;
   }
 
+  .sm\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .sm\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+
   .sm\:text-base {
     font-size: 1rem;
     line-height: 1.5rem;
@@ -3792,20 +3804,12 @@ overflow: scroll;
     grid-column: span 1 / span 1;
   }
 
-  .md\:col-span-2 {
-    grid-column: span 2 / span 2;
-  }
-
   .md\:col-span-3 {
     grid-column: span 3 / span 3;
   }
 
   .md\:col-span-4 {
     grid-column: span 4 / span 4;
-  }
-
-  .md\:col-span-6 {
-    grid-column: span 6 / span 6;
   }
 
   .md\:mx-5 {
@@ -3948,6 +3952,10 @@ overflow: scroll;
     height: 20rem;
   }
 
+  .md\:h-\[450px\] {
+    height: 450px;
+  }
+
   .md\:h-\[50vh\] {
     height: 50vh;
   }
@@ -4008,12 +4016,20 @@ overflow: scroll;
     width: 15rem;
   }
 
+  .md\:w-7 {
+    width: 1.75rem;
+  }
+
   .md\:w-8 {
     width: 2rem;
   }
 
   .md\:w-\[200px\] {
     width: 200px;
+  }
+
+  .md\:w-\[80vw\] {
+    width: 80vw;
   }
 
   .md\:w-full {
@@ -4210,6 +4226,11 @@ overflow: scroll;
     padding-right: 2.25rem;
   }
 
+  .md\:py-1\.5 {
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+  }
+
   .md\:py-10 {
     padding-top: 2.5rem;
     padding-bottom: 2.5rem;
@@ -4275,6 +4296,11 @@ overflow: scroll;
   .md\:text-3xl {
     font-size: 1.875rem;
     line-height: 2.25rem;
+  }
+
+  .md\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
   }
 
   .md\:text-base {
@@ -4369,6 +4395,14 @@ overflow: scroll;
     height: 1.75rem;
   }
 
+  .lg\:h-96 {
+    height: 24rem;
+  }
+
+  .lg\:h-\[500px\] {
+    height: 500px;
+  }
+
   .lg\:w-1\/2 {
     width: 50%;
   }
@@ -4445,6 +4479,10 @@ overflow: scroll;
     gap: 1rem;
   }
 
+  .lg\:gap-6 {
+    gap: 1.5rem;
+  }
+
   .lg\:gap-y-6 {
     row-gap: 1.5rem;
   }
@@ -4476,6 +4514,11 @@ overflow: scroll;
   .lg\:px-10 {
     padding-left: 2.5rem;
     padding-right: 2.5rem;
+  }
+
+  .lg\:px-3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 
   .lg\:px-4 {
@@ -4520,6 +4563,16 @@ overflow: scroll;
   .lg\:text-2xl {
     font-size: 1.5rem;
     line-height: 2rem;
+  }
+
+  .lg\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
+  .lg\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
   }
 
   .lg\:text-base {

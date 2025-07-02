@@ -1,7 +1,7 @@
-<div class="grid grid-cols-3 ">
-<div id="deviceUsageChart" style=" height: 300px;"></div>
-<div id="browserUsageChart" style=" height: 300px;"></div>
-<div id="osUsageChart" style=" height: 300px;"></div>
+<div class="grid grid-cols-3 mt-2 md:mt-6">
+<div id="deviceUsageChart" class="h-48 sm:h-72 md:h-80 lg:h-96 w-full" style="aspect-ratio: 1 / 1;"></div>
+<div id="browserUsageChart" class="h-48 sm:h-72 md:h-80 lg:h-96 w-full" style="aspect-ratio: 1 / 1;"></div>
+<div id="osUsageChart" class="h-48 sm:h-72 md:h-80 lg:h-96 w-full" style="aspect-ratio: 1 / 1;"></div>
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -10,14 +10,44 @@
     const browserUsageData = <%- JSON.stringify(analytics.browserUsage) %>;
 
     const osUsageData =<%- JSON.stringify(analytics.osUsage) %>;
+    function getResponsiveFontSize(baseSize = 14) {
+                const screenWidth = window.innerWidth;
+                if (screenWidth < 480) return baseSize * 0.8;   
+                if (screenWidth < 768) return baseSize * 0.9;       
+                if (screenWidth < 1024) return baseSize;            
+                return baseSize * 1.1;                              
+     }
 
     function renderPieChart(chartId, title, data) {
+        const screenWidth = window.innerWidth;
+
+        let pieRadius = ['20%', '50%'];   // Default for large screens
+        let pieCenter = ['50%', '50%'];   
+
+        if (screenWidth < 400) {
+        pieRadius = ['10%', '35%'];    // Mobile
+        } else if (screenWidth < 768) {
+        pieRadius = ['15%', '40%'];    // Tablet
+        }
+
         const chart = echarts.init(document.getElementById(chartId));
         chart.setOption({
             title: {
                 text: title,
                 left: "center",
-                textStyle: { fontSize: 16, fontWeight: "bold" },
+                textStyle: { 
+                    fontSize: getResponsiveFontSize(16),
+                    fontWeight: "bold" ,
+                    color: "#8E8C89",
+                },
+            },
+            label: {
+                show: true,
+                formatter: '{b}', 
+                overflow: 'break', 
+                fontSize: getResponsiveFontSize(12), 
+                lineHeight: 14,
+                align: 'center'
             },
             tooltip: {
                 trigger: "item",
@@ -27,7 +57,8 @@
                 {
                     name: 'Area Mode',
                     type: 'pie',
-                    radius: [20, 70],
+                    radius: pieRadius,   
+                    center: pieCenter,
                     roseType: 'area',
                     itemStyle: {
                         borderRadius: 5
