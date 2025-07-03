@@ -1204,28 +1204,43 @@ async function getBlockedUsers(req, res) {
   try {
     const isAuthenticated = req.isAuthenticated();
     if (!isAuthenticated) {
-      return res.status(401).json({
-        success: false,
-        message: "Unauthorized, no token provided",
-      });
+      return res.redirect("/signin");
     }
 
     const userId = req.user._id;
 
     const user = await UserModel.findById(userId);
+
     if (!user) {
       return res.status(404).json({
         success: false,
         message: "User not found",
       });
     }
-    console.log("user", user);
+
+     const featuredBlogs = await BlogModel.aggregate([
+      { $match: { featured: true, author: user._id } },
+      {
+        $addFields: {
+          commentsCount: { $size: { $ifNull: ["$comments", []] } },
+          likesCount: { $size: { $ifNull: ["$likes", []] } },
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
+          commentsCount: -1,
+          likesCount: -1,
+        },
+      },
+    ]);
 
     res.renderWithProfileLayout("../pages/profile/blockedUsers.ejs", {
       title: "Blocked Users",
       isAuthenticated,
-      profile: { ...user },
+      profile: user,
       user: user,
+      featuredBlogs,
     });
   } catch (error) {
     console.error("Error fetching blocked users:", error);

@@ -1,22 +1,11 @@
-<div class="p-4 rounded-lg max-w-4xl m-auto font-lora">
-  <h1 class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-0 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-tertiary  bg-background ' %> sticky top-0 z-10">User Settings</h1>
+<%- include("../../partials/profileFeaturedBlog.ejs")%>
+<div class="p-4 rounded-lg  m-auto font-lora">
+
+  <h1 class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-2 md:px-2 lg:px-5 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-secondary bg-white bg-background' %> sticky top-0 z-10" >User Settings</h1>
   <table
-    class="w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : 'bg-sixth text-tertiary' %> shadow-md rounded-lg"
+    class="w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : 'bg-background text-primary' %> shadow-md rounded-lg"
   >
     <tbody>
-      
-      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
-        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/featureIcon.png" alt="feature icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/>Feature a Blog</td>
-        <td class="p-4 text-right">
-          <a
-            href="/featureblog"
-            class="text-blue-500 hover:text-highlight font-roboto whitespace-nowrap"
-            >
-            
-            Feature a Blog</a
-          >
-        </td>
-      </tr>
 
       <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
         <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/blockedUserIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Blocked Users</td>

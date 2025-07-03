@@ -1,30 +1,30 @@
-<div class="grid grid-cols-2 p-2 pt-5 sm:p-5 md:p-10">
-  <div class="p-2 sm:p-5 md:p-8 rounded-lg max-w-3xl mx-auto mt-8">
-    <h1 class="text-2xl md:text-3xl font-bold  mb-4 <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-primary-dark' %>">
+<div class="sm:grid sm:grid-cols-2 p-2 pt-5 md:p-5 lg:p-10">
+  <div class="p-2 md:p-5 lg:p-8 rounded-lg max-w-3xl mx-auto mt-8">
+    <h1 class="text-xl sm:text-2xl md:text-3xl font-bold  mb-4 <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-primary-dark' %>">
       HAVE A QUESTION?
     </h1>
-    <p class="<%= user.settings.theme === 'dark' ? ' text-white' : ' text-gray-600' %> text-xxs sm:text-sm md:text-lg leading-relaxed mb-6">
+    <p class="<%= user.settings.theme === 'dark' ? ' text-white' : ' text-gray-600' %> text-sm sm:text-base md:text-lg leading-relaxed mb-6">
       Welcome to
       <span class="font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-primary-dark' %>">Engineer Insights!</span>
       We're here to assist you with anything you need. Whether you have a
       question about your blog, need technical guidance, or want to share your
       thoughts, our team is just a message away.
     </p>
-    <p class="<%= user.settings.theme === 'dark' ? ' text-white' : ' text-gray-600' %>  text-xxs sm:text-sm md:text-lg  leading-relaxed mb-6">
+    <p class="<%= user.settings.theme === 'dark' ? ' text-white' : ' text-gray-600' %>  text-sm sm:text-base md:text-lg  leading-relaxed mb-6">
       Every inquiry matters to us, and we ensure a personalized response
       tailored to your needs. Please allow up to
       <span class="font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-primary-dark' %>">24 hours</span>
       during business hours for a reply. Our business hours are
       <span class="font-semibold">Monday to Friday, 8 AM to 5 PM PT</span>.
     </p>
-    <p class="<%= user.settings.theme === 'dark' ? ' text-white' : ' text-gray-600' %> text-xxs sm:text-sm md:text-lg  leading-relaxed">
+    <p class="<%= user.settings.theme === 'dark' ? ' text-white' : ' text-gray-600' %> text-sm sm:text-base md:text-lg  leading-relaxed">
       Fill out the form below or reach out to us via email. Let us help you make
       the most of your journey with Engineer Insights.
     </p>
   </div>
 
   <form
-    class="<%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %> p-5 sm:p-5 md:p-8 rounded-lg shadow-md max-w-3xl mx-auto mt-8 flex flex-col gap-2 sm:gap-4"
+    class="<%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-background' %> p-5 sm:p-5 md:p-8 rounded-lg shadow-md max-w-3xl mx-auto mt-8 flex flex-col gap-2 md:gap-4"
     id="contactForm"
   >
     <div class="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4">
@@ -33,14 +33,14 @@
         maxlength="25"
         placeholder="First Name"
         id="firstName"
-        class="w-full  border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 p-2  sm:p-3 text-sm sm:text-base md:text-lg <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
+        class="w-full  border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 p-2  md:p-3 text-sm sm:text-base md:text-lg <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
       />
       <input
         type="text"
         maxlength="25"
         placeholder="Last Name"
         id="lastName"
-        class="w-full p-2  sm:p-3 text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
+        class="w-full p-2  md:p-3 text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
       />
     </div>
     <input
@@ -48,7 +48,7 @@
       maxlength="50"
       placeholder="Email Address"
       id="email"
-      class="w-full p-2  sm:p-3 text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
+      class="w-full p-2  md:p-3 text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
     />
     <input
       type="text"
@@ -56,14 +56,14 @@
       id="number"
       maxlength="10"
       placeholder="Phone Number"
-      class="w-full p-2  sm:p-3 text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
+      class="w-full p-2  md:p-3 text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
     />
     <input
       type="text"
       maxlength="50"
       placeholder="Your Topic"
       id="topic"
-      class="w-full p-2 sm:p-3  text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
+      class="w-full p-2 md:p-3  text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
     />
     <textarea
       name="message"
@@ -71,11 +71,11 @@
       cols="30"
       rows="5"
       placeholder="Your Message"
-      class="w-full p-2  sm:p-3 text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
+      class="w-full p-2  md:p-3 text-sm sm:text-base md:text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 <%= user.settings.theme === 'dark' ? ' bg-dark-primary' : ' bg-white' %>"
     ></textarea>
     <button
       type="submit"
-      class="w-full  text-white p-2  sm:p-3 text-sm sm:text-base md:text-lg rounded-lg shadow hover:bg-blue-700 transition duration-300 font-semibold <%= user.settings.theme === 'dark' ? ' bg-dark-secondary' : ' bg-primary' %>"
+      class="w-full  text-white p-2  md:p-3 text-sm sm:text-base md:text-lg rounded-lg shadow hover:bg-blue-700 transition duration-300 font-semibold <%= user.settings.theme === 'dark' ? ' bg-dark-secondary' : ' bg-primary' %>"
     >
       SUBMIT
     </button>

@@ -198,13 +198,16 @@ router.get("/contact", async (req, res) => {
   };
 
   if (req.isAuthenticated()) {
-    user = req.user;
+    user = await userModel.findById(req.user._id);
   }
+
   if (!user) {
     user = { settings: defaultSettings };
   } else if (!user.settings) {
     user.settings = defaultSettings;
   }
+
+  console.log("user", user.settings);
 
   res.renderWithMainLayout("../pages/contact.ejs", {
     title: "Contact Us",

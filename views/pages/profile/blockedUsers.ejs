@@ -1,13 +1,15 @@
-<div class="container mx-auto p-2 md:p-6 max-w-4xl font-lora">
-  <h2 class="text-lg md:text-xl lg:text-2xl py-3 px-0 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %>">Blocked Users</h2>
+<%- include("../../partials/profileFeaturedBlog.ejs")%>
 
-  <ul id="blockedUsersList" class="space-y-4 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-primary shadow-white-md' : 'bg-sixth text-primary shadow-md' %>  rounded-lg">
+
+  <h2 class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-2 md:px-2 lg:px-5 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-secondary bg-white bg-background' %> sticky top-0 z-10">Blocked Users</h2>
+
+  <ul id="blockedUsersList" class="space-y-2 md:space-y-4 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-primary shadow-white-md' : 'bg-sixth text-primary ' %>  rounded-lg px-1 md:px-2 lg:px-5" >
    
   </ul>
 
-  <div id="paginationControls" class="flex justify-center mt-6 space-x-2">
+  <div id="paginationControls" class="flex justify-center space-x-2 my-4 sm:my-6 md:my-8 lg:my-10 overflow-x-scroll relative bottom-0 -z-50">
   </div>
-</div>
+
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
@@ -18,7 +20,7 @@
     try {
       const response = await fetch(`/api/profile/usersBlocked/?page=${page}`);
       const data = await response.json();
-
+      console.log(data);
       if (response.ok) {
         console.log(data);
         updateBlockedUsersList(data.blockedUsers, data.page, data.totalPages);
@@ -33,22 +35,38 @@
   function updateBlockedUsersList(users, page, totalPages) {
     const list = document.getElementById("blockedUsersList");
     list.innerHTML = "";
+    if(users.length === 0) {
+      list.innerHTML = `<p class="flex justify-between items-center gap-4 p-3 md:p-4 rounded-lg shadow-sm bg-white dark:bg-dark-card border dark:border-dark-border">No blocked users found.</p>`;
+      return;
+    }
     users.forEach((user) => {
       const userItem = `
-          <li class="flex justify-between items-center p-2 md:p-4  shadow rounded-md <%= user.settings.theme === 'dark' ? 'shadow-white-md' : 'shadow-md' %> ">
-            <div class="flex items-center gap-2 justify-center">
-           <img src="${user.avatar}" alt="${user.username}" class="w-12 h-12 rounded-full">
-            <span class="font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-primary' %> ">${user.username}</span>
-            <span class=" text-sm <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %> ">${user.firstname}</span>
-            <span class=" text-sm <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>">${user.lastname}</span>
-            </div>
-            <button
-              class="font-roboto <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : ' text-fifth bg-dark-sixth  border-fifth' %> hover:bg-red-500  font-semibold py-1 px-4 rounded text-sm md:text-sm "
-              onclick="unblockUser('${user._id}')"
-            >
-              Unblock
-            </button>
-          </li>
+          <li class="flex justify-between items-center gap-4 p-3 md:p-4 rounded-lg shadow-sm bg-white dark:bg-dark-card border dark:border-dark-border">
+  <!-- Left: Avatar and User Info -->
+  <div class="flex items-center gap-4">
+    <img 
+      src="${ user.avatar || '/default-avatar.png' }" 
+      alt="${ user.username }" 
+      class="w-12 h-12 rounded-full border border-gray-300 dark:border-gray-600 object-cover"
+    />
+    <div class="flex flex-col">
+      <span class="font-semibold text-sm md:text-base text-primary dark:text-dark-primary">
+        ${ user.username }
+      </span>
+      <span class="text-xs text-gray-500 dark:text-gray-400">
+        ${ user.firstname } ${ user.lastname }
+      </span>
+    </div>
+  </div>
+
+  <!-- Right: Unblock Button -->
+  <button
+    class="text-sm px-4 py-1.5 rounded-md font-medium border border-red-300 text-red-600 hover:bg-red-100 dark:border-red-600 dark:hover:bg-red-800 dark:hover:text-white transition"
+    onclick="unblockUser('${ user._id }')"
+  >
+    Unblock
+  </button>
+</li>
         `;
       list.insertAdjacentHTML("beforeend", userItem);
     });
