@@ -45,7 +45,7 @@
         }
         const carouselContainer = document.getElementById("blogCarousel");
         const dotsContainer = document.getElementById("carouselDots");
-        console.log(blogs);
+       
 
         if (blogs.length > 0) {
           const slidesHtml = blogs
@@ -158,8 +158,7 @@
             });
           }, 5000);
         } else {
-          carouselContainer.innerHTML =
-            '<p class="text-center text-gray-700">No blogs found.</p>';
+          document.getElementById("similarBlogs").style.display = "none";
         }
    }
 

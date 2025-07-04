@@ -181,11 +181,20 @@ router.get("/subscribe", async (req, res) => {
     user = { settings: defaultSettings };
   }
 
+  console.log(payment.subscriptionDetails.startDate, payment.subscriptionDetails.endDate);
+  console.log("user", payment);
+
+  const timeRemaining = payment.subscriptionDetails.endDate> Date.now()
+    ?  Math.ceil(Math.max(0, payment.subscriptionDetails.endDate - Date.now()) / (1000 * 60 * 60 * 24))   
+    : 0;
+    console.log("timeRemaining", timeRemaining);
+
   res.renderWithMainLayout("../pages/payment/subscription.ejs", {
     title: "Subscribe",
     isAuthenticated,
     user,
     payment: payment,
+    timeRemaining: timeRemaining,
   });
 });
 

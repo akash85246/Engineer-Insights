@@ -37,32 +37,62 @@
       if (blogs.length > 0) {
         const slidesHtml = blogs
           .map(
-            (blog) => `
-            <div class="min-w-[50%] md:min-w-[30%] lg:min-w-[25%] max-w-sm flex-shrink-0 font-lora flex-1 min-h-full  flex-grow ">
+            (blog) =>{ 
+              let isSubAuthor = false;
+                let isAuthor = false;
+                let userId = null;
+                let isLiked = false;
+                let isBookmarked = false;
+                let isArchived = false;
+          
+                const isAuthenticated = "<%- isAuthenticated %>" == "true";
+          
+                if (isAuthenticated) {
+            
+                  const userId = "<%- user._id %>"; 
+                  const user = <%- JSON.stringify(user) %>;
+                  isAuthor = userId.toString() == blog.author._id;
+                  isSubAuthor = blog.subauthors.some(
+                    (subauthorId) => subauthorId.toString() === userId.toString());
+
+                  if (blog.likes && blog.likes.length > 0) {
+                    isLiked = blog.likes.some((like) => like.toString()       ===    userId.toString());
+            
+                  }
+
+                  if(user.savedBlogs && user.savedBlogs.length >0){
+                    isBookmarked = user.savedBlogs.some((save) => save.       toString() === blog._id.toString());
+                  }
+
+                  isArchived = blog.status === "archived";
+                }
+
+            return  `
+            <div class="max-w-[250px] sm:min-w-[50%] md:min-w-[30%] lg:min-w-[25%] flex-shrink-0 font-lora flex-1 min-h-full  flex-grow " onmouseleave="hideBlogOptions('${blog.slug}')">
                     <div class="flex justify-evenly items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
                       blog.blogPhoto
                     }')">
                       <div class="rounded-lg shadow-lg overflow-hidden w-full  p-3 h-full flex flex-col justify-between">
                         <div class="flex justify-end">
-                          <p class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-primary ' : 'bg-background text-background'  %>  bg-opacity-30  text-xxs  md:text-xs lg:text-sm font-semibold font-roboto uppercase">${truncateText(
+                          <p class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-primary ' : 'bg-background text-background'  %>  bg-opacity-30  text-xxs sm:text-xs md:text-xxs lg:text-xs  font-semibold font-roboto uppercase">${truncateText(
                             blog.tags[0],
                             15
                           )}</p>
                         </div>
                         <div class="flex flex-col gap-2">
-                          <div class="h-20 md:h-28"></div>
-                          <p class="text-xxs md:text-xs font-thin <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %>">${new Date(
+                          <div class="h-10 sm:h-20 md:h-18 lg:h-28"></div>
+                          <p class="text-xs sm:text-xxs md:text-xs lg:text-sm  font-thin <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %>">${new Date(
                             blog.createdAt
                           ).toLocaleDateString("en-US", {
                             day: "numeric",
                             month: "numeric",
                             year: "numeric",
                           })}</p>
-                          <h5 class="text-base md:text-lg font-semibold overflow-clip whitespace-normal overflow-hidden <%= user.settings.theme === 'dark' ? 'text-dark-primary ' : 'text-background'  %>">${truncateText(
+                          <h5 class="text-sm sm:text-sm md:text-base lg:text-lg  font-semibold overflow-clip whitespace-normal overflow-hidden <%= user.settings.theme === 'dark' ? 'text-dark-primary ' : 'text-background'  %>">${truncateText(
                             blog.title,
                             50
                           )}</h5>
-                          <p class="<%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %>  text-xs  md:text-sm break-words whitespace-normal overflow-hidden font-thin">${truncateText(
+                          <p class="<%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %>  text-xs sm:text-xxs md:text-xs lg:text-sm  break-words whitespace-normal overflow-hidden font-thin">${truncateText(
                             blog.description,
                             100
                           )}
@@ -70,33 +100,119 @@
                           blog.slug
                         }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-fifth' %> hover:text-highlight  text-center font-medium">read more</a></span>
                       </p>
-                       <div class="justify-between items-center flex text-xxxs sm:text-xxs md:text-xs lg:text-sm">
+                      <div class="justify-between items-center flex text-sm sm:text-sm md:text-base lg:text-base">
           
-          <a class="flex items-center gap-2" href="/profile/${
-            blog.author.slug
-          }" >
-            <img
-              src="${blog.author.avatar}"
-              alt="${blog.author.firstname}'s avatar"
-              class="w-8 h-8 lg:w-10 lg:h-10 rounded-full"
-            />
-            <div>
-              <h3 class=" font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-fifth' %>">
-                ${blog.author.username}
-              </h3>
-              <p class="text-xxxs sm:text-xxs md:text-xs lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-sixth' %> ">
-                ${blog.author.firstname} ${blog.author.lastname}
-              </p>
-            </div>
-          </a>
-        </div>
+                        <a class="flex items-center gap-2" href="/profile/${
+                          blog.author.slug
+                        }" >
+                          <img
+                            src="${blog.author.avatar}"
+                            alt="${blog.author.firstname}'s avatar"
+                            class="w-8 h-8 lg:w-10 lg:h-10 rounded-md"
+                          />
+                          <div>
+                            <h3 class=" font-semibold <%= user.settings.theme ===               'dark' ? ' text-dark-secondary' : 'text-background' %>">
+                              ${blog.author.username}
+                            </h3>
+                            <p class="text-xs sm:text-xs md:text-sm lg:text-sm  <%= user.settings.theme === 'dark' ? '              text-dark-tertiary' : 'text-sixth' %> ">
+                              ${blog.author.firstname} ${blog.author.lastname}
+                            </p>
+                          </div>
+                        </a>
+                    
+
+                     <div class="relative">
+                             ${(isAuthenticated)?
+                  `<button onclick='openBlogMore(${isSubAuthor}, ${isAuthor}, "${
+                        blog.slug
+                    }")'>
+                      <img src="images/icons/verticalMoreIcon.svg" alt="More"
+                        class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7">
+                    </button>`:""}
+
+                            <div  class="absolute bottom-0 right-0 flex flex-col gap-2 rounded-md p-2 shadow-md z-50
+                      <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-background text-primary' %> min-w-[120px] hidden shadow-md"
+                      id="blogMoreOptions-${blog.slug}">
+
+                       
+
+                  ${
+                    isSubAuthor || isAuthor
+                      ? `
+                      
+                         ${
+                           isAuthor
+                             ? `
+                             <button onclick="toggleArchiveBlog('${blog.slug}','${isArchived}')"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                             <%= user.settings.theme === 'dark'
+                              ? 'hover:bg-red-600 text-dark-primary'
+                              : 'hover:bg-red-200 text-primary' %>">
+                             <img src="${isArchived?"images/icons/unarchiveIcon.svg":"images/icons/archiveIcon.svg"}" alt="Archive Blog"
+                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="archiveIcon-${blog.slug}">
+                             <span id="archiveText-${blog.slug}">${isArchived ? "Unarchive" : "Archive"}</span>
+                             </button>
+
+                             <button onclick="openDeleteModal('${blog.slug}')"  class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                            <%= user.settings.theme === 'dark'
+                              ? 'hover:bg-red-600 text-dark-primary'
+                              : 'hover:bg-red-200 text-primary' %>">
+                              <img src="images/icons/deleteDarkIcon.svg" alt="Delete Blog"
+                              class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 ">
+                              <span>Delete</span>
+                              </button>
+                             `
+                             : ""
+                         }
+                         <a href="/blog/edit/${
+                           blog.slug
+                         }"  class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                          <%= user.settings.theme === 'dark'
+                            ? 'hover:bg-blue-600 text-dark-primary'
+                            : 'hover:bg-blue-200 text-primary' %>"> <img src="images/icons/editDarkIcon.svg" alt="Edit Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110"> 
+                         <span>Edit</span>
+                         </a>
+                      
+                    `
+                      : ` <button onclick="likeBlog('${
+                        blog.slug
+                      }',${isLiked})" class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                        <%= user.settings.theme === 'dark'
+                          ? 'hover:bg-red-600 text-dark-primary'
+                          : 'hover:bg-red-200 text-primary' %>">
+                              <img src="${
+                                isLiked
+                                  ? "images/icons/likeIcon.svg"
+                                  : "images/icons/unlikeIcon.svg"
+                              }" id="likeIcon-${blog.slug}" alt="Like Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110  ">
+                              <span id="likeText-${blog.slug}">${
+                              isLiked ? "Unlike" : "Like"
+                            }</span>
+                        </button>
+
+                        <button onclick="toggleSaveBlog('${blog.slug}',${isBookmarked})"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                          <%= user.settings.theme === 'dark'
+                          ? 'hover:bg-red-600 text-dark-primary'
+                          : 'hover:bg-red-200 text-primary' %>">
+                              <img src="${
+                                isBookmarked
+                                  ? "images/icons/unbookMark.svg"
+                                  : "images/icons/bookMark.svg" } " alt="Unsave Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="saveIcon-${blog.slug}">
+                              <span id="saveText-${blog.slug}">${isBookmarked?`Unsave`:`Save`}</span>
+                        </button>`
+                  }
+                </div>
+                 </div>
+
                           
                         </div>
                       </div>
                     </div>
                   </div>
                   `
-          )
+      })
           .join("");
 
         carouselContainer.innerHTML = slidesHtml;

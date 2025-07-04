@@ -1,40 +1,48 @@
 <div
   id="deleteModal"
-  class="fixed inset-0 flex items-center justify-center <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> bg-opacity-50 hidden z-40"
+  class="hidden fixed inset-0 z-10 flex items-center justify-center backdrop-blur-sm <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %> bg-opacity-50 p-5 md:p-0 z-50"
+  onclick="closeDeleteModal()"
 >
   <div
-    class="   bg-opacity-50 w-full h-full flex justify-center items-center my-auto"
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-gray-900' %> w-full sm:max-w-md lg:max-w-lg p-6 rounded-xl shadow-2xl transition-all duration-300"
+    onclick="event.stopPropagation()"
   >
-    <div
-      class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-sixth' %> rounded-lg p-3 md:p-6 w-11/12 md:w-2/3 lg:w-1/2 relative shadow-lg"
-    >
+     <div class="flex items-center justify-between mb-4">
       <h2
-        class="text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-primary' %> mb-4"
+        class="text-xl font-semibold font-sans"
       >
         Confirm Deletion
       </h2>
+      <button
+            onclick="closeDeleteModal()"
+            class="text-gray-400 hover:text-red-500 transition duration-200 text-xl"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+      </div>
       <p
-        class="text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-primary-secondary' %> mb-4"
+        class="text-sm mb-6 <%= user.settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-600' %>"
       >
         Are you sure you want to delete this blog? This action cannot be undone.
       </p>
-      <div  class="grid mt-2 grid-cols-2 gap-2 text-xs md:text-sm lg:text-base">
+      <div  class="flex justify-end space-x-3">
         <button
           onclick="closeDeleteModal()"
-          class="<%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'bg-secondary text-sixth' %> hover:bg-tertiary px-4 py-2 rounded"
+          class="px-4 py-2 rounded-md border border-gray-300 text-sm font-medium <%= user.settings.theme === 'dark' ? 'text-gray-300 hover:bg-dark-primary' : 'text-gray-700 hover:bg-gray-100' %> transition duration-200"
         >
           Cancel
         </button>
         <button
           onclick="confirmDelete()"
-          class="<%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' bg-primary' %> hover:bg-red-500 text-white px-4 py-2 rounded"
+          class="px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white text-sm font-medium shadow-md transition duration-200"
         >
           Confirm Delete
         </button>
       </div>
     </div>
   </div>
-</div>
+
 <script>
   let selectedBlogSlug = null;
 

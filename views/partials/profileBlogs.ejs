@@ -41,17 +41,30 @@
           let isSubAuthor = false;
           let isAuthor = false;
           let userId = null;
+          let isLiked = false;
+          let isBookmarked = false;
+          let isArchived = false;
+          
           const isAuthenticated = "<%- isAuthenticated %>" == "true";
           
           if (isAuthenticated) {
+            
             const userId = "<%- user._id %>"; 
-            console.log("userId", userId);
+            const user = <%- JSON.stringify(user) %>;
             isAuthor = userId.toString() == blog.author._id;
-            isSubAuthor = JSON.stringify(
-              blog.subauthors.some(
-                (subauthorId) => subauthorId.toString() === userId.toString()
-              )
-            );
+            isSubAuthor = blog.subauthors.some(
+              (subauthorId) => subauthorId.toString() === userId.toString());
+
+            if (blog.likes && blog.likes.length > 0) {
+              isLiked = blog.likes.some((like) => like.toString() ===    userId.toString());
+            
+            }
+
+            if(user.savedBlogs && user.savedBlogs.length >0){
+              isBookmarked = user.savedBlogs.some((save) => save.  toString() === blog._id.toString());
+            }
+
+            isArchived = blog.status === "archived";
           }
           
 
@@ -91,14 +104,14 @@
                 <div class="flex justify-between items-center">
                  <div class="flex items-center gap-2 font-roboto cursor-default">
                     <div class="flex items-center gap-1">
-                      <img src="images/icons/likeIcon.svg" class=" h-3 w-3 md:h-5 md:w-5" />
-                      <span class="text-xxxs sm:text-xxs md:text-xs lg:text-sm ">
+                      <img src="images/icons/blogLikeCardIcon.svg" class=" h-3 w-3 md:h-5 md:w-5" />
+                      <span class="text-xxxs sm:text-xxs md:text-xs lg:text-sm text-rose-500 " id="likeCount-${blog.slug}">
                           ${blog.likes.length}
                       </span>
                     </div>
                     <div class="flex items-center gap-1">
-                      <img src="images/icons/viewIcon.svg" class=" h-6 w-6 md:h-8 md:w-8 " />
-                      <span class="text-xxxs sm:text-xxs md:text-xs lg:text-sm ">
+                      <img src="images/icons/blogViewCardIcon.svg" class=" h-6 w-6 md:h-8 md:w-8 " />
+                      <span class="text-xxxs sm:text-xxs md:text-xs lg:text-sm text-gray-500" >
                           ${blog.views.length}
                       </span>
                     </div>
@@ -106,26 +119,41 @@
                   <div class ="relative">
                     ${(isAuthenticated)?
                   `<button onclick='openBlogMore(${isSubAuthor}, ${isAuthor}, "${
-            blog.slug
-          }")'>
+                        blog.slug
+                    }")'>
                       <img src="images/icons/verticalMoreIcon.svg" alt="More"
                         class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7">
                     </button>`:""}
+
+
+                    <div  class="absolute bottom-10 right-0 flex flex-col gap-2 rounded-md p-2 shadow-md z-50
+                      <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-background text-primary' %> min-w-[120px] hidden shadow-md"
+                      id="blogMoreOptions-${blog.slug}">
+
+                       
+
                   ${
                     isSubAuthor || isAuthor
                       ? `
-                      <div  class="absolute bottom-10 right-0 flex flex-col gap-2 rounded-md p-2 shadow-md z-50
-    <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-fifth text-primary' %> min-w-[120px] hidden"
-  id="blogMoreOptions-${blog.slug}">
+                      
                          ${
                            isAuthor
                              ? `
+                             <button onclick="toggleArchiveBlog('${blog.slug}','${isArchived}')"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                             <%= user.settings.theme === 'dark'
+                              ? 'hover:bg-red-600 text-dark-primary'
+                              : 'hover:bg-red-200 text-primary' %>">
+                             <img src="${isArchived?"images/icons/unarchiveIcon.svg":"images/icons/archiveIcon.svg"}" alt="Archive Blog"
+                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="archiveIcon-${blog.slug}">
+                             <span id="archiveText-${blog.slug}">${isArchived ? "Unarchive" : "Archive"}</span>
+                             </button>
+
                              <button onclick="openDeleteModal('${blog.slug}')"  class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
-      <%= user.settings.theme === 'dark'
-        ? 'hover:bg-red-600 text-dark-primary'
-        : 'hover:bg-red-200 text-primary' %>">
+                            <%= user.settings.theme === 'dark'
+                              ? 'hover:bg-red-600 text-dark-primary'
+                              : 'hover:bg-red-200 text-primary' %>">
                               <img src="images/icons/deleteDarkIcon.svg" alt="Delete Blog"
-                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 ">
+                              class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 ">
                               <span>Delete</span>
                               </button>
                              `
@@ -134,17 +162,45 @@
                          <a href="/blog/edit/${
                            blog.slug
                          }"  class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
-      <%= user.settings.theme === 'dark'
-        ? 'hover:bg-blue-600 text-dark-primary'
-        : 'hover:bg-blue-200 text-primary' %>"> <img src="images/icons/editDarkIcon.svg" alt="Edit Blog"
+                          <%= user.settings.theme === 'dark'
+                            ? 'hover:bg-blue-600 text-dark-primary'
+                            : 'hover:bg-blue-200 text-primary' %>"> <img src="images/icons/editDarkIcon.svg" alt="Edit Blog"
                         class="w-4 h-4 transition-transform duration-200 group-hover:scale-110"> 
                          <span>Edit</span>
                          </a>
-                      </div>
+                      
                     `
-                      : ""
+                      : ` <button onclick="likeBlog('${
+                        blog.slug
+                      }',${isLiked})" class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                        <%= user.settings.theme === 'dark'
+                          ? 'hover:bg-red-600 text-dark-primary'
+                          : 'hover:bg-red-200 text-primary' %>">
+                              <img src="${
+                                isLiked
+                                  ? "images/icons/likeIcon.svg"
+                                  : "images/icons/unlikeIcon.svg"
+                              }" id="likeIcon-${blog.slug}" alt="Like Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110  ">
+                              <span id="likeText-${blog.slug}">${
+                              isLiked ? "Unlike" : "Like"
+                            }</span>
+                        </button>
+
+                        <button onclick="toggleSaveBlog('${blog.slug}',${isBookmarked})"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                          <%= user.settings.theme === 'dark'
+                          ? 'hover:bg-red-600 text-dark-primary'
+                          : 'hover:bg-red-200 text-primary' %>">
+                              <img src="${
+                                isLiked
+                                  ? "images/icons/unbookMark.svg"
+                                  : "images/icons/bookMark.svg" } " alt="Unsave Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="saveIcon-${blog.slug}">
+                              <span id="saveText-${blog.slug}">${isBookmarked?`Unsave`:`Save`}</span>
+                        </button>`
                   }
                 </div>
+              </div>
               </div>
               </div>
                </div>
@@ -168,6 +224,8 @@
       blogMoreOptions.classList.toggle("hidden");
     };
 
+
+
     window.hideBlogOptions = function hideBlogOptions(slug) {
       const options = document.getElementById(`blogMoreOptions-${slug}`);
       if (options) {
@@ -175,6 +233,154 @@
       }
     };
 
+     window.likeBlog = async function likeBlog(slug, isLiked) {
+      const likeImg = document.getElementById("likeIcon-" + slug);
+      const likeText = document.getElementById("likeText-" + slug);
+      isLiked = likeText.innerText === "Unlike";
+      const likeCountElement = document.getElementById(
+        "likeCount-" + slug
+      );
+      let likeCount = parseInt(likeCountElement.innerText, 10);
+      if (isLiked) {
+        likeCount -= 1;
+      } else {
+        likeCount += 1;
+      }
+      if (isLiked) {
+        likeImg.src = "images/icons/unlikeIcon.svg";
+        likeText.innerText = "Like";
+        likeImg.alt = "Unlike icon";
+        likeCountElement.innerText = likeCount;
+      } else {
+        likeImg.src = "images/icons/likeIcon.svg";
+        likeText.innerText = "Unlike";
+        likeImg.alt = "Like icon";
+        likeCountElement.innerText = likeCount;
+      }
+      try {
+        const response = await fetch(`/api/blog/like/${slug}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (!response.ok) {
+          likeImg.src = isLiked
+            ? "images/icons/likeIcon.svg"
+            : "images/icons/unlikeIcon.svg";
+          likeImg.alt = isLiked ? "Like icon" : "Unlike icon";
+          likeText.innerText = isLiked ? "Like" : "Unlike";
+
+          throw new Error("Failed to like/unlike the blog");
+        }
+
+        const result = await response.json();
+       
+        if (!result.liked) {
+          likeImg.src = "images/icons/unlikeIcon.svg";
+          likeImg.alt = "Unlike icon";
+          likeText.innerText = "Like";
+          likeCountElement.innerText = likeCount;
+        } else {
+          likeImg.src = "images/icons/likeIcon.svg";
+          likeImg.alt = "Like icon";
+          likeText.innerText = "Unlike";
+          likeCountElement.innerText = likeCount;
+        }
+      } catch (error) {
+        likeImg.src = isLiked
+          ? "images/icons/likeIcon.svg"
+          : "images/icons/unlikeIcon.svg";
+        likeImg.alt = isLiked ? "Like icon" : "Unlike icon";
+        likeText.innerText = isLiked ? "Like" : "Unlike";
+
+      }
+    };
+    
+    window.toggleSaveBlog = async function toggleSaveBlog(slug,isBookmarked) {
+      try {
+        const saveText = document.getElementById(`saveText-${slug}`);
+        const saveIcon = document.getElementById(`saveIcon-${slug}`);
+
+        if(isBookmarked) {
+          saveText.innerText = "Save";
+          saveIcon.src = "images/icons/bookMark.svg";
+        } else {
+          saveText.innerText = "Unsave";
+          saveIcon.src = "images/icons/unbookMark.svg";
+        }
+
+        const response = await fetch(`/api/blog/saveBlog/${slug}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          });
+
+            if (!response.ok) {
+
+              saveText.innerText = isBookmarked ? "Unsave" : "Save";
+              saveIcon.src = isBookmarked
+                ? "images/icons/bookMark.svg"
+                : "images/icons/unbookMark.svg";
+
+              throw new Error("Failed to archive the blog");
+            }
+
+            const result = await response.json();
+
+            if(!result.saved) {
+                saveText.innerText = "Save";
+                saveIcon.src = "images/icons/bookMark.svg";
+              } else {
+                saveText.innerText = "Unsave";
+                saveIcon.src = "images/icons/unbookMark.svg";
+              }
+            
+      } catch (error) {
+        console.error("Error unarchiving the blog:", error);
+      }
+    };
+
+     window.toggleArchiveBlog = async function toggleArchiveBlog(slug,isArchived) {
+      const archiveText = document.getElementById(`archiveText-${slug}`);
+      const archiveIcon = document.getElementById(`archiveIcon-${slug}`);
+
+      if (isArchived) {
+        archiveText.innerText = "Archive";
+        archiveIcon.src = "images/icons/archiveIcon.svg";
+      } else {
+        archiveText.innerText = "Unarchive";
+        archiveIcon.src = "images/icons/unarchiveIcon.svg";
+      }
+
+      try {
+        const response = await fetch(`/api/blog/archive/${slug}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          });
+
+            if (!response.ok) {
+              archiveText.innerText = isArchived ? "Unarchive" : "Archive";
+              archiveIcon.src = isArchived
+                ? "images/icons/unarchiveIcon.svg"
+                : "images/icons/archiveIcon.svg";
+              throw new Error("Failed to archive the blog");
+            }
+
+            const result = await response.json();
+             console.log("Blog unarchived successfully", result);
+            if(!result.archived) {
+              archiveText.innerText = "Archive";
+              archiveIcon.src = "images/icons/archiveIcon.svg";
+            } else {
+              archiveText.innerText = "Unarchive";
+              archiveIcon.src = "images/icons/unarchiveIcon.svg";
+              fetchBlogs(1); // Refresh the blog list after unarchiving
+            }
+      } catch (error) {
+        console.error("Error unarchiving the blog:", error);
+      }
+    };
+
+   
     function setupPagination(totalPages, currentPage) {
       const paginationElement = document.getElementById("pagingContainer");
       paginationElement.innerHTML = "";

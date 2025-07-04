@@ -5,7 +5,7 @@
   id="blogPhotoContainer"
 >
   <div
-    class="pt-16 pb-5 sm:pb-10 md:pt-36 md:py-24 w-full bg-opacity-10 <%= user.settings.theme === 'dark' ? 'bg-dark-background ' : 'text-text bg-background ' %>"
+    class="pt-16 pb-5 sm:pb-10 md:pt-36 md:py-24 w-full  <%= user.settings.theme === 'dark' ? 'bg-dark-background bg-opacity-20' : 'text-text bg-background bg-opacity-10' %>"
   >
     <div
       class="sm:p-0 w-4/5 sm:w-2/3 lg:w-1/2 flex justify-center items-center flex-col text-center gap-2 m-auto relative"
@@ -40,7 +40,7 @@
 
   
   <div
-  class="absolute -bottom-5 right-5 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-lg rounded-full px-4 py-2 flex items-center space-x-4 border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:scale-105 hidden"
+  class="absolute -bottom-5 right-5  <%= user.settings.theme === 'dark' ? 'bg-gray-800/80 border-gray-800' : 'bg-white/80 border-gray-200' %>   backdrop-blur-md shadow-lg rounded-md px-4 py-2 flex items-center space-x-4 border   transition-all duration-300 hover:scale-105 hidden"
   id="blogActions"
 >
   <div class="flex gap-2 md:gap-5 items-center">
@@ -59,7 +59,7 @@
 
     <button
       id="likeButton"
-      class="<%= user.settings.theme === 'dark' ? 'text-white' : 'text-text' %> rounded-full flex items-center justify-center gap-2"
+      class="<%= user.settings.theme === 'dark' ? 'text-white' : 'text-text' %> rounded-md flex items-center justify-center gap-2"
     >
       <img
         src="<%= userAlreadyLiked ? 'images/icons/likeIcon.svg' : 'images/icons/unlikeIcon.svg' %>"
@@ -130,7 +130,7 @@
 <div class="grid grid-cols-5 gap-2 px-5 sm:px-8 p-2 pt-5 md:p-5 font-lora">
   <div
     id="date"
-    class="col-span-5 md:col-span-1 lg:p-5 text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-tertiary' %>"
+    class="col-span-5 md:col-span-1 lg:p-5 text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-secondary' %>"
   >
     <div class="flex justify-between font-semibold">
       <p>
@@ -143,7 +143,7 @@
   <div class="col-span-5 md:col-span-3 lg:py-5">
     <div
       id="contentContainer"
-      class="text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %>"
+      class="text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-primary' %>"
     >
       <%- blog.sanitizedHtml %>
     </div>
@@ -189,16 +189,16 @@
           <img
             src="<%= blog.author.avatar  %>"
             alt="author photo"
-            class="h-10 w-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:h-16 lg:w-16 rounded-full"
+            class="h-10 w-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:h-16 lg:w-16 rounded-md border-2 border-gray-200"
           />
           <div class="flex flex-col justify-between gap-1">
             <h3
-              class="text-sm md:text-base lg:text-xl font-semibold uppercase <%= user.settings.theme === 'dark' ? 'text-dark-secondary ' : 'text-secondary ' %>"
+              class="text-sm md:text-base lg:text-xl font-semibold uppercase <%= user.settings.theme === 'dark' ? 'text-dark-primary ' : 'text-primary ' %>"
             >
               <%- blog.author.username %>
             </h3>
             <h4
-              class="text-xs md:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fourth' %> capitalize font-light"
+              class="text-xs md:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-secondary' %> capitalize font-light"
             >
               <%- blog.author.firstname %> <%= blog.author.lastname %>
             </h4>
@@ -213,7 +213,7 @@
         <a
           href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(url) %>&text=Check out this page!"
           target="_blank"
-          class="text-white w-5 h-5 hover:scale-150 rounded-full hover:bg-blue-200 transition duration-300"
+          class="text-white w-5 h-5 hover:scale-150 rounded-md hover:bg-blue-200 transition duration-300"
         >
           <img
             src="images/icons/twitterIconDark.png"
@@ -225,7 +225,7 @@
         <a
           href="https://www.reddit.com/submit?url=<%= encodeURIComponent(url) %>&title=Check out this page!"
           target="_blank"
-          class="text-white w-5 h-5 hover:scale-150 rounded-full hover:bg-orange-200 transition duration-300"
+          class="text-white w-5 h-5 hover:scale-150 rounded-md hover:bg-orange-200 transition duration-300"
         >
           <img
             src="images/icons/redditIcon.png"
@@ -237,7 +237,7 @@
         <a
           href="https://api.whatsapp.com/send?text=Check out this page: <%= encodeURIComponent(url) %>"
           target="_blank"
-          class="text-white w-5 h-5 hover:scale-150 rounded-full hover:bg-green-200 transition duration-300"
+          class="text-white w-5 h-5 hover:scale-150 rounded-md hover:bg-green-200 transition duration-300"
         >
           <img
             src="images/icons/whatsappIcon.png"
@@ -249,7 +249,7 @@
         <div class="relative flex justify-between items-center flex-col">
           <button
             id="copyBtn"
-            class="text-white w-5 h-5 hover:scale-150 rounded-full shadow hover:bg-gray-200 transition duration-300"
+            class="text-white w-5 h-5 hover:scale-150 rounded-md shadow hover:bg-gray-200 transition duration-300"
           >
             <img
               src="images/icons/urlIcon.png"
@@ -269,7 +269,7 @@
 
         <button
           id="reportButton"
-          class="font-semibold py-2 rounded-full hover:bg-red-400 transition-all duration-300 ease-in-out text-sm items-center col-span-4 font-roboto <%= user.settings.theme === 'dark' ? ' bg-dark-fifth shadow-white-md text-dark-secondary' : 'bg-tertiary text-white shadow-md' %> max-w-sm box-border"
+          class="font-semibold py-2 rounded-md hover:bg-red-400 hover:text-white transition-all duration-300 ease-in-out text-sm items-center col-span-4 font-roboto <%= user.settings.theme === 'dark' ? ' bg-dark-fifth shadow-white-md text-dark-secondary' : 'bg-tertiary text-white shadow-md' %> max-w-sm box-border"
         >
           <span class="text-sm">Report</span>
         </button>
@@ -295,7 +295,7 @@
       <div class="mt-2 md:mt-4 flex justify-end">
         <button
           type="submit"
-          class="px-5 py-2 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth shadow-white-md text-dark-secondary' : ' text-white bg-fourth shadow-md' %> rounded-full hover:bg-highlight hover:text-white transition duration-300 ease-in-out text-sm lg:text-base hover:scale-110 font-roboto"
+          class="px-5 py-2 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth shadow-white-md text-dark-secondary' : ' text-white bg-fourth shadow-md' %> rounded-md hover:bg-highlight hover:text-white transition duration-300 ease-in-out text-sm lg:text-base hover:scale-110 font-roboto"
         >
           Add Comment
         </button>
@@ -318,7 +318,7 @@
   </div>
 
   <div
-    class="hidden  md:col-span-1 md:text-center lg:p-5 text-sm <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-tertiary' %> font-semibold md:flex md:justify-between w-full"
+    class="hidden  md:col-span-1 md:text-center lg:p-5 text-sm <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-secondary' %> font-semibold md:flex md:justify-between w-full"
   >
   <p> <%- blog.views.length %> views</p>
   <p> <%- blog.readingTime %></p>
@@ -462,17 +462,17 @@ include("../../partials/reportPopout.ejs") %>
                             "/images/defaultProfile.png"
                           }"
                           alt="profile photo"
-                          class="h-10 w-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-gray-200"
+                          class="h-10 w-10 md:w-12 md:h-12 rounded-md object-cover border-2 border-gray-200"
                         />
                         <div>
                           <a class="flex items-center gap-1 md:gap-2" href="/profile/${
                             comment.author.slug
                           }">
-                            <p class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-secondary' %>">${
+                            <p class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-secondary' %>">${
                               comment.author?.username || "Unknown User"
                             }</p>
                           </a>
-                          <p class="text-xxs lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fourth' %> ">${new Date(
+                          <p class="text-xxs lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-tertiary' %> ">${new Date(
                             comment.createdAt
                           ).toLocaleString()}</p>
                         </div>
@@ -480,7 +480,7 @@ include("../../partials/reportPopout.ejs") %>
                     </div>
                     <button onclick="like_comment('${
                       comment._id
-                    }',this)" class="border  <%= user.settings.theme === 'dark' ? '  border-dark-secondary text-dark-primary' : ' border-purple-700 text-purple-700' %> hover:scale-105  px-3 py-1 rounded-full  outline-none flex items-center space-x-2">
+                    }',this)" class="border  <%= user.settings.theme === 'dark' ? '  border-dark-secondary text-dark-primary' : ' border-purple-700 text-purple-700' %> hover:scale-105  px-3 py-1 rounded-md  outline-none flex items-center space-x-2">
                       <img
                         src="${
                           user.settings.theme === "dark"
@@ -502,7 +502,7 @@ include("../../partials/reportPopout.ejs") %>
                     </button>
                   </div>
                   <div class="w-full">
-                    <p class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-fourth' %> mb-2 break-words whitespace-normal text-sm lg:text-base">
+                    <p class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-primary' %> mb-2 break-words whitespace-normal text-sm lg:text-base">
                       ${comment.content || "No content"}
                     </p>
                   </div>
@@ -511,14 +511,14 @@ include("../../partials/reportPopout.ejs") %>
                       userId == comment.author._id || userId == authorId
                         ? `<button
                             onclick="deleteComment('${comment._id}')"
-                            class="text-fourth px-3 py-1 rounded-full focus:outline-none border border-fourth hover:scale-105 transition-all duration-300 ease-in-out text-xxs sm:text-xs md:text-sm lg:text-base font-roboto">
+                            class=" px-3 py-1 rounded-md focus:outline-none border <%= user.settings.theme === 'dark' ? 'border-dark-tertiary text-dark-tertiary' : ' text-tertiary border-tertiary' %>  hover:scale-105 transition-all duration-300 ease-in-out text-xxs sm:text-xs md:text-sm lg:text-base font-roboto">
                                 Delete
                             </button>`
                         : ""
                     }
                     ${
                       !comment.parentComment
-                        ? `<button onclick="replyToComment('${comment._id}')" class=" <%= user.settings.theme === 'dark' ? 'border-dark-primary text-dark-primary' : ' text-fifth border-fifth' %> px-3 py-1 rounded-full hover:scale-105 outline-none border  transition-all duration-300 ease-in-out text-xxs sm:text-xs md:text-sm lg:text-base font-roboto">
+                        ? `<button onclick="replyToComment('${comment._id}')" class=" <%= user.settings.theme === 'dark' ? 'border-dark-primary text-dark-primary' : ' text-secondary border-secondary' %> px-3 py-1 rounded-md hover:scale-105 outline-none border  transition-all duration-300 ease-in-out text-xxs sm:text-xs md:text-sm lg:text-base font-roboto">
                             Reply
                           </button>`
                         : ""

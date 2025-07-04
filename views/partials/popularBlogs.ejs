@@ -6,7 +6,7 @@
 
 <div
   id="category-bar"
-  class="py-1 px-2 md:py-2 md:px-5 lg:px-10 lg:py-5 sm:pb-0 text-xs lg:text-sm font-semibold flex justify-between items-center sticky top-0 z-10 <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background text-primary' %>"
+  class="py-4 px-2 md:py-2 md:px-5 lg:px-10 lg:py-5 sm:pb-0 text-xs lg:text-sm font-semibold flex justify-between items-center sticky top-0 z-10 <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background text-primary' %>"
 >
   <ul
     id="categories"
@@ -140,53 +140,170 @@
 
         for (const [categoryName, categoryBlogs] of Object.entries(categoriesToRender)) {
           const slidesHtml = categoryBlogs
-           .map((blog) => `
-            <div class="font-lora relative rounded-md flex flex-col justify-between <%= user.settings.theme === 'dark' ? 'bg-dark-sixth shadow-white-lg' : 'bg-background shadow-lg' %>">
+           .map((blog) => {
+              let isSubAuthor = false;
+                let isAuthor = false;
+                let userId = null;
+                let isLiked = false;
+                let isBookmarked = false;
+                let isArchived = false;
+          
+                const isAuthenticated = "<%- isAuthenticated %>" == "true";
+          
+                if (isAuthenticated) {
+            
+                  const userId = "<%- user._id %>"; 
+                  const user = <%- JSON.stringify(user) %>;
+                  isAuthor = userId.toString() == blog.author._id;
+                  isSubAuthor = blog.subauthors.some(
+                    (subauthorId) => subauthorId.toString() === userId.toString());
+
+                  if (blog.likes && blog.likes.length > 0) {
+                    isLiked = blog.likes.some((like) => like.toString()       ===    userId.toString());
+            
+                  }
+
+                  if(user.savedBlogs && user.savedBlogs.length >0){
+                    isBookmarked = user.savedBlogs.some((save) => save.       toString() === blog._id.toString());
+                  }
+
+                  isArchived = blog.status === "archived";
+                }
+
+            return `
+            <div class="font-lora relative rounded-md flex flex-col justify-between <%= user.settings.theme === 'dark' ? 'bg-dark-sixth shadow-white-lg' : 'bg-background shadow-lg' %>" onmouseleave="hideBlogOptions('${blog.slug}')">
               <div class="flex justify-end bg-cover bg-center bg-origin-content rounded-md bg-blend-darken" style="background-image: url('${
                 blog.blogPhoto
               }')">
                 <div class="flex h-auto mb-32 sm:mb-52 md:mb-64 mt-2 mr-2 md:mt-5 md:mr-5">
-                  <p class="px-2 py-1 rounded-lg bg-white bg-opacity-30 text-white text-xxxs md:text-xxs lg:text-xs font-semibold font-sans uppercase <%= user.settings.theme === 'dark' ? 'bg-dark-secondary' : 'bg-background text-background' %>">
+                  <p class="px-2 py-1 rounded-lg bg-white bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs  font-semibold font-sans uppercase <%= user.settings.theme === 'dark' ? 'bg-dark-secondary' : 'bg-background text-background' %> ">
                     ${truncateText(blog.tags[0], 15)}
                   </p>
                 </div>
               </div>
               <div class="flex flex-col gap-2 pt-4 px-2 pb-2">
-                <p class="text-xxxs md:text-xxs lg:text-xs <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %> font-thin">
+                <p class="text-xs sm:text-xxs md:text-xs lg:text-sm  <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-secondary' %> font-thin">
                   ${new Date(blog.createdAt).toLocaleDateString("en-US", {
                     day: "numeric",
                     month: "numeric",
                     year: "numeric",
                   })}
                 </p>
-                <h5 class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-primary' %> break-words whitespace-normal">
+                <h5 class="text-sm sm:text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : 'text-primary' %> break-words whitespace-normal">
                   ${truncateText(blog.title, 50)}
                 </h5>
-                <p class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %> break-words whitespace-normal font-thin">
+                <p class="text-xs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-secondary' %> break-words whitespace-normal font-thin">
                   ${truncateText(blog.description, 100)}
                   <a href="/blog/${
                     blog.slug
-                  }" class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %> hover:text-highlight  ">read more</a>
+                  }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-secondary' %> hover:text-highlight    font-roboto text-center  text-xs sm:text-xxs md:text-xs lg:text-sm  font-medium">read more</a>
                 </p>
               </div>
-              <a class="p-2 border-t-2 <%= user.settings.theme === 'dark' ? 'border-dark-fifth' : 'border-sixth' %> flex gap-2 mt-auto cursor-pointer" href="/profile/${
-                blog.author.slug
-              }">
-                <img src="${
-                  blog.author.avatar
-                }" alt="author" class="w-8 h-8 rounded-md" />
-                <div>
-                  <p class="text-xxs sm:text-xs md:text-sm lg:text-md font-thin <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>">
-                    ${blog.author.username}
-                  </p>
-                  <p class="text-xxxs sm:text-xxs md:text-xs lg:text-xs font-thin text-fourth">
-                    ${blog.author.firstname} ${blog.author.lastname}
-                  </p>
+              <div class="justify-between items-center flex text-sm sm:text-sm md:text-base lg:text-base p-2 border-t-2 <%= user.settings.theme === 'dark' ? 'border-dark-fifth' : 'border-sixth' %> ">
+
+                          <a class="flex items-center gap-2" href="/profile/${
+                            blog.author.slug
+                          }" >
+                    <img src="${
+                      blog.author.avatar
+                    }" alt="author" class="w-8 h-8 lg:w-10 lg:h-10 rounded-md" />
+                    <div class="">
+                    <p class=" font-thin <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> ">
+                      ${blog.author.username}
+                    </p>
+                    <p class="text-xs sm:text-xs md:text-sm lg:text-sm font-thin <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-secondary' %>">
+                      ${blog.author.firstname} ${blog.author.lastname}
+                    </p>
                 </div>
-              </a>
+                </a>
+                <div class="relative">
+                             ${(isAuthenticated)?
+                  `<button onclick='openBlogMore(${isSubAuthor}, ${isAuthor}, "${
+                        blog.slug
+                    }")'>
+                      <img src="images/icons/verticalMoreIcon.svg" alt="More"
+                        class="w-6 h-6 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 invert">
+                    </button>`:""}
+
+                            <div  class="absolute bottom-0 right-0 flex flex-col gap-2 rounded-md p-2 shadow-md z-50
+                      <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-background text-primary' %> min-w-[120px] hidden shadow-md"
+                      id="blogMoreOptions-${blog.slug}">
+
+                       
+
+                  ${
+                    isSubAuthor || isAuthor
+                      ? `
+                      
+                         ${
+                           isAuthor
+                             ? `
+                             <button onclick="toggleArchiveBlog('${blog.slug}','${isArchived}')"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                             <%= user.settings.theme === 'dark'
+                              ? 'hover:bg-red-600 text-dark-primary'
+                              : 'hover:bg-red-200 text-primary' %>">
+                             <img src="${isArchived?"images/icons/unarchiveIcon.svg":"images/icons/archiveIcon.svg"}" alt="Archive Blog"
+                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="archiveIcon-${blog.slug}">
+                             <span id="archiveText-${blog.slug}">${isArchived ? "Unarchive" : "Archive"}</span>
+                             </button>
+
+                             <button onclick="openDeleteModal('${blog.slug}')"  class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                            <%= user.settings.theme === 'dark'
+                              ? 'hover:bg-red-600 text-dark-primary'
+                              : 'hover:bg-red-200 text-primary' %>">
+                              <img src="images/icons/deleteDarkIcon.svg" alt="Delete Blog"
+                              class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 ">
+                              <span>Delete</span>
+                              </button>
+                             `
+                             : ""
+                         }
+                         <a href="/blog/edit/${
+                           blog.slug
+                         }"  class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                          <%= user.settings.theme === 'dark'
+                            ? 'hover:bg-blue-600 text-dark-primary'
+                            : 'hover:bg-blue-200 text-primary' %>"> <img src="images/icons/editDarkIcon.svg" alt="Edit Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110"> 
+                         <span>Edit</span>
+                         </a>
+                      
+                    `
+                      : ` <button onclick="likeBlog('${
+                        blog.slug
+                      }',${isLiked})" class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                        <%= user.settings.theme === 'dark'
+                          ? 'hover:bg-red-600 text-dark-primary'
+                          : 'hover:bg-red-200 text-primary' %>">
+                              <img src="${
+                                isLiked
+                                  ? "images/icons/likeIcon.svg"
+                                  : "images/icons/unlikeIcon.svg"
+                              }" id="likeIcon-${blog.slug}" alt="Like Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110  ">
+                              <span id="likeText-${blog.slug}">${
+                              isLiked ? "Unlike" : "Like"
+                            }</span>
+                        </button>
+
+                        <button onclick="toggleSaveBlog('${blog.slug}',${isBookmarked})"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                          <%= user.settings.theme === 'dark'
+                          ? 'hover:bg-red-600 text-dark-primary'
+                          : 'hover:bg-red-200 text-primary' %>">
+                              <img src="${
+                                isBookmarked
+                                  ? "images/icons/unbookMark.svg"
+                                  : "images/icons/bookMark.svg" } " alt="Unsave Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="saveIcon-${blog.slug}">
+                              <span id="saveText-${blog.slug}">${isBookmarked?`Unsave`:`Save`}</span>
+                        </button>`
+                  }
+                </div>
+                </div>
+       
             </div>
           `
-            )
+        })
             .join("");
 
           allCategoryHtml += slidesHtml;

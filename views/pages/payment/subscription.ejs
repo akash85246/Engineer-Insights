@@ -1,5 +1,5 @@
 <div
-  class="md:max-w-4xl <%= user.settings.theme === 'dark' ? 'shadow-white-lg' : 'shadow-lg' %> m-auto p-2 pt-10 md:p-10 font-lora mb-5"
+  class="md:max-w-7xl <%= user.settings.theme === 'dark' ? 'shadow-white-lg' : 'shadow-lg' %> m-auto p-2 pt-10 md:p-10 font-lora mb-5"
 >
   <h1
     class="text-lg md:text-xl lg:text-2xl p-3 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %>"
@@ -22,9 +22,16 @@
         >
           <div class="flex justify-between items-center">
             <h1
-              class="text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-primary' %>"
+              class="text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-primary' %> flex gap-2 items-center"
             >
-              Pro Membership
+             <img
+            draggable="false"
+            src="images/icons/proIcon.svg"
+            draggable="false"
+            alt="pro icon"
+            class="h-6 w-6"
+          /> Pro Membership
+             
             </h1>
             <h1
               class="text-xl font-bold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-primary' %>"
@@ -38,8 +45,7 @@
           <p
             class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-tertiary' %> text-sm"
             id="timeLeftPro"
-          >
-            7 days remaining
+          > <%= payment.subscriptionDetails.frequency=='weekly' ? timeRemaining !== 0 ? timeRemaining + ' days remaining': 7+ ` days`:7+ ` days` %> 
           </p>
           <div class="flex gap-4 items-center mt-auto">
             <% const action = user.subscription === 'regular' ?
@@ -103,9 +109,15 @@
         >
           <div class="flex justify-between items-center">
             <h1
-              class="text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-primary' %>"
+              class="text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-primary' %> flex gap-2 items-center"
             >
-              Elite Membership
+              <img
+            draggable="false"
+            src="images/icons/eliteIcon.svg"
+            draggable="false"
+            alt="elite icon"
+            class="h-6 w-6"
+          /> Elite Membership
             </h1>
             <h1
               class="text-xl font-bold <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-primary' %>"
@@ -119,8 +131,7 @@
           <p
             class="<%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-tertiary' %> text-sm"
             id="timeLeftElite"
-          >
-            30 days remaining
+          > <%= payment.subscriptionDetails.frequency != 'weekly' ? timeRemaining !== 0 ? timeRemaining + ' days remaining': 30 + ` days`:30+ ` days` %> 
           </p>
           <div class="flex gap-4 items-center mt-auto">
             <% const action2 = user.subscription === 'regular' ?
@@ -183,7 +194,7 @@
     >
       Subscription History
     </h1>
-    <ul id="history" class="overflow-x-scroll p-3"></ul>
+    <ul id="history" class="overflow-x-scroll m-3 <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-tertiary' %> border rounded-md"></ul>
     <div id="pagination" class="py-2 flex justify-center"></div>
   </div>
 </div>
@@ -295,16 +306,13 @@
         if (data.payments.length > 0) {
           // Render table structure
           paymentHistory.innerHTML = `
-          <table class="w-full border-collapse border border-gray-300">
-            <thead>
-              <tr class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-secondary text-dark-secondary' : 'bg-sixth border-secondary text-secondary' %>">
-                <th class="border border-gray-300 p-3 text-left text-xxs whitespace-nowrap">Payment Type</th>
-                <th class="border border-gray-300 p-3 text-left text-xxs whitespace-nowrap">Transaction ID</th>
-                <th class="border border-gray-300 p-3 text-left text-xxs whitespace-nowrap">Payment Status</th>
-                <th class="border border-gray-300 p-3 text-left text-xxs">Amount</th>
-                <th class="border border-gray-300 p-3 text-left text-xxs whitespace-nowrap">Start Date</th>
-                <th class="border border-gray-300 p-3 text-left text-xxs whitespace-nowrap">End Date</th>
-                <th class="border border-gray-300 p-3 text-left text-xxs">Frequency</th>
+          <table class="w-full border-collapse border-y  <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> ">
+            <thead class="text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background text-secondary' %> ">
+              <tr class="<%= user.settings.theme === 'dark' ? ' border-dark-secondary ' : ' border-secondary ' %>">
+                <th class="border-y  <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %>  p-3 text-left  whitespace-nowrap font-normal">Transaction ID</th>
+                <th class="border-y  <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %>  p-3 text-left  whitespace-nowrap font-normal">Payment Status</th>
+                <th class="border-y  <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %>  p-3 text-left  font-normal">Amount</th>
+                <th class="border-y  <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %>  p-3 text-left  font-normal">Frequency</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -340,13 +348,10 @@
             const tr = document.createElement("tr");
 
             tr.innerHTML = `
-            <td class="border  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xxs">${paymentType}</td>
-            <td class="border  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xxs">${transactionId}</td>
-            <td class="border  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xxs">${paymentStatus}</td>
-            <td class="border  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xxs">$${amount} ${currency}</td>
-            <td class="border  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xxs">${startDate}</td>
-            <td class="border  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xxs">${endDate}</td>
-            <td class="border <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xxs">${frequency}</td>
+            <td class="border-y  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xs md:text-sm lg:text-base">${transactionId}</td>
+            <td class="border-y  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xs md:text-sm lg:text-base">${paymentStatus}</td>
+            <td class="border-y  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xs md:text-sm lg:text-base">$${amount}</td>
+            <td class="border-y <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xs md:text-sm lg:text-base">${frequency}</td>
           `;
             tableBody.appendChild(tr);
           });

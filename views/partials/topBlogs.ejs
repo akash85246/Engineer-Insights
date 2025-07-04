@@ -1,4 +1,4 @@
-<div class="relative overflow-hidden pb-5">
+<div class="relative overflow-hidden">
   <div class="relative w-full">
     <div
       class="flex overflow-x-scroll scroll-smooth transition-transform duration-300 ease-in-out"
@@ -6,46 +6,46 @@
     ></div>
 
     <div
-      class="relative bottom-3 left-1/2 transform flex space-x-2"
+      class="absolute bottom-4 left-16 transform flex space-x-2"
       id="latestCarouselDots"
     ></div>
+  </div>
 
+  <div
+    class="sm:flex justify-center items-center gap-2 md:gap-6 px-2 py-4 sm:p-4 md:p-6 w-full mt-4"
+  >
     <div
-      class="flex justify-center items-center gap-2 md:gap-6 p-2 sm:p-4 py-0 relative sm:-top-24 -top-16 left-0 w-full"
+      class="relative flex items-center <%= user.settings.theme === 'dark' ? ' bg-dark-sixth ' : 'bg-gray-200' %> border rounded-lg p-2 md:px-5 md:py-3 w-full sm:w-2/3 lg:w-full mb-2 sm:mb-0"
     >
-      <div
-        class="relative flex items-center <%= user.settings.theme === 'dark' ? ' bg-dark-sixth border-dark-fourth' : 'bg-background border-sixth ' %> border rounded-lg p-2 md:px-5 md:py-3 w-full sm:w-2/3 lg:w-full bg-opacity-60"
-      >
-        <img
-          src="images/icons/searchIcon.png"
-          alt="Search Icon"
-          class="w-4 h-4 md:w-6 md:h-6 <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-text' %>"
-        />
-        <input
-          type="text"
-          id="searchBlogInput"
-          placeholder="Search"
-          class="ml-3 bg-transparent outline-none <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-tertiary' %>  w-full text-xs md:text-sm lg:text-base font-lora placeholder-sixth"
-          oninput="fetchBlogs()"
-        />
-      </div>
+      <img
+        src="images/icons/searchIcon.png"
+        alt="Search Icon"
+        class="w-4 h-4 md:w-6 md:h-6 <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-text' %>"
+      />
+      <input
+        type="text"
+        id="searchBlogInput"
+        placeholder="Search"
+        class="mx-5 bg-transparent outline-none <%= user.settings.theme === 'dark' ? ' text-dark-primary placeholder-sixth' : 'text-secondary placeholder-tertiary' %> w-full text-sm md:text-sm lg:text-base font-lora placeholder-sixth"
+        oninput="fetchBlogs()"
+      />
+    </div>
 
-      <div class="flex flex-row gap-1 md:gap-4 items-center ">
-        <input
-          type="date"
-          id="startDate"
-          name="startDate"
-          class="border  <%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-fourth text-dark-primary' : 'bg-background text-tertiary border-sixth' %> rounded-lg p-2 md:px-5 md:py-3 shadow-sm placeholder-sixth focus:outline-none  transition duration-300 w-full sm:w-auto text-xxs sm:text-xs md:text-sm lg:text-base bg-opacity-60 max-w-20 md:max-w-40"
-          onchange="fetchBlogs()"
-        />
-        <input
-          type="date"
-          id="endDate"
-          name="endDate"
-          class="border <%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-fourth text-dark-primary' : 'bg-background text-tertiary border-sixth' %> rounded-lg p-2 md:px-5 md:py-3 shadow-sm  focus:outline-none  transition duration-300 w-full sm:w-auto text-xxs  md:text-sm lg:text-base bg-opacity-60 max-w-20 md:max-w-40"
-          onchange="fetchBlogs()"
-        />
-      </div>
+    <div class="flex  gap-2 justify-between items-center">
+      <input
+        type="date"
+        id="startDate"
+        name="startDate"
+        onchange="fetchBlogs()"
+        class="rounded-md border p-2 md:px-5 md:py-3 text-sm md:text-sm lg:text-base shadow-sm transition duration-300 focus:ring-2 focus:ring-primary focus:outline-none <%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-fourth text-dark-primary placeholder-gray-400' : 'bg-white border-gray-300 text-gray-800 placeholder-gray-400' %>"
+      />-
+      <input
+        type="date"
+        id="endDate"
+        name="endDate"
+        onchange="fetchBlogs()"
+        class="rounded-md border p-2 md:px-5 md:py-3 text-sm md:text-sm lg:text-base shadow-sm transition duration-300 focus:ring-2 focus:ring-primary focus:outline-none <%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-fourth text-dark-primary placeholder-gray-400' : 'bg-white border-gray-300 text-gray-800 placeholder-gray-400' %>"
+      />
     </div>
   </div>
 </div>
@@ -63,45 +63,42 @@
           const slidesHtml = blogs
             .map(
               (blog) => `
-                <div class="w-full flex-shrink-0 h-[45vh]  md:h-[55vh] font-lora">
-                  <div class="flex justify-center items-center bg-cover bg-center bg-origin-content w-full h-full text-white rounded-none" style="background-image: url('${
-                    blog.blogPhoto
-                  }')">
-                    <div class="rounded-lg shadow-lg overflow-hidden <%= user.settings.theme === 'dark' ? ' bg-dark-sixth' : ' bg-primary' %> bg-opacity-30 h-full flex flex-col  w-full p-8 py-5 md:p-16 md:py-10 gap-2">
-                      
-                      <div class="flex flex-col gap-2  w-full md:w-2/3  lg:w-1/2 m-auto text-center">
-                          <div class="flex">
-                        <p class=" px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-secondary' : 'bg-background text-background' %> bg-opacity-30  text-xxxs   md:text-xxs  lg:text-xs font-semibold font-roboto uppercase mx-auto">${truncateText(
-                          blog.tags[0],
-                          15
-                        )}</p>
-                      </div>
-                        <h5 class="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold whitespace-normal <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %> break-all">${truncateText(
-                          blog.title,
-                          50
-                        )}</h5>
-                        
-                          
-                          <p class="<%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %>  text-xxs sm:text-xs md:text-sm lg:text-base break-words font-extralight">${truncateText(
-                            blog.description,
-                            100
-                          )}
-                            <span><a href="/blog/${
-                              blog.slug
-                            }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %> hover:text-highlight    font-roboto text-center  text-xxs sm:text-xs md:text-sm lg:text-base  font-medium">read more</a></span></p>
-                          <p class="-mt-1 <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> font-sans">_________</p>
-                          <p class="text-xxxs sm:text-xxs  md:text-xxs lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %> font-extralight">${new Date(
-                            blog.createdAt
-                          ).toLocaleDateString("en-US", {
-                            day: "numeric",
-                            month: "numeric",
-                            year: "numeric",
-                          })}</p>
-                        
-                      </div>
+               <div class="w-full flex-shrink-0 h-[40vh]  md:h-[50vh]">
+              <div class="flex justify-center items-center bg-cover bg-center bg-origin-content w-full h-full text-white rounded-none " style="background-image: url('${
+                blog.blogPhoto
+              }')">
+                <div class="rounded-lg shadow-lg overflow-hidden <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'bg-primary text-text' %> bg-opacity-30 h-full flex flex-col justify-end w-full p-5 py-2  md:p-10 md:py-4  lg:p-16 lg:py-10 gap-2">
+                  <div class="flex">
+                    <p class=" px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-secondary text-dark-text' : 'bg-background text-text' %>  bg-opacity-30 text-white text-xxxs   md:text-xxs  lg:text-xs font-semibold font-sans uppercase">${
+                      blog.tags[0]
+                    }</p>
+                  </div>
+                  <div class="flex flex-col gap-2 mb-4 w-full sm:w-4/5  md:w-1/2">
+                    <h5 class="text-lg md:text-xl  lg:text-2xl font-semibold text-white break-words">  ${truncateText(
+                      blog.title,
+                      60
+                    )}</h5>
+                    <div class="flex gap-2 w-full overflow-clip font-thin text-sixth">
+                      <p class="text-xxs md:text-sm  lg:text-md  font-thin ">${new Date(
+                        blog.createdAt
+                      ).toLocaleDateString("en-US", {
+                        day: "numeric",
+                        month: "numeric",
+                        year: "numeric",
+                      })}</p>
+                      <p class="-mt-2  flex p-0 font-sans">___</p>
+                      <p class=" text-xxs md:text-sm  lg:text-md break-words w-full sm:w-2/3 md:w-full font-thin">${truncateText(
+                        blog.description,
+                        150
+                      )}</p>
                     </div>
+                    <a href="/blog/${
+                      blog.slug
+                    }" class="text-fifth hover:text-highlight hover:underline text-end text-xxs md:text-sm decoration-highlight font-roboto cursor-pointer">Read More </a>
                   </div>
                 </div>
+              </div>
+            </div>
               `
             )
             .join("");

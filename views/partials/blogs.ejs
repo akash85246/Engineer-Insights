@@ -1,6 +1,6 @@
 <div
   id="category-bar"
-  class="p-2 md:p-4 md:px-8 sticky top-0 <%= user.settings.theme === 'dark' ? ' bg-dark-background text-dark-primary' : 'bg-background text-text' %> z-30 -mt-12"
+  class="py-4 px-2 md:p-4 md:px-8 sticky top-0 <%= user.settings.theme === 'dark' ? ' bg-dark-background text-dark-primary' : 'bg-background text-text' %> z-30  pt-0"
 >
   <ul
     class="flex gap-2 lg:gap-4 overflow-y-hidden overflow-x-scroll w-full text-xs md:text-sm lg:text-base"
@@ -228,6 +228,8 @@
   class="flex justify-center items-center my-2"
 ></div>
 
+<%- include("../partials/deleteBlogModal.ejs") %>
+
 <script>
   let currentCategory = "";
   let searchQuery = "";
@@ -289,13 +291,42 @@
 
 
     blogs.forEach((blog) => {
+                let isSubAuthor = false;
+                let isAuthor = false;
+                let userId = null;
+                let isLiked = false;
+                let isBookmarked = false;
+                let isArchived = false;
+          
+                const isAuthenticated = "<%- isAuthenticated %>" == "true";
+          
+                if (isAuthenticated) {
+            
+                  const userId = "<%- user._id %>"; 
+                  const user = <%- JSON.stringify(user) %>;
+                  isAuthor = userId.toString() == blog.author._id;
+                  isSubAuthor = blog.subauthors.some(
+                    (subauthorId) => subauthorId.toString() === userId.toString());
+
+                  if (blog.likes && blog.likes.length > 0) {
+                    isLiked = blog.likes.some((like) => like.toString()       ===    userId.toString());
+            
+                  }
+
+                  if(user.savedBlogs && user.savedBlogs.length >0){
+                    isBookmarked = user.savedBlogs.some((save) => save.       toString() === blog._id.toString());
+                  }
+
+                  isArchived = blog.status === "archived";
+                }
+
       const blogCard = `
-         <div class="font-lora relative rounded-md <%= user.settings.theme === 'dark' ? 'bg-dark-sixth shadow-white-lg' : 'bg-background shadow-lg' %> flex flex-col justify-between">
+         <div class="font-lora relative rounded-md <%= user.settings.theme === 'dark' ? 'bg-dark-sixth shadow-white-lg' : 'bg-background shadow-lg' %> flex flex-col justify-between" onmouseleave="hideBlogOptions('${blog.slug}')">
                     <div class="flex justify-end bg-cover bg-center bg-origin-content rounded-md bg-blend-darken"  style="background-image: url('${
                       blog.blogPhoto
                     }')">
                     <div class="flex h-auto mb-32 sm:mb-52  md:mb-64 mt-2 mr-2   md:mt-5 md:mr-5">
-                      <p class=" px-2 py-1 rounded-lg bg-white bg-opacity-30 text-white text-xxxs   md:text-xxs  lg:text-xs font-semibold font-sans uppercase <%= user.settings.theme === 'dark' ? 'bg-dark-secondary' : 'bg-background text-background' %>">${truncateText(
+                      <p class=" px-2 py-1 rounded-lg bg-white bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs  font-semibold font-sans uppercase <%= user.settings.theme === 'dark' ? 'bg-dark-secondary' : 'bg-background text-background' %>">${truncateText(
                         blog.tags[0],
                         15
                       )}</p>
@@ -303,44 +334,132 @@
                  
                 </div>
                 <div class="flex flex-col gap-2 pt-4 px-2 pb-2">
-                   <p class="text-xxxs md:text-xxs  lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-fourth' %>  font-thin">${new Date(
+                   <p class="text-xs sm:text-xxs md:text-xs lg:text-sm  <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-secondary' %>  font-thin">${new Date(
                      blog.createdAt
                    ).toLocaleDateString("en-US", {
                      day: "numeric",
                      month: "numeric",
                      year: "numeric",
                    })}</p>
-                    <h5 class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : 'text-tertiary' %> break-words whitespace-normal ">
+                    <h5 class="text-sm sm:text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : 'text-primary' %> break-words whitespace-normal ">
                       ${truncateText(blog.title, 50)}
                     </h5>
-                    <p class="text-xxxs sm:text-xxs md:text-xs lg:text-sm <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-fourth' %> break-words whitespace-normal font-thin">
+                    <p class="text-xs sm:text-xxs md:text-xs lg:text-sm  <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-secondary' %> break-words whitespace-normal font-thin">
                       ${truncateText(blog.description, 100)}
                       <span>
                       <a href="/blog/${
                         blog.slug
-                      }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-fourth' %> hover:text-highlight    font-roboto text-center  text-xxxs sm:text-xxs md:text-xs lg:text-sm font-medium">read more</a>
+                      }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-secondary' %> hover:text-highlight    font-roboto text-center  text-xs sm:text-xxs md:text-xs lg:text-sm  font-medium">read more</a>
                         
                       </span>
                     </p>
 
                   </div>
-                  <a class="p-2 border-t-2 <%= user.settings.theme === 'dark' ? 'border-dark-fifth' : 'border-sixth' %> flex gap-2 relative bottom-0 mt-auto cursor-pointer"  href="/profile/${
-                    blog.author.slug
-                  }">
+                  
+                  
+                  <div class="justify-between items-center flex text-sm sm:text-sm md:text-base lg:text-base p-2 border-t-2 <%= user.settings.theme === 'dark' ? 'border-dark-fifth' : 'border-sixth' %> ">
+
+                          <a class="flex items-center gap-2" href="/profile/${
+                            blog.author.slug
+                          }" >
                     <img src="${
                       blog.author.avatar
-                    }" alt="author" class="w-8 h-8 rounded-full" />
+                    }" alt="author" class="w-8 h-8 lg:w-10 lg:h-10 rounded-md" />
                     <div class="">
-                    <p class="text-xxs sm:text-xs md:text-sm lg:text-md font-thin <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-tertiary' %> ">
+                    <p class=" font-thin <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> ">
                       ${blog.author.username}
                     </p>
-                    <p class="text-xxxs sm:text-xxs md:text-xs lg:text-xs font-thin text-fourth">
+                    <p class="text-xs sm:text-xs md:text-sm lg:text-sm font-thin <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-secondary' %>">
                       ${blog.author.firstname} ${blog.author.lastname}
                     </p>
                 </div>
                 </a>
+                <div class="relative">
+                             ${(isAuthenticated)?
+                  `<button onclick='openBlogMore(${isSubAuthor}, ${isAuthor}, "${
+                        blog.slug
+                    }")'>
+                      <img src="images/icons/verticalMoreIcon.svg" alt="More"
+                        class="w-6 h-6 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 invert">
+                    </button>`:""}
+
+                            <div  class="absolute bottom-0 right-0 flex flex-col gap-2 rounded-md p-2 shadow-md z-50
+                      <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-background text-primary' %> min-w-[120px] hidden shadow-md"
+                      id="blogMoreOptions-${blog.slug}">
+
+                       
+
+                  ${
+                    isSubAuthor || isAuthor
+                      ? `
+                      
+                         ${
+                           isAuthor
+                             ? `
+                             <button onclick="toggleArchiveBlog('${blog.slug}','${isArchived}')"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                             <%= user.settings.theme === 'dark'
+                              ? 'hover:bg-red-600 text-dark-primary'
+                              : 'hover:bg-red-200 text-primary' %>">
+                             <img src="${isArchived?"images/icons/unarchiveIcon.svg":"images/icons/archiveIcon.svg"}" alt="Archive Blog"
+                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="archiveIcon-${blog.slug}">
+                             <span id="archiveText-${blog.slug}">${isArchived ? "Unarchive" : "Archive"}</span>
+                             </button>
+
+                             <button onclick="openDeleteModal('${blog.slug}')"  class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                            <%= user.settings.theme === 'dark'
+                              ? 'hover:bg-red-600 text-dark-primary'
+                              : 'hover:bg-red-200 text-primary' %>">
+                              <img src="images/icons/deleteDarkIcon.svg" alt="Delete Blog"
+                              class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 ">
+                              <span>Delete</span>
+                              </button>
+                             `
+                             : ""
+                         }
+                         <a href="/blog/edit/${
+                           blog.slug
+                         }"  class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                          <%= user.settings.theme === 'dark'
+                            ? 'hover:bg-blue-600 text-dark-primary'
+                            : 'hover:bg-blue-200 text-primary' %>"> <img src="images/icons/editDarkIcon.svg" alt="Edit Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110"> 
+                         <span>Edit</span>
+                         </a>
+                      
+                    `
+                      : ` <button onclick="likeBlog('${
+                        blog.slug
+                      }',${isLiked})" class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                        <%= user.settings.theme === 'dark'
+                          ? 'hover:bg-red-600 text-dark-primary'
+                          : 'hover:bg-red-200 text-primary' %>">
+                              <img src="${
+                                isLiked
+                                  ? "images/icons/likeIcon.svg"
+                                  : "images/icons/unlikeIcon.svg"
+                              }" id="likeIcon-${blog.slug}" alt="Like Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110  ">
+                              <span id="likeText-${blog.slug}">${
+                              isLiked ? "Unlike" : "Like"
+                            }</span>
+                        </button>
+
+                        <button onclick="toggleSaveBlog('${blog.slug}',${isBookmarked})"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                          <%= user.settings.theme === 'dark'
+                          ? 'hover:bg-red-600 text-dark-primary'
+                          : 'hover:bg-red-200 text-primary' %>">
+                              <img src="${
+                                isBookmarked
+                                  ? "images/icons/unbookMark.svg"
+                                  : "images/icons/bookMark.svg" } " alt="Unsave Blog"
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="saveIcon-${blog.slug}">
+                              <span id="saveText-${blog.slug}">${isBookmarked?`Unsave`:`Save`}</span>
+                        </button>`
+                  }
                 </div>
-        `;
+                </div>
+                </div>
+        `
       displayBlogsElement.innerHTML += blogCard;
     });
   }
@@ -438,6 +557,164 @@
     }
     return text;
   }
+
+   window.openBlogMore = function openBlogMore(isSubAuthor, isAuthor, slug) {
+      const blogMoreOptions = document.getElementById(
+        "blogMoreOptions-" + slug
+      );
+     
+      blogMoreOptions.classList.toggle("hidden");
+    };
+
+
+
+    window.hideBlogOptions = function hideBlogOptions(slug) {
+      const options = document.getElementById(`blogMoreOptions-${slug}`);
+      if (options) {
+        options.classList.add("hidden");
+      }
+    };
+
+     window.likeBlog = async function likeBlog(slug, isLiked) {
+      const likeImg = document.getElementById("likeIcon-" + slug);
+      const likeText = document.getElementById("likeText-" + slug);
+      isLiked = likeText.innerText === "Unlike";
+      
+      if (isLiked) {
+        likeImg.src = "images/icons/unlikeIcon.svg";
+        likeText.innerText = "Like";
+        likeImg.alt = "Unlike icon";
+        
+      } else {
+        likeImg.src = "images/icons/likeIcon.svg";
+        likeText.innerText = "Unlike";
+        likeImg.alt = "Like icon";
+        
+      }
+      try {
+        const response = await fetch(`/api/blog/like/${slug}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (!response.ok) {
+          likeImg.src = isLiked
+            ? "images/icons/likeIcon.svg"
+            : "images/icons/unlikeIcon.svg";
+          likeImg.alt = isLiked ? "Like icon" : "Unlike icon";
+          likeText.innerText = isLiked ? "Like" : "Unlike";
+
+          throw new Error("Failed to like/unlike the blog");
+        }
+
+        const result = await response.json();
+       
+        if (!result.liked) {
+          likeImg.src = "images/icons/unlikeIcon.svg";
+          likeImg.alt = "Unlike icon";
+          likeText.innerText = "Like";
+          
+        } else {
+          likeImg.src = "images/icons/likeIcon.svg";
+          likeImg.alt = "Like icon";
+          likeText.innerText = "Unlike";
+          
+        }
+      } catch (error) {
+        likeImg.src = isLiked
+          ? "images/icons/likeIcon.svg"
+          : "images/icons/unlikeIcon.svg";
+        likeImg.alt = isLiked ? "Like icon" : "Unlike icon";
+        likeText.innerText = isLiked ? "Like" : "Unlike";
+
+      }
+    };
+    
+    window.toggleSaveBlog = async function toggleSaveBlog(slug,isBookmarked) {
+      try {
+        const saveText = document.getElementById(`saveText-${slug}`);
+        const saveIcon = document.getElementById(`saveIcon-${slug}`);
+
+        if(isBookmarked) {
+          saveText.innerText = "Save";
+          saveIcon.src = "images/icons/bookMark.svg";
+        } else {
+          saveText.innerText = "Unsave";
+          saveIcon.src = "images/icons/unbookMark.svg";
+        }
+
+        const response = await fetch(`/api/blog/saveBlog/${slug}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          });
+
+            if (!response.ok) {
+
+              saveText.innerText = isBookmarked ? "Unsave" : "Save";
+              saveIcon.src = isBookmarked
+                ? "images/icons/bookMark.svg"
+                : "images/icons/unbookMark.svg";
+
+              throw new Error("Failed to archive the blog");
+            }
+
+            const result = await response.json();
+
+            if(!result.saved) {
+                saveText.innerText = "Save";
+                saveIcon.src = "images/icons/bookMark.svg";
+              } else {
+                saveText.innerText = "Unsave";
+                saveIcon.src = "images/icons/unbookMark.svg";
+              }
+            
+      } catch (error) {
+        console.error("Error unarchiving the blog:", error);
+      }
+    };
+
+     window.toggleArchiveBlog = async function toggleArchiveBlog(slug,isArchived) {
+      const archiveText = document.getElementById(`archiveText-${slug}`);
+      const archiveIcon = document.getElementById(`archiveIcon-${slug}`);
+
+      if (isArchived) {
+        archiveText.innerText = "Archive";
+        archiveIcon.src = "images/icons/archiveIcon.svg";
+      } else {
+        archiveText.innerText = "Unarchive";
+        archiveIcon.src = "images/icons/unarchiveIcon.svg";
+      }
+
+      try {
+        const response = await fetch(`/api/blog/archive/${slug}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          });
+
+            if (!response.ok) {
+              archiveText.innerText = isArchived ? "Unarchive" : "Archive";
+              archiveIcon.src = isArchived
+                ? "images/icons/unarchiveIcon.svg"
+                : "images/icons/archiveIcon.svg";
+              throw new Error("Failed to archive the blog");
+            }
+
+            const result = await response.json();
+             console.log("Blog unarchived successfully", result);
+            if(!result.archived) {
+              archiveText.innerText = "Archive";
+              archiveIcon.src = "images/icons/archiveIcon.svg";
+            } else {
+              archiveText.innerText = "Unarchive";
+              archiveIcon.src = "images/icons/unarchiveIcon.svg";
+              fetchBlogs(1); // Refresh the blog list after unarchiving
+            }
+      } catch (error) {
+        console.error("Error unarchiving the blog:", error);
+      }
+    };
+
+
 
   window.onload = fetchBlogs(1);
 </script>
