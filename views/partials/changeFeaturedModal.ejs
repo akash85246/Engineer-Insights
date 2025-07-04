@@ -7,18 +7,33 @@
   <div
     class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> backdrop-blur-sm p-4 rounded-lg w-full m-auto md:w-1/2 "
   >
+       <div class="flex items-center justify-between  col-span-2 mb-2">
+      <h2
+        class="text-xl font-semibold font-sans"
+      >
+       Select Blog To Feature
+      </h2>
+      <button
+            onclick="closeShowChangeFeaturedModal()"
+            class="text-gray-400 hover:text-red-500 transition duration-200 text-xl"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+      </div>
+
     <div
-      class="relative flex items-center bg-transparent  border  <%= user.settings.theme === 'dark' ? 'bg-dark-secondary text-dark-secondary' : 'border-fourth text-fourth' %>  rounded-lg px-4 md:py-2 lg:py-1 shadow-sm w-full"
+      class="relative flex items-center <%= user.settings.theme === 'dark' ? ' bg-dark-sixth ' : 'bg-gray-200' %> border rounded-lg p-2 md:px-5 md:py-3 w-full sm:w-2/3 lg:w-full mb-2 sm:mb-0"
     >
       <img
         src="images/icons/searchIcon.png"
         alt="Search Icon"
-        class="w-5 h-5 <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+        class="w-4 h-4 md:w-6 md:h-6 <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-text' %>"
       />
       <input
         type="text"
         placeholder="Search a blog to select"
-        class="ml-2 bg-transparent outline-none  w-full <%= user.settings.theme === 'dark' ? 'placeholder-tertiary' : 'placeholder-third' %>  md:text-xs lg:text-sm"
+        class="mx-5 bg-transparent outline-none <%= user.settings.theme === 'dark' ? ' text-dark-primary placeholder-sixth' : 'text-secondary placeholder-tertiary' %> w-full text-sm md:text-sm lg:text-base font-lora placeholder-sixth"
         oninput="searchBlog(this.value)"
       />
     </div>

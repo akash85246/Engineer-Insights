@@ -1,18 +1,31 @@
 <div
-  class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'text-text bg-primary' %> bg-opacity-50 flex items-center justify-center hidden z-50 p-5 md:p-0 backdrop-blur-sm w-full h-full font-lora"
+  class="hidden fixed inset-0 z-10 flex items-center justify-center backdrop-blur-sm <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %> bg-opacity-50 p-5 md:p-0 z-50"
   id="featureModal"
+  onclick="closeFeatureModal()"
 >
   <div
-    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> backdrop-blur-sm p-4 md:p-10 rounded-lg w-full m-auto md:w-1/2 grid grid-cols-2 gap-2 md:gap-6"
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-gray-900' %> p-6 rounded-lg w-full m-auto md:w-1/2 grid grid-cols-2 gap-2 md:gap-6"
+    onclick="event.stopPropagation()"
   >
-    <h1
-      class="text-base sm:text-lg md:text-xl lg:text-2xl <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %> font-semibold col-span-2 "
-    >
-      Feature Blog
-    </h1>
+
+     <div class="flex items-center justify-between  col-span-2">
+      <h2
+        class="text-xl font-semibold font-sans"
+      >
+        Feature Blog
+      </h2>
+      <button
+            onclick="closeFeatureModal()"
+            class="text-gray-400 hover:text-red-500 transition duration-200 text-xl"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+      </div>
+    
 
     <div
-      class="max-w-sm w-full shadow-lg rounded-lg border <%= user.settings.theme === 'dark' ? 'bg-dark-fourth border-dark-background' : 'bg-sixth border-fifth' %> p-2 md:p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out transform hover:scale-105 flex flex-col justify-between items-center"
+      class="max-w-sm w-full shadow-lg rounded-lg border <%= user.settings.theme === 'dark' ? 'bg-dark-fourth border-dark-background' : 'bg-background border-fifth' %> p-2 md:p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out transform hover:scale-105 flex flex-col justify-between items-center"
     >
       <div class="flex justify-center mb-4">
         <img
@@ -37,11 +50,11 @@
       <div
         class="flex justify-center text-base sm:text-lg md:text-xl font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-primary' %> mb-10 md:mb-16"
       >
-      <% if(user.subscription =="regular" ||user.subscription =="elite" || freeBlogsLeft==0) {%> $5 <% }
+      <% if(user.subscription =="regular" ||user.subscription =="elite" || freeBlogsLeft<=0) {%> $5 <% }
         else {%> Free <% } %>
       </div>
       <div class="flex justify-center w-full">
-        <% if(user.subscription =="regular" ||user.subscription =="elite" || freeBlogsLeft==0) {%>
+        <% if(user.subscription =="regular" ||user.subscription =="elite" || freeBlogsLeft<=0) {%>
         <form action="/api/payment/create" method="POST" class="w-full">
           <input type="hidden" name="amount" value="5" />
           <input type="hidden" name="currency" value="USD" />
@@ -81,7 +94,7 @@
     </div>
 
     <div
-      class="max-w-sm w-full shadow-lg rounded-lg border <%= user.settings.theme === 'dark' ? 'bg-dark-fourth border-dark-background' : 'bg-sixth border-fifth' %> p-2 md:p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out transform hover:scale-105 flex flex-col justify-between items-center"
+      class="max-w-sm w-full shadow-lg rounded-lg border <%= user.settings.theme === 'dark' ? 'bg-dark-fourth border-dark-background' : 'bg-background border-fifth' %> p-2 md:p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out transform hover:scale-105 flex flex-col justify-between items-center"
     >
       <div class="flex justify-center mb-4">
         <img
@@ -108,11 +121,11 @@
       <div
         class="flex justify-center text-base sm:text-lg md:text-xl font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-primary' %> mb-10 md:mb-16"
       >
-      <% if(user.subscription =="regular" ||user.subscription =="pro" || freeBlogsLeft==0) {%> $15 <% }
+      <% if(user.subscription =="regular" ||user.subscription =="pro" || freeBlogsLeft<=0) {%> $15 <% }
       else {%> Free <% } %>
       </div>
       <div class="flex justify-center w-full">
-        <% if(user.subscription =="regular" ||user.subscription =="pro" || freeBlogsLeft==0) {%>
+        <% if(user.subscription =="regular" ||user.subscription =="pro" || freeBlogsLeft<=0) {%>
         <form action="/api/payment/create" method="POST" class="w-full">
           <input type="hidden" name="amount" value="15" />
           <input type="hidden" name="paymentType" value="featured" />
