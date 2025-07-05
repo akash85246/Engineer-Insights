@@ -75,3 +75,9 @@ overflow: scroll;
   from { width: 0%; }
   to { width: 100%; }
 }
+
+#editor:empty::before {
+    content: attr(data-placeholder);
+    color: #9ca3af; /* Tailwind's text-gray-400 */
+    pointer-events: none;
+  }

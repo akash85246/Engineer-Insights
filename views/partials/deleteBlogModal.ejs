@@ -71,7 +71,7 @@
       if (response.ok) {
         alert("Blog deleted successfully");
         closeDeleteModal();
-        window.location.reload();
+        window.location.href = "/";
       } else {
         alert(data.message || "Error deleting blog");
       }

@@ -21,7 +21,7 @@
       <select
         id="category"
         name="category"
-        class="block w-full px-4 py-2 text-xs sm:text-sm md:text-base border <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-secondary' %> border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-fourth focus:border-fourth"
+        class="block w-full px-4 py-2 text-xs sm:text-sm md:text-base border <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-background text-primary' %> border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-fourth focus:border-fourth"
       >
         <option value="" disabled selected>Select a category</option>
         <option value="tech">Technology</option>
@@ -65,7 +65,7 @@
       <select
         id="status"
         name="status"
-        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-secondary' %> block w-full px-4 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-fourth focus:border-fourth"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-background text-primary' %> block w-full px-4 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-fourth focus:border-fourth"
       >
         <option value="published">Publish</option>
         <option value="draft">Draft</option>
@@ -82,7 +82,7 @@
       <select
         id="audience"
         name="audience"
-        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-secondary' %> block w-full px-4 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-fourth focus:border-fourth"
+        class="<<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-background text-primary' %> block w-full px-4 py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-fourth focus:border-fourth"
         required
       >
         <option value="public">Public</option>
@@ -122,7 +122,7 @@
         name="metaDescription"
         rows="7"
         maxlength="300"
-        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-secondary' %> w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none text-xs sm:text-sm md:text-base"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-background text-primary' %> w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none text-xs sm:text-sm md:text-base"
       >
 <%- blog.metaDescription || ''  %></textarea
       >
@@ -144,7 +144,7 @@
             type="checkbox"
             id="summary"
             name="summary"
-            class="sr-only peer"
+            class="sr-only peer <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-background text-primary' %>"
           />
           <div
             class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
@@ -153,11 +153,11 @@
       </div>
     </div>
 
-    <div class="md:mt-24">
+    <div class="md:mt-16">
       <button
         type="submit"
         id="submit"
-        class="w-full py-2 px-4 font-roboto <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth text-fourth bg-sixth' %> rounded-md hover:bg-blue-300 hover:text-background"
+        class="w-full py-2 px-4 font-roboto <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth hover:text-fourth bg-blue-500' %> rounded-md hover:bg-blue-700 text-background"
       >
         Submit
       </button>
@@ -165,48 +165,45 @@
   </div>
 
   <div
-    class="order-1 md:order-2 col-span-4 sm:col-span-3 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white' %> shadow-lg rounded-lg"
+    class="order-1 md:order-2 col-span-4 sm:col-span-3 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white' %> shadow-lg rounded-lg flex flex-col max-h-screen overflow-y-scroll"
+    onclick="focusoneditor()"
   >
     <h1
       id="markdownLabel"
       for="markdown"
-      class="text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2 lg:mb-6 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-primary' : ' bg-white text-secondary' %> sticky top-0 z-10 pb-1 lg:pb-2 w-full"
+      class="text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2 lg:mb-6 <%= user.settings.theme === 'dark' ? 'text-dark-primary bg-dark-sixth' : 'text-secondary bg-white' %> sticky top-0 z-10 pb-1 lg:pb-2 w-full"
+      onclick="event.stopPropagation()"
     >
       Markdown
     </h1>
-    <div class="relative mt-2">
-      <textarea
-        rows="28"
-        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-background text-fourth' %> text-xs sm:text-sm md:text-base lg:text-lg w-full overflow-y-scroll overflow-x-hidden resize-none outline-none border border-tertiary rounded-lg p-1 md:p-2 lg:p-4 shadow-sm focus:ring-2 focus:ring-fourth focus:border-fourth break-words relative"
-        id="markdown"
-        name="markdown"
-        maxlength="50000"
-        required
-      >
-<%= blog.markdown %>
-      </textarea>
-
+    <!--  -->
+    <div class="relative w-full bg-white rounded-xl">
       <div
-        id="suggestionOverlay"
-        class="z-50 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white' %> p-2 rounded shadow-md text-xs <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-text' %> border border-gray-300 flex gap-1 items-center"
-        style="display: none; flex-wrap: nowrap"
+        class="relative text-base text-gray-800 leading-relaxed font-medium flex flex-wrap"
       >
-        Suggestion:<span id="suggestionText">Your suggestion text here</span>
-        <div
-          id="closeButton"
-          class="ml-2 text-red-500 hover:text-red-700 focus:outline-none inline-block cursor-pointer"
-          title="Close"
-        >
-          &times;
+        <div id="editorWrapper" class="relative w-full">
+          <div
+            id="ghost"
+            class="absolute inset-0 whitespace-pre-wrap break-words min-h-[150px] text-gray-400 pointer-events-none font-medium leading-relaxed z-0"
+          ></div>
+
+          <!-- Editable text area -->
+          <div
+            id="editor"
+            contenteditable="true"
+            spellcheck="false"
+            data-placeholder="Start typing your content here..."
+            class="relative z-10 whitespace-pre-wrap break-words min-h-[150px] bg-transparent focus:outline-none text-base text-gray-800 font-medium leading-relaxed"
+          ></div>
         </div>
       </div>
-
-      <p id="markdownError" class="text-xs text-red-500"></p>
     </div>
+    <!--  -->
+    
   </div>
 
   <div
-    class="order-2 hidden sm:block md:order-3 col-span-1 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-primary' : ' bg-white text-secondary' %> shadow-lg rounded-lg"
+    class="order-2 hidden sm:block md:order-3 col-span-1 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'text-dark-primary bg-dark-sixth' : 'text-secondary bg-white' %> shadow-lg rounded-lg"
   >
     <div class="sticky top-0 h-auto max-h-[70vh]">
       <h2
@@ -224,241 +221,211 @@
   </div>
 </form>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-  const textArea = document.getElementById("markdown");
-  const suggestionOverlay = document.getElementById("suggestionOverlay");
-  const suggestionText = document.getElementById("suggestionText");
-  const closeButton = document.getElementById("closeButton");
-  let closeButtonClicked = false;
+  
+document.addEventListener("DOMContentLoaded", () => {
 
-  closeButton.addEventListener("click", () => {
-    suggestionOverlay.style.display = "none";
-    closeButtonClicked = true;
+   const editor = document.getElementById('editor');
+    const ghost = document.getElementById('ghost');
+        const markdownSaved = <%- JSON.stringify(blog.markdown || '') %>;
+   editor.innerHTML = markdownSaved || '';
+  editor.focus();
+  
+    const sanitizedHtmlContainer = document.getElementById("sanitizedHtml");
+    // Set the initial content of the editor
+    const htmlSaved = marked.parse(markdownSaved);
+    const sanitizedHtmlSaved = DOMPurify.sanitize(htmlSaved);
+    sanitizedHtmlContainer.innerHTML = sanitizedHtmlSaved;
+
+
+
+
+  let timeout;
+
+   window.focusoneditor = function focusoneditor() {
+      const editor = document.getElementById("editor");
+      console.log("editor", editor);
+      editor.focus();
+    }
+
+
+
+    function debounce(func, delay) {
+      let timeout;
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), delay);
+      };
+    }
+
+
+    function escapeAndFormat(text) {
+    return text
+      .replace(/&/g, '&amp;')         // escape &
+      .replace(/</g, '&lt;')          // escape <
+      .replace(/>/g, '&gt;')          // escape >
+      .replace(/ /g, '&nbsp;')        // preserve spaces
+      .replace(/\n/g, '<br>');        // preserve newlines
+  }
+
+  function syncGhost(userText, suggestion) {
+    console.log("syncGhost called with userText:", userText, "and suggestion:", suggestion);
+    const userPart = escapeAndFormat(userText);
+    const ghostPart = escapeAndFormat(suggestion);
+    ghost.innerHTML = `<span>${userPart}</span><span class="text-gray-400">${ghostPart}</span>`;
+  }
+
+    const fetchSuggestion = async (text) => {
+
+      if (text.trim() !== "") {
+        const response = await fetch("/api/suggestion", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: text }),
+        });
+        let data = await response.json();
+        const suggestion = data.suggestion;
+        if (suggestion) {
+          return suggestion;
+        }else{
+          return '';
+        }
+      }else{
+        return '';
+      }
+    };
+
+    const suggestionsEnabled = "<%= (user.settings.suggestions) %>";
+
+    if (suggestionsEnabled == "true") {
+
+    editor.addEventListener('input', () => {
+      clearTimeout(timeout);
+      const text = editor.innerText;
+      timeout = setTimeout(async () => {
+        const suggestion = await fetchSuggestion(text);
+        syncGhost(text, suggestion);
+      }, 400);
+    });
+    }
+
+    function normalize(str) {
+    return str.replace(/\u00A0/g, ' ') // replace non-breaking spaces
+              .replace(/\s+/g, ' ')    // collapse multiple spaces
+              .trim();
+  }
+
+        editor.addEventListener("keydown", (e) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+
+      const suggestion = ghost.innerText;
+
+     if (suggestion && normalize(suggestion).startsWith(normalize(editor.innerText))) {
+
+        const completedText = suggestion;
+        editor.innerText = completedText;
+        ghost.innerHTML = "";
+
+        const range = document.createRange();
+        const sel = window.getSelection();
+        range.selectNodeContents(editor);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    }
   });
 
-  function debounce(func, delay) {
-    let timeout;
-    return (...args) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func(...args), delay);
-    };
-  }
+            const form = document.getElementById("articleForm");
 
-  function getCursorPosition(textarea) {
-    const { selectionStart } = textarea;
-    const textBeforeCursor = textarea.value.substring(0, selectionStart);
+            const metaTitleRegex = /^[\w\s\-.,;!]{1,100}$/;
+            const metaDescriptionRegex = /^[\w\s\-.,;!]{1,300}$/;
+            const markdownRegex = /^(.|\s)*$/;
 
-    // Create a hidden div styled like the textarea
-    const div = document.createElement('span');
-    const style = getComputedStyle(textarea);
-    div.classList.add("createdDiv");
-    div.id = "createdDiv";
-    div.style.position = 'absolute';
-  div.style.whiteSpace = 'pre-wrap';
-  div.style.wordWrap = 'break-word';
-  div.style.font = style.font;
-  div.style.lineHeight = style.lineHeight;
-  div.style.padding = style.padding;
-  div.style.border = style.border;
-  div.style.visibility = 'hidden';
-  div.style.overflow = 'hidden';
-
-  div.style.width = `${textarea.clientWidth}px`; // Adjust width to exclude scrollbar
-
-console.log(div)
-    // Handle newlines
-    div.textContent = textBeforeCursor.replace(/\n/g, '\u200b\n');
-    document.body.appendChild(div);
-
-    const rect = div.getBoundingClientRect();
-    const textareaRect = textarea.getBoundingClientRect();
-    document.body.removeChild(div);
-
-
-    return {
-    x: rect.width - textareaRect.left + parseFloat(style.paddingLeft) - textarea.scrollLeft,
-      y: rect.height - textarea.scrollTop - 20,
-    };
-  }
-  
-
-  function showSuggestion(suggestion, position) {
-    suggestionText.textContent = suggestion;
-    suggestionOverlay.style.left = `${position.x}px`;
-    suggestionOverlay.style.top = `${position.y}px`;
-    suggestionOverlay.style.display = 'flex';
-  }
-
-  const fetchSuggestion = async (position) => {
-    const userInput = textArea.value.trim();
-
-    if (userInput) {
-      const response = await fetch("/api/suggestion", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: userInput }),
-      });
-      let data = await response.json();
-      const suggestion = data.suggestion;
-      if (suggestion) {
-        showSuggestion(suggestion, position);
-      } else {
-        suggestionOverlay.style.display = "none";
-      }
-    } else {
-      suggestionOverlay.style.display = "none";
-    }
-  };
-
-  const suggestionsEnabled = "<%= (user.settings.suggestions) %>";
-
-  if (suggestionsEnabled == "true") {
-    textArea.addEventListener("input", debounce(() => {
-      const cursorPosition = getCursorPosition(textArea);
-      fetchSuggestion(cursorPosition);
-    }, 100));
-  }
-
-
-          textArea.addEventListener("keydown", (e) => {
-            if (e.key === "Tab" && suggestionText.innerText) {
-              e.preventDefault();
-              const cursorPosition = textArea.selectionStart;
-              const beforeCursorText = textArea.value.substring(0, cursorPosition);
-              const afterCursorText = textArea.value.substring(cursorPosition);
-
-              textArea.value =
-                beforeCursorText + suggestionText.innerText + afterCursorText;
-
-              const newCursorPosition =
-                cursorPosition + suggestionText.innerText.length;
-              textArea.setSelectionRange(newCursorPosition, newCursorPosition);
-
-              suggestionText.innerText = "";
-              suggestionOverlay.style.display = "none";
+            function validateField(inputElement, regex, errorElement, errorMessage) {
+              if (!regex.test(inputElement.value)) {
+                errorElement.textContent = errorMessage;
+                inputElement.classList.add("border-red-500", "focus:ring-red-500");
+                inputElement.classList.remove("border-gray-300", "focus:ring-fourth");
+              } else {
+                errorElement.textContent = "";
+                inputElement.classList.add("border-gray-300", "focus:ring-fourth");
+                inputElement.classList.remove("border-red-500", "focus:ring-red-500");
+              }
             }
 
-            if (e.ctrlKey && e.code === "KeyX") {
-              suggestionOverlay.style.display = "none";
-              closeButtonClicked = true;
-            }
-          });
-
-          const form = document.getElementById("articleForm");
-
-          const metaTitleRegex = /^[\w\s\-.,;!]{1,100}$/;
-          const metaDescriptionRegex = /^[\w\s\-.,;!]{1,300}$/;
-          const markdownRegex = /^(.|\s)*$/;
-
-          function validateField(inputElement, regex, errorElement, errorMessage) {
-            if (!regex.test(inputElement.value)) {
-              errorElement.textContent = errorMessage;
-              inputElement.classList.add("border-red-500", "focus:ring-red-500");
-              inputElement.classList.remove("border-gray-300", "focus:ring-fourth");
-            } else {
-              errorElement.textContent = "";
-              inputElement.classList.add("border-gray-300", "focus:ring-fourth");
-              inputElement.classList.remove("border-red-500", "focus:ring-red-500");
-            }
-          }
-
-          document.getElementById("metaTitle").addEventListener("input", function () {
-            validateField(
-              this,
-              metaTitleRegex,
-              document.getElementById("metaTitleError"),
-              "Invalid SEO title. Should be 1-60 characters long."
-            );
-          });
-
-          document
-            .getElementById("metaDescription")
-            .addEventListener("input", function () {
+            document.getElementById("metaTitle").addEventListener("input", function () {
               validateField(
                 this,
+                metaTitleRegex,
+                document.getElementById("metaTitleError"),
+                "Invalid SEO title. Should be 1-60 characters long."
+              );
+            });
+
+            document
+              .getElementById("metaDescription")
+              .addEventListener("input", function () {
+                validateField(
+                  this,
+                  metaDescriptionRegex,
+                  document.getElementById("metaDescriptionError"),
+                  "Invalid SEO description. Should be 1-160 characters long."
+                );
+              });
+
+            const submitButton = document.getElementById("submit");
+
+            submitButton.addEventListener("click", function (event) {
+              event.preventDefault();
+              const checkbox = document.getElementById("summary");
+              let summaryValue = false;
+              console.log("checked", checkbox);
+              if (checkbox.checked) {
+                console.log("checked", checkbox.checked);
+                summaryValue = true;
+              } else {
+                console.log("checked", checkbox.checked);
+                summaryValue = false;
+              }
+
+              const metaTitle = document.getElementById("metaTitle");
+              const metaDescription = document.getElementById("metaDescription");
+              const markdown = document.getElementById("markdown");
+
+              validateField(
+                metaTitle,
+                metaTitleRegex,
+                document.getElementById("metaTitleError"),
+                "Invalid SEO title. Should be 1-60 characters long."
+              );
+              validateField(
+                metaDescription,
                 metaDescriptionRegex,
                 document.getElementById("metaDescriptionError"),
                 "Invalid SEO description. Should be 1-160 characters long."
               );
-            });
-
-          document.getElementById("markdown").addEventListener("input", function () {
-            validateField(
-              this,
-              markdownRegex,
-              document.getElementById("markdownError"),
-              "Invalid markdown content."
-            );
-          });
-
-          const submitButton = document.getElementById("submit");
-
-          submitButton.addEventListener("click", function (event) {
-            event.preventDefault();
-            const checkbox = document.getElementById("summary");
-            let summaryValue = false;
-            console.log("checked", checkbox);
-            if (checkbox.checked) {
-              console.log("checked", checkbox.checked);
-              summaryValue = true;
-            } else {
-              console.log("checked", checkbox.checked);
-              summaryValue = false;
-            }
-
-            const metaTitle = document.getElementById("metaTitle");
-            const metaDescription = document.getElementById("metaDescription");
-            const markdown = document.getElementById("markdown");
-
-            validateField(
-              metaTitle,
-              metaTitleRegex,
-              document.getElementById("metaTitleError"),
-              "Invalid SEO title. Should be 1-60 characters long."
-            );
-            validateField(
-              metaDescription,
-              metaDescriptionRegex,
-              document.getElementById("metaDescriptionError"),
-              "Invalid SEO description. Should be 1-160 characters long."
-            );
-            validateField(
-              markdown,
-              markdownRegex,
-              document.getElementById("markdownError"),
-              "Invalid markdown content."
-            );
-
-            if (
-              metaTitle.classList.contains("border-gray-300") &&
-              metaDescription.classList.contains("border-gray-300") &&
-              markdown.classList.contains("border-gray-300") &&
-              !closeButtonClicked
-            ) {
-              const category = document.getElementById("category").value;
-              const status = document.getElementById("status").value;
-              const audience = document.getElementById("audience").value;
-              const metaTitle = document.getElementById("metaTitle").value;
-              const metaDescription =
-                document.getElementById("metaDescription").value;
-              const markdown = document.getElementById("markdown").value;
-
-              console.log("body", {
-                category,
-                status,
-                audience,
-                metaTitle,
-                metaDescription,
+              validateField(
                 markdown,
-                summaryValue,
-              });
+                markdownRegex,
+                document.getElementById("markdownError"),
+                "Invalid markdown content."
+              );
 
-              fetch(`/api/blog/save/<%= blog.slug %>`, {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
+              if (
+                metaTitle.classList.contains("border-gray-300") &&
+                metaDescription.classList.contains("border-gray-300") &&
+                markdown.classList.contains("border-gray-300")
+              ) {
+                const category = document.getElementById("category").value;
+                const status = document.getElementById("status").value;
+                const audience = document.getElementById("audience").value;
+                const metaTitle = document.getElementById("metaTitle").value;
+                const metaDescription =
+                  document.getElementById("metaDescription").value;
+                const markdown = document.getElementById("markdown").value;
+
+                console.log("body", {
                   category,
                   status,
                   audience,
@@ -466,50 +433,66 @@ console.log(div)
                   metaDescription,
                   markdown,
                   summaryValue,
-                }),
-              })
-                .then((response) => {
-                  if (!response.ok) {
-                    throw new Error("Failed to save the blog");
-                  }
-                  return response.json(); // Parse the JSON response
-                })
-                .then((data) => {
-                  if (data.redirectUrl) {
-                    window.location.href = data.redirectUrl;
-                  } else {
-                    throw new Error("No redirect URL provided");
-                  }
-                })
-                .catch((error) => {
-                  console.error("Error catch:", error);
-                  alert("An error occurred: " + error.message);
                 });
+
+                fetch(`/api/blog/save/<%= blog.slug %>`, {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    category,
+                    status,
+                    audience,
+                    metaTitle,
+                    metaDescription,
+                    markdown,
+                    summaryValue,
+                  }),
+                })
+                  .then((response) => {
+                    if (!response.ok) {
+                      throw new Error("Failed to save the blog");
+                    }
+                    return response.json(); // Parse the JSON response
+                  })
+                  .then((data) => {
+                    if (data.redirectUrl) {
+                      window.location.href = data.redirectUrl;
+                    } else {
+                      throw new Error("No redirect URL provided");
+                    }
+                  })
+                  .catch((error) => {
+                    console.error("Error catch:", error);
+                    alert("An error occurred: " + error.message);
+                  });
+              }
+            });
+
+            const checkbox = document.getElementById("summary");
+            const summaryValue = <%= blog.summary %>;
+
+            checkbox.checked = summaryValue;
+            console.log("summaryValue", summaryValue);
+
+            const audience = document.getElementById("audience");
+            const audienceValue = "<%= blog.audience %>";
+            if (audienceValue) {
+              audience.value = audienceValue;
             }
-          });
 
-          const checkbox = document.getElementById("summary");
-          const summaryValue = <%= blog.summary %>;
+            const status = document.getElementById("status");
+            const statusValue = "<%= blog.status %>";
+            if (statusValue) {
+              status.value = statusValue;
+            }
 
-          checkbox.checked = summaryValue;
-          console.log("summaryValue", summaryValue);
-
-          const audience = document.getElementById("audience");
-          const audienceValue = "<%= blog.audience %>";
-          if (audienceValue) {
-            audience.value = audienceValue;
-          }
-
-          const status = document.getElementById("status");
-          const statusValue = "<%= blog.status %>";
-          if (statusValue) {
-            status.value = statusValue;
-          }
-
-          const category = document.getElementById("category");
-          const categoryValue = "<%= blog.category %>";
-          if (categoryValue) {
-            category.value = categoryValue;
-          }
-        });
+            const category = document.getElementById("category");
+            const categoryValue = "<%= blog.category %>";
+            if (categoryValue) {
+              category.value = categoryValue;
+            }
+            
+});
 </script>

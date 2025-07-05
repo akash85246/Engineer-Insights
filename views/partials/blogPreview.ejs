@@ -1,9 +1,9 @@
 <div
   id="blogPreviewMainContainer"
-  class="mx-auto <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-text' %> rounded-lg shadow-lg relative w-full box-content scale-content cursor-pointer"
+  class="mx-auto <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-text' %> rounded-lg shadow-lg relative w-full box-content scale-content cursor-pointer z-50"
   onclick="openPreview()"
 >
-  <div
+  <!-- <div
     class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : 'bg-fifth text-fourth' %> flex items-center justify-center relative w-full"
   >
     <div class="flex space-x-0.5 absolute left-5">
@@ -17,7 +17,7 @@
     >
       <%- blog.title%>
     </div>
-  </div>
+  </div> -->
   <div
     class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-text' %> shadow-md mx-auto"
   >
@@ -183,7 +183,7 @@
             <img
               src="<%= blog.author.avatar  %>"
               alt="author photo"
-              class="h-10 w-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:h-16 lg:w-16 rounded-full"
+              class="h-10 w-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:h-16 lg:w-16 rounded-md <%= user.settings.theme === 'dark' ? 'border border-dark-secondary' : 'border border-fourth' %> shadow-md"
             />
             <div class="flex flex-col justify-between gap-1">
               <h3
@@ -201,15 +201,7 @@
           <div
             class="grid grid-cols-6 gap-x-2 gap-y-1 sm:gap-y-2 lg:gap-y-6 items-center max-w-sm"
           >
-            <p
-              class="text-white hover:bg-blue-200 transition duration-300 w-5 h-5 hover:scale-150 rounded-full mx-auto"
-            >
-              <img
-                src="images/icons/facebookIcon.png"
-                alt="facebook icon"
-                class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
-              />
-            </p>
+            
 
             <p
               class="text-white hover:bg-blue-200 transition duration-300 w-5 h-5 hover:scale-150 rounded-full mx-auto"
@@ -221,15 +213,7 @@
               />
             </p>
 
-            <p
-              class="text-white w-5 h-5 hover:scale-150 rounded-full hover:bg-blue-200 transition duration-300"
-            >
-              <img
-                src="images/icons/linkedinIconDark.png"
-                alt="linkedin icon"
-                class="<%= user.settings.theme === 'dark' ? 'invert' : '' %>"
-              />
-            </p>
+            
 
             <p
               class="text-white w-5 h-5 hover:scale-150 rounded-full hover:bg-orange-200 transition duration-300"
@@ -265,9 +249,9 @@
 
             <div
               id="reportdiv"
-              class="font-semibold px-3 md:px-6 py-1 md:py-2 rounded-full hover:bg-red-400 transition-all duration-300 ease-in-out text-sm col-span-6 flex items-center gap-2 justify-center font-roboto <%= user.settings.theme === 'dark' ? ' bg-dark-fifth shadow-white-md text-dark-secondary' : 'bg-fifth text-white shadow-md' %>"
+             class="font-semibold py-2 rounded-md hover:bg-red-400 hover:text-white transition-all duration-300 ease-in-out text-sm col-span-4 font-roboto <%= user.settings.theme === 'dark' ? ' bg-dark-fifth shadow-white-md text-dark-secondary' : 'bg-tertiary text-white shadow-md' %> max-w-sm box-border flex justify-center items-center" 
             >
-              <span class="text-sm">Report</span>
+              Report
             </div>
           </div>
         </div>
@@ -288,7 +272,7 @@
 
           <div class="mt-4 flex justify-end">
             <div
-              class="px-5 py-2 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth shadow-white-md text-dark-secondary' : ' text-white bg-fifth shadow-md' %> rounded-full hover:bg-highlight hover:text-white transition duration-300 ease-in-out text-base md:text-sm lg:text-base hover:scale-110 font-roboto"
+              class="px-5 py-2 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth shadow-white-md text-dark-secondary' : ' text-white bg-fourth shadow-md' %>  rounded-md hover:bg-highlight hover:text-white transition duration-300 ease-in-out text-base md:text-sm lg:text-base hover:scale-110 font-roboto"
             >
               Add Comment
             </div>
@@ -303,11 +287,12 @@
 <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const markdownTextarea = document.getElementById("markdown");
+    const ghost = document.getElementById('ghost');
+    const editorTextarea = document.getElementById("editor");
     const sanitizedHtmlContainer = document.getElementById("sanitizedHtml");
 
     function updateSanitizedHtml() {
-      const markdown = markdownTextarea.value;
+      const markdown = editorTextarea.innerText;
 
       const html = marked.parse(markdown);
       const sanitizedHtml = DOMPurify.sanitize(html);
@@ -315,7 +300,7 @@
       sanitizedHtmlContainer.innerHTML = sanitizedHtml;
     }
 
-    markdownTextarea.addEventListener("input", updateSanitizedHtml);
+    editorTextarea.addEventListener("input", updateSanitizedHtml);
 
     updateSanitizedHtml();
 
@@ -324,10 +309,20 @@
       document
         .getElementById("blogPreviewMainContainer")
         .classList.toggle("full-screen");
+
       document
         .getElementById("blogPreviewMainContainer")
         .classList.toggle("scale-content");
+
       document.getElementById("markdownLabel").classList.toggle("z-10");
+      if(isOpen){
+        editorTextarea.classList.remove("hidden");
+        ghost.classList.add("hidden");
+      }else{
+        editorTextarea.classList.add("hidden");
+        ghost.classList.remove("hidden");
+      }
+
       document.getElementById("preview").classList.toggle("scale-30");
       document.querySelectorAll("#socials img").forEach((img) => {
         img.classList.toggle("hidden");

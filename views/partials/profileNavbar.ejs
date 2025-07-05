@@ -46,7 +46,7 @@
             >
           <p
             href="/blog/write"
-            class="py-2 px-2 text-white  hover:text-highlight transition duration-300 md:text-sm lg:text-base"
+            class="write-link py-2 px-2 text-white  hover:text-highlight transition duration-300 md:text-sm lg:text-base"
             >Write</p
           >
           <a
@@ -134,7 +134,7 @@
       <li>
         <button
           
-          class="mx-auto block text-sm px-2 py-4 text-white  hover:text-highlight transition duration-300 mobile-write-link "
+          class="mx-auto block text-sm px-2 py-4 text-white  hover:text-highlight transition duration-300 write-link "
           >Write</button
         >
       </li>
@@ -207,9 +207,7 @@
     authLinksDesktop.innerHTML = authLinksContent;
   }
 
-  const writeLinks = document.querySelectorAll(
-    "a[href='/blog/write'], a.mobile-write-link"
-  );
+   const writeLinks = document.querySelectorAll(".write-link");
   const popoutModal = document.getElementById("popout-modal");
   const closePopout = document.getElementById("close-popout");
 

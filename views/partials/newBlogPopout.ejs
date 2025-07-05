@@ -1,18 +1,28 @@
 <div
   id="popout-modal"
-  class="fixed inset-0 flex justify-center items-center <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> bg-opacity-60 backdrop-blur-md backdrop-brightness-125 backdrop-grayscale-0 hidden z-50 font-lora"
+  class="hidden fixed inset-0 z-10 flex items-center justify-center backdrop-blur-sm <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %> bg-opacity-50 p-5 md:p-0 z-50 font-lora"
+  onclick="closePopoutModal()"
 >
   <div
-    class="bg-gray-800 bg-opacity-50 w-full h-full flex justify-center items-center my-auto"
+   class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-gray-900' %> w-full sm:max-w-md lg:max-w-lg p-6 rounded-xl shadow-2xl transition-all duration-300"
+    onclick="event.stopPropagation()"
   >
-    <div
-      class="<%= user.settings.theme === 'dark' ? 'bg-dark-background' : 'bg-white' %>  rounded-lg p-3 md:p-6 w-11/12 md:w-2/3 lg:w-1/2 relative shadow-lg"
-    >
+    <div >
+     <div class="flex items-center justify-between mb-4">
       <h2
-        class="text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-secondary' %> mb-4"
+        class="text-xl font-semibold font-sans"
       >
-        Write a Blog
+       Write a Blog
       </h2>
+      <button
+            onclick="closePopoutModal()"
+            class="text-gray-400 hover:text-red-500 transition duration-200 text-xl"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+      </div>
+      
       <form
         id="blogCreateForm"
         action="/api/blog/new"
@@ -26,13 +36,13 @@
           <button
             type="button"
             id="close-popout"
-            class="py-2 px-4 <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-secondary text-secondary bg-sixth' %>  rounded-md hover:bg-red-400 hover:text-white font-roboto"
+            class="px-4 py-2 rounded-md border border-red-300 text-sm font-medium <%= user.settings.theme === 'dark' ? 'text-red-300 hover:bg-dark-primary' : 'text-red-700 hover:bg-red-100' %> transition duration-200 font-roboto"
           >
             Close
           </button>
           <button
             type="submit"
-            class="py-2 px-4 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-sixth text-sixth bg-secondary' %> rounded-md hover:bg-blue-400 hover:text-white font-roboto"
+            class="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium shadow-md transition duration-200 font-roboto"
             
           >
             New
@@ -58,4 +68,8 @@
         document.getElementById("popout-modal").classList.add("hidden");
       }
     });
+
+    function closePopoutModal() {
+      document.getElementById("popout-modal").classList.add("hidden");
+    }
 </script>

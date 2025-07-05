@@ -8,6 +8,7 @@
 <div  id="editorsPickContainer"><%- include("../partials/editorsPick.ejs") %></div>
 <script>
   if ("<%= isAuthenticated %>") {
+     gtag("config", "<%= user.googleAnalyticsId %>");
     gtag("event", "user_login", {
       event_category: "User",
       event_label: "Login Successful",

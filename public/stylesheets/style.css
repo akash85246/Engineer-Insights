@@ -546,6 +546,9 @@ video {
 .pointer-events-none {
   pointer-events: none;
 }
+.collapse {
+  visibility: collapse;
+}
 .fixed {
   position: fixed;
 }
@@ -692,9 +695,6 @@ video {
 }
 .col-span-5 {
   grid-column: span 5 / span 5;
-}
-.col-span-6 {
-  grid-column: span 6 / span 6;
 }
 .m-0 {
   margin: 0px;
@@ -980,6 +980,12 @@ video {
 .max-h-\[80vh\] {
   max-height: 80vh;
 }
+.max-h-screen {
+  max-height: 100vh;
+}
+.min-h-\[150px\] {
+  min-height: 150px;
+}
 .min-h-\[1rem\] {
   min-height: 1rem;
 }
@@ -1012,9 +1018,6 @@ video {
 }
 .w-11 {
   width: 2.75rem;
-}
-.w-11\/12 {
-  width: 91.666667%;
 }
 .w-12 {
   width: 3rem;
@@ -1343,9 +1346,6 @@ video {
 .overflow-y-auto {
   overflow-y: auto;
 }
-.overflow-x-hidden {
-  overflow-x: hidden;
-}
 .overflow-y-hidden {
   overflow-y: hidden;
 }
@@ -1374,6 +1374,9 @@ video {
 }
 .whitespace-nowrap {
   white-space: nowrap;
+}
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
 }
 .text-wrap {
   text-wrap: wrap;
@@ -1697,10 +1700,6 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(75 85 99 / var(--tw-bg-opacity, 1));
 }
-.bg-gray-800 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
-}
 .bg-gray-800\/80 {
   background-color: rgb(31 41 55 / 0.8);
 }
@@ -1803,9 +1802,6 @@ video {
 }
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
-}
-.bg-opacity-60 {
-  --tw-bg-opacity: 0.6;
 }
 .bg-opacity-80 {
   --tw-bg-opacity: 0.8;
@@ -2634,16 +2630,6 @@ video {
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
   backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
-.backdrop-brightness-125 {
-  --tw-backdrop-brightness: brightness(1.25);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-}
-.backdrop-grayscale-0 {
-  --tw-backdrop-grayscale: grayscale(0);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-}
 .transition {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
@@ -2765,6 +2751,12 @@ overflow: scroll;
   from { width: 0%; }
   to { width: 100%; }
 }
+
+#editor:empty::before {
+    content: attr(data-placeholder);
+    color: #9ca3af; /* Tailwind's text-gray-400 */
+    pointer-events: none;
+  }
 
 .after\:absolute::after {
   content: var(--tw-content);
@@ -3884,12 +3876,12 @@ overflow: scroll;
     margin-top: 0px;
   }
 
-  .md\:mt-2 {
-    margin-top: 0.5rem;
+  .md\:mt-16 {
+    margin-top: 4rem;
   }
 
-  .md\:mt-24 {
-    margin-top: 6rem;
+  .md\:mt-2 {
+    margin-top: 0.5rem;
   }
 
   .md\:mt-4 {
@@ -4223,11 +4215,6 @@ overflow: scroll;
     padding-right: 1.25rem;
   }
 
-  .md\:px-6 {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-
   .md\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
@@ -4507,10 +4494,6 @@ overflow: scroll;
 
   .lg\:p-3 {
     padding: 0.75rem;
-  }
-
-  .lg\:p-4 {
-    padding: 1rem;
   }
 
   .lg\:p-5 {

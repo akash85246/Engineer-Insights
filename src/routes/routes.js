@@ -172,6 +172,16 @@ router.get("/subscribe", async (req, res) => {
     paymentStatus: "completed",
   }).sort({ createdAt: -1 });
 
+  if (!payment) {
+    payment = {
+      subscriptionDetails: {
+        plan: "free",
+        startDate: new Date(),
+        endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      },
+    };
+  }
+
   const defaultSettings = {
     theme: "light",
     notifications: true,
@@ -181,20 +191,20 @@ router.get("/subscribe", async (req, res) => {
     user = { settings: defaultSettings };
   }
 
-  console.log(payment.subscriptionDetails.startDate, payment.subscriptionDetails.endDate);
-  console.log("user", payment);
+  
+  console.log("payment", payment);
 
-  const timeRemaining = payment.subscriptionDetails.endDate> Date.now()
-    ?  Math.ceil(Math.max(0, payment.subscriptionDetails.endDate - Date.now()) / (1000 * 60 * 60 * 24))   
-    : 0;
-    console.log("timeRemaining", timeRemaining);
+  // const timeRemaining = payment.subscriptionDetails.endDate> Date.now()
+  //   ?  Math.ceil(Math.max(0, payment.subscriptionDetails.endDate - Date.now()) / (1000 * 60 * 60 * 24))   
+  //   : 0;
+  //   console.log("timeRemaining", timeRemaining);
 
   res.renderWithMainLayout("../pages/payment/subscription.ejs", {
     title: "Subscribe",
     isAuthenticated,
     user,
     payment: payment,
-    timeRemaining: timeRemaining,
+    timeRemaining: 0,
   });
 });
 

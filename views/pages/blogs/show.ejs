@@ -94,6 +94,7 @@
       />
     </a>
     <% if (editable) { %>
+    <% if( blog.author._id.toString() === user._id.toString() ) { %>
     <button
       class="flex items-center transition duration-300 ease-in-out text-sm md:text-base font-roboto "
       id="archivedBlog"
@@ -107,6 +108,7 @@
         class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
       />
     </button>
+    <% }%>
 
     <a
       href="/blog/edit/<%= blog.slug  %>"
@@ -118,6 +120,22 @@
         class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
       />
     </a>
+
+     <% if( blog.author._id.toString() === user._id.toString() ) { %>
+     <button
+      class="flex items-center transition duration-300 ease-in-out text-sm md:text-base font-roboto "
+      id="archivedBlog"
+      onclick="openDeleteModal('<%= blog.slug  %>')"
+    >
+      <img
+        src="images/icons/deleteBlogIcon.svg"
+        alt="delete blog icon"
+        alt="delete blog icon"
+        class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+      />
+    </button>
+     <% }%>
+
 
     <% } %>
   </div>
@@ -325,7 +343,7 @@
  
   </div>
 </div>
-
+<%- include("../../partials/deleteBlogModal.ejs") %>
 <%- include("../../partials/similarBlog.ejs") %> <%-
 include("../../partials/reportPopout.ejs") %>
 
