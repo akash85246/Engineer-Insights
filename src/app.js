@@ -72,6 +72,9 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/images/uploads")));
+// Serve Toastify CSS and JS
+app.use('/toastify', express.static(path.join(__dirname, '../node_modules/toastify-js/src')));
+
 app.use(cookieParser());
 app.use(methodOverride("_method"));
 app.use(passport.initialize());

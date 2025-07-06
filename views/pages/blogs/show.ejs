@@ -1,11 +1,10 @@
 <div
   class="bg-no-repeat bg-cover bg-center bg-origin-content w-full flex justify-center items-center text-center font-lora relative overflow-x-clip"
   style="background-image: url('<%= blog.blogPhoto %>')"
-
   id="blogPhotoContainer"
 >
   <div
-    class="pt-16 pb-5 sm:pb-10 md:pt-36 md:py-24 w-full  <%= user.settings.theme === 'dark' ? 'bg-dark-background bg-opacity-20' : 'text-text bg-background bg-opacity-10' %>"
+    class="pt-16 pb-5 sm:pb-10 md:pt-36 md:py-24 w-full <%= user.settings.theme === 'dark' ? 'bg-dark-background bg-opacity-20' : 'text-text bg-background bg-opacity-10' %>"
   >
     <div
       class="sm:p-0 w-4/5 sm:w-2/3 lg:w-1/2 flex justify-center items-center flex-col text-center gap-2 m-auto relative"
@@ -38,112 +37,103 @@
     </div>
   </div>
 
-  
   <div
-  class="absolute -bottom-5 right-5  <%= user.settings.theme === 'dark' ? 'bg-gray-800/80 border-gray-800' : 'bg-white/80 border-gray-200' %>   backdrop-blur-md shadow-lg rounded-md px-4 py-2 flex items-center space-x-4 border   transition-all duration-300 hover:scale-105 hidden"
-  id="blogActions"
->
-  <div class="flex gap-2 md:gap-5 items-center">
-    <% if (isAuthenticated) { %>
-    <button
-      id="saveBlogButton"
-      class="rounded-lg hover:scale-110 flex items-center justify-center transition-transform duration-200 ease-in-out z-100"
-    >
-      <img
-        src="<%= userSavedBlog ? 'images/icons/unbookMark.svg' : 'images/icons/bookMark.svg' %>"
-        alt="<%= userSavedBlog ? 'Saved blog icon' : 'Unsaved blog icon' %>"
-        id="saveBlogIcon"
-        class="w-5 h-5 md:w-6 md:h-6 <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
-      />
-    </button>
+    class="absolute -bottom-5 right-5 <%= user.settings.theme === 'dark' ? 'bg-gray-800/80 border-gray-800' : 'bg-white/80 border-gray-200' %> backdrop-blur-md shadow-lg rounded-md px-4 py-2 flex items-center space-x-4 border transition-all duration-300 hover:scale-105 hidden"
+    id="blogActions"
+  >
+    <div class="flex gap-2 md:gap-5 items-center">
+      <% if (isAuthenticated) { %>
+      <button
+        id="saveBlogButton"
+        class="rounded-lg hover:scale-110 flex items-center justify-center transition-transform duration-200 ease-in-out z-100"
+      >
+        <img
+          src="<%= userSavedBlog ? 'images/icons/unbookMark.svg' : 'images/icons/bookMark.svg' %>"
+          alt="<%= userSavedBlog ? 'Saved blog icon' : 'Unsaved blog icon' %>"
+          id="saveBlogIcon"
+          class="w-5 h-5 md:w-6 md:h-6 <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+        />
+      </button>
 
-    <button
-      id="likeButton"
-      class="<%= user.settings.theme === 'dark' ? 'text-white' : 'text-text' %> rounded-md flex items-center justify-center gap-2"
-    >
-      <img
-        src="<%= userAlreadyLiked ? 'images/icons/likeIcon.svg' : 'images/icons/unlikeIcon.svg' %>"
-        alt="<%= userAlreadyLiked ? 'liked icon' : 'unliked icon' %>"
-        id="likeIcon"
-        class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
-        
-      />
-      <h1
-      id="likeCount"
-      class="text-base  lg:text-xl font-roboto text-center overflow-clip font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-highlight' %>"
-    >
-      <%= blog.likes.length %>
-    </h1>
-    </button>
-   
-    <% } %>
-  </div>
+      <button
+        id="likeButton"
+        class="<%= user.settings.theme === 'dark' ? 'text-white' : 'text-text' %> rounded-md flex items-center justify-center gap-2"
+      >
+        <img
+          src="<%= userAlreadyLiked ? 'images/icons/likeIcon.svg' : 'images/icons/unlikeIcon.svg' %>"
+          alt="<%= userAlreadyLiked ? 'liked icon' : 'unliked icon' %>"
+          id="likeIcon"
+          class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+        />
+        <h1
+          id="likeCount"
+          class="text-base lg:text-xl font-roboto text-center overflow-clip font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-highlight' %>"
+        >
+          <%= blog.likes.length %>
+        </h1>
+      </button>
 
+      <% } %>
+    </div>
 
     <% if (isAuthenticated && user.subscription=="elite" || editable ) { %>
-  <div class="flex gap-2 md:gap-5 items-center">
- 
-    <a
-      href="/api/blog/download/<%= blog.slug  %>"
-      class="flex items-center text-sm md:text-base font-roboto md:h-8"
-    >
-      <img
-        src="images/icons/downloadBlogIcon.svg"
-        alt="download blog icon"
-        class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
-      />
-    </a>
-    <% if (editable) { %>
-    <% if( blog.author._id.toString() === user._id.toString() ) { %>
-    <button
-      class="flex items-center transition duration-300 ease-in-out text-sm md:text-base font-roboto "
-      id="archivedBlog"
-    >
-      <img
-        src="<%= blog.status !== 'archived' 
+    <div class="flex gap-2 md:gap-5 items-center">
+      <a
+        href="/api/blog/download/<%= blog.slug  %>"
+        class="flex items-center text-sm md:text-base font-roboto md:h-8"
+      >
+        <img
+          src="images/icons/downloadBlogIcon.svg"
+          alt="download blog icon"
+          class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+        />
+      </a>
+      <% if (editable) { %> <% if( blog.author._id.toString() ===
+      user._id.toString() ) { %>
+      <button
+        class="flex items-center transition duration-300 ease-in-out text-sm md:text-base font-roboto"
+        id="archivedBlog"
+      >
+        <img
+          src="<%= blog.status !== 'archived' 
   ? 'images/icons/archiveIcon.svg' 
   : 'images/icons/unarchiveIcon.svg' %>"
-        alt="edit blog icon"
-        alt="edit blog icon"
-        class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
-      />
-    </button>
-    <% }%>
+          alt="edit blog icon"
+          alt="edit blog icon"
+          class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+        />
+      </button>
+      <% }%>
 
-    <a
-      href="/blog/edit/<%= blog.slug  %>"
-      class="flex items-center text-sm md:text-base font-roboto md:h-8"
-    >
-      <img
-        src="images/icons/editBlog.svg"
-        alt="edit blog icon"
-        class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
-      />
-    </a>
+      <a
+        href="/blog/edit/<%= blog.slug  %>"
+        class="flex items-center text-sm md:text-base font-roboto md:h-8"
+      >
+        <img
+          src="images/icons/editBlog.svg"
+          alt="edit blog icon"
+          class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out rounded-md <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+        />
+      </a>
 
-     <% if( blog.author._id.toString() === user._id.toString() ) { %>
-     <button
-      class="flex items-center transition duration-300 ease-in-out text-sm md:text-base font-roboto "
-      id="archivedBlog"
-      onclick="openDeleteModal('<%= blog.slug  %>')"
-    >
-      <img
-        src="images/icons/deleteBlogIcon.svg"
-        alt="delete blog icon"
-        alt="delete blog icon"
-        class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
-      />
-    </button>
-     <% }%>
-
-
+      <% if( blog.author._id.toString() === user._id.toString() ) { %>
+      <button
+        class="flex items-center transition duration-300 ease-in-out text-sm md:text-base font-roboto"
+        id="archivedBlog"
+        onclick="openDeleteModal('<%= blog.slug  %>')"
+      >
+        <img
+          src="images/icons/deleteBlogIcon.svg"
+          alt="delete blog icon"
+          alt="delete blog icon"
+          class="w-5 h-5 md:w-6 md:h-6 hover:scale-110 transition-transform duration-200 ease-in-out <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+        />
+      </button>
+      <% }%> <% } %>
+    </div>
     <% } %>
   </div>
-  <% } %>
 </div>
-</div>
-
-
 
 <div class="grid grid-cols-5 gap-2 px-5 sm:px-8 p-2 pt-5 md:p-5 font-lora">
   <div
@@ -336,25 +326,35 @@
   </div>
 
   <div
-    class="hidden  md:col-span-1 md:text-center lg:p-5 text-sm <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-secondary' %> font-semibold md:flex md:justify-between w-full"
+    class="hidden md:col-span-1 md:text-center lg:p-5 text-sm <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-secondary' %> font-semibold md:flex md:justify-between w-full"
   >
-  <p> <%- blog.views.length %> views</p>
-  <p> <%- blog.readingTime %></p>
- 
+    <p><%- blog.views.length %> views</p>
+    <p><%- blog.readingTime %></p>
   </div>
 </div>
-<%- include("../../partials/deleteBlogModal.ejs") %>
-<%- include("../../partials/similarBlog.ejs") %> <%-
+<%- include("../../partials/deleteBlogModal.ejs") %> <%-
+include("../../partials/similarBlog.ejs") %> <%-
 include("../../partials/reportPopout.ejs") %>
 
 <script src="/socket.io/socket.io.js"></script>
+<% if (user && user.user_id && user.googleAnalyticsId) { %>
 <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    Toastify({
+      text: "Blog saved successfully!",
+      duration: 3000,
+      gravity: "top", // top or bottom
+      position: "right", // left, center or right
+      backgroundColor: "#4CAF50",
+      close: true,
+    }).showToast();
+  });
   let startTime = Date.now();
 
   window.addEventListener("beforeunload", function () {
     let timeSpent = Math.round((Date.now() - startTime) / 1000);
 
-    gtag("config", "<%= blog.author.googleAnalyticsId %>");
+    gtag("config", "<%= JSON.stringify(blog.author.googleAnalyticsId) %>");
     gtag("event", "time_on_page", {
       event_category: "Engagement",
       event_label: "<%= blog.title %>",
@@ -379,496 +379,784 @@ include("../../partials/reportPopout.ejs") %>
     blog_id: "<%= blog._id %>",
     user_id: "<%= blog.author._id %>",
   });
-
 </script>
+<% } %>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    if (isAuthenticated) {
-      addRecentBlog();
+    document.addEventListener("DOMContentLoaded", function () {
+      if (isAuthenticated) {
+        addRecentBlog();
 
-      async function addRecentBlog() {
-        await fetch("/api/profile/recent", {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ blogId: "<%= blog._id %>" }),
+        async function addRecentBlog() {
+          await fetch("/api/profile/recent", {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ blogId: "<%= blog._id %>" }),
+          });
+        }
+
+        const socket = io();
+
+      window.addComment=async  function addComment() {
+        event.preventDefault();
+          const commentText = document.getElementById("commentText").value;
+          const parentCommentId =
+            document.getElementById("parentCommentId").value;
+          const blogId = "<%= blog._id %>";
+          const userId = "<%= userId %>";
+          if (commentText.trim()) {
+            socket.emit("newComment", {
+              content: commentText,
+              blog: blogId,
+              author: userId,
+              parentComment: parentCommentId || null,
+            });
+
+           Toastify({
+              text: "Comment added successfully!",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #2193b0, #6dd5ed)",
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff"
+              }
+            }).showToast();
+
+            gtag("config", "<%= blog.author.googleAnalyticsId %>");
+            gtag('event', 'comment_blog', {
+              'event_category': 'Engagement',
+              'event_label': '<%= blog.title %>',
+              'blog_id': '<%= blog._id %>',
+              user_id:"<%= blog.author._id %>"
+            });
+            document.getElementById("commentText").value = "";
+            document.getElementById("parentCommentId").value = "";
+          } else {
+            alert("Comment cannot be empty");
+          }
+          return false;
+        }
+
+        window.replyToComment = function replyToComment(commentId) {
+          document.getElementById("parentCommentId").value = commentId;
+          document.getElementById("commentText").focus();
+        }
+
+        socket.on("commentAdded", function (newComment) {
+          const commentsContainer = document.getElementById("comments");
+          renderComment(newComment, commentsContainer, 0);
         });
-      }
 
-      const socket = io();
+        socket.on("commentError", function (error) {
+          alert("Error: " + error.message);
+        });
 
-    window.addComment=async  function addComment() {
-      event.preventDefault();
-        const commentText = document.getElementById("commentText").value;
-        const parentCommentId =
-          document.getElementById("parentCommentId").value;
         const blogId = "<%= blog._id %>";
-        const userId = "<%= userId %>";
-        if (commentText.trim()) {
-          socket.emit("newComment", {
-            content: commentText,
-            blog: blogId,
-            author: userId,
-            parentComment: parentCommentId || null,
+
+        fetch(`/api/comments/${blogId}`)
+          .then((response) => response.json())
+          .then((comments) => {
+            const commentSection = document.getElementById("comments");
+
+            renderComments(comments, commentSection);
+          })
+          .catch((error) => {
+            Toastify({
+              text: "Error loading comments. Please try again later.",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff"
+              },
+            }).showToast();
           });
-          gtag("config", "<%= blog.author.googleAnalyticsId %>");
-          gtag('event', 'comment_blog', {
-            'event_category': 'Engagement',
-            'event_label': '<%= blog.title %>',
-            'blog_id': '<%= blog._id %>',
-            user_id:"<%= blog.author._id %>"
-          });
-          document.getElementById("commentText").value = "";
-          document.getElementById("parentCommentId").value = "";
-        } else {
-          alert("Comment cannot be empty");
-        }
-        return false;
-      }
 
-      window.replyToComment = function replyToComment(commentId) {
-        document.getElementById("parentCommentId").value = commentId;
-        document.getElementById("commentText").focus();
-      }
+        function renderComment(comment, container, depth = 0) {
+          if (!comment || !comment.author) {
+            console.warn("Invalid comment data:", comment);
+            return;
+          }
 
-      socket.on("commentAdded", function (newComment) {
-        const commentsContainer = document.getElementById("comments");
-        renderComment(newComment, commentsContainer, 0);
-      });
+          var userHasLiked = comment.likes.includes("<%= user._id %>");
 
-      socket.on("commentError", function (error) {
-        alert("Error: " + error.message);
-      });
-
-      const blogId = "<%= blog._id %>";
-
-      fetch(`/api/comments/${blogId}`)
-        .then((response) => response.json())
-        .then((comments) => {
-          const commentSection = document.getElementById("comments");
-
-          renderComments(comments, commentSection);
-        })
-        .catch((error) => console.error("Error fetching comments:", error));
-
-      function renderComment(comment, container, depth = 0) {
-        if (!comment || !comment.author) {
-          console.warn("Invalid comment data:", comment);
-          return;
-        }
-
-        var userHasLiked = comment.likes.includes("<%= user._id %>");
-
-        const userId = "<%= userId %>";
-        const commentDiv = document.createElement("div");
-        commentDiv.id = `comment-${comment._id}`;
-        commentDiv.classList.add(`ml-${depth * 4}`);
-        const authorId = "<%= blog.author._id %>";
-        const user = <%- JSON.stringify(user) %>;
-        console.log("user", user);
-        commentDiv.innerHTML = `
-            <div class="border  rounded-lg p-4 mb-4 <%= user.settings.theme === 'dark' ? ' bg-dark-sixth border-dark-secondary shadow-white-md' : ' bg-white border-primary-dark  shadow-md' %>  w-full max-w-full">
-              <div class="flex items-start space-x-3">
-                <div class="flex-1 w-full">
-                  <div class="flex items-center justify-between mb-2 w-full">
-                    <div>
-                      <div class="flex items-center justify-between gap-2">
-                        <img
-                          src="${
-                            comment.author?.avatar ||
-                            "/images/defaultProfile.png"
-                          }"
-                          alt="profile photo"
-                          class="h-10 w-10 md:w-12 md:h-12 rounded-md object-cover border-2 border-gray-200"
-                        />
-                        <div>
-                          <a class="flex items-center gap-1 md:gap-2" href="/profile/${
-                            comment.author.slug
-                          }">
-                            <p class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-secondary' %>">${
-                              comment.author?.username || "Unknown User"
-                            }</p>
-                          </a>
-                          <p class="text-xxs lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-tertiary' %> ">${new Date(
-                            comment.createdAt
-                          ).toLocaleString()}</p>
+          const userId = "<%= userId %>";
+          const commentDiv = document.createElement("div");
+          commentDiv.id = `comment-${comment._id}`;
+          commentDiv.classList.add(`ml-${depth * 4}`);
+          const authorId = "<%= blog.author._id %>";
+          const user = <%- JSON.stringify(user) %>;
+          console.log("user", user);
+          commentDiv.innerHTML = `
+              <div class="border  rounded-lg p-4 mb-4 <%= user.settings.theme === 'dark' ? ' bg-dark-sixth border-dark-secondary shadow-white-md' : ' bg-white border-primary-dark  shadow-md' %>  w-full max-w-full">
+                <div class="flex items-start space-x-3">
+                  <div class="flex-1 w-full">
+                    <div class="flex items-center justify-between mb-2 w-full">
+                      <div>
+                        <div class="flex items-center justify-between gap-2">
+                          <img
+                            src="${
+                              comment.author?.avatar ||
+                              "/images/defaultProfile.png"
+                            }"
+                            alt="profile photo"
+                            class="h-10 w-10 md:w-12 md:h-12 rounded-md object-cover border-2 border-gray-200"
+                          />
+                          <div>
+                            <a class="flex items-center gap-1 md:gap-2" href="/profile/${
+                              comment.author.slug
+                            }">
+                              <p class="text-xs sm:text-sm md:text-base lg:text-lg font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-secondary' %>">${
+                                comment.author?.username || "Unknown User"
+                              }</p>
+                            </a>
+                            <p class="text-xxs lg:text-xs <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-tertiary' %> ">${new Date(
+                              comment.createdAt
+                            ).toLocaleString()}</p>
+                          </div>
                         </div>
                       </div>
+                      <button onclick="like_comment('${
+                        comment._id
+                      }',this)" class="border  <%= user.settings.theme === 'dark' ? '  border-dark-secondary text-dark-primary' : ' border-purple-700 text-purple-700' %> hover:scale-105  px-3 py-1 rounded-md  outline-none flex items-center space-x-2">
+                        <img
+                          src="${
+                            user.settings.theme === "dark"
+                              ? userHasLiked
+                                ? "images/icons/darkLikeCommentIcon.png"
+                                : "images/icons/darkUnlikeCommentIcon.png"
+                              : userHasLiked
+                              ? "images/icons/likeCommentIcon.png"
+                              : "images/icons/unlikeCommentIcon.png"
+                          }"
+                          alt="${userHasLiked ? "liked" : "unliked"} icon"
+                          class="h-3 w-3 sm:w-4 sm:h-4  md:w-5 md:h-5 transition-transform duration-200 ease-in-out
+                          <%= user.settings.theme === 'dark' ? ' invert-20' : '' %>"
+                          id="like-${comment._id}"
+                        />
+                        <span class="transition-all duration-300 ease-in-out text-xxs sm:text-xs md:text-sm lg:text-base">${
+                          comment.likes.length
+                        }</span>
+                      </button>
                     </div>
-                    <button onclick="like_comment('${
-                      comment._id
-                    }',this)" class="border  <%= user.settings.theme === 'dark' ? '  border-dark-secondary text-dark-primary' : ' border-purple-700 text-purple-700' %> hover:scale-105  px-3 py-1 rounded-md  outline-none flex items-center space-x-2">
-                      <img
-                        src="${
-                          user.settings.theme === "dark"
-                            ? userHasLiked
-                              ? "images/icons/darkLikeCommentIcon.png"
-                              : "images/icons/darkUnlikeCommentIcon.png"
-                            : userHasLiked
-                            ? "images/icons/likeCommentIcon.png"
-                            : "images/icons/unlikeCommentIcon.png"
-                        }"
-                        alt="${userHasLiked ? "liked" : "unliked"} icon"
-                        class="h-3 w-3 sm:w-4 sm:h-4  md:w-5 md:h-5 transition-transform duration-200 ease-in-out
-                        <%= user.settings.theme === 'dark' ? ' invert-20' : '' %>"
-                        id="like-${comment._id}"
-                      />
-                      <span class="transition-all duration-300 ease-in-out text-xxs sm:text-xs md:text-sm lg:text-base">${
-                        comment.likes.length
-                      }</span>
-                    </button>
-                  </div>
-                  <div class="w-full">
-                    <p class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-primary' %> mb-2 break-words whitespace-normal text-sm lg:text-base">
-                      ${comment.content || "No content"}
-                    </p>
-                  </div>
-                  <div class="flex space-x-2 items-end justify-end">
-                    ${
-                      userId == comment.author._id || userId == authorId
-                        ? `<button
-                            onclick="deleteComment('${comment._id}')"
-                            class=" px-3 py-1 rounded-md focus:outline-none border <%= user.settings.theme === 'dark' ? 'border-dark-tertiary text-dark-tertiary' : ' text-tertiary border-tertiary' %>  hover:scale-105 transition-all duration-300 ease-in-out text-xxs sm:text-xs md:text-sm lg:text-base font-roboto">
-                                Delete
+                    <div class="w-full">
+                      <p class="<%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-primary' %> mb-2 break-words whitespace-normal text-sm lg:text-base">
+                        ${comment.content || "No content"}
+                      </p>
+                    </div>
+                    <div class="flex space-x-2 items-end justify-end">
+                      ${
+                        userId == comment.author._id || userId == authorId
+                          ? `<button
+                              onclick="deleteComment('${comment._id}')"
+                              class=" px-3 py-1 rounded-md focus:outline-none border <%= user.settings.theme === 'dark' ? 'border-dark-tertiary text-dark-tertiary' : ' text-tertiary border-tertiary' %>  hover:scale-105 transition-all duration-300 ease-in-out text-xxs sm:text-xs md:text-sm lg:text-base font-roboto">
+                                  Delete
+                              </button>`
+                          : ""
+                      }
+                      ${
+                        !comment.parentComment
+                          ? `<button onclick="replyToComment('${comment._id}')" class=" <%= user.settings.theme === 'dark' ? 'border-dark-primary text-dark-primary' : ' text-secondary border-secondary' %> px-3 py-1 rounded-md hover:scale-105 outline-none border  transition-all duration-300 ease-in-out text-xxs sm:text-xs md:text-sm lg:text-base font-roboto">
+                              Reply
                             </button>`
-                        : ""
-                    }
-                    ${
-                      !comment.parentComment
-                        ? `<button onclick="replyToComment('${comment._id}')" class=" <%= user.settings.theme === 'dark' ? 'border-dark-primary text-dark-primary' : ' text-secondary border-secondary' %> px-3 py-1 rounded-md hover:scale-105 outline-none border  transition-all duration-300 ease-in-out text-xxs sm:text-xs md:text-sm lg:text-base font-roboto">
-                            Reply
-                          </button>`
-                        : ""
-                    }
+                          : ""
+                      }
+                    </div>
+                    <div id="replies-${comment._id}" class="mt-4 space-y-4"></div>
                   </div>
-                  <div id="replies-${comment._id}" class="mt-4 space-y-4"></div>
                 </div>
               </div>
-            </div>
-          `;
+            `;
 
-        if (comment.parentComment) {
-          const parentCommentDiv = document.getElementById(
-            `comment-${comment.parentComment}`
-          );
-          if (parentCommentDiv) {
-            const repliesContainer = parentCommentDiv.querySelector(
-              `#replies-${comment.parentComment}`
+          if (comment.parentComment) {
+            const parentCommentDiv = document.getElementById(
+              `comment-${comment.parentComment}`
             );
-            if (repliesContainer) {
-              repliesContainer.appendChild(commentDiv);
+            if (parentCommentDiv) {
+              const repliesContainer = parentCommentDiv.querySelector(
+                `#replies-${comment.parentComment}`
+              );
+              if (repliesContainer) {
+                repliesContainer.appendChild(commentDiv);
+              } else {
+                const newRepliesContainer = document.createElement("div");
+                newRepliesContainer.id = `replies-${comment.parentComment}`;
+                newRepliesContainer.classList.add("ml-5");
+                parentCommentDiv.appendChild(newRepliesContainer);
+                newRepliesContainer.appendChild(commentDiv);
+              }
             } else {
-              const newRepliesContainer = document.createElement("div");
-              newRepliesContainer.id = `replies-${comment.parentComment}`;
-              newRepliesContainer.classList.add("ml-5");
-              parentCommentDiv.appendChild(newRepliesContainer);
-              newRepliesContainer.appendChild(commentDiv);
+              container.appendChild(commentDiv);
             }
           } else {
             container.appendChild(commentDiv);
           }
-        } else {
-          container.appendChild(commentDiv);
-        }
 
-        const repliesContainer = commentDiv.querySelector(
-          `#replies-${comment._id}`
-        );
-        if (comment.replies && comment.replies.length > 0) {
-          comment.replies.forEach((reply) => {
-            renderComment(reply, repliesContainer, depth + 1);
-          });
-        }
-      }
-
-      window.like_comment = async function like_comment(commentId, button) {
-        const userId = "<%= userId %>";
-        console.log("userId", userId);
-        const imgElement = document.getElementById(`like-${commentId}`);
-        const likeCountSpan = button.querySelector("span");
-        let currentLikes = parseInt(likeCountSpan.textContent, 10) || 0;
-        const user = <%- JSON.stringify(user) %>;
-
-        if (imgElement.src.endsWith("images/icons/unlikeCommentIcon.png") || imgElement.src.endsWith("images/icons/darkUnlikeCommentIcon.png")) {
-          if(user.settings.theme == "dark") {
-            imgElement.src = "images/icons/darkLikeCommentIcon.png";
-          } else {
-            imgElement.src = "images/icons/likeCommentIcon.png";
+          const repliesContainer = commentDiv.querySelector(
+            `#replies-${comment._id}`
+          );
+          if (comment.replies && comment.replies.length > 0) {
+            comment.replies.forEach((reply) => {
+              renderComment(reply, repliesContainer, depth + 1);
+            });
           }
-          // imgElement.src = "images/icons/likeCommentIcon.png";
-          imgElement.alt = "liked";
-          likeCountSpan.textContent = `${currentLikes + 1}`;
-        } else {
-          console.log(user.settings.theme);
-          if(user.settings.theme == "dark") {
-            imgElement.src = "images/icons/darkUnlikeCommentIcon.png";
-          } else {
-            imgElement.src = "images/icons/unlikeCommentIcon.png";
-          }
-          // imgElement.src = "images/icons/unlikeCommentIcon.png";
-          imgElement.alt = "unliked";
-          likeCountSpan.textContent = `${Math.max(0, currentLikes - 1)}`;
         }
 
-        try {
-          const response = await fetch(`/api/comments/like/${commentId}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId }),
-          });
-          const updatedComment = await response.json();
-          likeCountSpan.textContent = `${updatedComment.likes.length}`;
-        } catch (error) {
-          console.error("Error liking comment:", error);
-          if (imgElement.src.endsWith("images/icons/likeCommentIcon.png")) {
-            imgElement.src = "images/icons/unlikeIcon.svg";
-            imgElement.alt = "unliked";
-            likeCountSpan.textContent = `${Math.max(0, currentLikes - 1)}`;
-          } else {
-            imgElement.src = "images/icons/likeCommentIcon.png";
+        window.like_comment = async function like_comment(commentId, button) {
+          const userId = "<%= userId %>";
+          console.log("userId", userId);
+          const imgElement = document.getElementById(`like-${commentId}`);
+          const likeCountSpan = button.querySelector("span");
+          let currentLikes = parseInt(likeCountSpan.textContent, 10) || 0;
+          const user = <%- JSON.stringify(user) %>;
+
+          if (imgElement.src.endsWith("images/icons/unlikeCommentIcon.png") || imgElement.src.endsWith("images/icons/darkUnlikeCommentIcon.png")) {
+            if(user.settings.theme == "dark") {
+              imgElement.src = "images/icons/darkLikeCommentIcon.png";
+            } else {
+              imgElement.src = "images/icons/likeCommentIcon.png";
+            }
+
             imgElement.alt = "liked";
             likeCountSpan.textContent = `${currentLikes + 1}`;
-          }
-        }
-      };
 
-      window.renderComments = function renderComments(comments, container) {
-        comments.forEach((comment) => {
-          if (!comment.parentComment) {
-            renderComment(comment, container, 0);
-          }
-        });
-      }
-
-      window.deleteComment = function deleteComment(commentId) {
-        fetch(`/api/comments/delete/${commentId}`, {
-          method: "DELETE",
-        })
-          .then((response) => {
-            if (!response.ok) throw new Error("Network response was not ok");
-            return response.json();
-          })
-          .then(() => {
-            const commentElement = document.getElementById(
-              `comment-${commentId}`
-            );
-            if (commentElement) {
-              commentElement.remove();
-            }
-          })
-          .catch((error) => console.error("Error deleting comment:", error));
-      }
-
-      const userAlreadyReported = "<%= userAlreadyReported %>" === "true";
-      const userAlreadyLiked = "<%= userAlreadyLiked %>" === "true";
-      const userSavedBlog = "<%= userSavedBlog %>" === "true";
-
-      const reportButton = document.getElementById("reportButton");
-      if (userAlreadyReported) {
-        reportButton.disabled = true;
-        reportButton.classList.add(
-          "hover:bg-red-400",
-          "hover:text-dark-secondary",
-          "cursor-not-allowed",
-          "text-gray-500",
-          "flex",
-          "justify-center",
-          "items-center"
-        );
-        reportButton.innerHTML = `
-        <span class="text-sm">Reported</span>
-      `;
-      }
-
-
-      reportButton.addEventListener("click", async () => {
-        document.getElementById("reportPopout").classList.toggle("hidden");
-      });
-
-      const likeButton = document.getElementById("likeButton");
-      const likeIcon = document.getElementById("likeIcon");
-      const likeCount = document.getElementById("likeCount");
-
-      const saveButton = document.getElementById("saveBlogButton");
-      const saveIcon = document.getElementById("saveBlogIcon");
-
-      // Like/Unlike functionality
-      likeButton.addEventListener("click", async () => {
-        let wasLiked = !(likeIcon.src.includes("unlikeIcon.svg"));
-        likeIcon.src = wasLiked ? "images/icons/unlikeIcon.svg" : "images/icons/likeIcon.svg";
-        likeIcon.alt = wasLiked ? "Unlike icon" : "Like icon";
-        const countLike=parseInt(likeCount.textContent, 10);
-        if(!wasLiked){
-          gtag("config", "<%= blog.author.googleAnalyticsId %>");
-          gtag('event', 'like_blog', {
-            'event_category': 'Engagement',
-            'event_label': '<%= blog.title %>',
-            'blog_id': '<%= blog._id %>',
-            user_id:"<%= blog.author._id %>"
-          });
-        }
-        if(wasLiked){
-            likeCount.textContent = countLike - 1;
-            if(countLike-1<=0){
-            likeCount.textContent = 0;
-            wasLiked = false;
-            return;
-           }
-        }
-  likeCount.textContent = parseInt(likeCount.textContent, 10) + (wasLiked ? -1 : 1);
-
-        try {
-          const response = await fetch(`/api/blog/like/<%= blog.slug %>`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-          });
-
-          if (!response.ok) {
-            // likeIcon.src = wasLiked ? "images/icons/likeIcon.svg" : "images/icons/unlikeIcon.svg";
-            // likeIcon.alt = wasLiked ? "Like icon" : "Unlike icon";
-            // likeCount.textContent = parseInt(likeCount.textContent, 10) + (wasLiked ? 1 : -1);
-          throw new Error("Failed to like/unlike the blog");
-          }
-
-          const result = await response.json();
-
-          likeCount.textContent = result.likesCount;
-          if (!result.liked) {
-            likeIcon.src = "images/icons/unlikeIcon.svg";
-            likeIcon.alt = "Unlike icon";
           } else {
-            likeIcon.src = "images/icons/likeIcon.svg";
-            likeIcon.alt = "Like icon";
-          }
-        } catch (error) {
-          console.error("Error liking/unliking the blog:", error);
-          likeIcon.src = wasLiked ? "images/icons/likeIcon.svg" : "images/icons/unlikeIcon.svg";
-    likeIcon.alt = wasLiked ? "Like icon" : "Unlike icon";
-    likeCount.textContent = parseInt(likeCount.textContent, 10) + (wasLiked ? 1 : -1);
-        }
-      });
+            console.log(user.settings.theme);
+            if(user.settings.theme == "dark") {
+              imgElement.src = "images/icons/darkUnlikeCommentIcon.png";
+            } else {
+              imgElement.src = "images/icons/unlikeCommentIcon.png";
+            }
 
-      const editable = "<%= editable %>" == "true";
-      if (isAuthenticated && editable) {
-        const archiveButton = document.getElementById("archivedBlog");
-        const publishIcon = archiveButton.querySelector("img");
-        archiveButton.addEventListener("click", async () => {
+            imgElement.alt = "unliked";
+            likeCountSpan.textContent = `${Math.max(0, currentLikes - 1)}`;
+          }
+          if(imgElement.alt === "liked") {
+            Toastify({
+              text: "Comment liked successfully!",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)", 
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff"
+              }
+            }).showToast();
+          }else{
+            Toastify({
+              text: "Comment unliked successfully!",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff" }
+            }).showToast();
+          }
+
           try {
-            const response = await fetch(`/api/blog/archive/<%= blog.slug %>`, {
+            const response = await fetch(`/api/comments/like/${commentId}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ userId }),
+            });
+            const updatedComment = await response.json();
+            likeCountSpan.textContent = `${updatedComment.likes.length}`;
+
+          } catch (error) {
+            console.error("Error liking comment:", error);
+            if (imgElement.src.endsWith("images/icons/likeCommentIcon.png")) {
+              imgElement.src = "images/icons/unlikeIcon.svg";
+              imgElement.alt = "unliked";
+              likeCountSpan.textContent = `${Math.max(0, currentLikes - 1)}`;
+            } else {
+              imgElement.src = "images/icons/likeCommentIcon.png";
+              imgElement.alt = "liked";
+              likeCountSpan.textContent = `${currentLikes + 1}`;
+            }
+          }
+        };
+
+        window.renderComments = function renderComments(comments, container) {
+          comments.forEach((comment) => {
+            if (!comment.parentComment) {
+              renderComment(comment, container, 0);
+            }
+          });
+        }
+
+        window.deleteComment = function deleteComment(commentId) {
+          fetch(`/api/comments/delete/${commentId}`, {
+            method: "DELETE",
+          })
+            .then((response) => {
+              if (!response.ok) throw new Error("Network response was not ok");
+              return response.json();
+            })
+            .then(() => {
+              const commentElement = document.getElementById(
+                `comment-${commentId}`
+              );
+              if (commentElement) {
+                commentElement.remove();
+                Toastify({
+                  text: "Comment deleted successfully!",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
+              }
+            }).catch((error) => {
+              Toastify({
+                text: "Error deleting comment. Please try again later.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
+            });
+           
+        }
+
+        const userAlreadyReported = "<%= userAlreadyReported %>" === "true";
+        const userAlreadyLiked = "<%= userAlreadyLiked %>" === "true";
+        const userSavedBlog = "<%= userSavedBlog %>" === "true";
+
+        const reportButton = document.getElementById("reportButton");
+        if (userAlreadyReported) {
+          reportButton.disabled = true;
+          reportButton.classList.add(
+            "hover:bg-red-400",
+            "hover:text-dark-secondary",
+            "cursor-not-allowed",
+            "text-gray-500",
+            "flex",
+            "justify-center",
+            "items-center"
+          );
+          reportButton.innerHTML = `
+          <span class="text-sm">Reported</span>
+        `;
+        }
+
+
+        reportButton.addEventListener("click", async () => {
+          document.getElementById("reportPopout").classList.toggle("hidden");
+        });
+
+        const likeButton = document.getElementById("likeButton");
+        const likeIcon = document.getElementById("likeIcon");
+        const likeCount = document.getElementById("likeCount");
+
+        const saveButton = document.getElementById("saveBlogButton");
+        const saveIcon = document.getElementById("saveBlogIcon");
+
+        // Like/Unlike functionality
+        likeButton.addEventListener("click", async () => {
+          let wasLiked = !(likeIcon.src.includes("unlikeIcon.svg"));
+          likeIcon.src = wasLiked ? "images/icons/unlikeIcon.svg" : "images/icons/likeIcon.svg";
+          likeIcon.alt = wasLiked ? "Unlike icon" : "Like icon";
+          const countLike=parseInt(likeCount.textContent, 10);
+          if(!wasLiked){
+            gtag("config", "<%= blog.author.googleAnalyticsId %>");
+            gtag('event', 'like_blog', {
+              'event_category': 'Engagement',
+              'event_label': '<%= blog.title %>',
+              'blog_id': '<%= blog._id %>',
+              user_id:"<%= blog.author._id %>"
+            });
+          }
+          if(wasLiked){
+              likeCount.textContent = countLike - 1;
+              if(countLike-1<=0){
+              likeCount.textContent = 0;
+              wasLiked = false;
+              return;
+             }
+          }
+    likeCount.textContent = parseInt(likeCount.textContent, 10) + (wasLiked ? -1 : 1);
+
+          try {
+            const response = await fetch(`/api/blog/like/<%= blog.slug %>`, {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
             });
 
-            if (!response.ok) {
-              throw new Error("Failed to archive the blog");
-            }
-
             const result = await response.json();
 
-            if (!result.archived) {
-              publishIcon.src = "images/icons/archiveIcon.svg";
+            likeCount.textContent = result.likesCount;
+           
+            if (!result.liked) {
+              likeIcon.src = "images/icons/unlikeIcon.svg";
+              likeIcon.alt = "Unlike icon";
+                  Toastify({
+              text: "Blog unliked successfully!",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff" }
+            }).showToast();
             } else {
-              publishIcon.src = "images/icons/unarchiveIcon.svg";
+              
+              likeIcon.src = "images/icons/likeIcon.svg";
+              likeIcon.alt = "Like icon";
+                Toastify({
+              text: "Blog liked successfully!",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)", 
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff"
+              }
+            }).showToast();
             }
           } catch (error) {
-            console.error("Error archiving the blog:", error);
+            console.error("Error liking/unliking the blog:", error);
+            likeIcon.src = wasLiked ? "images/icons/likeIcon.svg" : "images/icons/unlikeIcon.svg";
+            likeIcon.alt = wasLiked ? "Like icon" : "Unlike icon";
+            likeCount.textContent = parseInt(likeCount.textContent, 10) + (wasLiked ? 1 : -1);
+            if(wasLiked){
+               Toastify({
+                  text: "Failed to like the blog. Please try again later.",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
+            }else{
+              Toastify({
+                  text: "Failed to unlike the blog. Please try again later.",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
+            }
           }
+        });
+
+        const editable = "<%= editable %>" == "true";
+
+        if (isAuthenticated && editable) {
+          const archiveButton = document.getElementById("archivedBlog");
+          const publishIcon = archiveButton.querySelector("img");
+          archiveButton.addEventListener("click", async () => {
+            try {
+              const response = await fetch(`/api/blog/archive/<%= blog.slug %>`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+              });
+
+              if (!response.ok) {
+                throw new Error("Failed to archive the blog");
+              }
+
+              const result = await response.json();
+
+              if (!result.archived) {
+                publishIcon.src = "images/icons/archiveIcon.svg";
+               Toastify({
+                  text: "Blog published successfully!",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", // Elegant reddish gradient
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
+
+              } else {
+                publishIcon.src = "images/icons/unarchiveIcon.svg";
+                
+                 Toastify({
+                  text: "Blog archived successfully!",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #1e3c72, #2a5298)", // Elegant bluish gradient
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
+              }
+            } catch (error) {
+              Toastify({
+                text: "Failed to archive the blog. Please try again later.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
+            }
+          });
+        }
+
+        // Save/Unsave blog functionality
+        saveButton.addEventListener("click", async () => {
+          try {
+            const response = await fetch(`/api/blog/saveBlog/<%= blog.slug %>`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+            });
+            const result = await response.json();
+
+            if (result.saved) {
+              saveIcon.src = "images/icons/unbookMark.svg";
+              saveIcon.alt = "Saved blog icon";
+              gtag("config", "<%= blog.author.googleAnalyticsId %>");
+            gtag('event', 'save_blog', {
+              'event_category': 'Engagement',
+              'event_label': '<%= blog.title %>',
+              'blog_id': '<%= blog._id %>',
+              user_id:"<%= blog.author._id %>"
+            });
+
+              Toastify({
+                text: "Blog saved successfully!",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00c6ff, #0072ff)", // Aqua to vibrant blue
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
+            } else {
+              saveIcon.src = "images/icons/bookMark.svg";
+              saveIcon.alt = "Unsaved blog icon";
+              Toastify({
+                text: "Blog unsaved successfully!",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
+            }
+          } catch (error) {
+            Toastify({
+              text: "Failed to save/unsave the blog. Please try again later.",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff"
+              }
+            }).showToast();
+          }
+        });
+
+        document.getElementById("copyBtn").addEventListener("click", function () {
+          const url = "<%= url %>";
+          navigator.clipboard.writeText(url).then(function () {
+            const copyMessage = document.getElementById("copyMessage");
+            Toastify({
+              text: "Blog URL copied to clipboard!",
+              duration: 3000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #00c6ff, #0072ff)", // Aqua to vibrant blue
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff"
+              }
+            }).showToast();
+          });
         });
       }
 
-      // Save/Unsave blog functionality
-      saveButton.addEventListener("click", async () => {
-        try {
-          console.log("Save button clicked");
-          const response = await fetch(`/api/blog/saveBlog/<%= blog.slug %>`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-          });
+      const blogSummaryBool = "<%= blog.summary %>";
+      if (blogSummaryBool == "true") {
+        const summaryContainer = document.getElementById("summaryContainer");
+        const summary = document.getElementById("summary");
 
-          if (!response.ok) {
-            throw new Error("Failed to save/unsave the blog");
-          }
-
-          const result = await response.json();
-
-          if (result.saved) {
-            saveIcon.src = "images/icons/unbookMark.svg";
-            saveIcon.alt = "Saved blog icon";
-            gtag("config", "<%= blog.author.googleAnalyticsId %>");
-          gtag('event', 'save_blog', {
-            'event_category': 'Engagement',
-            'event_label': '<%= blog.title %>',
-            'blog_id': '<%= blog._id %>',
-            user_id:"<%= blog.author._id %>"
-          });
-          } else {
-            saveIcon.src = "images/icons/bookMark.svg";
-            saveIcon.alt = "Unsaved blog icon";
-          }
-        } catch (error) {
-          console.error("Error saving/unsaving the blog:", error);
-        }
-      });
-
-      document.getElementById("copyBtn").addEventListener("click", function () {
-        const url = "<%= url %>";
-        navigator.clipboard.writeText(url).then(function () {
-          const copyMessage = document.getElementById("copyMessage");
-          copyMessage.classList.remove("hidden");
-          setTimeout(() => copyMessage.classList.add("hidden"), 2000);
-        });
-      });
-    }
-
-    const blogSummaryBool = "<%= blog.summary %>";
-    if (blogSummaryBool == "true") {
-      const summaryContainer = document.getElementById("summaryContainer");
-      const summary = document.getElementById("summary");
-
-      const blogId = "<%= blog._id %>";
-      fetch("/api/suggestion/summary", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ blogId: "<%= blog._id %>" }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.summary) {
-            summary.innerHTML = data.summary;
-            summaryContainer.classList.remove("hidden");
-          }
+        const blogId = "<%= blog._id %>";
+        fetch("/api/suggestion/summary", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ blogId: "<%= blog._id %>" }),
         })
-        .catch((error) => console.error("Error fetching summary:", error));
-    }
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.summary) {
+              summary.innerHTML = data.summary;
+              summaryContainer.classList.remove("hidden");
+            }
+          })
+          .catch((error) => console.error("Error fetching summary:", error));
+      }
 
-    var blogPhotoContainer=document.getElementById("blogPhotoContainer");
-    var blogActions = document.getElementById("blogActions");
-    console.log("blogPhotoContainer", blogPhotoContainer);
-    console.log("blogActions", blogActions);
-    blogPhotoContainer.addEventListener("mouseenter", function() {
-      console.log("hover");
-      blogActions.classList.remove("hidden");
-    });
-    blogPhotoContainer.addEventListener("mouseleave", function() {
-      console.log("hover");
-      blogActions.classList.add("hidden");
-    });
-    blogPhotoContainer.addEventListener("click", function() {
+      var blogPhotoContainer=document.getElementById("blogPhotoContainer");
       var blogActions = document.getElementById("blogActions");
-      console.log("hover");
-      blogActions.classList.toggle("hidden");
+      console.log("blogPhotoContainer", blogPhotoContainer);
+      console.log("blogActions", blogActions);
+      blogPhotoContainer.addEventListener("mouseenter", function() {
+        console.log("hover");
+        blogActions.classList.remove("hidden");
+      });
+      blogPhotoContainer.addEventListener("mouseleave", function() {
+        console.log("hover");
+        blogActions.classList.add("hidden");
+      });
+      blogPhotoContainer.addEventListener("click", function() {
+        var blogActions = document.getElementById("blogActions");
+        console.log("hover");
+        blogActions.classList.toggle("hidden");
+      });
+      blogActions.addEventListener("click", function() {
+        var blogActions = document.getElementById("blogActions");
+        console.log("hover");
+        blogActions.classList.toggle("hidden");
+      });
+      blogActions.addEventListener("hover", function() {
+        console.log("hover");
+        blogActions.classList.add("hidden");
+      });
     });
-    blogActions.addEventListener("click", function() {
-      var blogActions = document.getElementById("blogActions");
-      console.log("hover");
-      blogActions.classList.toggle("hidden");
-    });
-    blogActions.addEventListener("hover", function() {
-      console.log("hover");
-      blogActions.classList.add("hidden");
-    });
-  });
 </script>

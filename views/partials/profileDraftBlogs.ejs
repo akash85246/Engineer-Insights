@@ -1,4 +1,4 @@
-<h1   class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-2 md:px-2 lg:px-5 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-secondary bg-white bg-background' %> sticky top-0 z-10"
+<h1   class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-2 md:px-2 lg:px-5 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-secondary bg-white bg-background' %> sticky top-0 z-10 mt-5"
   >
    Draft Blogs
     <span id="currentPage" class="text-xs sm:text-sm md:text-base lg:text-lg <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-tertiary' %>"></span>
@@ -104,8 +104,8 @@
                                     </button>
 
 
-                      <div  class="absolute bottom-10 right-0 flex flex-col gap-2 rounded-md p-2 shadow-md z-50
-                        <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-fifth text-primary' %> hidden"
+                      <div  class="absolute bottom-0 right-0 flex flex-col gap-2 rounded-md p-2 shadow-md z-50
+                        <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-background shadow-md text-primary' %> hidden"
                         id="blogMoreOptions-${blog.slug}">
                         ${isSubAuthor || isAuthor? `
                          ${
@@ -147,34 +147,7 @@
 
       allBlogContainer.innerHTML = slidesHtml;
 
-      document.querySelectorAll(".remove-button").forEach((button) => {
-        button.addEventListener("click", async function () {
-          const slug = this.getAttribute("data-slug");
-       
-          try {
-            const response = await fetch(`/blog/saveBlog/${slug}`, {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-            });
-
-            if (!response.ok) {
-              throw new Error("Failed to save/unsave the blog", response);
-            }
-
-            const result = await response.json();
-
-            if (!result.saved) {
-              const blogElement = document.getElementById(`blog-${slug}`);
-              if (blogElement) {
-                blogElement.remove();
-              }
-            }
-          } catch (error) {
-            console.error("Error saving/unsaving the blog:", error);
-          }
-        });
-      });
-
+      
       document.getElementById("currentPage").innerText = `Page ${currentPage}`;
     }
 

@@ -391,7 +391,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
               const metaTitle = document.getElementById("metaTitle");
               const metaDescription = document.getElementById("metaDescription");
-              const markdown = document.getElementById("markdown");
+              const markdown = document.getElementById("editorWrapper");
+              console.log("markdown", markdown);
 
               validateField(
                 metaTitle,
@@ -399,23 +400,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("metaTitleError"),
                 "Invalid SEO title. Should be 1-60 characters long."
               );
+              console.log("metaDescription", metaDescription);
               validateField(
                 metaDescription,
                 metaDescriptionRegex,
                 document.getElementById("metaDescriptionError"),
                 "Invalid SEO description. Should be 1-160 characters long."
               );
-              validateField(
-                markdown,
-                markdownRegex,
-                document.getElementById("markdownError"),
-                "Invalid markdown content."
-              );
+              console.log("metadata", metaTitle, metaDescription);
+              // validateField(
+              //   markdown,
+              //   markdownRegex,
+              //   document.getElementById("markdownError"),
+              //   "Invalid markdown content."
+              // );
 
               if (
                 metaTitle.classList.contains("border-gray-300") &&
                 metaDescription.classList.contains("border-gray-300") &&
-                markdown.classList.contains("border-gray-300")
+              markdown.innerHTML.trim() !== ""
               ) {
                 const category = document.getElementById("category").value;
                 const status = document.getElementById("status").value;
@@ -423,17 +426,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 const metaTitle = document.getElementById("metaTitle").value;
                 const metaDescription =
                   document.getElementById("metaDescription").value;
-                const markdown = document.getElementById("markdown").value;
+                const markdown = document.getElementById("editor").innerHTML;
 
-                console.log("body", {
-                  category,
-                  status,
-                  audience,
-                  metaTitle,
-                  metaDescription,
-                  markdown,
-                  summaryValue,
-                });
+                console.log("markdown", markdown);
+                console.log("category", category);
+                console.log("status", status);
 
                 fetch(`/api/blog/save/<%= blog.slug %>`, {
                   method: "PUT",
@@ -452,20 +449,67 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
                   .then((response) => {
                     if (!response.ok) {
-                      throw new Error("Failed to save the blog");
+                      Toastify({
+                        text: "Failed to save the blog",
+                        duration: 4000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                        stopOnFocus: true,
+                        close: true,
+                        style: {
+                          borderRadius: "10px",
+                          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                          fontSize: "15px",
+                          padding: "14px 18px",
+                          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                          color: "#fff"
+                        }
+                      }).showToast();
+                      return;
                     }
-                    return response.json(); // Parse the JSON response
+                    return response.json();
                   })
                   .then((data) => {
                     if (data.redirectUrl) {
+                       Toastify({
+                text: "Blog saved successfully!",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00c6ff, #0072ff)", // Aqua to vibrant blue
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
                       window.location.href = data.redirectUrl;
-                    } else {
-                      throw new Error("No redirect URL provided");
-                    }
+                    } 
                   })
                   .catch((error) => {
-                    console.error("Error catch:", error);
-                    alert("An error occurred: " + error.message);
+                     Toastify({
+                text: "An error occurred while saving the blog",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
                   });
               }
             });

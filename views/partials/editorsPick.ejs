@@ -11,12 +11,308 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+
+      window.openEditorBlogMore = function openEditorBlogMore(isSubAuthor, isAuthor, slug) {
+      const blogMoreOptions = document.getElementById(
+        "blogEditorMoreOptions-" + slug
+      );
+      console.log(blogMoreOptions)
+     
+      blogMoreOptions.classList.toggle("hidden");
+    };
+
+    window.hideEditorBlogOptions = function hideEditorBlogOptions(slug) {
+      const options = document.getElementById(`blogEditorMoreOptions-${slug}`);
+      if (options) {
+        options.classList.add("hidden");
+      }
+    };
+
+     window.likeEditorBlog = async function likeEditorBlog(slug, isLiked) {
+      const likeImg = document.getElementById("likeEditorIcon-" + slug);
+      const likeText = document.getElementById("likeEditorText-" + slug);
+      isLiked = likeText.innerText === "Unlike";
+      
+      if (isLiked) {
+        likeImg.src = "images/icons/unlikeIcon.svg";
+        likeText.innerText = "Like";
+        likeImg.alt = "Unlike icon";
+        
+      } else {
+        likeImg.src = "images/icons/likeIcon.svg";
+        likeText.innerText = "Unlike";
+        likeImg.alt = "Like icon";
+        
+      }
+      try {
+        const response = await fetch(`/api/blog/like/${slug}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const result = await response.json();
+       
+        if (!result.liked) {
+          likeImg.src = "images/icons/unlikeIcon.svg";
+          likeImg.alt = "like icon";
+          likeText.innerText = "Like";
+
+           Toastify({
+              text: "Blog unliked successfully!",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff" }
+            }).showToast();
+          
+        } else {
+          likeImg.src = "images/icons/likeIcon.svg";
+          likeImg.alt = "Unlike icon";
+          likeText.innerText = "Unlike";
+          Toastify({
+              text: "Blog liked successfully!",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)", 
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff"
+              }
+            }).showToast();
+          
+          
+        }
+      } catch (error) {
+        likeImg.src = isLiked
+          ? "images/icons/likeIcon.svg"
+          : "images/icons/unlikeIcon.svg";
+        likeImg.alt = isLiked ? "Like icon" : "Unlike icon";
+        likeText.innerText = isLiked ? "Like" : "Unlike";
+        Toastify({
+                  text: "Please try again later.",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
+
+      }
+    };
+    
+    window.toggleEditorSaveBlog = async function toggleEditorSaveBlog(slug,isBookmarked) {
+      try {
+        const saveText = document.getElementById(`saveEditorText-${slug}`);
+        const saveIcon = document.getElementById(`saveEditorIcon-${slug}`);
+
+        if(isBookmarked) {
+          saveText.innerText = "Save";
+          saveIcon.src = "images/icons/bookMark.svg";
+        } else {
+          saveText.innerText = "Unsave";
+          saveIcon.src = "images/icons/unbookMark.svg";
+        }
+
+        const response = await fetch(`/api/blog/saveBlog/${slug}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          });
+
+            const result = await response.json();
+
+            if(!result.saved) {
+                saveText.innerText = "Save";
+                saveIcon.src = "images/icons/bookMark.svg";
+
+                 Toastify({
+                text: "Blog unsaved successfully!",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
+                
+              } else {
+                saveText.innerText = "Unsave";
+                saveIcon.src = "images/icons/unbookMark.svg";
+               
+
+               Toastify({
+                text: "Blog saved successfully!",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00c6ff, #0072ff)", // Aqua to vibrant blue
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
+              }
+            
+      } catch (error) {
+        Toastify({
+              text: "Failed to save/unsave the blog. Please try again later.",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff"
+              }
+            }).showToast();
+      }
+    };
+
+     window.toggleEditorArchiveBlog = async function toggleEditorArchiveBlog(slug) {
+      
+      const archiveText = document.getElementById(`archiveEditorText-${slug}`);
+      const archiveIcon = document.getElementById(`archiveEditorIcon-${slug}`);
+      const isArchived = archiveText.dataset.isarchived === "true"; 
+
+      archiveText.dataset.isarchived = (archiveText.dataset.isarchived === "true") ? "false" : "true";
+
+      if (isArchived) {
+        console.log("isArchived",isArchived);
+        archiveText.innerText = "Archive";
+        archiveIcon.src = "images/icons/archiveIcon.svg";
+      } else {
+        archiveText.innerText = "Unarchive";
+        archiveIcon.src = "images/icons/unarchiveIcon.svg";
+      }
+
+      try {
+        const response = await fetch(`/api/blog/archive/${slug}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          });
+
+            if (!response.ok) {
+              archiveText.innerText = isArchived ? "Unarchive" : "Archive";
+              archiveIcon.src = isArchived
+                ? "images/icons/unarchiveIcon.svg"
+                : "images/icons/archiveIcon.svg";
+              throw new Error("Failed to archive the blog");
+            }
+
+            const result = await response.json();
+             console.log("Blog unarchived successfully", result);
+            if(!result.archived) {
+              archiveText.innerText = "Archive";
+              archiveIcon.src = "images/icons/archiveIcon.svg";
+               Toastify({
+                  text: "Blog published successfully!",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
+            } else {
+              archiveText.innerText = "Unarchive";
+              archiveIcon.src = "images/icons/unarchiveIcon.svg";
+              Toastify({
+                  text: "Blog archived successfully!",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #1e3c72, #2a5298)", // Elegant bluish gradient
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
+              // fetchBlogs(1); 
+            }
+      } catch (error) {
+        Toastify({
+                text: "Failed to archive the blog. Please try again later.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
+      }
+    };
+
+
     function fetchBlogs() {
           const blog = <%- JSON.stringify(editorialBlog) %>;
           console.log("blog received",blog.length);
           const editorsPickContainer = document.getElementById("editorsPick");
-
-          
 
           if (blog.length > 0) {
 
@@ -52,8 +348,9 @@
                   isArchived = blog.status === "archived";
                 }
 
+            
 
-                return `<div class="<%= user.settings.theme === 'dark' ? 'shadow-white-lg' : 'shadow-lg' %> w-full flex-shrink-0  font-lora" onmouseleave="hideBlogOptions('${blog.slug}')">
+                return `<div class="<%= user.settings.theme === 'dark' ? 'shadow-white-lg' : 'shadow-lg' %> w-full flex-shrink-0  font-lora" onmouseleave="hideEditorBlogOptions('${blog.slug}')">
                   <div class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
                     blog.blogPhoto
                   }')">
@@ -99,33 +396,28 @@
 
                           <div class="relative z-50">
                              ${(isAuthenticated)?
-                  `<button onclick='openBlogMore(${isSubAuthor}, ${isAuthor}, "${
-                        blog.slug
-                    }")' class="z-50">
-                      <img src="images/icons/verticalMoreIcon.svg" alt="More"
-                        class="w-6 h-6 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7">
-                    </button>`:""}
+                  `           <button onclick='openEditorBlogMore(${isSubAuthor}, ${isAuthor}, "${
+                                    blog.slug
+                                }")' class="z-50 blog-more-btn">
+                                  <img src="images/icons/verticalMoreIcon.svg"            alt="More"
+                                    class="w-6 h-6 sm:w-5 sm:h-5 md:w-6 md:h-6  lg:w-7 lg:h-7">
+                                </button>`
+                                :
+                                ""
+                                }
 
-                            <div  class="absolute bottom-0 right-0 flex flex-col gap-2 rounded-md p-2 shadow-md z-50
-                      <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-background text-primary' %> min-w-[120px] hidden shadow-md"
-                      id="blogMoreOptions-${blog.slug}">
+                            <div  class="absolute bottom-0 right-0 flex flex-col gap-2 rounded-md p-2 shadow-md z-50 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-background text-primary' %> min-w-[120px] hidden shadow-md z-50"
+                      id="blogEditorMoreOptions-${blog.slug}">
 
-                       
-
-                  ${
-                    isSubAuthor || isAuthor
-                      ? `
-                      
-                         ${
-                           isAuthor
-                             ? `
-                             <button onclick="toggleArchiveBlog('${blog.slug}','${isArchived}')"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                     ${ isSubAuthor || isAuthor ? 
+                     `${ isAuthor ?
+                      `<button onclick="toggleEditorArchiveBlog('${blog.slug}')"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
                              <%= user.settings.theme === 'dark'
                               ? 'hover:bg-red-600 text-dark-primary'
-                              : 'hover:bg-red-200 text-primary' %>">
+                              : 'hover:bg-red-200 text-primary' %>" >
                              <img src="${isArchived?"images/icons/unarchiveIcon.svg":"images/icons/archiveIcon.svg"}" alt="Archive Blog"
-                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="archiveIcon-${blog.slug}">
-                             <span id="archiveText-${blog.slug}">${isArchived ? "Unarchive" : "Archive"}</span>
+                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="archiveEditorIcon-${blog.slug}">
+                             <span id="archiveEditorText-${blog.slug}" data-isarchived="false">${isArchived ? "Unarchive" : "Archive"}</span>
                              </button>
 
                              <button onclick="openDeleteModal('${blog.slug}')"  class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
@@ -150,7 +442,7 @@
                          </a>
                       
                     `
-                      : ` <button onclick="likeBlog('${
+                      : `<button onclick="likeEditorBlog('${
                         blog.slug
                       }',${isLiked})" class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
                         <%= user.settings.theme === 'dark'
@@ -160,14 +452,14 @@
                                 isLiked
                                   ? "images/icons/likeIcon.svg"
                                   : "images/icons/unlikeIcon.svg"
-                              }" id="likeIcon-${blog.slug}" alt="Like Blog"
+                              }" id="likeEditorIcon-${blog.slug}" alt="Like Blog"
                         class="w-4 h-4 transition-transform duration-200 group-hover:scale-110  ">
-                              <span id="likeText-${blog.slug}">${
+                              <span id="likeEditorText-${blog.slug}">${
                               isLiked ? "Unlike" : "Like"
                             }</span>
                         </button>
 
-                        <button onclick="toggleSaveBlog('${blog.slug}',${isBookmarked})"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                        <button onclick="toggleEditorSaveBlog('${blog.slug}',${isBookmarked})"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
                           <%= user.settings.theme === 'dark'
                           ? 'hover:bg-red-600 text-dark-primary'
                           : 'hover:bg-red-200 text-primary' %>">
@@ -175,13 +467,12 @@
                                 isBookmarked
                                   ? "images/icons/unbookMark.svg"
                                   : "images/icons/bookMark.svg" } " alt="Unsave Blog"
-                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="saveIcon-${blog.slug}">
-                              <span id="saveText-${blog.slug}">${isBookmarked?`Unsave`:`Save`}</span>
-                        </button>`
-                  }
-                </div>
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="saveEditorIcon-${blog.slug}">
+                              <span id="saveEditorText-${blog.slug}">${isBookmarked?`Unsave`:`Save`}</span>
+                        </button> ` }
                           </div>
                         </div>
+                      </div>
 
                       </div>
                     </div>
@@ -205,163 +496,7 @@
       return text;
     }
 
-     window.openBlogMore = function openBlogMore(isSubAuthor, isAuthor, slug) {
-      const blogMoreOptions = document.getElementById(
-        "blogMoreOptions-" + slug
-      );
-     
-      blogMoreOptions.classList.toggle("hidden");
-    };
-
-
-
-    window.hideBlogOptions = function hideBlogOptions(slug) {
-      const options = document.getElementById(`blogMoreOptions-${slug}`);
-      if (options) {
-        options.classList.add("hidden");
-      }
-    };
-
-     window.likeBlog = async function likeBlog(slug, isLiked) {
-      const likeImg = document.getElementById("likeIcon-" + slug);
-      const likeText = document.getElementById("likeText-" + slug);
-      isLiked = likeText.innerText === "Unlike";
-      
-      if (isLiked) {
-        likeImg.src = "images/icons/unlikeIcon.svg";
-        likeText.innerText = "Like";
-        likeImg.alt = "Unlike icon";
-        
-      } else {
-        likeImg.src = "images/icons/likeIcon.svg";
-        likeText.innerText = "Unlike";
-        likeImg.alt = "Like icon";
-        
-      }
-      try {
-        const response = await fetch(`/api/blog/like/${slug}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-        });
-
-        if (!response.ok) {
-          likeImg.src = isLiked
-            ? "images/icons/likeIcon.svg"
-            : "images/icons/unlikeIcon.svg";
-          likeImg.alt = isLiked ? "Like icon" : "Unlike icon";
-          likeText.innerText = isLiked ? "Like" : "Unlike";
-
-          throw new Error("Failed to like/unlike the blog");
-        }
-
-        const result = await response.json();
-       
-        if (!result.liked) {
-          likeImg.src = "images/icons/unlikeIcon.svg";
-          likeImg.alt = "Unlike icon";
-          likeText.innerText = "Like";
-          
-        } else {
-          likeImg.src = "images/icons/likeIcon.svg";
-          likeImg.alt = "Like icon";
-          likeText.innerText = "Unlike";
-          
-        }
-      } catch (error) {
-        likeImg.src = isLiked
-          ? "images/icons/likeIcon.svg"
-          : "images/icons/unlikeIcon.svg";
-        likeImg.alt = isLiked ? "Like icon" : "Unlike icon";
-        likeText.innerText = isLiked ? "Like" : "Unlike";
-
-      }
-    };
-    
-    window.toggleSaveBlog = async function toggleSaveBlog(slug,isBookmarked) {
-      try {
-        const saveText = document.getElementById(`saveText-${slug}`);
-        const saveIcon = document.getElementById(`saveIcon-${slug}`);
-
-        if(isBookmarked) {
-          saveText.innerText = "Save";
-          saveIcon.src = "images/icons/bookMark.svg";
-        } else {
-          saveText.innerText = "Unsave";
-          saveIcon.src = "images/icons/unbookMark.svg";
-        }
-
-        const response = await fetch(`/api/blog/saveBlog/${slug}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-          });
-
-            if (!response.ok) {
-
-              saveText.innerText = isBookmarked ? "Unsave" : "Save";
-              saveIcon.src = isBookmarked
-                ? "images/icons/bookMark.svg"
-                : "images/icons/unbookMark.svg";
-
-              throw new Error("Failed to archive the blog");
-            }
-
-            const result = await response.json();
-
-            if(!result.saved) {
-                saveText.innerText = "Save";
-                saveIcon.src = "images/icons/bookMark.svg";
-              } else {
-                saveText.innerText = "Unsave";
-                saveIcon.src = "images/icons/unbookMark.svg";
-              }
-            
-      } catch (error) {
-        console.error("Error unarchiving the blog:", error);
-      }
-    };
-
-     window.toggleArchiveBlog = async function toggleArchiveBlog(slug,isArchived) {
-      const archiveText = document.getElementById(`archiveText-${slug}`);
-      const archiveIcon = document.getElementById(`archiveIcon-${slug}`);
-
-      if (isArchived) {
-        archiveText.innerText = "Archive";
-        archiveIcon.src = "images/icons/archiveIcon.svg";
-      } else {
-        archiveText.innerText = "Unarchive";
-        archiveIcon.src = "images/icons/unarchiveIcon.svg";
-      }
-
-      try {
-        const response = await fetch(`/api/blog/archive/${slug}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-          });
-
-            if (!response.ok) {
-              archiveText.innerText = isArchived ? "Unarchive" : "Archive";
-              archiveIcon.src = isArchived
-                ? "images/icons/unarchiveIcon.svg"
-                : "images/icons/archiveIcon.svg";
-              throw new Error("Failed to archive the blog");
-            }
-
-            const result = await response.json();
-             console.log("Blog unarchived successfully", result);
-            if(!result.archived) {
-              archiveText.innerText = "Archive";
-              archiveIcon.src = "images/icons/archiveIcon.svg";
-            } else {
-              archiveText.innerText = "Unarchive";
-              archiveIcon.src = "images/icons/unarchiveIcon.svg";
-              fetchBlogs(1); // Refresh the blog list after unarchiving
-            }
-      } catch (error) {
-        console.error("Error unarchiving the blog:", error);
-      }
-    };
-
-
+   
 
 
   });

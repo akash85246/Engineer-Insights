@@ -7,6 +7,8 @@
     <title><%= title %></title>
     <base href="/" />
     <link rel="stylesheet" href="stylesheets/style.css" />
+        <!-- Toastify CSS -->
+<link rel="stylesheet" href="/toastify/toastify.css" />
     <style>
       svg path {
         stroke: #333;
@@ -28,7 +30,8 @@
     async
     src="https://www.googletagmanager.com/gtag/js?id=G-FG5BN3EY26"
   ></script>
-  <script>
+<% if (user && user._id && user.googleAnalyticsId) { %>
+     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() {
       dataLayer.push(arguments);
@@ -38,6 +41,7 @@
       user_id: "<%= user._id %>",
     });
   </script>
+    <% } %>
   <body
     class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %>"
   >
@@ -161,7 +165,23 @@
         if (response.ok) {
           const data = await response.json();
 
-          alert(data.message);
+          Toastify({
+                text: "Profile " + (data.blocked ? "blocked" : "unblocked") + " successfully!",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
 
           const blockButton = document.getElementById("blockButton");
 
@@ -178,11 +198,28 @@
 
           closeProfilePopout();
         } else {
-          console.log("Error blocking profile:", response);
+          
           closeProfilePopout();
+          throw new Error("Failed to block/unblock profile");
         }
       } catch (error) {
-        console.log("Error:", error);
+        Toastify({
+                text: "Failed to " + (blockButton.innerText === "Block" ? "block" : "unblock") + " profile.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
         closeProfilePopout();
       }
     };
@@ -369,3 +406,4 @@
             }
        });
 </script>
+<script src="/toastify/toastify.js"></script>

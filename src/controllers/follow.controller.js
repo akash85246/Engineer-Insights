@@ -161,9 +161,12 @@ async function removefollower(req, res) {
 
     await user.save();
     await follower.save();
+    const followersCount = await UserModel.countDocuments({ _id: { $in: user.followers } });
+    
     return res
       .status(200)
-      .json({ message: "Successfully removed the follower" });
+      .json({ message: "Successfully removed the follower" ,
+         followersCount:  followersCount});
   } catch (error) {
     console.error("Error in removefollower function:", error);
     return res.status(500).json({ error: "Server error" });

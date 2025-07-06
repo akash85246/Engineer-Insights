@@ -15,7 +15,7 @@
       src="<%= profile.avatar ? profile.avatar : '/images/defaultProfile.png' %>"
       alt="Profile Photo"
       id="profileImage"
-      class="max-w-45 w-full sm:max-w-full h-40 w-30 sm:h-52 rounded-md shadow-md object-cover border aspect-square border-gray-300"
+       class="w-20 h-20 md:w-full md:h-auto aspect-square rounded-md border border-gray-300"
     />
   
     <div class="absolute top-2 right-2 flex flex-col justify-center">
@@ -90,6 +90,7 @@
       >
         <h2
           class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %>"
+          id="followerCountDetail"
         >
           <%= profile.followers.length %>
         </h2>
@@ -378,6 +379,7 @@
       >
         <h2
           class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %>"
+          id="followerCountDetailMobile"
         >
           <%= profile.followers.length %>
         </h2>
@@ -589,7 +591,24 @@
           const followButtonMobile = document.getElementById("followButtonMobile");
           const data = await response.json();
 
-          alert(data.message);
+          
+          Toastify({
+                text: data.message,
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #4caf50, #81c784)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
 
           followButton.innerText =
             followButton.innerText === "Follow" ? "Unfollow" : "Follow";
@@ -610,10 +629,26 @@
 
           }
         } else {
-          console.error("Error following/unfollowing the profile.");
+          throw new Error("Failed to toggle follow status");
         }
       } catch (error) {
-        console.error("An error occurred:", error);
+       Toastify({
+                text: "Failed to toggle follow status",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
       }
     }
   }

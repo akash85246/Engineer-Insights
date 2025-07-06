@@ -384,9 +384,9 @@ function timeSince(date) {
 
   if (interval > 1) return `${interval} yr ago`;
   interval = Math.floor(seconds / 2592000);
-  if (interval > 1) return `${interval} mos ago`;
+  if (interval > 1) return `${interval} mon ago`;
   interval = Math.floor(seconds / 86400);
-  if (interval > 1) return `${interval} days ago`;
+  if (interval > 1) return `${interval} day ago`;
   interval = Math.floor(seconds / 3600);
   if (interval > 1) return `${interval} hr ago`;
   interval = Math.floor(seconds / 60);

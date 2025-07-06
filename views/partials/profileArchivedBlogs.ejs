@@ -1,5 +1,5 @@
 <h1
-  class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-2 md:px-2 lg:px-5 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-secondary bg-white bg-background' %> sticky top-0 z-10"
+  class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-2 md:px-2 lg:px-5 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-secondary bg-white bg-background' %> sticky top-0 z-10 mt-5"
 >
   Archieved Blogs
   <span
@@ -208,10 +208,43 @@
           likeImg.src = "images/icons/unlikeIcon.svg";
           likeImg.alt = "Unlike icon";
           likeText.innerText = "Like";
+          Toastify({
+              text: "Blog unliked successfully!",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff" }
+            }).showToast();
         } else {
           likeImg.src = "images/icons/likeIcon.svg";
           likeImg.alt = "Like icon";
           likeText.innerText = "Unlike";
+          Toastify({
+              text: "Blog liked successfully!",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)", 
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff"
+              }
+            }).showToast();
         }
       } catch (error) {
         // console.error("Error liking/unliking the blog:", error);
@@ -220,6 +253,23 @@
           : "images/icons/unlikeIcon.svg";
         likeImg.alt = isLiked ? "Like icon" : "Unlike icon";
         likeText.innerText = isLiked ? "Like" : "Unlike";
+        Toastify({
+                  text: "Please try again later.",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
       }
     };
     
@@ -241,13 +291,64 @@
             if (!result.saved) {
               const blogElement = document.getElementById(`blog-${slug}`);
               if (blogElement) {
+                Toastify({
+                  text: "Blog published successfully!",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
                 fetchBlogArchiveds(1); 
+              }else{
+                Toastify({
+                  text: "Blog archived successfully!",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #1e3c72, #2a5298)", // Elegant bluish gradient
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
               }
             
              
             }
       } catch (error) {
-        console.error("Error unarchiving the blog:", error);
+        Toastify({
+                text: "Failed to archive the blog. Please try again later.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
       }
     };
 

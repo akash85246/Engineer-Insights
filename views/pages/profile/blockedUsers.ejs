@@ -1,19 +1,24 @@
 <%- include("../../partials/profileFeaturedBlog.ejs")%>
 
+<h2
+  class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-2 md:px-2 lg:px-5 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-secondary bg-white bg-background' %> sticky top-0 z-10 mt-5"
+>
+  Blocked Users
+</h2>
 
-  <h2 class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-2 md:px-2 lg:px-5 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-secondary bg-white bg-background' %> sticky top-0 z-10">Blocked Users</h2>
+<ul
+  id="blockedUsersList"
+  class="space-y-2 md:space-y-4 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-primary shadow-white-md' : 'bg-sixth text-primary ' %> rounded-lg px-1 md:px-2 lg:px-5"
+></ul>
 
-  <ul id="blockedUsersList" class="space-y-2 md:space-y-4 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-primary shadow-white-md' : 'bg-sixth text-primary ' %>  rounded-lg px-1 md:px-2 lg:px-5" >
-   
-  </ul>
-
-  <div id="paginationControls" class="flex justify-center space-x-2 my-4 sm:my-6 md:my-8 lg:my-10 overflow-x-scroll relative bottom-0 -z-50">
-  </div>
-
+<div
+  id="paginationControls"
+  class="flex justify-center space-x-2 my-4 sm:my-6 md:my-8 lg:my-10 overflow-x-scroll relative bottom-0 -z-50"
+></div>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-   changePage(1);
+    changePage(1);
   });
 
   async function changePage(page) {
@@ -25,7 +30,9 @@
         console.log(data);
         updateBlockedUsersList(data.blockedUsers, data.page, data.totalPages);
       } else {
-        document.getElementById("blockedUsersList").innerHTML = `<p class='text-center'>No blocked users found. Status: ${response.status} - ${response.statusText}</p>`;
+        document.getElementById(
+          "blockedUsersList"
+        ).innerHTML = `<p class='text-center'>No blocked users found. Status: ${response.status} - ${response.statusText}</p>`;
       }
     } catch (error) {
       console.error("Error fetching blocked users:", error);
@@ -35,7 +42,7 @@
   function updateBlockedUsersList(users, page, totalPages) {
     const list = document.getElementById("blockedUsersList");
     list.innerHTML = "";
-    if(users.length === 0) {
+    if (users.length === 0) {
       list.innerHTML = `<p class="flex justify-between items-center gap-4 p-3 md:p-4 rounded-lg shadow-sm bg-white dark:bg-dark-card border dark:border-dark-border">No blocked users found.</p>`;
       return;
     }
@@ -45,16 +52,16 @@
   <!-- Left: Avatar and User Info -->
   <div class="flex items-center gap-4">
     <img 
-      src="${ user.avatar || '/default-avatar.png' }" 
-      alt="${ user.username }" 
+      src="${user.avatar || "/default-avatar.png"}" 
+      alt="${user.username}" 
       class="w-12 h-12 rounded-full border border-gray-300 dark:border-gray-600 object-cover"
     />
     <div class="flex flex-col">
       <span class="font-semibold text-sm md:text-base text-primary dark:text-dark-primary">
-        ${ user.username }
+        ${user.username}
       </span>
       <span class="text-xs text-gray-500 dark:text-gray-400">
-        ${ user.firstname } ${ user.lastname }
+        ${user.firstname} ${user.lastname}
       </span>
     </div>
   </div>
@@ -62,7 +69,7 @@
   <!-- Right: Unblock Button -->
   <button
     class="text-sm px-4 py-1.5 rounded-md font-medium border border-red-300 text-red-600 hover:bg-red-100 dark:border-red-600 dark:hover:bg-red-800 dark:hover:text-white transition"
-    onclick="unblockUser('${ user._id }')"
+    onclick="unblockUser('${user._id}')"
   >
     Unblock
   </button>
@@ -105,13 +112,45 @@
       });
 
       if (response.ok) {
-        alert("User unblocked successfully");
+        Toastify({
+          text: "User unblocked successfully.",
+          duration: 4000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #4caf50, #81c784)",
+          stopOnFocus: true,
+          close: true,
+          style: {
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            fontSize: "15px",
+            padding: "14px 18px",
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            color: "#fff",
+          },
+        }).showToast();
         changePage(1);
       } else {
-        alert("Failed to unblock user");
+        throw new Error("Failed to unblock user.");
       }
     } catch (error) {
-      console.error("Error unblocking user:", error);
+      Toastify({
+        text: "An error occurred while unblocking the user.",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+        stopOnFocus: true,
+        close: true,
+        style: {
+          borderRadius: "10px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          fontSize: "15px",
+          padding: "14px 18px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          color: "#fff",
+        },
+      }).showToast();
     }
   }
 </script>

@@ -562,7 +562,6 @@
       const blogMoreOptions = document.getElementById(
         "blogMoreOptions-" + slug
       );
-     
       blogMoreOptions.classList.toggle("hidden");
     };
 
@@ -613,12 +612,44 @@
           likeImg.src = "images/icons/unlikeIcon.svg";
           likeImg.alt = "Unlike icon";
           likeText.innerText = "Like";
+           Toastify({
+              text: "Blog unliked successfully!",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff" }
+            }).showToast();
           
         } else {
           likeImg.src = "images/icons/likeIcon.svg";
           likeImg.alt = "Like icon";
           likeText.innerText = "Unlike";
-          
+          Toastify({
+              text: "Blog liked successfully!",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)", 
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff"
+              }
+            }).showToast();
         }
       } catch (error) {
         likeImg.src = isLiked
@@ -626,6 +657,23 @@
           : "images/icons/unlikeIcon.svg";
         likeImg.alt = isLiked ? "Like icon" : "Unlike icon";
         likeText.innerText = isLiked ? "Like" : "Unlike";
+        Toastify({
+                  text: "Please try again later.",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
 
       }
     };
@@ -663,13 +711,63 @@
             if(!result.saved) {
                 saveText.innerText = "Save";
                 saveIcon.src = "images/icons/bookMark.svg";
+                  Toastify({
+                text: "Blog unsaved successfully!",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
               } else {
                 saveText.innerText = "Unsave";
                 saveIcon.src = "images/icons/unbookMark.svg";
+                 Toastify({
+                text: "Blog saved successfully!",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00c6ff, #0072ff)", // Aqua to vibrant blue
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
               }
             
       } catch (error) {
-        console.error("Error unarchiving the blog:", error);
+       Toastify({
+              text: "Failed to save/unsave the blog. Please try again later.",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff"
+              }
+            }).showToast();
       }
     };
 
@@ -704,17 +802,65 @@
             if(!result.archived) {
               archiveText.innerText = "Archive";
               archiveIcon.src = "images/icons/archiveIcon.svg";
+               Toastify({
+                  text: "Blog published successfully!",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", // Elegant reddish gradient
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
             } else {
               archiveText.innerText = "Unarchive";
               archiveIcon.src = "images/icons/unarchiveIcon.svg";
-              fetchBlogs(1); // Refresh the blog list after unarchiving
+              Toastify({
+                  text: "Blog archived successfully!",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #1e3c72, #2a5298)", // Elegant bluish gradient
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
+              fetchBlogs(1);
             }
       } catch (error) {
-        console.error("Error unarchiving the blog:", error);
+        Toastify({
+                text: "Failed to archive the blog. Please try again later.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
       }
     };
-
-
 
   window.onload = fetchBlogs(1);
 </script>

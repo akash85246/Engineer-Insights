@@ -69,7 +69,7 @@
             "cursor-pointer"
           );
 
-          console.log(blog._id);
+          
           blogDiv.innerHTML = `
             <p class="break-words max-w-[70%] md:max-w-[90%] whitespace-normal ">${blog.title}</p>
              <button class=" hover:bg-tertiary   hover:text-background <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : ' text-sixth bg-secondary' %> px-2 py-1 rounded-lg" onclick="selectBlog('${blog._id}')">Select</button>
@@ -81,7 +81,23 @@
       }
     } catch (error) {
       console.error("Error fetching blogs:", error);
-      alert("Failed to search for blogs");
+          Toastify({
+                text: "An error occurred while searching for blogs",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
       searchList.innerHTML = "<p class='text-center'>An error occurred</p>";
     }
   }
@@ -104,16 +120,65 @@
 
     if (!response.ok) {
         console.log(response);
-      throw new Error("Failed to update the blog feature");
+          Toastify({
+                text: "Failed to update the blog feature",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
+              return;
     }
 
     const result = await response.json();
     // alert(`Blog updated successfully: ${result.message}`);
+        Toastify({
+                text: "Blog updated successfully!",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00c6ff, #0072ff)", // Aqua to vibrant blue
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
     window.location.reload();
 
   } catch (error) {
-    console.error("Error updating blog:", error);
-    alert("An error occurred while updating the blog");
+        Toastify({
+                text: "Failed to update the blog feature",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
   }
 }
 </script>

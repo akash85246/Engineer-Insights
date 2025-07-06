@@ -40,7 +40,23 @@
         followersList.innerHTML = `<p class="text-red-500">Failed to fetch followers.</p>`;
       }
     } catch (error) {
-      console.error("Error fetching followers:", error);
+      Toastify({
+        text: "An error occurred while fetching followers.",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+        stopOnFocus: true,
+        close: true,
+        style: {
+          borderRadius: "10px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          fontSize: "15px",
+          padding: "14px 18px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          color: "#fff",
+        },
+      }).showToast();
       followersList.innerHTML = `<p class="text-red-500">An error occurred while fetching followers.</p>`;
     }
   }
@@ -212,36 +228,67 @@
 
       if (response.ok) {
         const data = await response.json();
-        //update the following count in sidebar
-        const followingCount = document.getElementById("followingCount");
-        followingCount.innerText = data.followingCount;
+        
+        const followerCount = document.getElementById("followerCount");
+        followerCount.innerText = data.followerCount;
 
         //update follwing count in profile detail
         if (user._id === profile._id) {
-          const followingCountDetail = document.getElementById(
-            "followingCountDetail"
+          const followerCountDetail = document.getElementById(
+            "followerCountDetail"
           );
-          const followingCountDetailMobile = document.getElementById(
-            "followingCountDetailMobile"
+          const followerCountDetailMobile = document.getElementById(
+            "followerCountDetailMobile"
           );
-          if (followingCountDetailMobile) {
-            followingCountDetailMobile.innerHTML = data.followingCount;
+          if (followerCountDetailMobile) {
+            followerCountDetailMobile.innerHTML = data.followersCount;
           }
-          if (followingCountDetail) {
-            followingCountDetail.innerHTML = data.followingCount;
+
+          if (followerCountDetail) {
+            followerCountDetail.innerHTML = data.followersCount;
           }
         }
-
+        Toastify({
+          text: "Follower removed successfully.",
+          duration: 4000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+          stopOnFocus: true,
+          close: true,
+          style: {
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            fontSize: "15px",
+            padding: "14px 18px",
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            color: "#fff",
+          },
+        }).showToast();
         fetchFollowers();
       } else {
-        console.error("Failed to remove follower.");
+        throw new Error("Failed to remove follower.");
       }
     } catch (error) {
-      console.error("Error removing follower:", error);
+      Toastify({
+        text: "Failed to remove follower. Please try again later.",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+        stopOnFocus: true,
+        close: true,
+        style: {
+          borderRadius: "10px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          fontSize: "15px",
+          padding: "14px 18px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          color: "#fff",
+        },
+      }).showToast();
     }
   }
-
-  async function toggleUserFollower(slug) {}
 
   async function toggleUserFollower(profileSlug) {
     event.preventDefault();
@@ -260,8 +307,6 @@
       if (response.ok) {
         const data = await response.json();
 
-        alert(data.message);
-
         followButton.innerText =
           followButton.innerText === "Follow" ? "Unfollow" : "Follow";
         //update the following count in sidebar
@@ -276,11 +321,45 @@
             follower_user_id: "<%= user._id %>",
           });
         }
+
+        Toastify({
+          text: "User followed/unfollowed successfully.",
+          duration: 4000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #4caf50, #81c784)",
+          stopOnFocus: true,
+          close: true,
+          style: {
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            fontSize: "15px",
+            padding: "14px 18px",
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            color: "#fff",
+          },
+        }).showToast();
       } else {
-        console.error("Error following/unfollowing the profile.");
+        throw new Error("Failed to toggle follow status.");
       }
     } catch (error) {
-      console.error("An error occurred:", error);
+      Toastify({
+        text: "An error occurred while toggling follow status.",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+        stopOnFocus: true,
+        close: true,
+        style: {
+          borderRadius: "10px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          fontSize: "15px",
+          padding: "14px 18px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          color: "#fff",
+        },
+      }).showToast();
     }
   }
 

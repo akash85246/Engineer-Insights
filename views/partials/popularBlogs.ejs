@@ -119,6 +119,302 @@
       const categories = document.querySelectorAll(".category");
       const carouselContainer = document.getElementById("blogsByCategory");
 
+        window.openTopBlogMore = function openTopBlogMore(isSubAuthor, isAuthor, slug) {
+      const blogMoreOptions = document.getElementById(
+        "blogTopMoreOptions-" + slug
+      );
+     
+      blogMoreOptions.classList.toggle("hidden");
+    };
+
+    window.hideTopBlogOptions = function hideTopBlogOptions(slug) {
+      const options = document.getElementById(`blogTopMoreOptions-${slug}`);
+      if (options) {
+        options.classList.add("hidden");
+      }
+    };
+
+     window.likeTopBlog = async function likeTopBlog(slug, isLiked) {
+      const likeImg = document.getElementById("likeTopIcon-" + slug);
+      const likeText = document.getElementById("likeTopText-" + slug);
+      isLiked = likeText.innerText === "Unlike";
+      
+      if (isLiked) {
+        likeImg.src = "images/icons/unlikeIcon.svg";
+        likeText.innerText = "Like";
+        likeImg.alt = "Unlike icon";
+        
+      } else {
+        likeImg.src = "images/icons/likeIcon.svg";
+        likeText.innerText = "Unlike";
+        likeImg.alt = "Like icon";
+        
+      }
+      try {
+        const response = await fetch(`/api/blog/like/${slug}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const result = await response.json();
+       
+        if (!result.liked) {
+          likeImg.src = "images/icons/unlikeIcon.svg";
+          likeImg.alt = "like icon";
+          likeText.innerText = "Like";
+
+           Toastify({
+              text: "Blog unliked successfully!",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff" }
+            }).showToast();
+          
+        } else {
+          likeImg.src = "images/icons/likeIcon.svg";
+          likeImg.alt = "Unlike icon";
+          likeText.innerText = "Unlike";
+          Toastify({
+              text: "Blog liked successfully!",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)", 
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff"
+              }
+            }).showToast();
+          
+          
+        }
+      } catch (error) {
+        likeImg.src = isLiked
+          ? "images/icons/likeIcon.svg"
+          : "images/icons/unlikeIcon.svg";
+        likeImg.alt = isLiked ? "Like icon" : "Unlike icon";
+        likeText.innerText = isLiked ? "Like" : "Unlike";
+        Toastify({
+                  text: "Please try again later.",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
+
+      }
+    };
+    
+    window.toggleTopSaveBlog = async function toggleTopSaveBlog(slug,isBookmarked) {
+      try {
+        const saveText = document.getElementById(`saveTopText-${slug}`);
+        const saveIcon = document.getElementById(`saveTopIcon-${slug}`);
+
+        if(isBookmarked) {
+          saveText.innerText = "Save";
+          saveIcon.src = "images/icons/bookMark.svg";
+        } else {
+          saveText.innerText = "Unsave";
+          saveIcon.src = "images/icons/unbookMark.svg";
+        }
+
+        const response = await fetch(`/api/blog/saveBlog/${slug}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          });
+
+            const result = await response.json();
+
+            if(!result.saved) {
+                saveText.innerText = "Save";
+                saveIcon.src = "images/icons/bookMark.svg";
+
+                 Toastify({
+                text: "Blog unsaved successfully!",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
+                
+              } else {
+                saveText.innerText = "Unsave";
+                saveIcon.src = "images/icons/unbookMark.svg";
+               
+
+               Toastify({
+                text: "Blog saved successfully!",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #00c6ff, #0072ff)", // Aqua to vibrant blue
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
+              }
+            
+      } catch (error) {
+        Toastify({
+              text: "Failed to save/unsave the blog. Please try again later.",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff"
+              }
+            }).showToast();
+      }
+    };
+
+     window.toggleTopArchiveBlog  = async function toggleTopArchiveBlog (slug) {
+      
+      const archiveText = document.getElementById(`archiveTopText-${slug}`);
+      const archiveIcon = document.getElementById(`archiveTopIcon-${slug}`);
+      const isArchived = archiveText.dataset.isarchived === "true"; 
+
+      archiveText.dataset.isarchived = (archiveText.dataset.isarchived === "true") ? "false" : "true";
+
+      if (isArchived) {
+        console.log("isArchived",isArchived);
+        archiveText.innerText = "Archive";
+        archiveIcon.src = "images/icons/archiveIcon.svg";
+      } else {
+        archiveText.innerText = "Unarchive";
+        archiveIcon.src = "images/icons/unarchiveIcon.svg";
+      }
+
+      try {
+        const response = await fetch(`/api/blog/archive/${slug}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+          });
+
+            if (!response.ok) {
+              archiveText.innerText = isArchived ? "Unarchive" : "Archive";
+              archiveIcon.src = isArchived
+                ? "images/icons/unarchiveIcon.svg"
+                : "images/icons/archiveIcon.svg";
+              throw new Error("Failed to archive the blog");
+            }
+
+            const result = await response.json();
+             console.log("Blog unarchived successfully", result);
+            if(!result.archived) {
+              archiveText.innerText = "Archive";
+              archiveIcon.src = "images/icons/archiveIcon.svg";
+               Toastify({
+                  text: "Blog published successfully!",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", // Elegant reddish gradient
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
+            } else {
+              archiveText.innerText = "Unarchive";
+              archiveIcon.src = "images/icons/unarchiveIcon.svg";
+              Toastify({
+                  text: "Blog archived successfully!",
+                  duration: 4000,
+                  gravity: "top",
+                  position: "right",
+                  backgroundColor: "linear-gradient(to right, #1e3c72, #2a5298)", // Elegant bluish gradient
+                  stopOnFocus: true,
+                  close: true,
+                  style: {
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    fontSize: "15px",
+                    padding: "14px 18px",
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    color: "#fff"
+                  }
+                }).showToast();
+              // fetchBlogs(1); 
+            }
+      } catch (error) {
+        Toastify({
+                text: "Failed to archive the blog. Please try again later.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
+      }
+    };
+
+
       function fetchBlogs(selectedCategory = "") {
         let blogs = <%- JSON.stringify(latestBlog) %>;
         const grouped = {};
@@ -171,7 +467,7 @@
                 }
 
             return `
-            <div class="font-lora relative rounded-md flex flex-col justify-between <%= user.settings.theme === 'dark' ? 'bg-dark-sixth shadow-white-lg' : 'bg-background shadow-lg' %>" onmouseleave="hideBlogOptions('${blog.slug}')">
+            <div class="font-lora relative rounded-md flex flex-col justify-between <%= user.settings.theme === 'dark' ? 'bg-dark-sixth shadow-white-lg' : 'bg-background shadow-lg' %>" onmouseleave="hideTopBlogOptions('${blog.slug}')">
               <div class="flex justify-end bg-cover bg-center bg-origin-content rounded-md bg-blend-darken" style="background-image: url('${
                 blog.blogPhoto
               }')">
@@ -218,7 +514,7 @@
                 </a>
                 <div class="relative">
                              ${(isAuthenticated)?
-                  `<button onclick='openBlogMore(${isSubAuthor}, ${isAuthor}, "${
+                  `<button onclick='openTopBlogMore(${isSubAuthor}, ${isAuthor}, "${
                         blog.slug
                     }")'>
                       <img src="images/icons/verticalMoreIcon.svg" alt="More"
@@ -227,7 +523,7 @@
 
                             <div  class="absolute bottom-0 right-0 flex flex-col gap-2 rounded-md p-2 shadow-md z-50
                       <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-background text-primary' %> min-w-[120px] hidden shadow-md"
-                      id="blogMoreOptions-${blog.slug}">
+                      id="blogTopMoreOptions-${blog.slug}">
 
                        
 
@@ -238,13 +534,13 @@
                          ${
                            isAuthor
                              ? `
-                             <button onclick="toggleArchiveBlog('${blog.slug}','${isArchived}')"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                             <button onclick="toggleTopArchiveBlog ('${blog.slug}','${isArchived}')"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
                              <%= user.settings.theme === 'dark'
                               ? 'hover:bg-red-600 text-dark-primary'
                               : 'hover:bg-red-200 text-primary' %>">
                              <img src="${isArchived?"images/icons/unarchiveIcon.svg":"images/icons/archiveIcon.svg"}" alt="Archive Blog"
-                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="archiveIcon-${blog.slug}">
-                             <span id="archiveText-${blog.slug}">${isArchived ? "Unarchive" : "Archive"}</span>
+                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="archiveTopIcon-${blog.slug}">
+                             <span id="archiveTopText-${blog.slug}">${isArchived ? "Unarchive" : "Archive"}</span>
                              </button>
 
                              <button onclick="openDeleteModal('${blog.slug}')"  class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
@@ -269,7 +565,7 @@
                          </a>
                       
                     `
-                      : ` <button onclick="likeBlog('${
+                      : ` <button onclick="likeTopBlog('${
                         blog.slug
                       }',${isLiked})" class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
                         <%= user.settings.theme === 'dark'
@@ -279,14 +575,14 @@
                                 isLiked
                                   ? "images/icons/likeIcon.svg"
                                   : "images/icons/unlikeIcon.svg"
-                              }" id="likeIcon-${blog.slug}" alt="Like Blog"
+                              }" id="likeTopIcon-${blog.slug}" alt="Like Blog"
                         class="w-4 h-4 transition-transform duration-200 group-hover:scale-110  ">
-                              <span id="likeText-${blog.slug}">${
+                              <span id="likeTopText-${blog.slug}">${
                               isLiked ? "Unlike" : "Like"
                             }</span>
                         </button>
 
-                        <button onclick="toggleSaveBlog('${blog.slug}',${isBookmarked})"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
+                        <button onclick="toggleTopSaveBlog('${blog.slug}',${isBookmarked})"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
                           <%= user.settings.theme === 'dark'
                           ? 'hover:bg-red-600 text-dark-primary'
                           : 'hover:bg-red-200 text-primary' %>">
@@ -294,8 +590,8 @@
                                 isBookmarked
                                   ? "images/icons/unbookMark.svg"
                                   : "images/icons/bookMark.svg" } " alt="Unsave Blog"
-                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="saveIcon-${blog.slug}">
-                              <span id="saveText-${blog.slug}">${isBookmarked?`Unsave`:`Save`}</span>
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="saveTopIcon-${blog.slug}">
+                              <span id="saveTopText-${blog.slug}">${isBookmarked?`Unsave`:`Save`}</span>
                         </button>`
                   }
                 </div>

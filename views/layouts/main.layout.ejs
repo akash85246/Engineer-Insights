@@ -22,24 +22,24 @@
       href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
+    <!-- Toastify CSS -->
+<link rel="stylesheet" href="/toastify/toastify.css" />
   </head>
   <script
     async
     src="https://www.googletagmanager.com/gtag/js?id=G-FG5BN3EY26"
   ></script>
-  <% if (user && user.user_id && user.googleAnalyticsId) { %>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-    
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-    
-      gtag("js", new Date());
-      gtag("config", "<%= user.googleAnalyticsId %>", {
-        user_id: "<%= user._id %>",
-      });
-    </script>
+  <% if (user && user._id && user.googleAnalyticsId) { %>
+     <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "<%= user.googleAnalyticsId %>", {
+      user_id: "<%= user._id %>",
+    });
+  </script>
     <% } %>
   <body
     class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-text' %>"
@@ -48,3 +48,5 @@
     include("../partials/footer.ejs") %>
   </body>
 </html>
+<!-- Toastify JS -->
+<script src="/toastify/toastify.js"></script>

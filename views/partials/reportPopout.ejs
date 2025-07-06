@@ -115,8 +115,6 @@
     const reason = formData.get("reason");
     const description = formData.get("description");
 
-    console.log("Submitting report with data:", { reason, description });
-
     try {
       const response = await fetch("/api/reports/<%= blog.slug %>", {
         method: "POST",
@@ -127,18 +125,65 @@
       });
 
       const data = await response.json();
-      console.log("Response data:", data);
+     
 
       if (response.status === 201) {
         reportPopout.classList.add("hidden");
-        alert(data.message || "Report submitted successfully!");
+         Toastify({
+                text: "Report submitted successfully!",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #4caf50, #2e7d32)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
       } else {
-        // Show error message if response status is not 201
-        alert(data.message || "Failed to submit report. Please try again.");
+         Toastify({
+                text: "Failed to submit report.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
+        
       }
     } catch (error) {
-      console.error("Error submitting report:", error);
-      alert("An error occurred while submitting the report.");
+       Toastify({
+                text: "Failed to submit report.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
     }
   });
 

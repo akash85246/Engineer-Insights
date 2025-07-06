@@ -314,10 +314,42 @@
         const totalPages = Math.ceil(totalReports / reportsPerPage);
         setupPagination(totalPages, page);
       } else {
-        console.error("Failed to fetch reports:", response.statusText);
+            Toastify({
+                text: "Failed to load reports. Please try again later.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
       }
     } catch (error) {
-      console.error("Error loading reports:", error);
+          Toastify({
+                text: "An error occurred while loading reports.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
     }
   }
 
@@ -426,11 +458,6 @@
   };
 
   async function deleteReport(reportId) {
-    const confirmation = confirm(
-      "Are you sure you want to delete this report?"
-    );
-
-    if (!confirmation) return;
 
     try {
       const response = await fetch(`/api/reports/${reportId}`, {
@@ -441,18 +468,66 @@
       });
 
       if (response.ok) {
-        alert("Report deleted successfully.");
+       
+         Toastify({
+                text: "Report deleted successfully.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #28a745, #218838)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
         document.querySelector(`tr[data-report-id="${reportId}"]`).remove();
         closeDeleteReportModal();
         loadUserReports(1, 10);
         loadReports(1, 10);
       } else {
         const result = await response.json();
-        alert(`Failed to delete report: ${result.message}`);
+         Toastify({
+                text: "Failed to delete report.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
       }
     } catch (error) {
-      console.error("Error deleting report:", error);
-      alert("An error occurred while trying to delete the report.");
+       Toastify({
+                text: "An error occurred while deleting the report.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
     }
   }
   function truncateText(text, maxLength) {

@@ -459,10 +459,7 @@ usernameInput.addEventListener("input", async () => {
 
     const tagsInput = document.getElementById("tag").value;
 
-    // if (!tagsInput) {
-    //   alert("Please enter at least one tag");
-    //   return;
-    // }
+    
     
 
     const tagsArray = tagsInput
@@ -498,7 +495,23 @@ usernameInput.addEventListener("input", async () => {
     });
      
     if (!response.ok) {
-      const errorText = await response.text();
+       Toastify({
+                text: "Failed to save profile details",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+                }
+              }).showToast();
       throw new Error(errorText || "Failed to save profile details");
     }
 
