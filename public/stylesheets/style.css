@@ -546,6 +546,9 @@ video {
 .pointer-events-none {
   pointer-events: none;
 }
+.invisible {
+  visibility: hidden;
+}
 .collapse {
   visibility: collapse;
 }
@@ -881,6 +884,9 @@ video {
 .aspect-square {
   aspect-ratio: 1 / 1;
 }
+.h-1 {
+  height: 0.25rem;
+}
 .h-10 {
   height: 2.5rem;
 }
@@ -947,6 +953,9 @@ video {
 .h-\[40vh\] {
   height: 40vh;
 }
+.h-\[42px\] {
+  height: 42px;
+}
 .h-\[80\%\] {
   height: 80%;
 }
@@ -1006,6 +1015,9 @@ video {
 }
 .min-h-screen {
   min-height: 100vh;
+}
+.w-1 {
+  width: 0.25rem;
 }
 .w-1\/2 {
   width: 50%;
@@ -1084,6 +1096,9 @@ video {
 }
 .min-w-\[120px\] {
   min-width: 120px;
+}
+.min-w-\[140px\] {
+  min-width: 140px;
 }
 .min-w-\[48px\] {
   min-width: 48px;
@@ -2527,6 +2542,9 @@ video {
 .opacity-100 {
   opacity: 1;
 }
+.opacity-60 {
+  opacity: 0.6;
+}
 .opacity-70 {
   opacity: 0.7;
 }
@@ -3519,6 +3537,10 @@ overflow: scroll;
     height: 3.5rem;
   }
 
+  .sm\:h-2\.5 {
+    height: 0.625rem;
+  }
+
   .sm\:h-20 {
     height: 5rem;
   }
@@ -3565,6 +3587,10 @@ overflow: scroll;
 
   .sm\:w-14 {
     width: 3.5rem;
+  }
+
+  .sm\:w-2\.5 {
+    width: 0.625rem;
   }
 
   .sm\:w-2\/3 {
@@ -3940,6 +3966,10 @@ overflow: scroll;
     height: 7rem;
   }
 
+  .md\:h-3 {
+    height: 0.75rem;
+  }
+
   .md\:h-5 {
     height: 1.25rem;
   }
@@ -4002,6 +4032,10 @@ overflow: scroll;
 
   .md\:w-2\/3 {
     width: 66.666667%;
+  }
+
+  .md\:w-3 {
+    width: 0.75rem;
   }
 
   .md\:w-36 {

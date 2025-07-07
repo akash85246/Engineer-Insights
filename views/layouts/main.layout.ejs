@@ -23,7 +23,9 @@
       rel="stylesheet"
     />
     <!-- Toastify CSS -->
-<link rel="stylesheet" href="/toastify/toastify.css" />
+    <link rel="stylesheet" href="/toastify/toastify.css" />
+     <!-- loader -->
+    <link rel="stylesheet" href="/node_modules/loaders.css/loaders.min.css">
   </head>
   <script
     async
@@ -44,8 +46,9 @@
   <body
     class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-text' %>"
   >
-    <%- include("../partials/header.ejs") %> <%- include(view) %> <%-
-    include("../partials/footer.ejs") %>
+    <%- include("../partials/header.ejs") %> <%- include(view) %>
+    <%- include("../partials/loader.ejs") %>
+     <%- include("../partials/footer.ejs") %>
   </body>
 </html>
 <!-- Toastify JS -->

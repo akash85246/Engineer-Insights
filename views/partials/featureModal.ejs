@@ -7,22 +7,16 @@
     class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-gray-900' %> p-6 rounded-lg w-full m-auto md:w-1/2 grid grid-cols-2 gap-2 md:gap-6"
     onclick="event.stopPropagation()"
   >
-
-     <div class="flex items-center justify-between  col-span-2">
-      <h2
-        class="text-xl font-semibold font-sans"
-      >
-        Feature Blog
-      </h2>
+    <div class="flex items-center justify-between col-span-2">
+      <h2 class="text-xl font-semibold font-sans">Feature Blog</h2>
       <button
-            onclick="closeFeatureModal()"
-            class="text-gray-400 hover:text-red-500 transition duration-200 text-xl"
-            aria-label="Close"
-          >
-            &times;
-          </button>
-      </div>
-    
+        onclick="closeFeatureModal()"
+        class="text-gray-400 hover:text-red-500 transition duration-200 text-xl"
+        aria-label="Close"
+      >
+        &times;
+      </button>
+    </div>
 
     <div
       class="max-w-sm w-full shadow-lg rounded-lg border <%= user.settings.theme === 'dark' ? 'bg-dark-fourth border-dark-background' : 'bg-background border-fifth' %> p-2 md:p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out transform hover:scale-105 flex flex-col justify-between items-center"
@@ -50,11 +44,12 @@
       <div
         class="flex justify-center text-base sm:text-lg md:text-xl font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-primary' %> mb-10 md:mb-16"
       >
-      <% if(user.subscription =="regular" ||user.subscription =="elite" || freeBlogsLeft<=0) {%> $5 <% }
-        else {%> Free <% } %>
+        <% if(user.subscription =="regular" ||user.subscription =="elite" ||
+        freeBlogsLeft<=0) {%> $5 <% } else {%> Free <% } %>
       </div>
       <div class="flex justify-center w-full">
-        <% if(user.subscription =="regular" ||user.subscription =="elite" || freeBlogsLeft<=0) {%>
+        <% if(user.subscription =="regular" ||user.subscription =="elite" ||
+        freeBlogsLeft<=0) {%>
         <form action="/api/payment/create" method="POST" class="w-full">
           <input type="hidden" name="amount" value="5" />
           <input type="hidden" name="currency" value="USD" />
@@ -66,13 +61,26 @@
             value="7"
           />
           <button
-            class="<%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-tertiary text-sixth bg-tertiary' %> rounded-md hover:bg-fourth transition duration-300 w-full text-xs sm:text-base md:text-lg lg:text-xl p-2 font-roboto"
+            class="btn-with-loader relative <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-tertiary text-sixth bg-tertiary' %> rounded-md hover:bg-fourth transition duration-300 w-full text-xs sm:text-base md:text-lg lg:text-xl p-2 font-roboto"
             type="submit"
           >
-            Pay
+            <div
+              class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+            >
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+              ></div>
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full mx-1"
+              ></div>
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+              ></div>
+            </div>
+            <span class="btn-text inline-block">Pay</span>
           </button>
         </form>
-        <% } else  {%>
+        <% } else {%>
         <form action="/api/payment/create" method="POST" class="w-full">
           <input type="hidden" name="amount" value="free" />
           <input type="hidden" name="paymentType" value="featured" />
@@ -83,10 +91,25 @@
             value="7"
           />
           <button
-            class="<%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-tertiary text-sixth bg-tertiary' %> rounded-md hover:bg-fourth transition duration-300 w-full text-xs sm:text-base md:text-lg lg:text-xl p-2 font-roboto"
+            class="btn-with-loader relative <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-primary' : 'border-tertiary text-sixth bg-tertiary' %> rounded-md hover:bg-fourth transition duration-300 w-full text-xs sm:text-base md:text-lg lg:text-xl p-2 font-roboto"
             type="submit"
           >
-           <%= freeBlogsLeft %> free blogs 
+            <div
+              class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+            >
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+              ></div>
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full mx-1"
+              ></div>
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+              ></div>
+            </div>
+            <span class="btn-text inline-block">
+              <%= freeBlogsLeft %> free blogs
+            </span>
           </button>
         </form>
         <% } %>
@@ -121,11 +144,12 @@
       <div
         class="flex justify-center text-base sm:text-lg md:text-xl font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-primary' %> mb-10 md:mb-16"
       >
-      <% if(user.subscription =="regular" ||user.subscription =="pro" || freeBlogsLeft<=0) {%> $15 <% }
-      else {%> Free <% } %>
+        <% if(user.subscription =="regular" ||user.subscription =="pro" ||
+        freeBlogsLeft<=0) {%> $15 <% } else {%> Free <% } %>
       </div>
       <div class="flex justify-center w-full">
-        <% if(user.subscription =="regular" ||user.subscription =="pro" || freeBlogsLeft<=0) {%>
+        <% if(user.subscription =="regular" ||user.subscription =="pro" ||
+        freeBlogsLeft<=0) {%>
         <form action="/api/payment/create" method="POST" class="w-full">
           <input type="hidden" name="amount" value="15" />
           <input type="hidden" name="paymentType" value="featured" />
@@ -138,14 +162,27 @@
           />
 
           <button
-            class="<%= user.settings.theme === 'dark' ? ' bg-dark-sixth' : ' border-secondary text-sixth bg-secondary' %> rounded-md font-semibold p-2 hover:bg-tertiary transition duration-300 w-full text-xs sm:text-base md:text-lg lg:text-xl font-roboto"
+            class="btn-with-loader relative <%= user.settings.theme === 'dark' ? ' bg-dark-sixth' : ' border-secondary text-sixth bg-secondary' %> rounded-md font-semibold p-2 hover:bg-tertiary transition duration-300 w-full text-xs sm:text-base md:text-lg lg:text-xl font-roboto"
             type="submit"
           >
-            Pay
+            <div
+              class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+            >
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+              ></div>
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full mx-1"
+              ></div>
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+              ></div>
+            </div>
+            <span class="btn-text inline-block">Pay</span>
           </button>
         </form>
-        <% } else  {%>
-          <form action="/api/payment/create" method="POST" class="w-full">
+        <% } else {%>
+        <form action="/api/payment/create" method="POST" class="w-full">
           <input type="hidden" name="amount" value="free" />
           <input type="hidden" name="paymentType" value="featured" />
           <input type="hidden" id="modalBlogIdPro" name="blog" value="" />
@@ -156,13 +193,28 @@
           />
 
           <button
-          class="<%= user.settings.theme === 'dark' ? ' bg-dark-sixth' : ' border-secondary text-sixth bg-secondary' %> rounded-md font-semibold p-2 hover:bg-tertiary transition duration-300 w-full text-xs sm:text-base md:text-lg lg:text-xl font-roboto"
+            class="btn-with-loader relative <%= user.settings.theme === 'dark' ? ' bg-dark-sixth' : ' border-secondary text-sixth bg-secondary' %> rounded-md font-semibold p-2 hover:bg-tertiary transition duration-300 w-full text-xs sm:text-base md:text-lg lg:text-xl font-roboto"
             type="submit"
           >
-           <%= freeBlogsLeft %> free blogs 
+            <div
+              class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+            >
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+              ></div>
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full mx-1"
+              ></div>
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+              ></div>
+            </div>
+            <span class="btn-text inline-block">
+              <%= freeBlogsLeft %> free blogs
+            </span>
           </button>
         </form>
-          <% } %>
+        <% } %>
       </div>
       <div
         class="absolute top-0 right-0 bg-green-500 text-white text-xxxs sm:text-xxs md:text-xs px-2 py-1 rounded-bl-lg rounded-tr-lg"
@@ -172,3 +224,19 @@
     </div>
   </div>
 </div>
+<script>
+  
+ document.querySelectorAll("#featureModal form").forEach((form) => {
+  form.addEventListener("submit", function () {
+    const clickedBtn = form.querySelector(".btn-with-loader");
+    if (clickedBtn) {
+      showBtnLoader(clickedBtn);
+    }
+
+    document.querySelectorAll("#featureModal .btn-with-loader").forEach((btn) => {
+      btn.disabled = true;
+      btn.classList.add("opacity-60", "cursor-not-allowed");
+    });
+  });
+});
+</script>

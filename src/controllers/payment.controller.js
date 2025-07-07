@@ -137,7 +137,6 @@ async function paymentSuccess(req, res) {
     } else {
       if (paymentType === "featured") {
         const saleId = payment.transactions[0].related_resources[0].sale.id;
-        console.log("saleId", saleId);
         await PaymentModel.create({
           amount: payment.transactions[0].amount.total,
           currency: payment.transactions[0].amount.currency,
@@ -153,7 +152,7 @@ async function paymentSuccess(req, res) {
         });
       } else if (paymentType === "subscription") {
         const saleId = payment.transactions[0].related_resources[0].sale.id;
-        console.log("saleId", saleId);
+
         await PaymentModel.create({
           amount: payment.transactions[0].amount.total,
           currency: payment.transactions[0].amount.currency,
@@ -167,11 +166,20 @@ async function paymentSuccess(req, res) {
       }
 
       if (paymentType === "featured") {
-        const blogData = await BlogModel.findById(blog);
-        blogData.featured = true;
-        blogData.featuredDetails.featureDuration =
-          featuredDetails.featureDuration;
-        await blogData.save();
+    
+        await BlogModel.findByIdAndUpdate(blog, {
+          $set: {
+            featured: true,
+            isFree: false,
+            "featuredDetails.featureDuration": featuredDetails.featureDuration,
+            "featuredDetails.featuredAt": new Date(),
+            "featuredDetails.featuredEnd": new Date(
+              Date.now() + featuredDetails.featureDuration * 24 * 60 * 60 * 1000
+            ),
+          },
+        });
+
+      
       } else if (paymentType === "subscription") {
         const userData = await UserModel.findById(user._id);
         userData.subscription = subscriptionDetails.subscriptionType;
@@ -462,7 +470,6 @@ async function changeSubscription(req, res) {
 
 async function refundPayment(req, res) {
   const { transactionId } = req.body;
-  console.log("transactionId", transactionId);
 
   const payment = await PaymentModel.findOne({ transactionId });
 

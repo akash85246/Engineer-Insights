@@ -8,8 +8,9 @@
 
 <div><%- include("../partials/latestBlogs.ejs") %></div>
 <div id="editorsPickContainer">
-  <%- include("../partials/editorsPick.ejs") %>
+  <%- include("../partials/deleteBlogModal.ejs") %>
 </div>
+<%- include("../partials/editorsPick.ejs") %>
 <% if (user && user.user_id && user.googleAnalyticsId) { %>
 <script>
   gtag("config", "<%= user.googleAnalyticsId %>");

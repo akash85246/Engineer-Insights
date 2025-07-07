@@ -157,9 +157,23 @@
       <button
         type="submit"
         id="submit"
-        class="w-full py-2 px-4 font-roboto <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth hover:text-fourth bg-blue-500' %> rounded-md hover:bg-blue-700 text-background"
+        class="btn-with-loader relative w-full py-2 px-4 font-roboto <%= user.settings.theme === 'dark' ? ' bg-dark-fourth' : ' border-fourth hover:text-fourth bg-blue-500' %> rounded-md hover:bg-blue-700 text-background"
       >
-        Submit
+      <div
+          class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        >
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full mx-1"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+        </div>
+        <span class="btn-text inline-block">Submit</span>
+        
       </button>
     </div>
   </div>
@@ -176,7 +190,6 @@
     >
       Markdown
     </h1>
-    <!--  -->
     <div class="relative w-full bg-white rounded-xl">
       <div
         class="relative text-base text-gray-800 leading-relaxed font-medium flex flex-wrap"
@@ -198,8 +211,6 @@
         </div>
       </div>
     </div>
-    <!--  -->
-    
   </div>
 
   <div
@@ -377,7 +388,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const submitButton = document.getElementById("submit");
 
             submitButton.addEventListener("click", function (event) {
+
               event.preventDefault();
+               showBtnLoader(submitButton);
               const checkbox = document.getElementById("summary");
               let summaryValue = false;
               console.log("checked", checkbox);
@@ -449,6 +462,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
                   .then((response) => {
                     if (!response.ok) {
+                      hideBtnLoader(submitButton);
                       Toastify({
                         text: "Failed to save the blog",
                         duration: 4000,
@@ -493,6 +507,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     } 
                   })
                   .catch((error) => {
+                    hideBtnLoader(submitButton);
                      Toastify({
                 text: "An error occurred while saving the blog",
                 duration: 4000,

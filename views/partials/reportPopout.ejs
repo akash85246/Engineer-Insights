@@ -1,18 +1,22 @@
 <div
-  class="hidden fixed top-0 bottom-0 left-0 right-0
-  <%= user.settings.theme === 'dark' ? '  bg-dark-background' : 'bg-background' %>  bg-opacity-50 flex justify-center items-center w-screen h-screen backdrop-blur-sm font-lora"
+  class="hidden fixed top-0 bottom-0 left-0 right-0 <%= user.settings.theme === 'dark' ? ' bg-dark-background' : 'bg-background' %> bg-opacity-50 flex justify-center items-center w-screen h-screen backdrop-blur-sm font-lora"
   id="reportPopout"
 >
   <form
-    class="relative <%= user.settings.theme === 'dark' ? '  bg-dark-sixth shadow-white-lg' : 'bg-white shadow-lg' %>  rounded-lg p-6 max-w-xs  m-5 sm:max-w-lg   md:max-w-2xl lg:max-w-4xl space-y-6 w-full"
+    class="relative <%= user.settings.theme === 'dark' ? ' bg-dark-sixth shadow-white-lg' : 'bg-white shadow-lg' %> rounded-lg p-6 max-w-xs m-5 sm:max-w-lg md:max-w-2xl lg:max-w-4xl space-y-6 w-full"
     id="reportForm"
   >
-    <h2 class="text-sm sm:text-base md:text-lg lg:text-xl font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %>  break-words whitespace-normal">
+    <h2
+      class="text-sm sm:text-base md:text-lg lg:text-xl font-semibold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %> break-words whitespace-normal"
+    >
       Report <%- blog.title %>
     </h2>
 
     <div class="form-group">
-      <label for="reason" class="block text-sm md:text-base lg:text-lg font-medium  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-gray-700' %>">
+      <label
+        for="reason"
+        class="block text-sm md:text-base lg:text-lg font-medium <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-gray-700' %>"
+      >
         Reason
       </label>
       <select
@@ -42,7 +46,10 @@
     </div>
 
     <div class="form-group">
-      <label for="description" class="block text-sm md:text-base lg:text-lg font-medium  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-gray-700' %>">
+      <label
+        for="description"
+        class="block text-sm md:text-base lg:text-lg font-medium <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-gray-700' %>"
+      >
         Description
       </label>
       <textarea
@@ -67,10 +74,23 @@
       </button>
       <button
         type="submit"
-        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm md:text-base lg:text-lg font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 font-roboto"
+        class="btn-with-loader relative flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm md:text-base lg:text-lg font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 font-roboto"
         id="submitReport"
       >
-        Submit
+        <div
+          class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        >
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full mx-1"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+        </div>
+        <span class="btn-text inline-block">Submit Report</span>
       </button>
     </div>
   </form>
@@ -82,30 +102,29 @@
   const descriptionError = document.getElementById("descriptionError");
   const closeReportPopout = document.getElementById("closeReportPopout");
   const reportPopout = document.getElementById("reportPopout");
-
+  const submitReport = document.getElementById("submitReport");
   const descriptionRegex = /^.{10,}$/;
 
   // Function to validate description field
   function validateReportDescription() {
     const descriptionValue = descriptionInput.value.trim();
-    console.log("Description:", descriptionValue);
+
     if (!descriptionRegex.test(descriptionValue)) {
-      descriptionError.classList.remove("hidden"); // Show error message
-      descriptionInput.classList.add("border-red-500"); 
+      descriptionError.classList.remove("hidden");
+      descriptionInput.classList.add("border-red-500");
     } else {
-      descriptionError.classList.add("hidden"); // Hide error message
-      descriptionInput.classList.remove("border-red-500"); }
+      descriptionError.classList.add("hidden");
+      descriptionInput.classList.remove("border-red-500");
+    }
   }
 
-  // Validate on input change
   descriptionInput.addEventListener("input", validateReportDescription);
 
-  // Add validation and form submission logic
   reportForm.addEventListener("submit", async (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
-    validateReportDescription(); // Validate description input
+    event.preventDefault();
 
-    // Prevent submission if the input is invalid
+    validateReportDescription();
+
     if (descriptionInput.classList.contains("border-red-500")) {
       console.log("Invalid description");
       return;
@@ -114,7 +133,7 @@
     const formData = new FormData(reportForm);
     const reason = formData.get("reason");
     const description = formData.get("description");
-
+    showBtnLoader(submitReport);
     try {
       const response = await fetch("/api/reports/<%= blog.slug %>", {
         method: "POST",
@@ -125,65 +144,49 @@
       });
 
       const data = await response.json();
-     
 
       if (response.status === 201) {
         reportPopout.classList.add("hidden");
-         Toastify({
-                text: "Report submitted successfully!",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #4caf50, #2e7d32)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+        Toastify({
+          text: "Report submitted successfully!",
+          duration: 4000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #4caf50, #2e7d32)",
+          stopOnFocus: true,
+          close: true,
+          style: {
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            fontSize: "15px",
+            padding: "14px 18px",
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            color: "#fff",
+          },
+        }).showToast();
+        hideBtnLoader(submitReport);
       } else {
-         Toastify({
-                text: "Failed to submit report.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
-        
+        throw new Error("Failed to submit report");
       }
     } catch (error) {
-       Toastify({
-                text: "Failed to submit report.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+      hideBtnLoader(submitReport);
+      Toastify({
+        text: "Failed to submit report.",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+        stopOnFocus: true,
+        close: true,
+        style: {
+          borderRadius: "10px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          fontSize: "15px",
+          padding: "14px 18px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          color: "#fff",
+        },
+      }).showToast();
     }
   });
 

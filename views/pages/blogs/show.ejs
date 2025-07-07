@@ -279,6 +279,7 @@
           id="reportButton"
           class="font-semibold py-2 rounded-md hover:bg-red-400 hover:text-white transition-all duration-300 ease-in-out text-sm items-center col-span-4 font-roboto <%= user.settings.theme === 'dark' ? ' bg-dark-fifth shadow-white-md text-dark-secondary' : 'bg-tertiary text-white shadow-md' %> max-w-sm box-border"
         >
+        
           <span class="text-sm">Report</span>
         </button>
         <% } %>
@@ -292,7 +293,7 @@
       <textarea
         id="commentText"
         placeholder="Write a comment..."
-        class="text-sm lg:text-base w-full p-3 border bg-transparent <%= user.settings.theme === 'dark' ?'placeholder-dark-tertiary text-dark-secondary border-dark-secondary' : 'text-fourth placeholder-fourth border-primary-dark' %> rounded-lg outline-none transition duration-300 resize-none"
+        class="text-sm lg:text-base w-full p-3 border bg-transparent <%= user.settings.theme === 'dark' ?'placeholder-dark-tertiary text-dark-secondary border-dark-secondary' : 'text-primary placeholder-fourth border-primary' %> rounded-lg outline-none transition duration-300 resize-none"
         autofocus
         rows="5"
         maxlength="500"
@@ -303,9 +304,24 @@
       <div class="mt-2 md:mt-4 flex justify-end">
         <button
           type="submit"
-          class="px-5 py-2 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth shadow-white-md text-dark-secondary' : ' text-white bg-fourth shadow-md' %> rounded-md hover:bg-highlight hover:text-white transition duration-300 ease-in-out text-sm lg:text-base hover:scale-110 font-roboto"
+          id="commentButton"
+          class="btn-with-loader relative px-5 py-2 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth shadow-white-md text-dark-secondary' : ' text-white bg-tertiary shadow-md' %> rounded-md hover:bg-highlight hover:text-white transition duration-300 ease-in-out text-sm lg:text-base hover:scale-110 font-roboto"
         >
-          Add Comment
+         <div
+          class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        >
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full mx-1"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+        </div>
+        <span class="btn-text inline-block"> Add Comment</span>
+         
         </button>
       </div>
     </form>
@@ -399,6 +415,8 @@ include("../../partials/reportPopout.ejs") %>
         const socket = io();
 
       window.addComment=async  function addComment() {
+        const commentButton = document.getElementById("commentButton");
+        showBtnLoader(commentButton);
         event.preventDefault();
           const commentText = document.getElementById("commentText").value;
           const parentCommentId =
@@ -440,8 +458,26 @@ include("../../partials/reportPopout.ejs") %>
             });
             document.getElementById("commentText").value = "";
             document.getElementById("parentCommentId").value = "";
+            hideBtnLoader(commentButton);
           } else {
-            alert("Comment cannot be empty");
+            Toastify({
+              text: "Comment cannot be empty!",
+              duration: 4000,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+              stopOnFocus: true,
+              close: true,
+              style: {
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                fontSize: "15px",
+                padding: "14px 18px",
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                color: "#fff"
+              }
+            }).showToast();
+            hideBtnLoader(commentButton);
           }
           return false;
         }
@@ -861,7 +897,7 @@ include("../../partials/reportPopout.ejs") %>
               
               likeIcon.src = "images/icons/likeIcon.svg";
               likeIcon.alt = "Like icon";
-                Toastify({
+              Toastify({
               text: "Blog liked successfully!",
               duration: 4000,
               gravity: "top",
@@ -949,7 +985,7 @@ include("../../partials/reportPopout.ejs") %>
                   duration: 4000,
                   gravity: "top",
                   position: "right",
-                  backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", // Elegant reddish gradient
+                  backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
                   stopOnFocus: true,
                   close: true,
                   style: {

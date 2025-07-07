@@ -8,7 +8,9 @@
     <base href="/" />
     <link rel="stylesheet" href="stylesheets/style.css" />
         <!-- Toastify CSS -->
-<link rel="stylesheet" href="/toastify/toastify.css" />
+    <link rel="stylesheet" href="/toastify/toastify.css" />
+     <!-- loader -->
+    <link rel="stylesheet" href="/node_modules/loaders.css/loaders.min.css">
     <style>
       svg path {
         stroke: #333;
@@ -107,11 +109,25 @@
           <button
             id="blockButton"
             onclick="blockprofile('<%= profile._id %>')"
-            class="px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white text-sm font-medium shadow-md transition duration-200"
+            class="btn-with-loader relative px-4  flex justify-center items-center py-2 rounded-md bg-red-600 hover:bg-red-700 text-white text-sm font-medium shadow-md transition duration-200"
           >
-            <%= (user.blockedprofiles && profile._id &&
+          <div
+          class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        >
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full mx-1"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+        </div>
+        <span class="btn-text inline-block"> <%= (user.blockedprofiles && profile._id &&
             user.blockedprofiles.some(blockedId => blockedId.toString() ===
-            profile._id.toString())) ? "Unblock" : "Block" %>
+            profile._id.toString())) ? "Unblock" : "Block" %></span>
+           
           </button>
         </div>
       </div>
@@ -133,7 +149,9 @@
         class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-gray-900' %> flex transition-transform duration-500 ease-in-out w-[90vw] overflow-x-scroll h-[80vh] snap-x snap-mandatory scroll-smooth"
       ></div>
     </div>
+    <%- include("../partials/loader.ejs") %>
     <%- include("../partials/footer.ejs") %>
+
   </body>
 </html>
 <script>
@@ -157,6 +175,9 @@
 
   if (profile) {
     window.blockprofile = async function blockprofile(id) {
+        const blockButton = document.getElementById("blockButton");
+        showBtnLoader(blockButton);
+
       try {
         const response = await fetch(`/api/profile/block/${id}`, {
           method: "PATCH",
@@ -166,7 +187,7 @@
           const data = await response.json();
 
           Toastify({
-                text: "Profile " + (data.blocked ? "blocked" : "unblocked") + " successfully!",
+                text: "Profile toggle block user successfully!",
                 duration: 4000,
                 gravity: "top",
                 position: "right",
@@ -183,7 +204,7 @@
                 }
               }).showToast();
 
-          const blockButton = document.getElementById("blockButton");
+        
 
           blockButton.innerText =
             blockButton.innerText === "Block" ? "Unblock" : "Block";
@@ -195,14 +216,14 @@
               blocker_user_id: "<%= user._id %>",
             });
           }
-
+          hideBtnLoader(blockButton);
           closeProfilePopout();
         } else {
-          
           closeProfilePopout();
           throw new Error("Failed to block/unblock profile");
         }
       } catch (error) {
+         hideBtnLoader(blockButton);
         Toastify({
                 text: "Failed to " + (blockButton.innerText === "Block" ? "block" : "unblock") + " profile.",
                 duration: 4000,
@@ -228,10 +249,10 @@
 <script>
   const user = <%- JSON.stringify(user) %>;
   const featuredBlogs = <%- typeof featuredBlogs !== 'undefined' ? JSON.stringify(featuredBlogs) : '[]' %>;
-  console.log("Featured Blogs:", featuredBlogs);
+ 
   if (featuredBlogs && featuredBlogs.length > 0) {
   window.openFeaturedPopout = async function openFeaturedPopout() {
-                document.body.classList.add("overflow-hidden"); // disable scrolling
+                document.body.classList.add("overflow-hidden"); 
                 const url = `/api/blog/search/user?author=<%= profile._id %>&featured=true`;
                 try {
                   const container = document.getElementById("featuredBlogContent");

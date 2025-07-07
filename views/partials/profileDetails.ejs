@@ -205,10 +205,24 @@
     <div class="grid grid-cols-1 gap-1">
       <button
         id="followButton"
-        class="w-full bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 outline-none transition-transform hover:scale-105 p-1 sm:py-2 sm:px-4 text-xs sm:text-sm md:text-base font-roboto"
+        class="btn-with-loader relative flex justify-center items-center w-full bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 outline-none transition-transform hover:scale-105 p-1 sm:py-2 sm:px-4 text-xs sm:text-sm md:text-base font-roboto"
         onclick="toggleFollow( '<%= profile.slug %>')"
       >
-        <%= profile.followers.includes(user._id) ? "Unfollow" : "Follow" %>
+       <div
+          class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        >
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full mx-1"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+        </div>
+        <span class="btn-text inline-block text-center"><%= profile.followers.includes(user._id) ? "Unfollow" : "Follow" %></span>
+        
       </button>
     </div>
 
@@ -449,13 +463,27 @@
 
   <% if ( user && user._id && profile && profile._id && user._id.toString() !==
   profile._id.toString() ) { %>
-  <div class="w-full flex justify-between gap-2 mb-4">
+  <div class="w-full px-3  flex justify-between gap-2 mb-4">
     <button
       onclick="toggleFollow( '<%= profile.slug %>')"
       id="followButtonMobile"
-      class="flex-1 py-1 text-sm bg-blue-500 text-white hover:bg-blue-600 rounded-md font-medium"
+      class="btn-with-loader relative flex justify-center items-center flex-1 py-2 text-sm bg-blue-500 text-white hover:bg-blue-600 rounded-md font-medium"
     >
-      <%= profile.followers.includes(user._id) ? "Unfollow" : "Follow" %>
+        <div
+          class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        >
+          <div
+            class="w-1 h-1 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+          <div
+            class="w-1 h-1 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full mx-1"
+          ></div>
+          <div
+            class="w-1 h-1 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+        </div>
+        <span class="btn-text inline-block text-center"><%= profile.followers.includes(user._id) ? "Unfollow" : "Follow" %></span>
+      
     </button>
     <button
       onclick="openPopout()"
@@ -574,10 +602,23 @@
   profileBio.innerText = truncatedBio;
   const profile = <%- JSON.stringify(profile) %>;
 
+ const followButton = document.getElementById("followButton");
+ const followButtonMobile = document.getElementById("followButtonMobile");
   if (profile) {
     window.toggleFollow =  async function toggleFollow(profileSlug) {
+      const followTextBtn = followButton.querySelector(".btn-text");
+const followTextBtnMobile = followButtonMobile.querySelector(".btn-text");
+ 
+      
       event.preventDefault();
-      const followButton = document.getElementById("followButton");
+      
+      if(followButton){
+       showBtnLoader(followButton);
+      }
+     
+      if (followButtonMobile) {
+        showBtnLoader(followButtonMobile);
+      }
       try {
         const response = await fetch(`/api/user/follow/${profileSlug}`, {
           method: "POST",
@@ -587,11 +628,11 @@
         });
 
         if (response.ok) {
-          const followButton = document.getElementById("followButton");
-          const followButtonMobile = document.getElementById("followButtonMobile");
+        
           const data = await response.json();
 
-          
+          hideBtnLoader(followButton);
+          hideBtnLoader(followButtonMobile);
           Toastify({
                 text: data.message,
                 duration: 4000,
@@ -610,16 +651,17 @@
                 }
               }).showToast();
 
-          followButton.innerText =
-            followButton.innerText === "Follow" ? "Unfollow" : "Follow";
-          followButtonMobile.innerText =
-            followButtonMobile.innerText === "Follow" ? "Unfollow" : "Follow";
+              followTextBtn.innerText =
+            followTextBtn.innerText === "Follow" ? "Unfollow" : "Follow";
+          followTextBtnMobile.innerText =
+            followTextBtnMobile.innerText === "Follow" ? "Unfollow" : "Follow";
+          
 
             const followingCount = document.getElementById("followingCount");
          followingCount.innerText = data.followingCount;
 
 
-          if (followButton.innerText === "Follow" || followButtonMobile.innerText === "Follow") {
+          if (followTextBtn.innerText === "Follow" || followTextBtnMobile.innerText === "Follow") {
             gtag("event", "follow_user", {
               event_category: "Profile",
               event_label: "User Followed",
@@ -628,10 +670,14 @@
             });
 
           }
+
+          
         } else {
           throw new Error("Failed to toggle follow status");
         }
       } catch (error) {
+         hideBtnLoader(followButton);
+          hideBtnLoader(followButtonMobile);
        Toastify({
                 text: "Failed to toggle follow status",
                 duration: 4000,

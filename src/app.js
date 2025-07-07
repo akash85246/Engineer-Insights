@@ -74,6 +74,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/images/uploads")));
 // Serve Toastify CSS and JS
 app.use('/toastify', express.static(path.join(__dirname, '../node_modules/toastify-js/src')));
+app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
 
 app.use(cookieParser());
 app.use(methodOverride("_method"));

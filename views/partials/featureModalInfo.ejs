@@ -1,9 +1,9 @@
 <div
-  class="fixed inset-0<%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %>  bg-opacity-50 flex items-center justify-center hidden z-50 p-5 md:p-0 backdrop-blur-sm w-full h-full font-lora"
+  class="fixed inset-0<%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %> bg-opacity-50 flex items-center justify-center hidden z-50 p-5 md:p-0 backdrop-blur-sm w-full h-full font-lora"
   id="featureModalInfo"
 >
   <div
-    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-gray-900' %>  p-4 rounded-lg w-full m-auto md:w-2/3"
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-gray-900' %> p-4 rounded-lg w-full m-auto md:w-2/3"
   >
     <input type="text" id="modalBlogInfoId" hidden />
     <div id="blogContent">
@@ -35,7 +35,8 @@
   });
 
   async function removeFeatured(blogId) {
-    console.log(blogId);
+    const removeButton = document.getElementById("removeButton");
+   showBtnLoader(removeButton);
     const response = await fetch(`/api/payment/featured/remove`, {
       method: "PATCH",
       headers: {
@@ -47,42 +48,44 @@
     });
     if (response.ok) {
       document.getElementById("featureModalInfo").classList.add("hidden");
-       Toastify({
-                text: "Blog removed from featured successfully!",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", // Elegant reddish gradient
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+      hideBtnLoader(removeButton);
+      Toastify({
+        text: "Blog removed from featured successfully!",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
+        stopOnFocus: true,
+        close: true,
+        style: {
+          borderRadius: "10px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          fontSize: "15px",
+          padding: "14px 18px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          color: "#fff",
+        },
+      }).showToast();
       window.location.reload();
     } else {
+       hideBtnLoader(removeButton);
       Toastify({
-                text: "Failed to remove blog from featured.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+        text: "Failed to remove blog from featured.",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+        stopOnFocus: true,
+        close: true,
+        style: {
+          borderRadius: "10px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          fontSize: "15px",
+          padding: "14px 18px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          color: "#fff",
+        },
+      }).showToast();
     }
   }
 
@@ -103,22 +106,42 @@
         const currentDate = new Date();
 
         const differenceInMs =
-          currentDate - new Date(payment.blog.featuredDetails.featuredAt);
+          currentDate - new Date(payment.featuredDetails.featuredAt);
 
         const daysPassed = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
         let buttonHtml = "";
-        console.log("feature duration",payment.featuredDetails.featureDuration);
-        console.log("days passed",daysPassed);
-        if ( daysPassed < 5) {
+        console.log(
+          "feature duration",
+          payment.featuredDetails.featureDuration
+        );
+        console.log("feature at", payment.featuredDetails.featuredAt);
+        console.log("days passed", daysPassed);
+        if (daysPassed < 5) {
           buttonHtml = `
           <div class="flex justify-end items-center gap-2">
           
-          <button class="px-4 py-2 rounded-md border border-red-300 text-sm font-medium <%= user.settings.theme === 'dark' ? 'text-gray-300 hover:bg-dark-primary' : 'text-red-700 hover:bg-gray-100' %> transition duration-200 font-roboto" onclick="removeFeatured('${blog._id}')">
-              Remove 
+          <button id="removeButton" class="btn-with-loader relative px-4 py-2 rounded-md border border-red-300 text-sm font-medium <%= user.settings.theme === 'dark' ? 'text-gray-300 hover:bg-dark-primary' : 'text-red-700 hover:bg-gray-100' %> transition duration-200 font-roboto" onclick="removeFeatured('${blog._id}')">
+            <div
+              class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+            >
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+              ></div>
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full mx-1"
+              ></div>
+              <div
+                class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+              ></div>
+            </div>
+            <span class="btn-text inline-block"> Remove </span>
+             
           </button>
 
-          <button class="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-700 text-white text-sm font-medium shadow-md transition duration-200 font-roboto" onclick="showChangeFeaturedModal('${blog._id}')">
-              Change Blog
+          <button id="changeBlogButton" class=" relative px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-700 text-white text-sm font-medium shadow-md transition duration-200 font-roboto" onclick="showChangeFeaturedModal('${blog._id}')">
+               
+        <span class="btn-text inline-block">Change Blog</span>
+        
           </button>
           </div>
       `;
@@ -148,8 +171,8 @@
         <div class="flex flex-col justify-between">
         <div>
            <h2 class="text-lg md:text-2xl font-bold mb-4 break-words <%= user.settings.theme === 'dark' ? 'text-dark-primary' : ' text-primary' %>">${
-              blog.title
-            }</h2>
+             blog.title
+           }</h2>
             <p class="<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-secondary' %>">Featured on: ${new Date(
               payment.featuredDetails.featuredAt
             ).toLocaleDateString()}</p>

@@ -5,22 +5,18 @@
   <input type="text" id="modalChangeBlogInfoId" hidden />
 
   <div
-    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> backdrop-blur-sm p-4 rounded-lg w-full m-auto md:w-1/2 "
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> backdrop-blur-sm p-4 rounded-lg w-full m-auto md:w-1/2"
   >
-       <div class="flex items-center justify-between  col-span-2 mb-2">
-      <h2
-        class="text-xl font-semibold font-sans"
-      >
-       Select Blog To Feature
-      </h2>
+    <div class="flex items-center justify-between col-span-2 mb-2">
+      <h2 class="text-xl font-semibold font-sans">Select Blog To Feature</h2>
       <button
-            onclick="closeShowChangeFeaturedModal()"
-            class="text-gray-400 hover:text-red-500 transition duration-200 text-xl"
-            aria-label="Close"
-          >
-            &times;
-          </button>
-      </div>
+        onclick="closeShowChangeFeaturedModal()"
+        class="text-gray-400 hover:text-red-500 transition duration-200 text-xl"
+        aria-label="Close"
+      >
+        &times;
+      </button>
+    </div>
 
     <div
       class="relative flex items-center <%= user.settings.theme === 'dark' ? ' bg-dark-sixth ' : 'bg-gray-200' %> border rounded-lg p-2 md:px-5 md:py-3 w-full sm:w-2/3 lg:w-full mb-2 sm:mb-0"
@@ -69,10 +65,25 @@
             "cursor-pointer"
           );
 
-          
           blogDiv.innerHTML = `
             <p class="break-words max-w-[70%] md:max-w-[90%] whitespace-normal ">${blog.title}</p>
-             <button class=" hover:bg-tertiary   hover:text-background <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : ' text-sixth bg-secondary' %> px-2 py-1 rounded-lg" onclick="selectBlog('${blog._id}')">Select</button>
+             <button  class="btn-with-loader relative  hover:bg-tertiary   hover:text-background <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : ' text-sixth bg-secondary' %> px-2 py-1 rounded-lg" onclick="selectBlog('${blog._id}')"> 
+              <div
+          class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        >
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full mx-1"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+        </div>
+        <span class="btn-text inline-block"> Select</span>
+             
+            </button>
           `;
           searchList.appendChild(blogDiv);
         });
@@ -81,104 +92,137 @@
       }
     } catch (error) {
       console.error("Error fetching blogs:", error);
-          Toastify({
-                text: "An error occurred while searching for blogs",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+      Toastify({
+        text: "An error occurred while searching for blogs",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+        stopOnFocus: true,
+        close: true,
+        style: {
+          borderRadius: "10px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          fontSize: "15px",
+          padding: "14px 18px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          color: "#fff",
+        },
+      }).showToast();
       searchList.innerHTML = "<p class='text-center'>An error occurred</p>";
     }
   }
 
   async function selectBlog(currentBlogId) {
-  const blogIdInput = document.getElementById("modalChangeBlogInfoId").value;
-  console.log(currentBlogId, blogIdInput);
+    const blogIdInput = document.getElementById("modalChangeBlogInfoId").value;
+    console.log(currentBlogId, blogIdInput);
 
-  try {
-    const response = await fetch(`/api/payment/changeFeatured`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        currentBlogId: currentBlogId, 
-        blogId: blogIdInput,    
-      }),
-    });
+    try {
+      const response = await fetch(`/api/payment/changeFeatured`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          currentBlogId: currentBlogId,
+          blogId: blogIdInput,
+        }),
+      });
 
-    if (!response.ok) {
+      if (!response.ok) {
         console.log(response);
-          Toastify({
-                text: "Failed to update the blog feature",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
-              return;
+        Toastify({
+          text: "Failed to update the blog feature",
+          duration: 4000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+          stopOnFocus: true,
+          close: true,
+          style: {
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            fontSize: "15px",
+            padding: "14px 18px",
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            color: "#fff",
+          },
+        }).showToast();
+        return;
+      }
+
+      const result = await response.json();
+      // alert(`Blog updated successfully: ${result.message}`);
+      Toastify({
+        text: "Blog updated successfully!",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #00c6ff, #0072ff)", // Aqua to vibrant blue
+        stopOnFocus: true,
+        close: true,
+        style: {
+          borderRadius: "10px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          fontSize: "15px",
+          padding: "14px 18px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          color: "#fff",
+        },
+      }).showToast();
+      window.location.reload();
+    } catch (error) {
+      Toastify({
+        text: "Failed to update the blog feature",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+        stopOnFocus: true,
+        close: true,
+        style: {
+          borderRadius: "10px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          fontSize: "15px",
+          padding: "14px 18px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          color: "#fff",
+        },
+      }).showToast();
     }
-
-    const result = await response.json();
-    // alert(`Blog updated successfully: ${result.message}`);
-        Toastify({
-                text: "Blog updated successfully!",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #00c6ff, #0072ff)", // Aqua to vibrant blue
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
-    window.location.reload();
-
-  } catch (error) {
-        Toastify({
-                text: "Failed to update the blog feature",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
   }
+
+  function showBtnLoader(buttonEl) {
+  const loader = buttonEl.querySelector('.loader-inner');
+  const text = buttonEl.querySelector('.btn-text');
+  if (loader && text) {
+    loader.classList.remove('hidden');
+    text.classList.add('invisible'); // keeps layout
+    buttonEl.disabled = true;
+  }
+
+  // 🔒 Disable all other buttons
+  document.querySelectorAll('.btn-with-loader').forEach((btn) => {
+    if (btn !== buttonEl) {
+      btn.disabled = true;
+      btn.classList.add('opacity-60', 'cursor-not-allowed');
+    }
+  });
+}
+
+function hideBtnLoader(buttonEl) {
+  const loader = buttonEl.querySelector('.loader-inner');
+  const text = buttonEl.querySelector('.btn-text');
+  if (loader && text) {
+    loader.classList.add('hidden');
+    text.classList.remove('invisible');
+    buttonEl.disabled = false;
+  }
+
+  // ♻️ Re-enable all buttons
+  document.querySelectorAll('.btn-with-loader').forEach((btn) => {
+    btn.disabled = false;
+    btn.classList.remove('opacity-60', 'cursor-not-allowed');
+  });
 }
 </script>

@@ -97,9 +97,23 @@
       </button>
       <button
         id="confirmDeleteButton"
-        class="px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white text-sm font-medium shadow-md transition duration-200"
+        class=" btn-with-loader relative flex justify-center items-center px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white text-sm font-medium shadow-md transition duration-200"
       >
-        Delete
+      <div
+          class="flex justify-between items-center loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        >
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full mx-1"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+        </div>
+        <span class="btn-text inline-block">Delete Report</span>
+        
       </button>
     </div>
   </div>
@@ -156,20 +170,7 @@
       );
 
       goToBlogBtn.innerText = "Go to Blog";
-      console.log(
-        "reason\n",
-        reason,
-        "description\n",
-        description,
-        "reportCreatedAt\n",
-        reportCreatedAt,
-        "blogUpdatedAt\n",
-        blogUpdatedAt,
-        "reportId\n",
-        reportId,
-        "slug\n",
-        slug
-      );
+      
       goToBlogBtn.onclick = function () {
         window.location.href = `/blog/${slug}`;
       };
@@ -458,7 +459,8 @@
   };
 
   async function deleteReport(reportId) {
-
+    const confirmDeleteButton = document.getElementById("confirmDeleteButton");
+    showBtnLoader(confirmDeleteButton);
     try {
       const response = await fetch(`/api/reports/${reportId}`, {
         method: "DELETE",
@@ -468,7 +470,7 @@
       });
 
       if (response.ok) {
-       
+       hideBtnLoader(confirmDeleteButton);
          Toastify({
                 text: "Report deleted successfully.",
                 duration: 4000,
@@ -491,26 +493,10 @@
         loadUserReports(1, 10);
         loadReports(1, 10);
       } else {
-        const result = await response.json();
-         Toastify({
-                text: "Failed to delete report.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+       throw new Error("Failed to delete report");
       }
     } catch (error) {
+      hideBtnLoader(confirmDeleteButton);
        Toastify({
                 text: "An error occurred while deleting the report.",
                 duration: 4000,
@@ -530,6 +516,7 @@
               }).showToast();
     }
   }
+
   function truncateText(text, maxLength) {
     if (text.length > maxLength) {
       return text.substring(0, maxLength) + "...";

@@ -576,7 +576,7 @@ async function searchBlogs(req, res) {
     }
 
     if (featured !== undefined) {
-      console.log("featured", featured);
+     
       searchCriteria.featured = featured;
     }
 
@@ -721,13 +721,13 @@ async function searchUserBlogs(req, res) {
 
       const authorArray = author?.split(",").map((auth) => auth.trim()) || [];
 
-      console.log(userId, authorArray);
+     
       searchCriteria.$or = [
         { author: { $in: authorArray } },
         { subauthors: { $in: [userId] } },
       ];
     }
-    console.log("searchCriteria", searchCriteria);
+ 
 
     const skip = (parseInt(page, 10) - 1) * parseInt(limit, 10);
 
@@ -736,8 +736,6 @@ async function searchUserBlogs(req, res) {
       .sort({ likes: -1, createdAt: -1 })
       .skip(skip)
       .limit(parseInt(limit, 10));
-
-    console.log("blogs", blogs);
 
     const totalBlogs = await BlogModel.countDocuments(searchCriteria);
     const totalPages = Math.ceil(totalBlogs / parseInt(limit, 10));
@@ -1267,7 +1265,7 @@ async function getEditorialBlogs(userId) {
   filteredBlogs = (await filterBlogsByAudience(filteredBlogs, userId)) || [];
   filteredBlogs = (await filterBlogsByStatus(filteredBlogs, userId)) || [];
   filteredBlogs = filteredBlogs.slice(0, 6);
-  console.log("filteredBlogs editorial", filteredBlogs.length);
+ 
   return filteredBlogs;
 }
 

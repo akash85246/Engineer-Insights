@@ -42,10 +42,24 @@
           </button>
           <button
             type="submit"
-            class="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium shadow-md transition duration-200 font-roboto"
-            
-          >
-            New
+            id="createBlogButton"
+            class="btn-with-loader relative px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium shadow-md transition duration-200 font-roboto">
+
+             <div
+          class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        >
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full mx-1"
+          ></div>
+          <div
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-white rounded-full"
+          ></div>
+        </div>
+        <span class="btn-text inline-block">New</span>
+          
           </button>
         </div>
       </form>
@@ -68,8 +82,22 @@
         document.getElementById("popout-modal").classList.add("hidden");
       }
     });
+    const createForm  = document.getElementById("blogCreateForm");
+     const submitBtn = document.getElementById("createBlogButton");
 
     function closePopoutModal() {
+      hideBtnLoader(submitBtn);
       document.getElementById("popout-modal").classList.add("hidden");
     }
+
+    createForm.addEventListener("submit", function (e) {
+   
+
+    if (submitBtn) {
+      showBtnLoader(submitBtn);
+    }
+  });
+
+    
+
 </script>

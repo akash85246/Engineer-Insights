@@ -1,0 +1,24 @@
+<script>
+  function showBtnLoader(buttonEl) {
+    const loader = buttonEl.querySelector('.loader-inner');
+    const text = buttonEl.querySelector('.btn-text');
+
+    if (loader && text) {
+      loader.classList.remove('hidden');
+      text.classList.add('invisible'); 
+      buttonEl.disabled = true;
+    }
+  }
+
+  function hideBtnLoader(buttonEl) {
+    const loader = buttonEl.querySelector('.loader-inner');
+    const text = buttonEl.querySelector('.btn-text');
+
+    if (loader && text) {
+      loader.classList.add('hidden');
+      text.classList.remove('invisible');
+      buttonEl.disabled = false;
+    }
+  }
+
+</script>
