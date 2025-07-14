@@ -237,15 +237,15 @@ router.get("/contact", async (req, res) => {
 
 router.get("/about", async (req, res) => {
   let user = null;
-  const defaultSettings = {
+
+ const defaultSettings = {
     theme: "light",
     notifications: true,
   };
-
   const isAuthenticated = req.isAuthenticated();
-
-  if (!req.isAuthenticated()) {
-    user = req.user;
+  if (isAuthenticated) {
+    const userId = req.user._id;
+    user = await userModel.findById(userId);
   }
 
   if (!user) {

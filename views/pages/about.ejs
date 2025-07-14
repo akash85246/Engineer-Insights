@@ -1,1 +1,255 @@
-fhuiwehfiuewhi
+<div class="layout-container flex h-full grow flex-col p-2 shadow-lg sm:p-8 pt-16 ">
+  <div class="flex flex-1 justify-center p-2 sm:p-5 max-w-5xl mx-auto <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : 'bg-background text-primary' %> rounded-md shadow-lg">
+    <div class="layout-content-container flex flex-col flex-1">
+
+      <!-- Hero Section -->
+      <div class="grid sm:grid-cols-2 gap-4">
+        <img src="./images/blog.svg" alt="" class="w-72  sm:w-64 lg:w-80 aspect-square m-auto" />
+        <div class="flex flex-col gap-6 @[480px]:min-w-[400px] @[480px]:gap-8 @[864px]:justify-center">
+          <div class="flex flex-col gap-2 text-left">
+            <h1 class="text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl">
+              Elevate Your Engineering Voice
+            </h1>
+            <h2 class="text-sm font-normal leading-normal @[480px]:text-base">
+              Engineer Insights empowers developers, students, and professionals to publish, grow, and be discovered.
+            </h2>
+          </div>
+          <div class="flex-wrap gap-3 flex">
+            <button class="rounded-xl h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#0c7ff2] text-white text-sm font-bold @[480px]:text-base grow" onclick="aboutPageWrite()">
+              <span class="truncate"> <%- isAuthenticated ? " Start Writing" :"Sign in" %> </span>
+            </button>
+            <a 
+            href="/blog/all"
+            class="rounded-xl h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#223649] text-white text-sm font-bold @[480px]:text-base grow flex items-center justify-center">
+              <span class="truncate">Explore Blogs</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-2 sm:gap-6 justify-center items-center mt-4 sm:mt-6">
+      <p>Engineer Insights is a modern publishing platform crafted specifically for engineers, developers, and tech enthusiasts. Whether you’re a student or a seasoned professional, it provides a powerful space to share your ideas, projects, tutorials, and opinions. With intelligent features like an AI-powered writing assistant and analytics dashboard, you can focus on your content while we handle the rest. Your voice deserves visibility—our platform helps you gain recognition in the global engineering community. Write once, impact many.</p>
+
+      <p class="test-sm sm:text-base ">Readers benefit from curated content spanning cutting-edge technologies, programming tips, career advice, and deep technical insights. Explore articles by tags, trending topics, or hand-picked editor selections. Discover top authors, bookmark your favorite blogs, and even get summaries generated using advanced AI tools. The platform encourages interaction, growth, and meaningful dialogue among peers. At Engineer Insights, we don’t just publish blogs—we build engineering thought leaders.</p>
+      </div>
+      <!-- Features -->
+      <h2 class="text-[22px] font-bold tracking-[-0.015em] px-4 pb-3 pt-5">What You Get</h2>
+     <div class="grid grid-cols-3">
+  <% const cardBase = 'flex flex-col justify-center gap-2 p-1 sm:p-4 h-full ' %>
+
+  <!-- Top Row -->
+  <div class="<%= cardBase %> border-b border-r">
+    <div class="m-1 sm:m-2 flex justify-center items-center flex-col p-1 sm:p-2 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-gray-100 text-secondary' %> h-full">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                      d="M48,64a8,8,0,0,1,8-8H72V40a8,8,0,0,1,16,0V56h16a8,8,0,0,1,0,16H88V88a8,8,0,0,1-16,0V72H56A8,8,0,0,1,48,64ZM184,192h-8v-8a8,8,0,0,0-16,0v8h-8a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0v-8h8a8,8,0,0,0,0-16Zm56-48H224V128a8,8,0,0,0-16,0v16H192a8,8,0,0,0,0,16h16v16a8,8,0,0,0,16,0V160h16a8,8,0,0,0,0-16ZM219.31,80,80,219.31a16,16,0,0,1-22.62,0L36.68,198.63a16,16,0,0,1,0-22.63L176,36.69a16,16,0,0,1,22.63,0l20.68,20.68A16,16,0,0,1,219.31,80Zm-54.63,32L144,91.31l-96,96L68.68,208ZM208,68.69,187.31,48l-32,32L176,100.69Z"
+                    ></path>
+                  </svg>
+        
+        <h2 class="text-sm sm:text-base font-bold leading-tight text-center ">AI-Powered Writing Assistant</h>
+    </div>
+  </div>
+
+  <div class="<%= cardBase %> border-b border-l border-r">
+    <div class="m-1 sm:m-2 flex justify-center items-center flex-col p-1 sm:p-2 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-gray-100 text-secondary' %>  h-full">
+        <svg xmlns="http://www.w3.org/2000/svg"width="40px" height="40px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                      d="M216,40H136V24a8,8,0,0,0-16,0V40H40A16,16,0,0,0,24,56V176a16,16,0,0,0,16,16H79.36L57.75,219a8,8,0,0,0,12.5,10l29.59-37h56.32l29.59,37a8,8,0,1,0,12.5-10l-21.61-27H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,136H40V56H216V176ZM104,120v24a8,8,0,0,1-16,0V120a8,8,0,0,1,16,0Zm32-16v40a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v56a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"
+                    ></path>
+                  </svg>
+    <h2 class="text-sm sm:text-base font-bold leading-tight text-center">Personal Analytics Dashboard</h2>
+  </div>
+  </div>
+
+  <div class="<%= cardBase %> border-b border-l">
+    <div class="m-1 sm:m-2 flex justify-center items-center flex-col p-1 sm:p-2 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-gray-100 text-secondary' %>  h-full">
+        <svg xmlns="http://www.w3.org/2000/svg"width="40px" height="40px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                      d="M224,88H175.4l8.47-46.57a8,8,0,0,0-15.74-2.86l-9,49.43H111.4l8.47-46.57a8,8,0,0,0-15.74-2.86L95.14,88H48a8,8,0,0,0,0,16H92.23L83.5,152H32a8,8,0,0,0,0,16H80.6l-8.47,46.57a8,8,0,0,0,6.44,9.3A7.79,7.79,0,0,0,80,224a8,8,0,0,0,7.86-6.57l9-49.43H144.6l-8.47,46.57a8,8,0,0,0,6.44,9.3A7.79,7.79,0,0,0,144,224a8,8,0,0,0,7.86-6.57l9-49.43H208a8,8,0,0,0,0-16H163.77l8.73-48H224a8,8,0,0,0,0-16Zm-76.5,64H99.77l8.73-48h47.73Z"
+                    ></path>
+                  </svg>
+    <h2 class="text-sm sm:text-base font-bold leading-tight text-center">Explore by Tags, Popularity, or Period</h2>
+  </div>
+  </div>
+
+  <!-- Bottom Row -->
+  <div class="<%= cardBase %> border-t border-r">
+    <div class="m-1 sm:m-2 flex justify-center items-center flex-col p-1 sm:p-2 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-gray-100 text-secondary' %>  h-full">
+        <svg xmlns="http://www.w3.org/2000/svg"width="40px" height="40px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                      d="M183.89,153.34a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68ZM216,144a88,88,0,0,1-176,0c0-27.92,11-56.47,32.66-84.85a8,8,0,0,1,11.93-.89l24.12,23.41,22-60.41a8,8,0,0,1,12.63-3.41C165.21,36,216,84.55,216,144Zm-16,0c0-46.09-35.79-85.92-58.21-106.33L119.52,98.74a8,8,0,0,1-13.09,3L80.06,76.16C64.09,99.21,56,122,56,144a72,72,0,0,0,144,0Z"
+                    ></path>
+                  </svg>
+        <h2 class="text-sm sm:text-base font-bold leading-tight text-center">Top Authors &amp; Editor Picks</h2>
+    </div>
+  </div>
+
+  <div class="<%= cardBase %> border-t border-l border-r">
+    <div class="m-1 sm:m-2 flex justify-center items-center flex-col p-1 sm:p-2 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-gray-100 text-secondary' %>  h-full">
+                          <svg xmlns="http://www.w3.org/2000/svg"width="40px" height="40px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                      d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"
+                    ></path>
+                  </svg>
+        <h2 class="text-sm sm:text-base font-bold leading-tight text-center">Easy Publishing &amp; Drafting Tools</h2>
+    </div>
+  </div>
+
+  <div class="<%= cardBase %> border-t border-l">
+    <div class="m-1 sm:m-2 flex justify-center items-center flex-col p-1 sm:p-2 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-gray-100 text-secondary' %> w-full h-full">
+        <svg xmlns="http://www.w3.org/2000/svg"width="40px" height="40px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                      d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM51.31,160,136,75.31,152.69,92,68,176.68ZM48,179.31,76.69,208H48Zm48,25.38L79.31,188,164,103.31,180.69,120Zm96-96L147.31,64l24-24L216,84.68Z"
+                    ></path>
+                  </svg>
+    <h2 class="text-sm sm:text-base font-bold leading-tight text-center">Feature Blogs with Payment Integration</h2>
+    </div>
+  </div>
+     </div>
+      <!-- Writers Section -->
+      <h2 class="text-[22px] font-bold tracking-[-0.015em] px-4 pb-3 pt-5">For Writers &amp; Readers</h2>
+      <div class="flex flex-col gap-10 px-4 py-10">
+        <div class="flex flex-col gap-4">
+          <h1 class="tracking-light text-[32px] font-bold @[480px]:text-4xl max-w-[720px]">Writers</h1>
+          <p class="text-base font-normal max-w-[720px]">
+            Share your expertise, build your brand, and connect with a global community of engineers. Our platform provides the tools and resources you need to succeed.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3">
+          <div class="<%= cardBase + ' flex-col' %>">
+            <h2 class="text-base font-bold leading-tight">Empower Your Voice</h2>
+            <p class="text-sm font-normal text-[#90adcb]">Reach a wider audience and become a tech thought leader.</p>
+          </div>
+          <div class="<%= cardBase + ' flex-col' %>">
+           <h2 class="text-base font-bold leading-tight">Coming Soon: Monetize Your Content</h2>
+<p class="text-sm font-normal text-[#90adcb]">
+  We’re working on features to help you feature your blogs, gain insights, and grow your income.
+</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Readers Section -->
+      <div class="flex flex-col gap-10 px-4 py-10">
+        <div class="flex flex-col gap-4">
+          <h1 class="tracking-light text-[32px] font-bold @[480px]:text-4xl max-w-[720px]">Readers</h1>
+          <p class="text-base font-normal max-w-[720px]">
+            Discover tutorials, insights, and cutting-edge trends. Dive deep into engaging engineering content.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3">
+          <div class="<%= cardBase + ' flex-col' %>">
+            <h2 class="text-base font-bold leading-tight">Stay Informed and Inspired</h2>
+            <p class="text-sm font-normal text-[#90adcb]">Learn from experts, grow in your career, and stay relevant.</p>
+          </div>
+          <div class="<%= cardBase + ' flex-col' %>">
+            <h2 class="text-base font-bold leading-tight">Join Discussions</h2>
+            <p class="text-sm font-normal text-[#90adcb]">Comment, like, save, and share — your opinion matters.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div>
+        <div class="flex flex-col justify-end gap-6 px-4 py-10 @[480px]:gap-8 @[480px]:px-10 @[480px]:py-20 text-center">
+          <h1 class="tracking-light text-[32px] font-bold @[480px]:text-4xl max-w-[720px] mx-auto">Join Our Community</h1>
+          <p class="text-base font-normal max-w-[720px] mx-auto">Start writing or explore blogs today!</p>
+          <div class="flex justify-center">
+            <div class="flex gap-3 flex-wrap max-w-[480px] justify-center">
+               <% if (!isAuthenticated) { %>
+                    <a href="/signup" class="flex items-center justify-center rounded-xl h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#0c7ff2] text-white text-sm font-bold @[480px]:text-base grow">
+                        <span class="truncate">Sign Up Free</span>
+                     </a>
+                <% } %>
+              
+              
+              <button onclick="toggleLearnMore()" id="learnMoreButton" class="rounded-xl h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#223649] text-white text-sm font-bold @[480px]:text-base grow">
+                <span class="truncate">Learn More</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div
+  id="learnMore"
+  class="hidden mt-20 flex flex-col gap-10 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : 'bg-background text-primary' %>"
+>
+  <div  class="text-left max-w-4xl mx-auto flex flex-col gap-4">
+    <h2 class="text-3xl font-bold">
+      Why Engineer Insights?
+    </h2>
+    <p class="text-base leading-relaxed">
+      In a world full of noise, Engineer Insights is designed to amplify the voices that matter — engineers, developers, tech writers, and students.
+      Whether you're sharing a tutorial, an opinion, or a discovery, we provide the tools and audience to make your work stand out.
+    </p>
+  </div>
+
+  <div class="text-left max-w-4xl mx-auto flex flex-col gap-4 ">
+    <h2 class="text-2xl font-semibold mt-2">
+      What Makes Us Unique?
+    </h2>
+    <ul class="list-disc list-inside space-y-2">
+      <li><strong>AI-Powered Editor:</strong> Get real-time content suggestions, summaries, and grammar enhancements while you write.</li>
+      <li><strong>Explore Smarter:</strong> Use advanced filters to find blogs by tags, authors, date, or popularity.</li>
+      <li><strong>Monetization Tools:</strong> Feature your blogs for more reach using PayPal integration — 7 or 30 days.</li>
+      <li><strong>Analytics Dashboard:</strong> Track views, reads, saves, and reader engagement metrics.</li>
+      <li><strong>Personalization:</strong> Dark/light theme support, writing-focused mode, and draft-saving with auto-restore.</li>
+    </ul>
+  </div>
+
+  <div class="text-left max-w-4xl mx-auto flex flex-col gap-4">
+    <h2 class="text-2xl font-semibold mt-2">
+      Who Is It For?
+    </h2>
+    <p class="text-base leading-relaxed">
+      Engineer Insights is built for:
+    </p>
+    <ul class="list-disc list-inside space-y-1">
+      <li>Students looking to showcase technical blogs and build a public portfolio.</li>
+      <li>Professionals aiming to share insights and boost personal branding.</li>
+      <li>Tech communities that want a focused, modern platform to host their ideas.</li>
+    </ul>
+  </div>
+
+  <div class="text-left max-w-4xl mx-auto flex flex-col gap-4">
+    <h2 class="text-2xl font-semibold mt-2">
+      Future Vision
+    </h2>
+    <p class="text-base leading-relaxed">
+      We're just getting started. Upcoming features include community Q&A, post reactions, collaborative editing, and an AI-driven blog recommender.
+      Join us on this journey to reshape engineering conversations for the next generation.
+    </p>
+  </div>
+</div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function aboutPageWrite() {
+  const writeButton = document.querySelector(".write-link");
+  const isAuthenticated = <%= isAuthenticated %>;
+
+  if (isAuthenticated) {
+    if (writeButton) writeButton.click();
+  } else {
+    window.location.href = "/signin";
+  }
+}
+
+function toggleLearnMore(){
+    const learnMoreSection = document.getElementById("learnMore");
+    const learnMoreButton = document.getElementById("learnMoreButton");
+    
+    if (learnMoreSection.style.display === "none" || learnMoreSection.style.display === "") {
+        learnMoreSection.style.display = "block";
+        learnMoreButton.textContent = "Hide Details";
+    } else {
+        learnMoreSection.style.display = "none";
+        learnMoreButton.textContent = "Learn More";
+    }
+}
+</script>
