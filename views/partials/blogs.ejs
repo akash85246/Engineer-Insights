@@ -238,20 +238,20 @@
   let tags = "<%= tags%>" || "";
   let page = 1;
   let limit = 12;
-
+  let currentPage = 1;
   async function fetchBlogs(page) {
     searchQuery = document.getElementById("searchBlogInput").value;
     startDate = document.getElementById("startDate").value;
     endDate = document.getElementById("endDate").value;
-    console.log("Search Input", searchQuery);
+  
     const apiURL = `/api/blog/search?category=${currentCategory}&tags=${tags}&search=${searchQuery}&startDate=${startDate}&endDate=${endDate}&page=${page} &limit=${limit}`;
 
     try {
       const response = await fetch(apiURL);
       const data = await response.json();
       displayBlogs(data.blogs);
-      console.log("Data", data);
-      const currentPage = page;
+     
+       currentPage = page;
       setupPagination(data.pagination.totalPages, currentPage);
     } catch (error) {
       console.error("Error fetching blogs:", error);
@@ -278,7 +278,6 @@
     const categorySelected = document.getElementById(currentCategory);
 
     if (categorySelected) {
-      console.log(categorySelected);
       categorySelected.classList.add("text-highlight", "underline");
       categorySelected.classList.remove("text-dark-secondary", "text-primary");
     }
@@ -322,14 +321,16 @@
 
       const blogCard = `
          <div class="font-lora relative rounded-md <%= user.settings.theme === 'dark' ? 'bg-dark-sixth shadow-white-lg' : 'bg-background shadow-lg' %> flex flex-col justify-between" onmouseleave="hideBlogOptions('${blog.slug}')">
-                    <div class="flex justify-end bg-cover bg-center bg-origin-content rounded-md bg-blend-darken"  style="background-image: url('${
+                    <div class=" bg-cover bg-center bg-origin-content rounded-md bg-blend-darken"  style="background-image: url('${
                       blog.blogPhoto
                     }')">
+                    <div class="<%= user.settings.theme === 'dark' ? 'bg-black bg-opacity-30' : '' %> w-full flex justify-end">
                     <div class="flex h-auto mb-32 sm:mb-52  md:mb-64 mt-2 mr-2   md:mt-5 md:mr-5">
-                      <p class=" px-2 py-1 rounded-lg bg-white bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs  font-semibold font-sans uppercase <%= user.settings.theme === 'dark' ? 'bg-dark-secondary' : 'bg-background text-background' %>">${truncateText(
+                      <p class=" px-2 py-1 rounded-lg  bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs  font-semibold font-sans uppercase <%= user.settings.theme === 'dark' ? 'bg-dark-fourth' : 'bg-background text-background' %>">${truncateText(
                         blog.tags[0],
                         15
                       )}</p>
+                    </div>
                     </div>
                  
                 </div>
@@ -380,7 +381,7 @@
                         blog.slug
                     }")'>
                       <img src="images/icons/verticalMoreIcon.svg" alt="More"
-                        class="w-6 h-6 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 invert">
+                        class="w-6 h-6 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7  <%= user.settings.theme === 'dark' ? '' : 'invert' %>">
                     </button>`:""}
 
                             <div  class="absolute bottom-0 right-0 flex flex-col gap-2 rounded-md p-2 shadow-md z-50
@@ -401,7 +402,7 @@
                               ? 'hover:bg-red-600 text-dark-primary'
                               : 'hover:bg-red-200 text-primary' %>">
                              <img src="${isArchived?"images/icons/unarchiveIcon.svg":"images/icons/archiveIcon.svg"}" alt="Archive Blog"
-                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="archiveIcon-${blog.slug}">
+                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 <%= user.settings.theme === 'dark' ? 'invert' : '' %> " id="archiveIcon-${blog.slug}">
                              <span id="archiveText-${blog.slug}">${isArchived ? "Unarchive" : "Archive"}</span>
                              </button>
 
@@ -410,7 +411,7 @@
                               ? 'hover:bg-red-600 text-dark-primary'
                               : 'hover:bg-red-200 text-primary' %>">
                               <img src="images/icons/deleteDarkIcon.svg" alt="Delete Blog"
-                              class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 ">
+                              class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 <%= user.settings.theme === 'dark' ? 'invert' : '' %> ">
                               <span>Delete</span>
                               </button>
                              `
@@ -422,7 +423,7 @@
                           <%= user.settings.theme === 'dark'
                             ? 'hover:bg-blue-600 text-dark-primary'
                             : 'hover:bg-blue-200 text-primary' %>"> <img src="images/icons/editDarkIcon.svg" alt="Edit Blog"
-                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110"> 
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 <%= user.settings.theme === 'dark' ? 'invert' : '' %>"> 
                          <span>Edit</span>
                          </a>
                       
@@ -479,7 +480,7 @@
     if (totalPages < 1) {
       const displayBlogsElement = document.getElementById("displayBlogs");
       const noBlogCard = `
-      <div class="border-2 border border-gray-300 rounded-lg p-6 text-center                text-gray-500 font-lora font-thin min-h-[400px] flex flex-col               items-center justify-center shadow-lg">
+      <div class="border-2 border border-gray-300 rounded-lg p-6 text-center <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-primary' %>  font-lora font-thin min-h-[250px] md:min-h-[300px] lg:min-h-[400px] flex flex-col   items-center justify-center shadow-lg">
                   <img
       src="/images/icons/blogNotFound.svg" />
                 <p class="text-lg">No blogs yet—be the pioneer!</p>
@@ -495,11 +496,11 @@
       "px-3",
       "py-1",
       "ml-2",
-      "bg-fourth",
+      "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
       "rounded-md",
-      "text-secondary",
-      "hover:bg-fifth",
-      "hover:text-fourth"
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+       "<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>"
     );
 
     prevButton.disabled = currentPage === 1;
@@ -513,12 +514,12 @@
        "px-3",
         "py-1",
         "mx-1",
-        i === currentPage ? "bg-secondary" : "bg-fourth",
-        i === currentPage ? "text-background" : "text-secondary",
+        i === currentPage ? "<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>" : "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+        i === currentPage ? "text-background" : "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
         "rounded-md"
       );
       if (i === currentPage) {
-        pageButton.classList.add("bg-secondary", "text-white");
+        pageButton.classList.add("<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>", "text-white");
       } else {
         pageButton.classList.add("hover:bg-fifth", "hover:text-fourth");
       }
@@ -531,24 +532,26 @@
       "px-3",
       "py-1",
       "ml-2",
-      "bg-fourth",
+      "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
       "rounded-md",
-      "text-secondary",
-      "hover:bg-fifth",
-      "hover:text-fourth"
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+       "<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>"
     );
     // nextButton.disabled = currentPage === totalPages;
     nextButton.addEventListener("click", () => {
-      console.log("I am cklicked");
+
       fetchBlogs(currentPage + 1);
     });
     paginationElement.appendChild(nextButton);
+
     if (currentPage == 1) {
       prevButton.style.display = "none";
     }
     if (currentPage >= totalPages) {
       nextButton.style.display = "none";
     }
+   
   }
 
   function truncateText(text, maxLength) {
@@ -798,7 +801,6 @@
             }
 
             const result = await response.json();
-             console.log("Blog unarchived successfully", result);
             if(!result.archived) {
               archiveText.innerText = "Archive";
               archiveIcon.src = "images/icons/archiveIcon.svg";

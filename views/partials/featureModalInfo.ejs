@@ -1,5 +1,5 @@
 <div
-  class="fixed inset-0<%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %> bg-opacity-50 flex items-center justify-center hidden z-50 p-5 md:p-0 backdrop-blur-sm w-full h-full font-lora"
+  class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : ' text-text bg-primary' %>  bg-opacity-50 flex items-center justify-center hidden z-50 p-5 md:p-0 backdrop-blur-sm w-full h-full font-lora"
   id="featureModalInfo"
 >
   <div
@@ -120,7 +120,7 @@
           buttonHtml = `
           <div class="flex justify-end items-center gap-2">
           
-          <button id="removeButton" class="btn-with-loader relative px-4 py-2 rounded-md border border-red-300 text-sm font-medium <%= user.settings.theme === 'dark' ? 'text-gray-300 hover:bg-dark-primary' : 'text-red-700 hover:bg-gray-100' %> transition duration-200 font-roboto" onclick="removeFeatured('${blog._id}')">
+          <button id="removeButton" class="btn-with-loader relative px-4 py-2 rounded-md border  text-sm font-medium <%= user.settings.theme === 'dark' ? 'border-red-400 text-red-400 hover:bg-dark-fourth' : 'border-red-700 text-red-700 hover:bg-gray-100' %> transition duration-200 font-roboto" onclick="removeFeatured('${blog._id}')">
             <div
               class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
             >
@@ -138,7 +138,7 @@
              
           </button>
 
-          <button id="changeBlogButton" class=" relative px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-700 text-white text-sm font-medium shadow-md transition duration-200 font-roboto" onclick="showChangeFeaturedModal('${blog._id}')">
+          <button id="changeBlogButton" class="<%= user.settings.theme === 'dark' ? 'bg-blue-700 hover:bg-blue-600 ' : ' bg-blue-500 hover:bg-blue-700' %>  relative px-4 py-2 rounded-md  text-white text-sm font-medium shadow-md transition duration-200 font-roboto" onclick="showChangeFeaturedModal('${blog._id}')">
                
         <span class="btn-text inline-block">Change Blog</span>
         

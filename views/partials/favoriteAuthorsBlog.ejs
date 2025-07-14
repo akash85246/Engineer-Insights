@@ -277,7 +277,7 @@
                   duration: 4000,
                   gravity: "top",
                   position: "right",
-                  backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", // Elegant reddish gradient
+                  backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
                   stopOnFocus: true,
                   close: true,
                   style: {
@@ -297,7 +297,7 @@
                   duration: 4000,
                   gravity: "top",
                   position: "right",
-                  backgroundColor: "linear-gradient(to right, #1e3c72, #2a5298)", // Elegant bluish gradient
+                  backgroundColor: "linear-gradient(to right, #1e3c72, #2a5298)", 
                   stopOnFocus: true,
                   close: true,
                   style: {
@@ -375,16 +375,16 @@
                     <div class="flex justify-evenly items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
                       blog.blogPhoto
                     }')">
-                      <div class="rounded-lg shadow-lg overflow-hidden w-full  p-3 h-full flex flex-col justify-between">
+                      <div class="rounded-lg shadow-lg overflow-hidden w-full  p-3 h-full flex flex-col justify-between <%= user.settings.theme === 'dark' ? 'bg-black bg-opacity-30' : '' %>">
                         <div class="flex justify-end">
-                          <p class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-primary ' : 'bg-background text-background'  %>  bg-opacity-30  text-xxs sm:text-xs md:text-xxs lg:text-xs  font-semibold font-roboto uppercase">${truncateText(
+                          <p class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-primary ' : 'bg-background text-background'  %>  bg-opacity-30  text-xxs sm:text-xs md:text-xxs lg:text-xs  font-semibold font-roboto uppercase">${truncateText(
                             blog.tags[0],
                             15
                           )}</p>
                         </div>
                         <div class="flex flex-col gap-2">
                           <div class="h-10 sm:h-20 md:h-18 lg:h-28"></div>
-                          <p class="text-xs sm:text-xxs md:text-xs lg:text-sm  font-thin <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : 'text-sixth' %>">${new Date(
+                          <p class="text-xs sm:text-xxs md:text-xs lg:text-sm  font-thin <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-sixth' %>">${new Date(
                             blog.createdAt
                           ).toLocaleDateString("en-US", {
                             day: "numeric",
@@ -414,10 +414,10 @@
                             class="w-8 h-8 lg:w-10 lg:h-10 rounded-md"
                           />
                           <div>
-                            <h3 class=" font-semibold <%= user.settings.theme ===               'dark' ? ' text-dark-secondary' : 'text-background' %>">
+                            <h3 class=" font-semibold <%= user.settings.theme ===               'dark' ? ' text-dark-primary' : 'text-background' %>">
                               ${blog.author.username}
                             </h3>
-                            <p class="text-xs sm:text-xs md:text-sm lg:text-sm  <%= user.settings.theme === 'dark' ? '              text-dark-tertiary' : 'text-sixth' %> ">
+                            <p class="text-xs sm:text-xs md:text-sm lg:text-sm  <%= user.settings.theme === 'dark' ? '              text-dark-secondary' : 'text-sixth' %> ">
                               ${blog.author.firstname} ${blog.author.lastname}
                             </p>
                           </div>
@@ -430,7 +430,7 @@
                         blog.slug
                     }")'>
                       <img src="images/icons/verticalMoreIcon.svg" alt="More"
-                        class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7">
+                        class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 ">
                     </button>`:""}
 
                             <div  class="absolute bottom-0 right-0 flex flex-col gap-2 rounded-md p-2 shadow-md z-50

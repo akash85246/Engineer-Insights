@@ -66,23 +66,43 @@
                   itemStyle: {
                     borderRadius: 10
                   },
-                  data: [
-                    { value: <%= analytics.likesCount %>, name: "Likes" ,
-                      itemStyle: { color: "#FF6384" },
-                    },
-                    { value: <%= analytics.commentsCount %>, name: "Comments" ,
-                    itemStyle: { color: "#36A2EB" },
-                    },
-                    { value: <%= analytics.totalView %>, name: "Views",
-                      itemStyle: { color: "#3b82f6" },
-                     },
-                     {
-                      value: <%= analytics.blogsCount %>,
-                      name: "Blogs",
-                      itemStyle: { color: "#22c55e" },
-                     },
-                    { value: <%= analytics.reportsCount %>, name: "Reports" , itemStyle: { color: "#FFCE56" }, },
-                  ],
+                 data: [
+  {
+    value: <%= analytics.likesCount %>,
+    name: "Likes",
+    itemStyle: {
+      color: "<%= user.settings.theme === 'dark' ? '#f87171' : '#FF6384' %>" // Tailwind red-400 or original
+    }
+  },
+  {
+    value: <%= analytics.commentsCount %>,
+    name: "Comments",
+    itemStyle: {
+      color: "<%= user.settings.theme === 'dark' ? '#60a5fa' : '#36A2EB' %>" // Tailwind blue-400 or original
+    }
+  },
+  {
+    value: <%= analytics.totalView %>,
+    name: "Views",
+    itemStyle: {
+      color: "<%= user.settings.theme === 'dark' ? '#2563eb' : '#3b82f6' %>" // blue-600 vs blue-500
+    }
+  },
+  {
+    value: <%= analytics.blogsCount %>,
+    name: "Blogs",
+    itemStyle: {
+      color: "<%= user.settings.theme === 'dark' ? '#16a34a' : '#22c55e' %>" // green-600 vs green-500
+    }
+  },
+  {
+    value: <%= analytics.reportsCount %>,
+    name: "Reports",
+    itemStyle: {
+      color: "<%= user.settings.theme === 'dark' ? '#eab308' : '#FFCE56' %>" // yellow-500 vs original
+    }
+  }
+],
                   label: {
                     show: false,
                     position: 'center'
@@ -108,7 +128,7 @@
                   fontSize: window.innerWidth < 640 ? 20 : window.innerWidth < 768 ? 30 : 50,
                   fontWeight: "bold",
                   fontStyle: "italic",
-                  fill: "#333",
+                  fill: "<%= user.settings.theme === 'dark' ? '#E5E5E5' : '#333' %>",
                 },
               },
             };
@@ -123,38 +143,38 @@
       </div>
       <ul class="grid grid-cols-2 gap-2 p-2 md:gap-4 md:p-4 lg:gap-6 lg:p-8">
         <li
-          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-2 md:p-4 lg:p-6 hover:scale-105 duration-300"
+          class="flex flex-col items-center justify-center <%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-fourth' : 'bg-white border-gray-200' %>   shadow-lg rounded-xl border  hover:shadow-2xl transition-all relative p-2 md:p-4 lg:p-6 hover:scale-105 duration-300"
         >
           <p class="absolute top-2 left-2 text-xxs  md:text-xs text-gray-500 opacity-70">
             TOTAL BLOGS
           </p>
           <h3
-            class="text-lg sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-green-500 mt-2 drop-shadow-md"
+            class="text-lg sm:text-3xl md:text-4xl lg:text-7xl font-extrabold  <%= user.settings.theme === 'dark' ? ' text-green-400' : ' text-green-500' %>   mt-2 drop-shadow-md"
           >
             <%= analytics.blogsCount %>
           </h3>
           <div
-            class="h-8 w-8 md:w-12 md:h-12 flex items-center justify-center bg-green-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
+            class="h-8 w-8 md:w-12 md:h-12 flex items-center justify-center <%= user.settings.theme === 'dark' ? ' bg-green-300' : '  bg-green-100' %>   rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
           >
             <img
               src="../../images/analyticImages/blog.png"
               alt="Blogs"
-              class="h-5 w-5  md:w-7 md:h-7"
+              class="h-5 w-5  md:w-7 md:h-7 "
             />
           </div>
         </li>
 
         <li
-          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-2 md:p-4 lg:p-6 hover:scale-105 duration-300"
+          class="flex flex-col items-center justify-center <%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-fourth' : 'bg-white border-gray-200' %>   shadow-lg rounded-xl border  hover:shadow-2xl transition-all relative p-2 md:p-4 lg:p-6 hover:scale-105 duration-300"
         >
           <p class="absolute top-2 left-2 text-xxs  md:text-xs text-gray-500 opacity-70">
             TOTAL LIKES
           </p>
-          <h3 class="text-lg sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-red-500 mt-2 drop-shadow-md">
+          <h3 class="text-lg sm:text-3xl md:text-4xl lg:text-7xl font-extrabold <%= user.settings.theme === 'dark' ? ' text-red-400' : ' text-red-500' %>    mt-2 drop-shadow-md">
             <%= analytics.likesCount %>
           </h3>
           <div
-            class="h-8 w-8 md:w-12 md:h-12 flex items-center justify-center bg-red-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
+            class="h-8 w-8 md:w-12 md:h-12 flex items-center justify-center <%= user.settings.theme === 'dark' ? ' bg-red-300' : '  bg-red-100' %> rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
           >
             <img
               src="../../images/analyticImages/like.png"
@@ -165,18 +185,18 @@
         </li>
 
         <li
-          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-2 md:p-4 lg:p-6 hover:scale-105 duration-300"
+          class="flex flex-col items-center justify-center <%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-fourth' : 'bg-white border-gray-200' %>  shadow-lg rounded-xl border  hover:shadow-2xl transition-all relative p-2 md:p-4 lg:p-6 hover:scale-105 duration-300"
         >
           <p class="absolute top-2 left-2 text-xxs  md:text-xs text-gray-500 opacity-70">
             TOTAL REPORTS
           </p>
           <h3
-            class="text-lg sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-yellow-500 mt-2 drop-shadow-md"
+            class="text-lg sm:text-3xl md:text-4xl lg:text-7xl font-extrabold <%= user.settings.theme === 'dark' ? '  text-yellow-400' : ' text-yellow-500' %>  mt-2 drop-shadow-md"
           >
             <%= analytics.reportsCount %>
           </h3>
           <div
-            class="h-8 w-8 md:w-12 md:h-12 flex items-center justify-center bg-yellow-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
+            class="h-8 w-8 md:w-12 md:h-12 flex items-center justify-center <%= user.settings.theme === 'dark' ? ' bg-yellow-200' : '  bg-yellow-100' %>   rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
           >
             <img
               src="../../images/analyticImages/report.png"
@@ -186,16 +206,16 @@
           </div>
         </li>
         <li
-          class="flex flex-col items-center justify-center bg-white shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all relative p-2 md:p-4 lg:p-6 hover:scale-105 duration-300"
+          class="flex flex-col items-center justify-center <%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-fourth' : 'bg-white border-gray-200' %>  shadow-lg rounded-xl border hover:shadow-2xl transition-all relative p-2 md:p-4 lg:p-6 hover:scale-105 duration-300"
         >
           <p class="absolute top-2 left-2 text-xxs  md:text-xs text-gray-500 opacity-70">
             TOTAL COMMENTS
           </p>
-          <h3 class="text-lg sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-blue-500 mt-2 drop-shadow-md">
+          <h3 class="text-lg sm:text-3xl md:text-4xl lg:text-7xl font-extrabold <%= user.settings.theme === 'dark' ? '  text-blue-400' : ' text-blue-500' %> mt-2 drop-shadow-md">
             <%= analytics.commentsCount %>
           </h3>
           <div
-            class="h-8 w-8 md:w-12 md:h-12 flex items-center justify-center bg-blue-100 rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
+            class="h-8 w-8 md:w-12 md:h-12 flex items-center justify-center <%= user.settings.theme === 'dark' ? ' bg-blue-200' : '  bg-blue-100' %>   rounded-xl opacity-80 absolute bottom-2 right-2 backdrop-blur-md shadow-md"
           >
             <img
               src="../../images/analyticImages/comment.png"
@@ -657,12 +677,12 @@
       <div class="flex justify-center gap-1 sm:gap-2 mb-4 absolute top-0 right-5 z-50">
         <select
           id="year-selector"
-          class="p-1 sm:p-2 md:px-4 md:py-2 text-xs sm:text-sm  md:text-base border border-gray-300 rounded-md bg-white text-gray-700 shadow-sm  hover:border-gray-400 focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all duration-200 font-roboto"
+          class="p-1 sm:p-2 md:px-4 md:py-2 text-xs sm:text-sm  md:text-base border rounded-md <%= user.settings.theme === 'dark' ? 'border-dark-fourth  bg-dark-sixth text-dark-primary hover:border-dark-tertiary' : 'border-gray-300  bg-white text-gray-700 hover:border-gray-400' %>  shadow-sm   focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all duration-200 font-roboto"
         >
         </select>
         <select
           id="timeframe-selector"
-          class="p-1 sm:p-2 md:px-4 md:py-2 text-xs sm:text-sm  md:text-base border border-gray-300 rounded-md bg-white text-gray-700 shadow-sm hover:border-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 font-roboto"
+          class="p-1 sm:p-2 md:px-4 md:py-2 text-xs sm:text-sm  md:text-base border <%= user.settings.theme === 'dark' ? 'border-dark-fourth  bg-dark-sixth text-dark-primary hover:border-dark-tertiary' : 'border-gray-300  bg-white text-gray-700 hover:border-gray-400' %> rounded-md  shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 font-roboto"
         >
           <option value="hourly">Hourly</option>
           <option value="daily" selected>Daily</option>
@@ -671,7 +691,7 @@
 
         <select
           id="minInterval"
-          class="p-1 sm:p-2 md:px-4 md:py-2 text-xs sm:text-sm  md:text-base border border-gray-300 rounded-md bg-white text-gray-700 shadow-sm hover:border-gray-400 focus:ring-2 focus:ring-green-500 focus:outline-none transition-all duration-200 font-roboto"
+          class="p-1 sm:p-2 md:px-4 md:py-2 text-xs sm:text-sm  md:text-base border <%= user.settings.theme === 'dark' ? 'border-dark-fourth  bg-dark-sixth text-dark-primary hover:border-dark-tertiary' : 'border-gray-300  bg-white text-gray-700 hover:border-gray-400' %>   rounded-md shadow-sm  focus:ring-2 focus:ring-green-500 focus:outline-none transition-all duration-200 font-roboto"
         >
           <option value="1">1</option>
           <option value="10">10</option>
@@ -808,106 +828,119 @@
                 return baseSize * 1.1;                              // Larger screens
               }
 
-              var option = {
-                title: {
-                  text: `User Engagement`,
-                  left: "2%",
-                  textStyle: { 
-                    fontSize: getResponsiveFontSize(16) ,
-                    color: "#8E8C89"
-                  },
-
-                },
-                tooltip: {
-                  trigger: "axis"
-                },
-                legend: {
-                  data: ["Views", "Likes", "Comments", "Saves", "Reports"],
-                  bottom: -2,
-                  textStyle: {
-                  fontSize: getResponsiveFontSize(12)
-                }
-                },
-                grid: {
-                  left: "3%",
-                  right: "4%",
-                  bottom: "10%",
-                  containLabel: true
-                },
-                xAxis: {
-                  type: "category",
-                  data: dates,
-                  axisLabel: { rotate: 0 ,
-                    textStyle: {
-                      fontSize: getResponsiveFontSize(12),
-                    }
-                  },
-                  show: true,
-                  lineStyle: {
-                  color: "#333",
-                  width: 2,
-                },
-                },
-                yAxis: {
-                  type: "value",
-                  minInterval: minInterval ||1,
-                  axisLabel: {
-                  textStyle: {
-                  fontSize: getResponsiveFontSize(12),     
-                  }
-                },
-                  axisLine: {
-                  show: true,
-                  lineStyle: {
-                  color: "#333",
-                  width: 1,
-                  },
-                },
-                splitLine: {
-                  lineStyle: {
-                  type: "solid",
-                  color: "#ddd",
-                  },
-                },
-                },
-                series: [
-                  {
-                    name: "Views",
-                    type: "line",
-                    smooth: true,
-                    data: views,
-                    itemStyle: { color: "#1E90FF" }
-                  },
-                  {
-                    name: "Likes",
-                    type: "line",
-                    smooth: true,
-                    data: likes,
-                    itemStyle: { color: "#28A745" }
-                  },
-                  {
-                    name: "Comments",
-                    type: "line",
-                    smooth: true,
-                    data: comments,
-                    itemStyle: { color: "#FFC107" }
-                  },
-                  {
-                    name: "Saves",
-                    type: "line",
-                    smooth: true,
-                    data: saves,
-                    itemStyle: { color: "#17A2B8" }
-                  },
-                  {
-                    name: "Reports",
-                    type: "line",
-                    smooth: true,
-                    data: reports,
-                    itemStyle: { color: "#DC3545" }
-                  }
-                ]
-              };
+            var option = {
+  title: {
+    text: `User Engagement`,
+    left: "2%",
+    textStyle: { 
+      fontSize: getResponsiveFontSize(16),
+      color: "<%= user.settings.theme === 'dark' ? '#E5E5E5' : '#8E8C89' %>"
+    },
+  },
+  tooltip: {
+    trigger: "axis"
+  },
+  legend: {
+    data: ["Views", "Likes", "Comments", "Saves", "Reports"],
+    bottom: -2,
+    textStyle: {
+      fontSize: getResponsiveFontSize(12),
+      color: "<%= user.settings.theme === 'dark' ? '#E5E5E5' : '#4B4B4B' %>"
+    }
+  },
+  grid: {
+    left: "3%",
+    right: "4%",
+    bottom: "10%",
+    containLabel: true
+  },
+  xAxis: {
+    type: "category",
+    data: dates,
+    axisLabel: {
+      rotate: 0,
+      textStyle: {
+        fontSize: getResponsiveFontSize(12),
+        color: "<%= user.settings.theme === 'dark' ? '#E5E5E5' : '#4B4B4B' %>"
+      }
+    },
+    axisLine: {
+      show: true,
+      lineStyle: {
+        color: "<%= user.settings.theme === 'dark' ? '#666' : '#333' %>",
+        width: 2,
+      },
+    },
+    splitLine: {
+      show: true,
+      lineStyle: {
+        type: "dashed",
+        color: "<%= user.settings.theme === 'dark' ? '#444' : '#ddd' %>",
+      }
+    }
+  },
+  yAxis: {
+    type: "value",
+    minInterval: minInterval || 1,
+    axisLabel: {
+      textStyle: {
+        fontSize: getResponsiveFontSize(12),
+        color: "<%= user.settings.theme === 'dark' ? '#E5E5E5' : '#4B4B4B' %>"
+      }
+    },
+    axisLine: {
+      show: true,
+      lineStyle: {
+        color: "<%= user.settings.theme === 'dark' ? '#666' : '#333' %>",
+        width: 1,
+      },
+    },
+    splitLine: {
+      show: true,
+      lineStyle: {
+        type: "solid",
+        color: "<%= user.settings.theme === 'dark' ? '#444' : '#ddd' %>",
+      },
+    },
+  },
+  series: [
+    {
+      name: "Views",
+      type: "line",
+      smooth: true,
+      data: views,
+      itemStyle: { color: "#1E90FF" }
+    },
+    {
+      name: "Likes",
+      type: "line",
+      smooth: true,
+      data: likes,
+      itemStyle: { color: "#28A745" }
+    },
+    {
+      name: "Comments",
+      type: "line",
+      smooth: true,
+      data: comments,
+      itemStyle: { color: "#FFC107" }
+    },
+    {
+      name: "Saves",
+      type: "line",
+      smooth: true,
+      data: saves,
+      itemStyle: { color: "#17A2B8" }
+    },
+    {
+      name: "Reports",
+      type: "line",
+      smooth: true,
+      data: reports,
+      itemStyle: { color: "#DC3545" }
+    }
+  ]
+};
 
               engagementChart.setOption(option);
             }
@@ -932,9 +965,9 @@
       </script>
     </div>
 
-    <div class="p-2 md:p-4 lg:p-6 bg-white rounded-lg flex flex-col mt-2 md:mt-6">
+    <div class="p-2 md:p-4 lg:p-6  rounded-lg flex flex-col mt-2 md:mt-6">
       <h2
-        class="text-tertiary font-bold text-sm md:text-base tracking-wide mb-3 font-roboto"
+        class=" <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %>   font-bold text-sm md:text-base tracking-wide mb-3 font-roboto"
       >
         Popular Tags
       </h2>

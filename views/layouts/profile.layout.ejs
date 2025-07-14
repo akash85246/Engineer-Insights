@@ -54,7 +54,7 @@
           class="relative overflow-y-auto md:overflow-y-visible h-full md:flex"
         >
           <div
-            class="sticky top-0 z-0 md:w-[200px] lg:w-[300px] border-b md:border-r border-gray-200"
+            class="sticky top-0 z-0 md:w-[200px] lg:w-[300px] border-b md:border-r <%= user.settings.theme === 'dark' ? ' border-dark-fourth' : ' border-gray-200' %>"
           >
             <%- include("../partials/profileDetails.ejs")%>
           </div>

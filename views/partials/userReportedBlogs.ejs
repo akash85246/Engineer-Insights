@@ -1,12 +1,12 @@
 <div
-  class="relative overflow-x-scroll box-border overflow-y-visible z-[1] pb-20 <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-tertiary' %> border rounded-md"
+  class="relative overflow-x-scroll box-border overflow-y-visible z-[1] pb-20 <%= user.settings.theme === 'dark' ? 'border-dark-secondary bg-dark-sixth' : 'border-tertiary bg-background '  %>  border rounded-md"
 >
   <table
     class="table-auto w-full overflow-x-scroll text-xs md:text-sm lg:text-base overflow-visible"
   >
     <thead class="">
       <tr
-        class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background text-secondary' %>"
+        class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : 'bg-background text-secondary' %>"
       >
         <th class="p-1 md:p-2 lg:px-4 lg:py-2 font-normal">Blog</th>
         <th class="p-1 md:p-2 lg:px-4 lg:py-2 font-normal">Title</th>
@@ -25,11 +25,11 @@
 
 <div
   id="reportDetailsModal"
- class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %> backdrop-blur-sm bg-opacity-50 flex items-center justify-center hidden z-20 p-5 md:p-0"
+ class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : ' text-text bg-primary' %> backdrop-blur-sm bg-opacity-50 flex items-center justify-center hidden z-20 p-5 md:p-0"
  onclick="closeBlogModal()"
 >
   <div
-   class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> p-4 rounded-lg w-full sm:w-1/2 lg:w-1/3"
+   class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'bg-background text-text' %>  p-4 rounded-lg w-full sm:w-1/2 lg:w-1/3"
    onclick="event.stopPropagation()"
   >
     <div class="flex justify-between items-center">
@@ -206,7 +206,7 @@
         const reports = data.reports;
         const totalReports = data.totalReports;
         if (totalReports == 0) {
-          userReportsTableBody.innerHTML = `<tr class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background  text-secondary' %>">
+          userReportsTableBody.innerHTML = `<tr class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : 'bg-background  text-secondary' %>">
           <td class="border <%=
             user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth'
           %> p-2 md:px-4 md:py-2 mx-auto text-center  overflow-x-scroll whitespace-nowrap text-xs md:text-sm lg:text-base " colspan="7">No reports found</td>
@@ -228,7 +228,7 @@
           const row = `
             <tr data-blog-slug="${
               report.blogId.slug
-            }" class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background  text-secondary' %>  border-y  <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> -z-10" onmouseleave="BlogHideReportOptions('${
+            }" class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : 'bg-background  text-secondary' %>  border-y  <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> -z-10" onmouseleave="BlogHideReportOptions('${
             report._id
           }')" id="reportBlogRow-${report._id}">
               <td class="p-2 md:px-4 md:py-2">
@@ -250,15 +250,17 @@
               } ">
                 ${report.status}
                 </td>
-                 <td class=" p-2 md:px-4 md:py-2 mx-auto text-center  relative overflow-visible z-10 min-w-[48px] whitespace-nowrap">
+                 <td class=" p-2 md:px-4 md:py-2 mx-auto text-center  relative overflow-visible  min-w-[48px] whitespace-nowrap">
 
                  <button onclick='openReportBlogMore("${report._id}")'>
                                       <img src="images/icons/verticalMoreIcon.svg"      alt="More"
-                                        class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6                lg:w-7 lg:h-7 invert z-0">
+                                        class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6                lg:w-7 lg:h-7 z-0 <%=
+            user.settings.theme === 'dark' ? '' : 'invert'
+          %> ">
                   </button>
 
                   <div
-                   class="absolute top-0 right-10 md:right-12 lg:right-14 z-50 p-2 space-y-2 bg-white dark:bg-dark-fifth rounded-lg shadow-lg                 border border-gray-200 dark:border-dark-secondary w-32 md:w-36 lg:w-40  hidden z-50"
+                   class="absolute top-0 right-10 md:right-12 lg:right-14 z-50 p-2 space-y-2 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-background text-primary' %>  rounded-lg shadow-lg  w-32 md:w-36 lg:w-40  hidden z-50"
                     id="blogReportOptions-${report._id}"
                     onhover="openReportBlogMore("${report._id}")"
                   >       
@@ -269,7 +271,7 @@
             report._id
           }','${report.blogId.slug}')"
                     class="w-full flex items-center gap-2 py-2 px-3 sm:px-4 rounded-md text-xs md:text-sm lg:text-base font-medium transition-colors duration-200
-    bg-blue-600 text-white hover:bg-blue-700"
+    bg-transparent text-white hover:bg-blue-700"
                   >
                     <img
                       src="images/icons/reportFlagIcon.svg"
@@ -284,7 +286,9 @@
             report.blogId.slug
           }')"
                     class="w-full flex items-center gap-2 py-2 px-3 sm:px-4 rounded-md text-xs md:text-sm lg:text-base font-medium transition-colors duration-200
-    bg-gray-100 text-gray-800 hover:bg-gray-200"
+    bg-transparent text-gray-800 hover:bg-gray-200 <%=
+            user.settings.theme === 'dark' ? 'invert' : ''
+          %>"
                   >
                     <img
                       src="images/icons/editDarkIcon.svg"
@@ -297,7 +301,9 @@
   
                   <button
                     class="delete-blog w-full flex items-center gap-2 py-2 px-3 sm:px-4 rounded-md text-xs md:text-sm lg:text-base font-medium transition-colors duration-200
-    bg-red-100 text-red-700 hover:bg-red-200"
+    bg-transparent text-red-700 hover:bg-red-200  <%=
+            user.settings.theme === 'dark' ? 'invert' : ''
+          %>"
                     data-blog-slug="${report.blogId.slug}"
                     id="${report._id}"
                   >
@@ -388,11 +394,11 @@
       "px-3",
       "py-1",
       "ml-2",
-      "bg-fourth",
+      "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
       "rounded-md",
-      "text-secondary",
-      "hover:bg-fifth",
-      "hover:text-fourth"
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+       "<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>"
     );
 
     prevButton.disabled = currentPage === 1;
@@ -408,14 +414,15 @@
         "px-3",
         "py-1",
         "mx-1",
-        i === currentPage ? "bg-secondary" : "bg-fourth",
-        i === currentPage ? "text-background" : "text-secondary",
+        i === currentPage ? "<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>" : "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+        i === currentPage ? "text-background" : "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
         "rounded-md"
       );
       if (i === currentPage) {
-        pageButton.classList.add("bg-secondary", "text-white");
+        pageButton.classList.add("<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>", "text-white");
       } else {
-        pageButton.classList.add("hover:bg-fifth", "hover:text-fourth");
+         pageButton.classList.add("<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>");
       }
       pageButton.onclick = () => {
         loadUserReports(i);
@@ -428,11 +435,11 @@
       "px-3",
       "py-1",
       "ml-2",
-      "bg-fourth",
+      "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
       "rounded-md",
-      "text-secondary",
-      "hover:bg-fifth",
-      "hover:text-fourth"
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+       "<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>"
     );
     // nextButton.disabled = currentPage === totalPages;
     nextButton.addEventListener("click", () => {

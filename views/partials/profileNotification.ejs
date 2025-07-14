@@ -1,5 +1,5 @@
 <h1
-  class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-2 md:px-2 lg:px-5 font-semibold flex justify-between items-center <h1%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-secondary bg-white bg-background' %> sticky top-0 z-10 mt-5"
+  class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-2 md:px-2 lg:px-5 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-secondary bg-white bg-background' %> sticky top-0 z-10 mt-5"
 >
   
     Notifications
@@ -94,7 +94,7 @@ notificationContent = `
 
     <div class="flex space-x-4 pt-2">
       <button class="px-3 py-1 rounded-md text-xs sm:text-sm md:text-base font-medium 
-      <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-white hover:bg-dark-primary-light' : 'bg-primary text-white hover:bg-primary-dark' %>"
+      <%= user.settings.theme === 'dark' ? 'bg-dark-tertiary text-white hover:bg-dark-secondary' : 'bg-primary text-white hover:bg-primary-dark' %>"
      
         onclick="toggleReadStatus('${notification._id}', ${notification.isRead})">
         ${notification.isRead ? "Mark as Unread" : "Mark as Read"}
@@ -289,14 +289,15 @@ notificationContent = `
     const prevButton = document.createElement("button");
     prevButton.innerText = "Prev";
     prevButton.classList.add(
-      "px-4",
-      "py-2",
-      "border",
+           "px-3",
+      "py-1",
+      "ml-2",
+      "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
       "rounded-md",
-      "hover:bg-gray-200",
-      "transition",
-      "text-xs",
-      "md:text-sm"
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+       "<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>"
+
     );
 
     prevButton.disabled = currentPage === 1;
@@ -308,20 +309,20 @@ notificationContent = `
     for (let i = startPage; i <= endPage; i++) {
       const button = document.createElement("button");
       button.classList.add(
-        "px-4",
-        "py-2",
-        "border",
-        "rounded-md",
-        "hover:bg-gray-200",
-        "transition",
-        "text-xs",
-        "md:text-sm"
+        "px-3",
+        "py-1",
+        "mx-1",
+        i === currentPage ? "<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>" : "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+        i === currentPage ? "text-background" : "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+        "rounded-md"
       );
 
       if (i === currentPage) {
-        button.classList.add("bg-tertiary", "text-white");
+        button.classList.add("<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>", "text-white");
+      } else {
+        button.classList.add("<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>");
       }
-
       button.innerText = i;
       button.addEventListener("click", () => fetchNotifications(i));
 
@@ -331,14 +332,15 @@ notificationContent = `
     const nextButton = document.createElement("button");
     nextButton.innerText = "Next";
     nextButton.classList.add(
-      "px-4",
-      "py-2",
-      "border",
+           "px-3",
+      "py-1",
+      "ml-2",
+      "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
       "rounded-md",
-      "hover:bg-gray-200",
-      "transition",
-      "text-xs",
-      "md:text-sm"
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+       "<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>"
+
     );
     nextButton.disabled = currentPage === totalPages;
     nextButton.addEventListener("click", () =>

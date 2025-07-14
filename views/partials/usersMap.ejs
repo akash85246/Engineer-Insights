@@ -897,7 +897,7 @@
 
     <div
       id="location-info1"
-      class="absolute top-5 left-16 bg-white p-2 md:p-4 rounded-lg shadow-md hidden z-50"
+      class="absolute top-5 left-16 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-white' %> p-2 md:p-4 rounded-lg shadow-md hidden z-50"
     >
       <h2 class="font-semibold text-lg" id="location-country"></h2>
       <h3 class="text-gray-600" id="location-percentage"></h3>
@@ -905,7 +905,7 @@
 
     <div
       id="location-info2"
-      class="absolute bottom-5 left-0 w-80 h-60 bg-white p-2 md:p-4 rounded-lg shadow-md hidden z-50"
+      class="absolute bottom-5 left-0 w-80 h-60 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-white' %> p-2 md:p-4 rounded-lg shadow-md hidden z-50"
     >
       <h2 class="text-xs font-semibold text-center mt-1">📊 Traffic By Day</h2>
       <div id="traffic-day-chart" class="w-full h-full"></div>
@@ -913,13 +913,13 @@
 
     <div
       id="location-info3"
-      class="absolute bottom-5 right-0 w-80 h-60 bg-white rounded-lg shadow-md hidden z-50"
+      class="absolute bottom-5 right-0 w-80 h-60 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-white' %> rounded-lg shadow-md hidden z-50"
     >
       <h2 class="text-xs font-semibold text-center mt-1">⏳ Traffic By Hour</h2>
       <div id="traffic-hour-chart" class="w-full h-full"></div>
     </div>
   </div>
-  <div id="top-country" class=" top-5 right-5 bg-white p-2 md:p-4 rounded-lg shadow-md  font-roboto">
+  <div id="top-country" class=" top-5 right-5 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-white' %> p-2 md:p-4 rounded-lg shadow-md  font-roboto">
     <table class="w-full border-collapse">
       <thead>
         <tr class="border-b">
@@ -942,7 +942,6 @@
         const countryName = e.target.getAttribute("title") || "Unknown";
 
         tooltip.innerHTML = `<b>${countryName}</b>`;
-        console.log(tooltip);
         path.classList.add("fill-current", "text-blue-500");
         tooltip.style.display = "block";
       });
@@ -953,12 +952,13 @@
 
         tooltip.style.left = `${x}px`;
         tooltip.style.top = `${y}px`;
-        console.log(e.pageX, e.pageY);
+        
       });
 
       path.addEventListener("mouseleave", () => {
         tooltip.style.display = "none";
         path.classList.remove("text-blue-500");
+        
       });
 
       path.addEventListener("click", (e) => {

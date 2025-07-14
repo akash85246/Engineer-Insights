@@ -6,27 +6,27 @@
  
  <!-- Tab Navigation -->
   <div
-    class="relative <%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : ' text-text ' %> rounded-md rounded-b-none p-1 w-full mt-4 transition-shadow" 
+    class="relative <%= user.settings.theme === 'dark' ? 'text-dark-primary' : ' text-text ' %> rounded-md rounded-b-none p-1 w-full mt-4 transition-shadow" 
     style="box-shadow: inset 0 -20px 50px -10px rgba(0, 0, 0, 0.25);"
   >
     <!-- Sliding Background -->
     <div
       id="slider"
-      class="absolute <%= user.settings.theme === 'dark' ? 'bg-dark-tertiary' : 'bg-white' %> rounded-t-md top-0 left-0 h-[calc(100%-0px)] w-[calc(50%-0px)] transform transition-transform duration-300 ease-in-out  z-0 "
+      class="absolute  <%= user.settings.theme === 'dark' ? 'bg-dark-background shadow-lgk' : 'bg-white' %> rounded-t-md top-0 left-0 h-[calc(100%-0px)] w-[calc(50%-0px)] transform transition-transform duration-300 ease-in-out  z-0 "
     ></div>
 
     <!-- Buttons -->
     <div class="relative z-10 grid grid-cols-2">
       <button
         id="reportsBtn"
-        class="<%= user.settings.theme === 'dark' ? 'text-dark-background' : 'text-gray-800' %> font-semibold py-2 px-3 sm:px-4 text-center rounded-t-md focus:outline-none font-roboto text-sm sm:text-base md:text-lg"
+        class="<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %> font-semibold py-2 px-3 sm:px-4 text-center rounded-t-md focus:outline-none font-roboto text-sm sm:text-base md:text-lg"
         onclick="toggleTab('reports')"
       >
         Reports
       </button>
       <button
         id="reportedBlogsBtn"
-        class="<%= user.settings.theme === 'dark' ? 'text-dark-background' : 'text-gray-600 ' %>  py-2 px-3 sm:px-4 text-center rounded-md focus:outline-none font-roboto w-full h-full text-sm sm:text-base md:text-lg font-semibold"
+        class="<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %>  py-2 px-3 sm:px-4 text-center rounded-md focus:outline-none font-roboto w-full h-full text-sm sm:text-base md:text-lg font-semibold"
         onclick="toggleTab('reportedBlogs')"
       >
         Reported Blogs
@@ -37,13 +37,13 @@
 
   <div
     id="reportsContent"
-    class="transition-opacity duration-300 ease-in-out opacity-100   <%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-white' %>  z-10 box-border shadow-lg rounded-md p-2"
+    class="transition-opacity duration-300 ease-in-out opacity-100  <%= user.settings.theme === 'dark' ? 'bg-transparent shadow-lgk' : 'bg-white' %>  z-10 box-border shadow-lg rounded-md p-2"
   >
     <%- include("../../partials/reportedBlogs.ejs") %>
   </div>
   <div
     id="reportedBlogsContent"
-    class="transition-opacity duration-300 ease-in-out opacity-0 hidden  <%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-white' %> rounded-md p-2 z-10 box-border shadow-lg"
+    class="transition-opacity duration-300 ease-in-out opacity-0 hidden  <%= user.settings.theme === 'dark' ? 'bg-transparent shadow-lgk ' : 'bg-white' %> rounded-md p-2 z-10 box-border shadow-lg"
   >
     <%- include("../../partials/userReportedBlogs.ejs") %>
   </div>
@@ -64,10 +64,10 @@
       slider.style.transform = "translateX(0)";
 
       // Update button styles
-      reportsBtn.classList.add("text-gray-800");
-      reportsBtn.classList.remove("text-gray-600");
-      reportedBlogsBtn.classList.add("text-gray-600");
-      reportedBlogsBtn.classList.remove("text-gray-800");
+      reportsBtn.classList.add("<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %>");
+      reportsBtn.classList.remove("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %>");
+      reportedBlogsBtn.classList.add("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %>");
+      reportedBlogsBtn.classList.remove("<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %>");
 
       // Show reports content and hide reported blogs content
       reportsContent.classList.remove("hidden");
@@ -79,10 +79,10 @@
       slider.style.transform = "translateX(100%)";
 
       // Update button styles
-      reportsBtn.classList.add("text-gray-600");
-      reportsBtn.classList.remove("text-gray-800");
-      reportedBlogsBtn.classList.add("text-gray-800");
-      reportedBlogsBtn.classList.remove("text-gray-600");
+      reportsBtn.classList.add("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %>");
+      reportsBtn.classList.remove("<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %>");
+      reportedBlogsBtn.classList.add("<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %>");
+      reportedBlogsBtn.classList.remove("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %>");
 
       // Show reported blogs content and hide reports content
       reportedBlogsContent.classList.remove("hidden");

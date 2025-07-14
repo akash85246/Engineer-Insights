@@ -3,27 +3,27 @@
 >
   <!-- Tab Navigation -->
   <div
-    class="relative <%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : ' text-text ' %> rounded-md rounded-b-none p-1 w-full mt-4 transition-shadow"
+    class="relative <%= user.settings.theme === 'dark' ? 'text-dark-primary' : ' text-text ' %> rounded-md rounded-b-none p-1 w-full mt-4 transition-shadow"
     style="box-shadow: inset 0 -20px 50px -10px rgba(0, 0, 0, 0.25)"
   >
     <!-- Sliding Background -->
     <div
       id="slider"
-      class="absolute <%= user.settings.theme === 'dark' ? 'bg-dark-tertiary' : 'bg-white' %> rounded-t-md top-0 left-0 h-[calc(100%-0px)] w-[calc(50%-0px)] transform transition-transform duration-300 ease-in-out z-0"
+      class="absolute <%= user.settings.theme === 'dark' ? 'bg-dark-background shadow-lgk' : 'bg-white' %> rounded-t-md top-0 left-0 h-[calc(100%-0px)] w-[calc(50%-0px)] transform transition-transform duration-300 ease-in-out z-0"
     ></div>
 
     <!-- Buttons -->
     <div class="relative z-10 grid grid-cols-2">
       <button
         id="newButton"
-        class="<%= user.settings.theme === 'dark' ? 'text-dark-background' : 'text-gray-800' %> font-semibold py-2 px-3 sm:px-4 text-center rounded-t-md focus:outline-none font-roboto text-sm sm:text-base md:text-lg"
+        class="<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %> font-semibold py-2 px-3 sm:px-4 text-center rounded-t-md focus:outline-none font-roboto text-sm sm:text-base md:text-lg"
         onclick="toggleTab('newBlogs')"
       >
         My Blogs
       </button>
       <button
         id="featuredButton"
-        class="<%= user.settings.theme === 'dark' ? 'text-dark-background' : 'text-gray-600 ' %> py-2 px-3 sm:px-4 text-center rounded-md focus:outline-none font-roboto w-full h-full text-sm sm:text-base md:text-lg font-semibold"
+        class="<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %> py-2 px-3 sm:px-4 text-center rounded-md focus:outline-none font-roboto w-full h-full text-sm sm:text-base md:text-lg font-semibold"
         onclick="toggleTab('featuredBlogs')"
       >
         Featured Blogs
@@ -34,7 +34,7 @@
 
   <div
     id="newBlogs"
-    class="transition-opacity duration-300 ease-in-out opacity-100 <%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-white' %> z-10 box-border shadow-lg rounded-md sm:p-2"
+    class="transition-opacity duration-300 ease-in-out opacity-100 <%= user.settings.theme === 'dark' ? 'bg-transparent shadow-lgk' : 'bg-white' %> z-10 box-border shadow-lg rounded-md sm:p-2"
   >
     <h1
       class="text-base sm:text-lg md:text-xl lg:text-2xl <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %> font-semibold mt-1 md:mt-0 p-1 sm:p-3 md:px-10"
@@ -45,15 +45,15 @@
       class="h-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 p-1 sm:p-3 md:px-10"
       id="newBlogsContainer"
     ></div>
-    <ul id="paginationFeature" class="py-2 flex justify-center"></ul>
+    <ul id="paginationFeature" class="py-4 md:py-6 flex justify-center"></ul>
   </div>
 
   <div
     id="featuredBlogs"
-    class="transition-opacity duration-300 ease-in-out opacity-0 hidden <%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-white' %> rounded-md z-10 box-border shadow-lg"
+    class="transition-opacity duration-300 ease-in-out opacity-0 hidden <%= user.settings.theme === 'dark' ? 'bg-transparent shadow-lgk ' : 'bg-white' %> rounded-md z-10 box-border shadow-lg"
   >
     <h1
-      class="text-base sm:text-lg md:text-xl lg:text-2xl <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-tertiary' %> font-semibold mt-1 md:mt-0 p-1 sm:p-3 md:px-10"
+      class="text-base sm:text-lg md:text-xl lg:text-2xl <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-tertiary' %> font-semibold mt-1 md:mt-0 p-1 sm:p-3 md:px-10"
     >
       Select a featured blog
     </h1>
@@ -62,7 +62,7 @@
       class="p-1 sm:p-3 md:px-10 h-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4"
       id="featureBlogContainer"
     ></div>
-    <ul id="paginationFeatured" class="py-2 flex justify-center"></ul>
+    <ul id="paginationFeatured" class="py-4 md:py-6 flex justify-center"></ul>
   </div>
 </div>
 
@@ -92,10 +92,10 @@ include("../../partials/featureModalInfo.ejs") %>
       slider.style.transform = "translateX(0)";
 
       // Update button styles
-      newButton.classList.add("text-gray-800");
-      newButton.classList.remove("text-gray-600");
-      featuredButton.classList.add("text-gray-600");
-      featuredButton.classList.remove("text-gray-800");
+      newButton.classList.add("<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %>");
+      newButton.classList.remove("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %>");
+      featuredButton.classList.add("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %>");
+      featuredButton.classList.remove("<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %>");
 
       // Show reports content and hide reported blogs content
       newBlogs.classList.remove("hidden");
@@ -108,10 +108,10 @@ include("../../partials/featureModalInfo.ejs") %>
       slider.style.transform = "translateX(100%)";
 
       // Update button styles
-      newButton.classList.add("text-gray-600");
-      newButton.classList.remove("text-gray-800");
-      featuredButton.classList.add("text-gray-800");
-      featuredButton.classList.remove("text-gray-600");
+      newButton.classList.add("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %>");
+      newButton.classList.remove("<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %>");
+      featuredButton.classList.add("<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %>");
+      featuredButton.classList.remove("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %>");
 
       // Show reported blogs content and hide reports content
       featuredBlogs.classList.remove("hidden");
@@ -187,7 +187,7 @@ include("../../partials/featureModalInfo.ejs") %>
     newBlogContainer.innerHTML = blogs
       .map(
         (blog) => `
-            <div class="w-full flex justify-between flex-col relative shadow-md rounded-md">
+            <div class="w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth shadow-white-lg' : 'bg-background shadow-lg' %> flex justify-between flex-col relative shadow-md rounded-md">
            <div class="flex justify-end bg-cover bg-center bg-origin-content rounded-md bg-blend-darken"  style="background-image: url('${
              blog.blogPhoto
            }')">
@@ -225,8 +225,8 @@ include("../../partials/featureModalInfo.ejs") %>
                   
                   <div class=" flex justify-between items-center text-sm sm:text-sm md:text-base lg:text-base p-2 ">
                      <div class="flex items-center gap-2 font-roboto cursor-default">
-                    <div class="flex items-center gap-1">
-                      <img src="images/icons/blogLikeCardIcon.svg" class="h-6 w-6 md:h-7 md:w-7 " />
+                    <div class="flex items-center gap-1 <%= user.settings.theme === 'dark' ? 'invert' : '' %>">
+                      <img src="images/icons/blogLikeCardIcon.svg" class="h-6 w-6 md:h-6 md:w-6 " />
                       <span class="text-xs sm:text-xxs md:text-xs lg:text-sm text-rose-500 " id="likeCount-${
                         blog.slug
                       }">
@@ -242,7 +242,7 @@ include("../../partials/featureModalInfo.ejs") %>
                   </div>
                         <button onclick="showFeatureModal('${
                           blog._id
-                        }')" class="px-2 sm:px-4 py-2 rounded-md bg-[#f0f2f5] text-[#111518] hover:bg-blue-700 hover:text-white text-xs  sm:text-sm            font-medium shadow-md transition duration-200 "> Select</button>
+                        }')" class="px-2 sm:px-4 py-2 rounded-md  <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-secondary hover:bg-blue-500' : 'bg-[#f0f2f5] text-[#111518] hover:bg-blue-700' %>   hover:text-white text-xs  sm:text-sm      font-medium shadow-md transition duration-200 "> Select</button>
                 </div>
         </div>
       `
@@ -258,7 +258,7 @@ include("../../partials/featureModalInfo.ejs") %>
     featureBlogContainer.innerHTML = blogs
       .map(
         (blog) => `
-<div class="w-full flex justify-between flex-col relative shadow-md rounded-md">
+<div class="w-full flex justify-between flex-col relative shadow-md rounded-md <%= user.settings.theme === 'dark' ? 'bg-dark-sixth shadow-white-lg' : 'bg-background shadow-lg' %>">
           <div class="flex justify-end bg-cover bg-center bg-origin-content rounded-md bg-blend-darken"  style="background-image: url('${
             blog.blogPhoto
           }')">
@@ -295,7 +295,7 @@ include("../../partials/featureModalInfo.ejs") %>
                   
                   
                   <div class=" flex justify-between items-center text-sm sm:text-sm md:text-base lg:text-base p-2 ">
-                     <div class="flex items-center gap-2 font-roboto cursor-default">
+                     <div class="flex items-center gap-2 font-roboto cursor-default <%= user.settings.theme === 'dark' ? 'invert' : '' %>">
                    <div class="flex items-center gap-1">
                       <img src="images/icons/blogLikeCardIcon.svg" class="h-6 w-6 md:h-7 md:w-7 " />
                       <span class="text-xs sm:text-xxs md:text-xs lg:text-sm text-rose-500 " id="likeCount-${
@@ -313,7 +313,7 @@ include("../../partials/featureModalInfo.ejs") %>
                   </div>
                         <button onclick="showFeatureInfoModal('${
                           blog._id
-                        }')" class=" px-2 sm:px-4 py-2 rounded-md bg-[#f0f2f5] text-[#111518] hover:bg-blue-700 hover:text-white text-xs sm:text-sm            font-medium shadow-md transition duration-200  font-roboto">ⓘ Info</button>
+                        }')" class=" px-2 sm:px-4 py-2 rounded-md <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-secondary hover:bg-blue-500' : 'bg-[#f0f2f5] text-[#111518] hover:bg-blue-700' %>  hover:text-white text-xs sm:text-sm         font-medium shadow-md transition duration-200  font-roboto">ⓘ Info</button>
                 </div>
         </div>
       `
@@ -389,9 +389,9 @@ include("../../partials/featureModalInfo.ejs") %>
       "px-3",
       "py-1",
       "mr-2",
-      "bg-fourth",
+       "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
       "rounded-md",
-      "text-secondary",
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
       "hover:bg-fifth",
       "hover:text-fourth"
     );
@@ -409,13 +409,13 @@ include("../../partials/featureModalInfo.ejs") %>
         "px-3",
         "py-1",
         "mx-1",
-        i === currentPage ? "bg-secondary" : "bg-fourth",
-        i === currentPage ? "text-background" : "text-secondary",
+        i === currentPage ? "<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>" : "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+        i === currentPage ? "text-background" : "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
         "rounded-md"
       );
 
       if (i === currentPage) {
-        pageButton.classList.add("bg-secondary", "text-white");
+            pageButton.classList.add("<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>", "text-white");
       } else {
         pageButton.classList.add("hover:bg-fifth", "hover:text-fourth");
       }
@@ -435,9 +435,9 @@ include("../../partials/featureModalInfo.ejs") %>
       "px-3",
       "py-1",
       "ml-2",
-      "bg-fourth",
+       "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
       "rounded-md",
-      "text-secondary",
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
       "hover:bg-fifth",
       "hover:text-fourth"
     );
@@ -474,9 +474,9 @@ include("../../partials/featureModalInfo.ejs") %>
       "px-3",
       "py-1",
       "mr-2",
-      "bg-fourth",
+       "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
       "rounded-md",
-      "text-secondary",
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
       "hover:bg-fifth",
       "hover:text-fourth"
     );
@@ -494,13 +494,13 @@ include("../../partials/featureModalInfo.ejs") %>
         "px-3",
         "py-1",
         "mx-1",
-        i === currentPage ? "bg-secondary" : "bg-fourth",
-        i === currentPage ? "text-background" : "text-secondary",
+        i === currentPage ? "<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>" : "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+        i === currentPage ? "text-background" : "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
         "rounded-md"
       );
 
       if (i === currentPage) {
-        pageButton.classList.add("bg-secondary", "text-white");
+        pageButton.classList.add("<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>", "text-white");
       } else {
         pageButton.classList.add("hover:bg-fifth", "hover:text-fourth");
       }
@@ -520,9 +520,9 @@ include("../../partials/featureModalInfo.ejs") %>
       "px-3",
       "py-1",
       "ml-2",
-      "bg-fourth",
+       "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
       "rounded-md",
-      "text-secondary",
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
       "hover:bg-fifth",
       "hover:text-fourth"
     );

@@ -19,53 +19,91 @@
                 return baseSize * 1.1;
      }
 
-      chart.setOption({
-        title: { text: "Website Traffic Sources", left: "center", textStyle: {
-                    fontSize: getResponsiveFontSize(16),
-                    fontWeight: "bold" ,
-                    color: "#8E8C89",
-                }, },
-        tooltip: { trigger: "axis" },
-        legend: { bottom: 0, data: ["Referral", "Search", "Social"] ,
-          textStyle: {
-                    fontSize: getResponsiveFontSize(14),
-                    color: "#8E8C89",
-                },
-        },
-        xAxis: { type: "category", data: categories,
-          axisLabel: {
-            fontSize: getResponsiveFontSize(12),
-            color: "#8E8C89",
-          },
-        },
-        yAxis: { type: "value" ,
-          axisLabel: {
-            fontSize: getResponsiveFontSize(12),
-            color: "#8E8C89",
-          },
-          splitLine: { lineStyle: { color: "#E0E0E0" } },
-        },
-        series: [
-          {
-            name: "Referral",
-            type: "bar",
-            stack: "Total",
-            data: Object.values(referralTraffic),
-          },
-          {
-            name: "Search",
-            type: "bar",
-            stack: "Total",
-            data: Object.values(searchTraffic),
-          },
-          {
-            name: "Social",
-            type: "bar",
-            stack: "Total",
-            data: Object.values(socialTraffic),
-          },
-        ],
-      });
+     chart.setOption({
+  title: {
+    text: "Website Traffic Sources",
+    left: "center",
+    textStyle: {
+      fontSize: getResponsiveFontSize(16),
+      fontWeight: "bold",
+      color: "<%= user.settings.theme === 'dark' ? '#E5E5E5' : '#8E8C89' %>",
+    },
+  },
+  tooltip: { trigger: "axis" },
+  legend: {
+    bottom: 0,
+    data: ["Referral", "Search", "Social"],
+    textStyle: {
+      fontSize: getResponsiveFontSize(14),
+      color: "<%= user.settings.theme === 'dark' ? '#E5E5E5' : '#8E8C89' %>",
+    },
+  },
+  xAxis: {
+    type: "category",
+    data: categories,
+    axisLabel: {
+      fontSize: getResponsiveFontSize(12),
+      color: "<%= user.settings.theme === 'dark' ? '#E5E5E5' : '#8E8C89' %>",
+    },
+    axisLine: {
+      show: true,
+      lineStyle: {
+        color: "<%= user.settings.theme === 'dark' ? '#666' : '#333' %>",
+        width: 1,
+      },
+    },
+    splitLine: {
+      show: true, 
+      lineStyle: {
+        type: "dashed",
+        color: "<%= user.settings.theme === 'dark' ? '#444' : '#E0E0E0' %>",
+      },
+    },
+  },
+  yAxis: {
+    type: "value",
+    axisLabel: {
+      fontSize: getResponsiveFontSize(12),
+      color: "<%= user.settings.theme === 'dark' ? '#E5E5E5' : '#8E8C89' %>",
+    },
+    axisLine: {
+      show: true, 
+      lineStyle: {
+        color: "<%= user.settings.theme === 'dark' ? '#666' : '#333' %>",
+        width: 1,
+      },
+    },
+    splitLine: {
+      show: true,
+      lineStyle: {
+        type: "solid",
+        color: "<%= user.settings.theme === 'dark' ? '#444' : '#E0E0E0' %>",
+      },
+    },
+  },
+  series: [
+    {
+      name: "Referral",
+      type: "bar",
+      stack: "Total",
+      data: Object.values(referralTraffic),
+    },
+    {
+      name: "Search",
+      type: "bar",
+      stack: "Total",
+      data: Object.values(searchTraffic),
+    },
+    {
+      name: "Social",
+      type: "bar",
+      stack: "Total",
+      data: Object.values(socialTraffic),
+    },
+  ],
+});
+
+
     });
   </script>
 
@@ -91,7 +129,7 @@
            textStyle: { 
                     fontSize: getResponsiveFontSize(16),
                     fontWeight: "bold" ,
-                    color: "#8E8C89",
+                    color: "<%= user.settings.theme === 'dark' ? '#E5E5E5' : '#8E8C89' %> ",
           },
          },
         tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },

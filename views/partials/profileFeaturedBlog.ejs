@@ -86,11 +86,11 @@
                   user?.id && user._id.toString() === profile._id.toString();
                 return `
                   <div class="w-full flex-shrink-0  flex items-stretch">
-                    <div class="h-full  flex   w-full justify-center items-center bg-no-repeat bg-cover text-white bg-center -z-50"
+                    <div class="h-full  flex   w-full justify-center items-center bg-no-repeat bg-cover text-white bg-center "
                       style="background-image: url('${blog.blogPhoto}');">
-                      <div class="p-4 w-full">
+                      <div class="p-4 w-full <%= user.settings.theme === 'dark' ? 'bg-black bg-opacity-30' : '' %>">
                         <div class="flex justify-end pb-32">
-                          <p class=" px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-primary' : 'bg-background' %> bg-opacity-30 text-white text-xs md:text-sm font-semibold font-roboto uppercase shadow-lg">
+                          <p class=" px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-fourth' : 'bg-background' %> bg-opacity-30 text-white text-xs md:text-sm font-semibold font-roboto uppercase shadow-lg">
 
                              ${truncateText(blog.tags[0], 20)}
                           </p>
@@ -111,11 +111,11 @@
                           </h5>
                           <p class="<%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-background' %> text-sm md:text-lg break-words break-all  w-full  md:w-2/3 w-1/2">
                             ${truncateText(blog.description, 150)}
-                            <span> <a href="/blog/${
+                             <a href="/blog/${
                               blog.slug
-                            }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-background' %> hover:text-highlight    font-roboto text-center  text-sm md:text-base  font-medium ">
+                            }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-background' %> hover:text-highlight    font-roboto text-center z-50 text-sm md:text-base  font-medium ">
                               read more
-                            </a></span>
+                            </a>
                           </p>
                           <div class="flex justify-between items-center gap-2 w-full  sm:w-2/3  w-1/2">
                             ${

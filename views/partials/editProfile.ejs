@@ -4,7 +4,7 @@
   <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="name"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %> text-xs md:text-sm lg:text-base"
       >Name</label
     >
     <input
@@ -14,7 +14,7 @@
       minlength="2"
       maxlength="10"
       value="<%= user.firstname %>"
-      class="userInfo px-3 py-2 border rounded-md shadow-sm outline-none text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %>"
+      class="userInfo px-3 py-2 border rounded-md shadow-sm outline-none text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' bg-transparent border-dark-fourth text-dark-primary' : 'border-primary text-primary' %>"
       placeholder="Enter your name"
       autocapitalize="words"
       autofocus
@@ -26,7 +26,7 @@
   <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="lastname"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : 'text-tertiary' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %>  text-xs md:text-sm lg:text-base"
       >Last Name</label
     >
     <input
@@ -36,7 +36,7 @@
       minlength="2"
       maxlength="10"
       value="<%= user.lastname %>"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-transparent border-dark-fourth text-dark-primary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
       placeholder="Enter your last name"
       autocapitalize="words"
       autofocus
@@ -50,7 +50,7 @@
   >
     <label
       for="phoneNumber"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %>"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %>"
       >Phone Number</label
     >
     <input
@@ -59,7 +59,7 @@
       name="phoneNumber"
       maxlength="10"
       value="<%= user.phone %>"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-transparent border-dark-fourth text-dark-primary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
       autocapitalize="words"
       autofocus
       placeholder="Enter your phone number"
@@ -70,7 +70,7 @@
   <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="username"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %> text-xs md:text-sm lg:text-base"
       >Userame</label
     >
     <input
@@ -80,7 +80,7 @@
       minlength="2"
       maxlength="20"
       value="<%= user.username %>"
-      class="userInfo px-3 py-2 border rounded-md shadow-sm outline-none text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %>"
+      class="userInfo px-3 py-2 border rounded-md shadow-sm outline-none text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? ' bg-transparent border-dark-fourth text-dark-primary' : 'border-primary text-primary' %>"
       placeholder="Enter your name"
       autocapitalize="words"
       autofocus
@@ -92,7 +92,7 @@
   <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="tags"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %> text-xs md:text-sm lg:text-base"
       >Tags</label
     >
     <input
@@ -100,7 +100,7 @@
       id="tag"
       value="<%= user.tags %>"
       name="tags"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-transparent border-dark-fourth text-dark-primary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
       placeholder="Enter tags separated by commas"
     />
     <span class="text-red-500 text-xs error min-h-[1rem] block" id="tagError"></span>
@@ -109,7 +109,7 @@
   <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="linkedin"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %> text-xs md:text-sm lg:text-base"
       >LinkedIn</label
     >
     <input
@@ -117,7 +117,7 @@
       id="linkedin"
       name="linkedin"
       value="<%= user.linkedin %>"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-transparent border-dark-fourth text-dark-primary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
       autocapitalize="words"
       autofocus
       placeholder="Enter your LinkedIn profile name"
@@ -128,7 +128,7 @@
   <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="github"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %> text-xs md:text-sm lg:text-base"
       >Github</label
     >
     <input
@@ -136,7 +136,7 @@
       id="github"
       name="github"
       value="<%= user.github %>"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-transparent border-dark-fourth text-dark-primary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
       autocapitalize="words"
       autofocus
       placeholder="Enter your Github profile name"
@@ -147,7 +147,7 @@
   <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="twitter"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %> text-xs md:text-sm lg:text-base"
       >Twitter</label
     >
     <input
@@ -155,7 +155,7 @@
       id="twitter"
       name="twitter"
       value="<%= user.twitter %>"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-transparent border-dark-fourth text-dark-primary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
       autocapitalize="words"
       autofocus
       placeholder="Enter your Twitter profile name"
@@ -166,13 +166,13 @@
   <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="country"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %> text-xs md:text-sm lg:text-base"
       >Country</label
     >
     <select
       id="country"
       name="country"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-transparent border-dark-fourth text-dark-primary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
     >
       <option class=" ">Select a country</option>
     </select>
@@ -181,13 +181,13 @@
   <div class="flex flex-col col-span-2 sm:col-span-1 gap-1">
     <label
       for="state"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %> text-xs md:text-sm lg:text-base"
       >State</label
     >
     <select
       id="state"
       name="state"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-transparent border-dark-fourth text-dark-primary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base"
     >
       <option>Select a state</option>
     </select>
@@ -196,7 +196,7 @@
   <div class="flex flex-col sm:gap-1 gap-1 col-span-2 mt-[1rem]">
     <label
       for="bio"
-      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-tertiary' %> text-xs md:text-sm lg:text-base"
+      class="font-medium <%= user.settings.theme === 'dark' ? ' text-dark-secondary' : ' text-secondary' %> text-xs md:text-sm lg:text-base"
       >Bio</label
     >
     <textarea
@@ -204,7 +204,7 @@
       name="bio"
       rows="7"
       maxlength="600"
-      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base resize-none"
+      class="userInfo px-3 py-2 rounded-md shadow-sm outline-none <%= user.settings.theme === 'dark' ? ' bg-transparent border-dark-fourth text-dark-primary' : 'border-primary text-primary' %> border text-xs md:text-sm lg:text-base resize-none"
       placeholder="Tell us about yourself"
     >
 <%= user.bio %></textarea
@@ -214,7 +214,7 @@
   <p></p>
   <div>
     <button
-      class="btn-with-loader relative flex justify-center items-center <%= user.settings.theme === 'dark' ? ' bg-dark-fifth border-dark-secondary text-dark-secondary' : 'border-fifth text-background bg-tertiary' %> border hover:bg-blue-400 font-roboto py-2 px-4 rounded w-full text-sm sm:text-sm lg:text-base mt-2 col-span-2 z-50 transition-all duration-300 ease-in-out disabled:cursor-not-allowed disabled:bg-red-500 disabled:hover:bg-red-500"
+      class="btn-with-loader relative flex justify-center items-center <%= user.settings.theme === 'dark' ? ' bg-transparent border-dark-fourth text-dark-secondary hover:text-white hover:border-white' : 'border-fifth text-background bg-tertiary  hover:bg-blue-500' %> border font-roboto py-2 px-4 rounded w-full text-sm sm:text-sm lg:text-base mt-2 col-span-2 z-50 transition-all duration-300 ease-in-out disabled:cursor-not-allowed disabled:bg-red-500 disabled:hover:bg-red-500"
       id="saveProfile"
       type="submit"
     >

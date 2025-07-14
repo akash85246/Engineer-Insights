@@ -29,7 +29,7 @@
       const allBlogContainer = document.getElementById("allBlog");
 
       if (blogData.length === 0) {
-        allBlogContainer.innerHTML = `<div class="border-2 border border-gray-300 rounded-lg p-6 text-center                text-gray-500 font-lora font-thin min-h-[400px] flex flex-col -z-50 items-center justify-center shadow-lg">
+        allBlogContainer.innerHTML = `<div class="border-2 border border-gray-300 rounded-lg p-6 text-center                <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-primary' %>  font-lora font-thin min-h-[250px] md:min-h-[300px] lg:min-h-[400px] flex flex-col -z-50 items-center justify-center shadow-lg">
                   <img
       src="/images/icons/blogNotFound.svg" />
                 <p class="text-lg">No blogs yet? Time to share your first insight!</p>
@@ -44,12 +44,12 @@
           let isLiked = false;
           let isBookmarked = false;
           let isArchived = false;
-          
+
           const isAuthenticated = "<%- isAuthenticated %>" == "true";
-          
+
           if (isAuthenticated) {
-            
-            const userId = "<%- user._id %>"; 
+
+            const userId = "<%- user._id %>";
             const user = <%- JSON.stringify(user) %>;
             isAuthor = userId.toString() == blog.author._id;
             isSubAuthor = blog.subauthors.some(
@@ -57,7 +57,7 @@
 
             if (blog.likes && blog.likes.length > 0) {
               isLiked = blog.likes.some((like) => like.toString() ===    userId.toString());
-            
+
             }
 
             if(user.savedBlogs && user.savedBlogs.length >0){
@@ -66,7 +66,7 @@
 
             isArchived = blog.status === "archived";
           }
-          
+
 
           return `
         <div class="w-full flex-shrink-0  " id="blog-${
@@ -75,9 +75,9 @@
           <div class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
             blog.blogPhoto
           }')">
-            <div class="rounded-lg shadow-lg overflow-hidden w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-2 sm:p-3 h-full flex flex-col justify-between">
+            <div class="rounded-lg shadow-lg overflow-hidden w-full <%= user.settings.theme === 'dark' ? 'bg-black bg-opacity-30' : '' %> bg-opacity-10 p-2 sm:p-3 h-full flex flex-col justify-between">
               <div class="flex justify-end">
-                <p class="p-1 sm:px-2 sm:py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase">
+                <p class="p-1 sm:px-2 sm:py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-fourth' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase">
                    ${truncateText(blog.tags[0], 10)}</p>
               </div>
               <div class="flex flex-col gap-2">
@@ -102,16 +102,16 @@
                 }" class="<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %> hover:text-highlight font-roboto text-center  font-medium">read more</a></span>
                 </p>
                 <div class="flex justify-between items-center">
-                 <div class="flex items-center gap-2 font-roboto cursor-default">
+                 <div class="flex items-center gap-2 font-roboto cursor-default <%= user.settings.theme === 'dark' ? 'invert' : '' %>">
                     <div class="flex items-center gap-1">
-                      <img src="images/icons/blogLikeCardIcon.svg" class=" h-3 w-3 md:h-5 md:w-5" />
-                      <span class="text-xxxs sm:text-xxs md:text-xs lg:text-sm text-rose-500 " id="likeCount-${blog.slug}">
+                      <img src="images/icons/blogLikeCardIcon.svg" class="h-6 w-6 md:h-6 md:w-6" />
+                      <span class="text-xs sm:text-xxs md:text-xs lg:text-sm text-rose-500" id="likeCount-${blog.slug}">
                           ${blog.likes.length}
                       </span>
                     </div>
                     <div class="flex items-center gap-1">
-                      <img src="images/icons/blogViewCardIcon.svg" class=" h-6 w-6 md:h-8 md:w-8 " />
-                      <span class="text-xxxs sm:text-xxs md:text-xs lg:text-sm text-gray-500" >
+                      <img src="images/icons/blogViewCardIcon.svg" class=" h-7 w-7 md:h-8 md:w-8 " />
+                      <span class="text-xs sm:text-xxs md:text-xs lg:text-sm text-gray-500" >
                           ${blog.views.length}
                       </span>
                     </div>
@@ -130,12 +130,12 @@
                       <%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-text' : 'bg-background text-primary' %> min-w-[120px] hidden shadow-md"
                       id="blogMoreOptions-${blog.slug}">
 
-                       
+
 
                   ${
                     isSubAuthor || isAuthor
                       ? `
-                      
+
                          ${
                            isAuthor
                              ? `
@@ -144,7 +144,7 @@
                               ? 'hover:bg-red-600 text-dark-primary'
                               : 'hover:bg-red-200 text-primary' %>">
                              <img src="${isArchived?"images/icons/unarchiveIcon.svg":"images/icons/archiveIcon.svg"}" alt="Archive Blog"
-                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="archiveIcon-${blog.slug}">
+                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 <%= user.settings.theme === 'dark' ? 'invert' : '' %> " id="archiveIcon-${blog.slug}">
                              <span id="archiveText-${blog.slug}">${isArchived ? "Unarchive" : "Archive"}</span>
                              </button>
 
@@ -153,7 +153,7 @@
                               ? 'hover:bg-red-600 text-dark-primary'
                               : 'hover:bg-red-200 text-primary' %>">
                               <img src="images/icons/deleteDarkIcon.svg" alt="Delete Blog"
-                              class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 ">
+                              class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 <%= user.settings.theme === 'dark' ? 'invert' : '' %> ">
                               <span>Delete</span>
                               </button>
                              `
@@ -165,10 +165,10 @@
                           <%= user.settings.theme === 'dark'
                             ? 'hover:bg-blue-600 text-dark-primary'
                             : 'hover:bg-blue-200 text-primary' %>"> <img src="images/icons/editDarkIcon.svg" alt="Edit Blog"
-                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110"> 
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 <%= user.settings.theme === 'dark' ? 'invert' : '' %>">
                          <span>Edit</span>
                          </a>
-                      
+
                     `
                       : ` <button onclick="likeBlog('${
                         blog.slug
@@ -220,7 +220,7 @@
       const blogMoreOptions = document.getElementById(
         "blogMoreOptions-" + slug
       );
-     
+
       blogMoreOptions.classList.toggle("hidden");
     };
 
@@ -274,7 +274,7 @@
         }
 
         const result = await response.json();
-       
+
         if (!result.liked) {
           likeImg.src = "images/icons/unlikeIcon.svg";
           likeImg.alt = "Unlike icon";
@@ -285,7 +285,7 @@
               duration: 4000,
               gravity: "top",
               position: "right",
-              backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+              backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
               stopOnFocus: true,
               close: true,
               style: {
@@ -306,7 +306,7 @@
               duration: 4000,
               gravity: "top",
               position: "right",
-              backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)", 
+              backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
               stopOnFocus: true,
               close: true,
               style: {
@@ -344,7 +344,7 @@
                 }).showToast();
       }
     };
-    
+
     window.toggleSaveBlog = async function toggleSaveBlog(slug,isBookmarked) {
       try {
         const saveText = document.getElementById(`saveText-${slug}`);
@@ -383,7 +383,7 @@
                 duration: 4000,
                 gravity: "top",
                 position: "right",
-                backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+                backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
                 stopOnFocus: true,
                 close: true,
                 style: {
@@ -416,7 +416,7 @@
                 }
               }).showToast();
               }
-            
+
       } catch (error) {
         Toastify({
               text: "Failed to save/unsave the blog. Please try again later.",
@@ -474,7 +474,7 @@
                   duration: 4000,
                   gravity: "top",
                   position: "right",
-                  backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)", 
+                  backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
                   stopOnFocus: true,
                   close: true,
                   style: {
@@ -529,7 +529,7 @@
       }
     };
 
-   
+
     function setupPagination(totalPages, currentPage) {
       const paginationElement = document.getElementById("pagingContainer");
       paginationElement.innerHTML = "";
@@ -561,14 +561,14 @@
       const prevButton = document.createElement("button");
       prevButton.innerText = "Prev";
       prevButton.classList.add(
-        "px-3",
-        "py-1",
-        "ml-2",
-        "bg-fourth",
-        "rounded-md",
-        "text-secondary",
-        "hover:bg-fifth",
-        "hover:text-fourth"
+      "px-3",
+      "py-1",
+      "ml-2",
+      "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+      "rounded-md",
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+       "<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>"
       );
 
       prevButton.disabled = currentPage === 1;
@@ -579,18 +579,19 @@
         const pageButton = document.createElement("button");
         pageButton.innerText = i;
         pageButton.classList.add(
-          "px-3",
-          "py-1",
-          "mx-1",
-          i === currentPage ? "bg-secondary" : "bg-fourth",
-          i === currentPage ? "text-background" : "text-secondary",
-          "rounded-md"
+        "px-3",
+        "py-1",
+        "mx-1",
+        i === currentPage ? "<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>" : "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+        i === currentPage ? "text-background" : "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+        "rounded-md"
         );
         if (i === currentPage) {
-          pageButton.classList.add("bg-secondary", "text-white");
-        } else {
-          pageButton.classList.add("hover:bg-fifth", "hover:text-fourth");
-        }
+        pageButton.classList.add("<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>", "text-white");
+      } else {
+        pageButton.classList.add("<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>");
+      }
         pageButton.onclick = () =>{
            fetchBlogs(i)};
         paginationElement.appendChild(pageButton);
@@ -598,14 +599,14 @@
       const nextButton = document.createElement("button");
       nextButton.innerText = "Next";
       nextButton.classList.add(
-        "px-3",
-        "py-1",
-        "ml-2",
-        "bg-fourth",
-        "rounded-md",
-        "text-secondary",
-        "hover:bg-fifth",
-        "hover:text-fourth"
+      "px-3",
+      "py-1",
+      "ml-2",
+      "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+      "rounded-md",
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+       "<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>"
       );
       // nextButton.disabled = currentPage === totalPages;
       nextButton.addEventListener("click", () => {
@@ -621,7 +622,7 @@
       }
     }
 
-    
+
 
     async function fetchBlogs(page) {
       const apiURL = `/api/blog/search?author=<%= profile._id %>&page=${page} &limit=${blogsPerPage}`;
@@ -653,7 +654,7 @@
                 }
               }).showToast();
         return;
-        
+
       }
     }
 

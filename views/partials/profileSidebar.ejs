@@ -13,7 +13,7 @@
               src="<%= user.avatar ? user.avatar : '/images/defaultProfile.png' %>"
               draggable="false"
               alt="Profile Image"
-              class="w-20 h-20 md:w-full md:h-auto aspect-square rounded-md border border-gray-300"
+              class="w-20 h-20 md:w-full md:h-auto aspect-square rounded-md border <%= user.settings.theme === 'dark' ? 'border-dark-fourth' : 'border-gray-300' %>"
             />
           </div>
           <div class="profile-sidebar-header-content text-center">
@@ -42,7 +42,7 @@
         >
           <a
             href="/followers/<%= user.slug %>"
-            class="text-center cursor-pointer p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md"
+            class="text-center cursor-pointer p-2 sm:p-1 md:p-2  <%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-tertiary' %> rounded-md"
           >
             <h2
               class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %>"
@@ -59,7 +59,7 @@
 
           <a
             href="/profile/<%= user.slug%>"
-            class="text-center cursor-pointer p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md"
+            class="text-center cursor-pointer p-2 sm:p-1 md:p-2 <%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-tertiary' %> rounded-md"
           >
             <h2
               class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %>"
@@ -74,7 +74,7 @@
           </a>
           <a
             href="/following/<%= user.slug %>"
-            class="text-center cursor-pointer p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md"
+            class="text-center cursor-pointer p-2 sm:p-1 md:p-2 <%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-tertiary' %> rounded-md"
           >
             <h2
               class="text-xl font-semibold <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-background hover:text-fifth' %> "
@@ -92,7 +92,7 @@
         <div class="profile-sidebar-content">
           <ul class="text-base md:text-sm lg:text-base">
             <li
-              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+              class="p-2 sm:p-1 md:p-2 <%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-tertiary' %> rounded-md transition-colors duration-200"
             >
               <a
                 href="/profile/<%= user.slug%>"
@@ -112,7 +112,7 @@
               </a>
             </li>
             <li
-              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+              class="p-2 sm:p-1 md:p-2 <%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-tertiary' %> rounded-md transition-colors duration-200"
             >
               <a href="/profile/edit" class="flex items-center gap-2">
                 <img
@@ -129,7 +129,7 @@
               </a>
             </li>
             <li
-              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+              class="p-2 sm:p-1 md:p-2 <%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-tertiary' %> rounded-md transition-colors duration-200"
             >
               <a href="/saveBlogs" class="flex items-center gap-2">
                 <img
@@ -147,7 +147,7 @@
             </li>
 
             <li
-              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+              class="p-2 sm:p-1 md:p-2 <%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-tertiary' %> rounded-md transition-colors duration-200"
             >
               <a href="/drafts" class="flex items-center gap-2">
                 <img
@@ -164,7 +164,7 @@
               </a>
             </li>
             <li
-              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+              class="p-2 sm:p-1 md:p-2 <%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-tertiary' %> rounded-md transition-colors duration-200"
             >
               <a href="/archived" class="flex items-center gap-2">
                 <img
@@ -181,7 +181,7 @@
               </a>
             </li>
             <li
-              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+              class="p-2 sm:p-1 md:p-2 <%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-tertiary' %> rounded-md transition-colors duration-200"
             >
               <a href="/reports" class="flex items-center gap-2">
                 <img
@@ -199,7 +199,7 @@
               >
             </li>
             <li
-              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+              class="p-2 sm:p-1 md:p-2 <%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-tertiary' %> rounded-md transition-colors duration-200"
             >
               <a href="/analytics" class="flex items-center gap-2">
                 <img
@@ -216,7 +216,7 @@
               </a>
             </li>
             <li
-              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+              class="p-2 sm:p-1 md:p-2 <%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-tertiary' %> rounded-md transition-colors duration-200"
             >
               <a href="/notifications" class="flex items-center gap-2">
                 <img
@@ -234,7 +234,7 @@
             </li>
 
             <li
-              class="p-2 sm:p-1 md:p-2 hover:bg-tertiary rounded-md transition-colors duration-200"
+              class="p-2 sm:p-1 md:p-2 <%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-tertiary' %> rounded-md transition-colors duration-200"
             >
               <button
                 onclick="openLogoutModal()"
@@ -283,10 +283,10 @@
 
 <div
   id="logoutModal"
-  class="fixed inset-0 <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %> backdrop-blur-sm bg-opacity-50 flex items-center justify-center hidden z-20 p-5 md:p-0"
+  class="hidden fixed inset-0 z-10 flex items-center justify-center backdrop-blur-sm <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : ' text-text bg-primary' %> bg-opacity-50 p-5 md:p-0 z-50 font-lora"
 >
   <div
-    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %> p-4 rounded-lg w-full sm:w-1/2 lg:w-1/3"
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'bg-white text-gray-900' %> p-4 rounded-lg w-full sm:w-1/2 lg:w-1/3"
   >
      <!-- Header -->
      <div class="flex items-center justify-between mb-4">

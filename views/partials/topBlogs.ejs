@@ -15,19 +15,19 @@
     class="sm:flex justify-center items-center gap-2 md:gap-6 px-2 py-4 sm:p-4 md:p-6 w-full mt-4"
   >
     <div
-      class="relative flex items-center <%= user.settings.theme === 'dark' ? ' bg-dark-sixth ' : 'bg-gray-200' %> border rounded-lg p-2 md:px-5 md:py-3 w-full sm:w-2/3 lg:w-full mb-2 sm:mb-0"
+      class="relative flex items-center <%= user.settings.theme === 'dark' ? ' bg-dark-sixth border-dark-tertiary' : 'bg-gray-200 ' %> border rounded-lg p-2 md:px-5 md:py-3 w-full sm:w-2/3 lg:w-full mb-2 sm:mb-0"
     >
       <img
         src="images/icons/searchIcon.png"
         alt="Search Icon"
-        class="w-4 h-4 md:w-6 md:h-6 <%= user.settings.theme === 'dark' ? ' text-dark-text' : ' text-text' %>"
+        class="w-4 h-4 md:w-6 md:h-6 <%= user.settings.theme === 'dark' ? ' text-dark-text invert' : ' text-text' %>"
       />
       <input
         type="text"
         id="searchBlogInput"
         placeholder="Search"
-        class="mx-5 bg-transparent outline-none <%= user.settings.theme === 'dark' ? ' text-dark-primary placeholder-sixth' : 'text-secondary placeholder-tertiary' %> w-full text-sm md:text-sm lg:text-base font-lora placeholder-sixth"
-        oninput="fetchBlogs()"
+        class="mx-5 bg-transparent outline-none <%= user.settings.theme === 'dark' ? ' text-dark-primary placeholder-sixth' : 'text-secondary placeholder-tertiary' %> w-full text-base md:text-sm lg:text-base font-lora placeholder-sixth"
+        oninput="fetchBlogs(1)"
       />
     </div>
 
@@ -37,14 +37,14 @@
         id="startDate"
         name="startDate"
         onchange="fetchBlogs()"
-        class="rounded-md border p-2 md:px-5 md:py-3 text-sm md:text-sm lg:text-base shadow-sm transition duration-300 focus:ring-2 focus:ring-primary focus:outline-none <%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-fourth text-dark-primary placeholder-gray-400' : 'bg-white border-gray-300 text-gray-800 placeholder-gray-400' %>"
+        class="rounded-md border p-2 md:px-5 md:py-3 text-sm md:text-sm lg:text-base shadow-sm transition duration-300 focus:ring-2 focus:ring-primary focus:outline-none <%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-fourth text-dark-secondary placeholder-gray-400' : 'bg-white border-gray-300 text-gray-800 placeholder-gray-400' %>"
       />-
       <input
         type="date"
         id="endDate"
         name="endDate"
         onchange="fetchBlogs()"
-        class="rounded-md border p-2 md:px-5 md:py-3 text-sm md:text-sm lg:text-base shadow-sm transition duration-300 focus:ring-2 focus:ring-primary focus:outline-none <%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-fourth text-dark-primary placeholder-gray-400' : 'bg-white border-gray-300 text-gray-800 placeholder-gray-400' %>"
+        class="rounded-md border p-2 md:px-5 md:py-3 text-sm md:text-sm lg:text-base shadow-sm transition duration-300 focus:ring-2 focus:ring-primary focus:outline-none <%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-fourth text-dark-secondary placeholder-gray-400' : 'bg-white border-gray-300 text-gray-800 placeholder-gray-400' %>"
       />
     </div>
   </div>
@@ -69,7 +69,7 @@
               }')">
                 <div class="rounded-lg shadow-lg overflow-hidden <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-text' : 'bg-primary text-text' %> bg-opacity-30 h-full flex flex-col justify-end w-full p-5 py-2  md:p-10 md:py-4  lg:p-16 lg:py-10 gap-2">
                   <div class="flex">
-                    <p class=" px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-secondary text-dark-text' : 'bg-background text-text' %>  bg-opacity-30 text-white text-xxxs   md:text-xxs  lg:text-xs font-semibold font-sans uppercase">${
+                    <p class=" px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-text' : 'bg-background text-text' %>  bg-opacity-30 text-white text-xxxs   md:text-xxs  lg:text-xs font-semibold font-sans uppercase">${
                       blog.tags[0]
                     }</p>
                   </div>
@@ -122,7 +122,7 @@
 
           function updateDots(index) {
             dots.forEach((dot, i) => {
-              dot.classList.toggle("bg-primary", i === index);
+              dot.classList.toggle("bg-white", i === index);
               dot.classList.toggle("bg-gray-400", i !== index);
             });
           }

@@ -6,7 +6,7 @@
     draggable="false"
     src="<%= profile && profile.avatar ? profile.avatar : '/images/defaultProfile.png' %>"
     alt="profile photo"
-    class="max-w-45 w-full sm:max-w-full h-40 w-30 sm:h-52 rounded-md shadow-md object-cover border aspect-square border-gray-300"
+    class="max-w-45 w-full sm:max-w-full h-40 w-30 sm:h-52 rounded-md shadow-md object-cover border aspect-square <%= user.settings.theme === 'dark' ? 'border-dark-fourth' : 'border-gray-300' %>"
   />
 <% } else { %>
 
@@ -15,7 +15,7 @@
       src="<%= profile.avatar ? profile.avatar : '/images/defaultProfile.png' %>"
       alt="Profile Photo"
       id="profileImage"
-       class="w-20 h-20 md:w-full md:h-auto aspect-square rounded-md border border-gray-300"
+       class="w-20 h-20 md:w-full md:h-auto aspect-square rounded-md border <%= user.settings.theme === 'dark' ? 'border-dark-fourth' : 'border-gray-300' %>"
     />
   
     <div class="absolute top-2 right-2 flex flex-col justify-center">
@@ -322,7 +322,7 @@
       draggable="false"
       src="<%= profile && profile.avatar ? profile.avatar : '/images/defaultProfile.png' %>"
       alt="Profile Photo"
-      class="w-24 h-24 sm:w-28 sm:h-28 rounded-md border-2 border-gray-300 object-cover cursor-pointer shadow-md transition-all duration-300 hover:scale-105"
+      class="w-24 h-24 sm:w-28 sm:h-28 rounded-md border-2 <%= user.settings.theme === 'dark' ? 'border-dark-fourth' : 'border-gray-300' %> object-cover cursor-pointer shadow-md transition-all duration-300 hover:scale-105"
       id="profileImage"
       onclick="openFeaturedPopout('<%= profile.slug %>')"
     />
@@ -333,7 +333,7 @@
           src="<%= profile.avatar ? profile.avatar : '/images/defaultProfile.png' %>"
           alt="Profile Photo"
           id="profileImageMobile"
-          class="w-24 h-24 sm:w-28 sm:h-28 rounded-md border-2 border-gray-300 object-cover cursor-pointer shadow-md "
+          class="w-24 h-24 sm:w-28 sm:h-28 rounded-md border-2 <%= user.settings.theme === 'dark' ? 'border-dark-fourth' : 'border-gray-300' %> object-cover cursor-pointer shadow-md "
         />
       
         <div class="absolute top-1 right-1 flex flex-col justify-center">

@@ -6,13 +6,14 @@
   >
     Subscription Plans
   </h1>
+  
   <div
     class="grid grid-rows-2 sm:grid-rows-1 sm:grid-cols-2 gap-8 sm:gap-4 px-3"
   >
     <!-- Pro Membership Card -->
     <div id="proMembershipCard" class="relative perspective h-32 block">
       <div
-        class="border rounded-lg <%= user.settings.theme === 'dark' ? 'shadow-white-lg bg-dark-sixth border-dark-secondary' : 'shadow-lg bg-background border-sixth' %> w-full h-36 transition-transform duration-500 ease-in-out transform preserve-3d overflow-hidden"
+        class="border rounded-lg <%= user.settings.theme === 'dark' ? 'shadow-white-lg bg-dark-sixth border-dark-fifth' : 'shadow-lg bg-background border-sixth' %> w-full h-36 transition-transform duration-500 ease-in-out transform preserve-3d overflow-hidden"
         id="proMembershipContainer"
       >
         <!-- Front Side -->
@@ -53,7 +54,7 @@
             'changeSubscription' : 'refundSubscription'; %>
             <button
               onclick="<%= action %>('pro')"
-              class="<%= user.settings.theme === 'dark' ? 'border-dark-secondary text-dark-secondary' : 'bg-tertiary text-sixth' %> font-medium rounded-md px-4 py-2 transition hover:bg-blue-300 hover:text-background hover:border-background font-roboto"
+              class="<%= user.settings.theme === 'dark' ? 'bg-dark-fifth text-dark-secondary hover:bg-highlight' : 'bg-tertiary text-sixth hover:bg-highlight' %> font-medium rounded-md px-4 py-2 transition  hover:text-background hover:border-background font-roboto"
               id="proUpgradeButton"
             >
               Upgrade
@@ -99,7 +100,7 @@
     <!-- Elite Membership Card -->
     <div id="eliteMembershipCard" class="relative perspective h-32 block">
       <div
-        class="border rounded-lg w-full h-36 transition-transform duration-500 ease-in-out transform preserve-3d overflow-hidden <%= user.settings.theme === 'dark' ? ' bg-dark-sixth border-dark-secondary shadow-white-lg' : 'bg-background border-sixth shadow-lg' %>"
+        class="border rounded-lg w-full h-36 transition-transform duration-500 ease-in-out transform preserve-3d overflow-hidden <%= user.settings.theme === 'dark' ? ' bg-dark-sixth border-dark-fifth shadow-white-lg' : 'bg-background border-sixth shadow-lg' %>"
         id="eliteMembershipContainer"
       >
         <!-- Front Side -->
@@ -140,7 +141,7 @@
 
             <button
               onclick="<%= action2 %>('elite')"
-              class="<%= user.settings.theme === 'dark' ? 'border-dark-secondary text-dark-secondary' : 'bg-secondary text-sixth' %> font-medium rounded-md px-4 py-2 transition hover:bg-blue-300 hover:text-background hover:border-background font-roboto"
+              class="<%= user.settings.theme === 'dark' ? 'bg-dark-fourth text-dark-secondary' : 'bg-secondary text-sixth' %> font-medium rounded-md px-4 py-2 transition hover:bg-highlight hover:text-background hover:border-background font-roboto"
               id="eliteUpgradeButton"
             >
               Upgrade
@@ -188,13 +189,13 @@
       </div>
     </div>
   </div>
-  <div class="mt-5">
+  <div class="mt-8">
     <h1
       class="text-lg md:text-xl lg:text-2xl p-3 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-text bg-dark-background' : 'bg-background text-tertiary' %> sticky top-0"
     >
       Subscription History
     </h1>
-    <ul id="history" class="overflow-x-scroll m-3 <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-tertiary' %> border rounded-md"></ul>
+    <ul id="history" class="overflow-x-scroll m-3 <%= user.settings.theme === 'dark' ? 'border-dark-fifth' : 'border-tertiary' %> border rounded-md"></ul>
     <div id="pagination" class="py-2 flex justify-center"></div>
   </div>
 </div>
@@ -340,13 +341,13 @@
         if (data.payments.length > 0) {
           // Render table structure
           paymentHistory.innerHTML = `
-          <table class="w-full border-collapse border-y  <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %> ">
+          <table class="w-full border-collapse border-y  <%= user.settings.theme === 'dark' ? 'border-dark-fifth' : 'border-fourth' %> ">
             <thead class="text-xs md:text-sm lg:text-base <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-secondary' : 'bg-background text-secondary' %> ">
-              <tr class="<%= user.settings.theme === 'dark' ? ' border-dark-secondary ' : ' border-secondary ' %>">
-                <th class="border-y  <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %>  p-3 text-left  whitespace-nowrap font-normal">Transaction ID</th>
-                <th class="border-y  <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %>  p-3 text-left  whitespace-nowrap font-normal">Payment Status</th>
-                <th class="border-y  <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %>  p-3 text-left  font-normal">Amount</th>
-                <th class="border-y  <%= user.settings.theme === 'dark' ? 'border-dark-secondary' : 'border-fourth' %>  p-3 text-left  font-normal">Frequency</th>
+              <tr class="<%= user.settings.theme === 'dark' ? ' border-dark-fifth ' : ' border-secondary ' %>">
+                <th class="border-y  <%= user.settings.theme === 'dark' ? 'border-dark-fifth' : 'border-fourth' %>  p-3 text-left  whitespace-nowrap font-normal">Transaction ID</th>
+                <th class="border-y  <%= user.settings.theme === 'dark' ? 'border-dark-fifth' : 'border-fourth' %>  p-3 text-left  whitespace-nowrap font-normal">Payment Status</th>
+                <th class="border-y  <%= user.settings.theme === 'dark' ? 'border-dark-fifth' : 'border-fourth' %>  p-3 text-left  font-normal">Amount</th>
+                <th class="border-y  <%= user.settings.theme === 'dark' ? 'border-dark-fifth' : 'border-fourth' %>  p-3 text-left  font-normal">Frequency</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -382,10 +383,10 @@
             const tr = document.createElement("tr");
 
             tr.innerHTML = `
-            <td class="border-y  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xs md:text-sm lg:text-base">${transactionId}</td>
-            <td class="border-y  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xs md:text-sm lg:text-base">${paymentStatus}</td>
-            <td class="border-y  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xs md:text-sm lg:text-base">$${amount}</td>
-            <td class="border-y <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-primary' %> p-3 text-xs md:text-sm lg:text-base">${frequency}</td>
+            <td class="border-y  <%= user.settings.theme === 'dark' ? 'text-dark-secondary border-dark-fifth' : 'text-primary' %> p-3 text-xs md:text-sm lg:text-base">${transactionId}</td>
+            <td class="border-y  <%= user.settings.theme === 'dark' ? 'text-dark-secondary border-dark-fifth' : 'text-primary' %> p-3 text-xs md:text-sm lg:text-base">${paymentStatus}</td>
+            <td class="border-y  <%= user.settings.theme === 'dark' ? 'text-dark-secondary border-dark-fifth' : 'text-primary' %> p-3 text-xs md:text-sm lg:text-base">$${amount}</td>
+            <td class="border-y <%= user.settings.theme === 'dark' ? 'text-dark-secondary border-dark-fifth' : 'text-primary' %> p-3 text-xs md:text-sm lg:text-base">${frequency}</td>
           `;
             tableBody.appendChild(tr);
           });
@@ -426,12 +427,12 @@
     prevButton.classList.add(
       "px-3",
       "py-1",
-      "mr-2",
-      "border",
-      "border-sixth",
-      "text-tertiary",
-      "font-lora",
-      "rounded-md"
+      "ml-2",
+      "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+      "rounded-md",
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+      "hover:bg-fifth",
+      "hover:text-fourth"
     );
     prevButton.addEventListener("click", () => {
       if (currentPage > 1) {
@@ -445,19 +446,18 @@
       const pageButton = document.createElement("button");
       pageButton.innerText = i;
       pageButton.classList.add(
-        "px-3",
+       "px-3",
         "py-1",
         "mx-1",
-        "border",
-        "border-sixth",
-        "text-tertiary",
-        "font-lora",
+        i === currentPage ? "<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>" : "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+        i === currentPage ? "text-background" : "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
         "rounded-md"
       );
 
-      if (i == currentPage) {
-        pageButton.classList.add("bg-tertiary", "text-background");
-        pageButton.classList.remove("text-tertiary");
+     if (i === currentPage) {
+        pageButton.classList.add("<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>", "text-white");
+      } else {
+        pageButton.classList.add("hover:bg-fifth", "hover:text-fourth");
       }
 
       pageButton.addEventListener("click", () => fetchPaymentHistory(i));
@@ -471,11 +471,11 @@
       "px-3",
       "py-1",
       "ml-2",
-      "border",
-      "border-sixth",
-      "text-tertiary",
-      "font-lora",
-      "rounded-md"
+      "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+      "rounded-md",
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+      "hover:bg-fifth",
+      "hover:text-fourth"
     );
 
     nextButton.addEventListener("click", () => {

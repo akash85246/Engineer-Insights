@@ -354,9 +354,9 @@
                   <div class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
                     blog.blogPhoto
                   }')">
-                    <div class="rounded-lg shadow-lg overflow-hidden w-full  p-3 h-full flex flex-col justify-between">
+                    <div class="rounded-lg shadow-lg overflow-hidden w-full  p-3 h-full flex flex-col justify-between <%= user.settings.theme === 'dark' ? 'bg-black bg-opacity-30' : '' %> ">
                       <div class="flex justify-end">
-                        <p class="px-2 py-1 rounded-lg  <%= user.settings.theme === 'dark' ? 'bg-white' : 'bg-background text-background' %> bg-opacity-20 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs  font-semibold font-sans uppercase">${
+                        <p class="px-2 py-1 rounded-lg  <%= user.settings.theme === 'dark' ? 'bg-fourth' : 'bg-background text-background' %> bg-opacity-20 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs  font-semibold font-sans uppercase">${
                           blog.tags[0]
                         }</p>
                       </div>
@@ -394,11 +394,11 @@
                             </div>
                           </a>
 
-                          <div class="relative z-50">
+                          <div class="relative">
                              ${(isAuthenticated)?
                   `           <button onclick='openEditorBlogMore(${isSubAuthor}, ${isAuthor}, "${
                                     blog.slug
-                                }")' class="z-50 blog-more-btn">
+                                }")' class=" blog-more-btn">
                                   <img src="images/icons/verticalMoreIcon.svg"            alt="More"
                                     class="w-6 h-6 sm:w-5 sm:h-5 md:w-6 md:h-6  lg:w-7 lg:h-7">
                                 </button>`
@@ -416,7 +416,7 @@
                               ? 'hover:bg-red-600 text-dark-primary'
                               : 'hover:bg-red-200 text-primary' %>" >
                              <img src="${isArchived?"images/icons/unarchiveIcon.svg":"images/icons/archiveIcon.svg"}" alt="Archive Blog"
-                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 " id="archiveEditorIcon-${blog.slug}">
+                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 <%= user.settings.theme === 'dark' ? 'invert' : '' %>" id="archiveEditorIcon-${blog.slug}">
                              <span id="archiveEditorText-${blog.slug}" data-isarchived="false">${isArchived ? "Unarchive" : "Archive"}</span>
                              </button>
 
@@ -425,7 +425,7 @@
                               ? 'hover:bg-red-600 text-dark-primary'
                               : 'hover:bg-red-200 text-primary' %>">
                               <img src="images/icons/deleteDarkIcon.svg" alt="Delete Blog"
-                              class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 ">
+                              class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 <%= user.settings.theme === 'dark' ? 'invert' : '' %>">
                               <span>Delete</span>
                               </button>
                              `
@@ -437,7 +437,7 @@
                           <%= user.settings.theme === 'dark'
                             ? 'hover:bg-blue-600 text-dark-primary'
                             : 'hover:bg-blue-200 text-primary' %>"> <img src="images/icons/editDarkIcon.svg" alt="Edit Blog"
-                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110"> 
+                        class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 <%= user.settings.theme === 'dark' ? 'invert' : '' %>"> 
                          <span>Edit</span>
                          </a>
                       

@@ -54,14 +54,14 @@
                <div class="flex justify-center items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
                  blog.blogPhoto
                }')" >
-                 <div class="rounded-lg shadow-lg overflow-hidden w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-background' %> bg-opacity-10 p-2 sm:p-3 h-full flex flex-col justify-between">
+                 <div class="rounded-lg shadow-lg overflow-hidden w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth bg-opacity-30' : 'bg-background bg-opacity-10' %>  p-2 sm:p-3 h-full flex flex-col justify-between">
                    <div class="flex justify-end ">
                      <p class="px-2 py-1 rounded-lg <%= user.settings.theme === 'dark' ? 'bg-dark-primary' : 'bg-background' %> shadow-lg bg-opacity-30 text-white text-xxs sm:text-xs md:text-xxs lg:text-xs font-semibold font-roboto uppercase">
                         ${truncateText(blog.tags[0], 10)}</p>
                    </div>
                    <div class="flex flex-col gap-2">
                      <div class="h-10 sm:h-20 md:h-18 lg:h-28"></div>
-                     <p class="text-xs font-lora  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %>">${new Date(
+                     <p class="text-xs font-lora  <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-sixth' %>">${new Date(
                        blog.createdAt
                      ).toLocaleDateString("en-US", {
                        day: "numeric",
@@ -72,13 +72,13 @@
                        blog.title,
                        50
                      )}</h5>
-                     <p class="text-xs sm:text-xxs md:text-xs lg:text-sm  <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-sixth' %> break-words whitespace-normal">${truncateText(
+                     <p class="text-xs sm:text-xxs md:text-xs lg:text-sm  <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-sixth' %> break-words whitespace-normal">${truncateText(
                        blog.description,
                        100
                      )}
                      <span><a href="/blog/${
                        blog.slug
-                     }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-tertiary' : 'text-fifth' %> hover:text-highlight    font-roboto text-center   font-medium">read more</a></span>
+                     }" class=" <%= user.settings.theme === 'dark' ? ' text-dark-primary' : 'text-fifth' %> hover:text-highlight    font-roboto text-center   font-medium">read more</a></span>
                      </p>
                      <div class="flex justify-between items-center relative ">
                         <a class="p-2 flex    items-center            gap-2 mt-auto cursor-pointer" href="/profile/${
@@ -88,10 +88,10 @@
                                  blog.author.avatar
                                }" alt="author" class=" h-8 w-8 md:w-10 md:h-10 rounded-md" />
                                <div>
-                                 <p class="text-xxs sm:text-xs md:text-sm lg:text-md font-roboto <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-background' %>">
+                                 <p class="text-xxs sm:text-xs md:text-sm lg:text-md font-roboto <%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-background' %>">
                                    ${blog.author.username}
                                 </p>
-                                 <p class="text-xxxs sm:text-xxs md:text-xs lg:text-xs font-roboto text-sixth">
+                                 <p class="text-xxxs sm:text-xxs md:text-xs lg:text-xs font-roboto <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>">
                                    ${blog.author.firstname} ${
            blog.author.lastname
          }
@@ -153,10 +153,10 @@
                              </button>
                              <button onclick="unArchiveBlog('${blog.slug}')"   class="flex items-center justify-start gap-2 px-3 py-2 rounded-md text-sm transition-all
      <%= user.settings.theme === 'dark'
-       ? 'hover:bg-red-600 text-dark-primary'
+       ? 'hover:bg-red-600 text-dark-primary '
        : 'hover:bg-red-200 text-primary' %>">
                              <img src="images/icons/unarchiveIcon.svg" alt="Unarchive Blog"
-                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 ">
+                       class="w-4 h-4 transition-transform duration-200 group-hover:scale-110 <%= user.settings.theme === 'dark' ? ' invert' : '' %>">
                              <span>Unarchive</span>
                              </button>
                        </div>
@@ -247,7 +247,6 @@
             }).showToast();
         }
       } catch (error) {
-        // console.error("Error liking/unliking the blog:", error);
         likeImg.src = isLiked
           ? "images/icons/likeIcon.svg"
           : "images/icons/unlikeIcon.svg";
@@ -384,7 +383,7 @@
       if (totalPages < 1) {
         const displayBlogsElement = document.getElementById("allBlogArchived");
         const noBlogCard = `
-      <div class="border-2 border border-gray-300 rounded-lg p-6 text-center                text-gray-500 font-lora font-thin min-h-[400px] flex flex-col               items-center justify-center shadow-lg">
+      <div class="border-2 border border-gray-300 rounded-lg p-6 text-center  <%= user.settings.theme === 'dark' ? ' text-dark-primary' : ' text-primary' %>  font-lora font-thin min-h-[250px] md:min-h-[300px] lg:min-h-[400px] flex flex-col               items-center justify-center shadow-lg">
                   <img
       src="/images/icons/blogNotFound.svg" class="" />
                 <p class="text-lg">No blogs yet—be the pioneer!</p>
@@ -398,13 +397,13 @@
       prevButton.innerText = "Prev";
       prevButton.classList.add(
         "px-3",
-        "py-1",
-        "ml-2",
-        "bg-fourth",
-        "rounded-md",
-        "text-secondary",
-        "hover:bg-fifth",
-        "hover:text-fourth"
+      "py-1",
+      "ml-2",
+      "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+      "rounded-md",
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+       "<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>"
       );
 
       prevButton.disabled = currentPage === 1;
@@ -416,17 +415,18 @@
         pageButton.innerText = i;
         pageButton.classList.add(
           "px-3",
-          "py-1",
-          "mx-1",
-          i === currentPage ? "bg-secondary" : "bg-fourth",
-          i === currentPage ? "text-background" : "text-secondary",
-          "rounded-md"
+        "py-1",
+        "mx-1",
+        i === currentPage ? "<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>" : "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+        i === currentPage ? "text-background" : "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+        "rounded-md"
         );
         if (i === currentPage) {
-          pageButton.classList.add("bg-secondary", "text-white");
-        } else {
-          pageButton.classList.add("hover:bg-fifth", "hover:text-fourth");
-        }
+        pageButton.classList.add("<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>", "text-white");
+      } else {
+        pageButton.classList.add("<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>");
+      }
         pageButton.onclick = () => {
           fetchBlogArchiveds(i);
         };
@@ -436,13 +436,13 @@
       nextButton.innerText = "Next";
       nextButton.classList.add(
         "px-3",
-        "py-1",
-        "ml-2",
-        "bg-fourth",
-        "rounded-md",
-        "text-secondary",
-        "hover:bg-fifth",
-        "hover:text-fourth"
+      "py-1",
+      "ml-2",
+      "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+      "rounded-md",
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+       "<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>"
       );
       // nextButton.disabled = currentPage === totalPages;
       nextButton.addEventListener("click", () => {

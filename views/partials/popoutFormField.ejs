@@ -11,14 +11,14 @@
       name="title"
       placeholder="Title of the blog post"
       aria-describedby="titleError"
-      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-primary border-gray-300'%>  mt-2 block w-full px-2 md:px-3 py-1.5 border  rounded-md shadow-sm focus:outline-none focus:ring-fourth focus:border-fourth text-xs md:text-sm lg:text-base"
+      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-primary border-dark-tertiary placeholder-dark-tertiary focus:ring-dark-tertiary focus:border-dark-tertiary' : 'text-primary border-gray-300 focus:ring-fourth focus:border-fourth'%>  mt-2 block w-full px-2 md:px-3 py-1.5 border  rounded-md shadow-sm focus:outline-none  text-xs md:text-sm lg:text-base"
       required
       minlength="10"
       maxlength="100"
     />
     <p
       id="titleError"
-      class="text-red-600 h-4 md:h-6 text-xxxxs -mt-1 sm:text-xxxs md:text-xxs lg:text-xs"
+      class="<%= user.settings.theme === 'dark' ? 'text-red-400' : 'text-red-600'%> h-4 md:h-6 text-xxxxs  sm:text-xxxs md:text-xxs lg:text-xs"
     ></p>
   </div>
 
@@ -33,7 +33,7 @@
       name="description"
       placeholder="Description of the blog post"
       aria-describedby="descriptionError"
-      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-primary border-gray-300'%> mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none focus:ring-fourth focus:border-fourth text-xs md:text-sm lg:text-base resize-none"
+      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-primary border-dark-tertiary placeholder-dark-tertiary focus:ring-dark-tertiary focus:border-dark-tertiary' : 'text-primary border-gray-300 focus:ring-fourth focus:border-fourth'%>  mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none text-xs md:text-sm lg:text-base resize-none"
       required
       minlength="50"
       maxlength="300"
@@ -41,7 +41,7 @@
     ></textarea>
     <p
       id="descriptionError"
-      class="text-red-600 h-4 md:h-6 text-xxxxs -mt-1 sm:text-xxxs md:text-xxs lg:text-xs"
+      class="<%= user.settings.theme === 'dark' ? 'text-red-400' : 'text-red-600'%> h-4 md:h-6 text-xxxxs  sm:text-xxxs md:text-xxs lg:text-xs"
     ></p>
   </div>
 
@@ -57,12 +57,12 @@
       placeholder="Tags (comma-separated)"
       aria-describedby="tagsError"
       name="tags"
-      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-primary border-gray-300'%> mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none text-xs md:text-sm lg:text-base"
+      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-primary border-dark-tertiary placeholder-dark-tertiary focus:ring-dark-tertiary focus:border-dark-tertiary' : 'text-primary border-gray-300 focus:ring-fourth focus:border-fourth'%>  mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none text-xs md:text-sm lg:text-base"
       required
     />
     <p
       id="tagsError"
-      class="text-red-600 h-4 md:h-6 text-xxxxs -mt-1 sm:text-xxxs md:text-xxs lg:text-xs"
+      class="<%= user.settings.theme === 'dark' ? 'text-red-400' : 'text-red-600'%>  h-4 md:h-6 text-xxxxs  sm:text-xxxs md:text-xxs lg:text-xs"
     ></p>
   </div>
 
@@ -74,7 +74,7 @@
     >
 
     <div class="grid grid-cols-6 md:grid-cols-8 gap-2 mt-2">
-      <div id="previewContainer" class="relative border rounded-md"></div>
+      <div id="previewContainer" class="relative border rounded-md <%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-primary border-dark-tertiary placeholder-dark-tertiary focus:ring-dark-tertiary focus:border-dark-tertiary' : 'text-primary border-gray-300 focus:ring-fourth focus:border-fourth'%> "></div>
       <div
         class="relative flex items-center justify-center border border-dashed rounded-md hover:border-blue-500"
       >
@@ -83,7 +83,7 @@
           id="image"
           name="blogPhoto"
           placeholder="Upload Image"
-          class="absolute inset-0 opacity-0 cursor-pointer <%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-primary border-gray-300'%>"
+          class="absolute inset-0 opacity-0 cursor-pointer <%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-primary border-dark-tertiary placeholder-dark-tertiary focus:ring-dark-tertiary focus:border-dark-tertiary' : 'text-primary border-gray-300 focus:ring-fourth focus:border-fourth'%> "
         />
         <label for="image" class="text-center text-gray-500 text-xs lg:text-sm "
           >Upload Image</label
@@ -316,7 +316,7 @@
       name="author"
 
       placeholder="Add Sub-Authors"
-      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-secondary border-fourth' : 'text-primary border-gray-300'%> mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none focus:ring-fourth focus:border-fourth text-xs md:text-sm lg:text-base"
+      class="<%= user.settings.theme === 'dark' ? 'bg-transparent text-dark-primary border-dark-tertiary placeholder-dark-tertiary focus:ring-dark-tertiary focus:border-dark-tertiary' : 'text-primary border-gray-300 focus:ring-fourth focus:border-fourth'%>  mt-2 block w-full px-3 py-1.5 border rounded-md shadow-sm focus:outline-none  text-xs md:text-sm lg:text-base"
     />
 
     <input type="text" id="final-selected-authors" name="subauthors" hidden />

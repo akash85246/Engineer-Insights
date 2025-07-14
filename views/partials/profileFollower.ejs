@@ -40,6 +40,7 @@
         followersList.innerHTML = `<p class="text-red-500">Failed to fetch followers.</p>`;
       }
     } catch (error) {
+      
       Toastify({
         text: "An error occurred while fetching followers.",
         duration: 4000,
@@ -73,23 +74,23 @@
               ${followers
                 .map(
                   (follower) => `
-                  <li class="flex justify-between items-center bg-white dark:bg-dark-secondary shadow-md rounded-lg p-4 px-4 md:px-8 border border-gray-200 dark:border-dark-border transition-all duration-300">
+                  <li class="flex justify-between items-center <%= user.settings.theme === 'dark'? 'bg-dark-sixth border-dark-fourth' : 'bg-background border-gray-200' %> shadow-md rounded-lg p-4 px-4 md:px-8 border   transition-all duration-300">
                     <a href="/profile/${
                       follower.slug
                     }" class="flex items-center gap-4">
                       <img
                         src="${follower.avatar || "/images/defaultProfile.png"}"
                         alt="Profile Photo"
-                        class="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16                  rounded-md object-cover ring-2 ring-offset-0 ring-primary                 dark:ring-dark-primary transition-transform hover:scale-105"
+                        class="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 rounded-md object-cover ring-2 ring-offset-0 ring-primary dark:ring-dark-primary transition-transform hover:scale-105"
                       />
                       <div class="text-left">
-                        <h2 class="font-semibold text-sm sm:text-base md:text-lg text-primary dark:text-dark-primary">
+                        <h2 class="font-semibold text-sm sm:text-base md:text-lg <%= user.settings.theme === 'dark'? 'text-dark-primary ' : 'text-primary' %>">
                           ${follower.username}
                         </h2>
-                        <p class="text-xs sm:text-sm text-secondary dark:text-dark-secondary">
+                        <p class="text-xs sm:text-sm <%= user.settings.theme === 'dark'? 'text-dark-secondary ' : 'text-secondary' %>  dark:text-dark-secondary">
                           ${follower.firstname} ${follower.lastname}
                         </p>
-                        <p class="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400">
+                        <p class="text-[11px] sm:text-xs <%= user.settings.theme === 'dark'? 'text-dark-secondary ' : 'text-secondary' %>">
                           ${follower.email || "No email provided"}
                        </p>
                       </div>
@@ -100,10 +101,10 @@
                             profile._id === user._id
                               ? `
                         <button
-                          class="text-xs sm:text-sm font-medium text-red-500 hover:text-red-700 
-           dark:text-red-400 dark:hover:text-red-300 
+                          class="text-xs sm:text-sm font-medium 
+          <%= user.settings.theme === 'dark'? 'text-red-400 hover:text-red-500  ' : 'text-red-500 hover:text-red-700 ' %>
            px-3 py-1 border border-transparent 
-           hover:border-red-300 dark:hover:border-red-500 
+           
            rounded-md transition duration-200"
                           onclick="removeFollower('${follower.slug}')"
                         >
@@ -111,10 +112,9 @@
                         </button>
                       `
                               : ` <button
-                          class="text-xs sm:text-sm font-medium text-blue-500 hover:text-blue-700 
-           dark:text-blue-400 dark:hover:text-blue-300 
+                          class="text-xs sm:text-sm font-medium  
            px-3 py-1 border border-transparent 
-           hover:border-blue-300 dark:hover:border-blue-500 
+           <%= user.settings.theme === 'dark'? 'text-blue-500 hover:text-blue-600 hover:border-blue-600' : 'text-blue-500 hover:text-blue-700 hover:border-blue-700' %>  
            rounded-md transition duration-200"
                           onclick="toggleUserFollower('${follower.slug}')"
                           id="follow-button-${follower.slug}"
@@ -160,11 +160,11 @@
       "px-3",
       "py-1",
       "ml-2",
-      "bg-fourth",
+      "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
       "rounded-md",
-      "text-secondary",
-      "hover:bg-fifth",
-      "hover:text-fourth"
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+       "<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>"
     );
 
     prevButton.disabled = currentPage === 1;
@@ -177,13 +177,13 @@
         "px-3",
         "py-1",
         "mx-1",
-        i === currentPage ? "bg-secondary" : "bg-fourth",
-        i === currentPage ? "text-background" : "text-secondary",
+        i === currentPage ? "<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>" : "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
+        i === currentPage ? "text-background" : "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
         "rounded-md"
       );
 
       if (i === currentPage) {
-        button.classList.add("bg-secondary", "text-white");
+        button.classList.add("<%= user.settings.theme === 'dark' ? 'bg-dark-fifth' : 'bg-secondary' %>", "text-white");
       } else {
         button.classList.add("hover:bg-fifth", "hover:text-fourth");
       }
@@ -200,11 +200,11 @@
       "px-3",
       "py-1",
       "ml-2",
-      "bg-fourth",
+      "<%= user.settings.theme === 'dark' ? 'bg-dark-sixth' : 'bg-fourth' %>",
       "rounded-md",
-      "text-secondary",
-      "hover:bg-fifth",
-      "hover:text-fourth"
+      "<%= user.settings.theme === 'dark' ? 'text-dark-secondary' : 'text-secondary' %>",
+       "<%= user.settings.theme === 'dark' ? 'hover:bg-dark-fourth' : 'hover:bg-fifth' %>",
+      "<%= user.settings.theme === 'dark' ? 'hover:text-dark-fifth' : 'hover:text-fourth' %>"
     );
     // nextButton.disabled = currentPage === totalPages;
     nextButton.addEventListener("click", () => fetchFollowers(currentPage + 1));
@@ -343,6 +343,7 @@
         throw new Error("Failed to toggle follow status.");
       }
     } catch (error) {
+      
       Toastify({
         text: "An error occurred while toggling follow status.",
         duration: 4000,
