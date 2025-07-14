@@ -31,7 +31,8 @@
     });
   </script>
   <body
-    class="bg-[url('../images/backgroundImages/large-triangles.svg')]  bg-center mt-0 top-0 pt-0 <%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-background text-text' %>"
+    class="min-h-screen bg-cover bg-center mt-0 pt-0 <%= user.settings.theme === 'dark' ? 'text-dark-text' : 'text-text' %>"
+  style="<%= `background-image: url(/images/backgroundImages/${user.settings.theme === 'dark' ? 'darkbackground.jpg' : 'background.png'})` %>"
   >
     <%- include("../partials/profileHeader.ejs") %><%- include(view) %>
     <%- include("../partials/loader.ejs") %>

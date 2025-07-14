@@ -13,7 +13,7 @@
               src="<%= user.avatar ? user.avatar : '/images/defaultProfile.png' %>"
               draggable="false"
               alt="Profile Image"
-              class="w-20 h-20 md:w-full md:h-auto aspect-square rounded-md border <%= user.settings.theme === 'dark' ? 'border-dark-fourth' : 'border-gray-300' %>"
+              class="<%= user.avatar ? 'w-20 h-20 md:w-full md:h-auto' : 'w-40 h-40' %>   aspect-square rounded-md border <%= user.settings.theme === 'dark' ? 'border-dark-fourth' : 'border-gray-300' %>"
             />
           </div>
           <div class="profile-sidebar-header-content text-center">

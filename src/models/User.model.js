@@ -182,7 +182,7 @@ UserSchema.pre("save", async function (next) {
 
 UserSchema.pre("findOneAndUpdate", function (next) {
   const update = this.getUpdate();
-  console.log("Triggered middleware: ", update); 
+  
   if (update && update.username) {
     const trimmedUsername = update.username.trim();
     update.username = trimmedUsername;
@@ -196,5 +196,24 @@ UserSchema.pre("findOneAndUpdate", function (next) {
 
   next();
 });
+
+
+UserSchema.pre("save", function (next) {
+  if (this.isNew || this.isModified("username")) {
+    const trimmedUsername = this.username.trim();
+    this.username = trimmedUsername;
+
+    const slug = slugify(trimmedUsername, {
+      lower: true,
+      strict: true,
+      trim: true,
+    });
+
+    this.slug = slug.length > 0 ? slug : `user-${this._id}`;
+  }
+
+  next();
+});
+
 
 module.exports = mongoose.models.User || mongoose.model("User", UserSchema);

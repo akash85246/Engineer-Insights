@@ -32,10 +32,8 @@ router.get("/signin", async (req, res) => {
 
 router.get("/twoFactorAuth/:username", async (req, res) => {
   try {
-    if (req.isAuthenticated()) {
-      return res.redirect("/");
-    }
-
+    const isAuthenticated = req.isAuthenticated();
+    
     const username = req.params.username;
     const user = await userModel.findOne({ username: username });
 
@@ -48,6 +46,7 @@ router.get("/twoFactorAuth/:username", async (req, res) => {
     }
 
     return res.renderWithAuthLayout("../pages/authorisation/twoFactor.ejs", {
+      isAuthenticated,
       title: "Two Factor Authentication",
       user: user,
     });
@@ -70,8 +69,6 @@ router.get("/signup", (req, res) => {
     return res.redirect("/");
   }
 
- 
-
   res.renderWithAuthLayout("../pages/authorisation/signup", {
     title: "Sign Up",
     user: user,
@@ -80,12 +77,14 @@ router.get("/signup", (req, res) => {
 });
 
 router.get("/recovery", (req, res) => {
+
   let user = {
     settings: {
       theme: "light",
       notifications: true,
     },
   };
+
   const isAuthenticated = req.isAuthenticated();
   if (isAuthenticated) {
     return res.redirect("/");
@@ -191,14 +190,6 @@ router.get("/subscribe", async (req, res) => {
     user = { settings: defaultSettings };
   }
 
-  
-  console.log("payment", payment);
-
-  // const timeRemaining = payment.subscriptionDetails.endDate> Date.now()
-  //   ?  Math.ceil(Math.max(0, payment.subscriptionDetails.endDate - Date.now()) / (1000 * 60 * 60 * 24))   
-  //   : 0;
-  //   console.log("timeRemaining", timeRemaining);
-
   res.renderWithMainLayout("../pages/payment/subscription.ejs", {
     title: "Subscribe",
     isAuthenticated,
@@ -225,8 +216,6 @@ router.get("/contact", async (req, res) => {
   } else if (!user.settings) {
     user.settings = defaultSettings;
   }
-
-  console.log("user", user.settings);
 
   res.renderWithMainLayout("../pages/contact.ejs", {
     title: "Contact Us",
@@ -260,7 +249,7 @@ router.get("/about", async (req, res) => {
     user,
   });
 });
-//blog routes
+
 
 router.get("/blog/edit/:slug", blogController.getEditArticleBySlug);
 router.get("/blog/all/:tags?", blogController.getAllBlogs);

@@ -26,8 +26,6 @@ const mailGenerator = new Mailgen({
 const registerMail = async (req, res) => {
   try {
     const { username, userEmail, text, subject } = req.body;
-
-    console.log("username", username, "userEmail", userEmail, "text", text,"email",process.env.EMAIL,"EMAIL_Password",process.env.EMAIL_Password);
     
     const email = {
       body: {

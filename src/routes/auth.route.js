@@ -13,8 +13,8 @@ router.get(
 );
 
 router.get("/verifyOTP", authcontroller.verifyOTP);
+router.get("/otpreset", authcontroller.generateOTPReset);
 router.get("/createResetSession", authcontroller.createResetSession);
-router.get("/user/delete", authcontroller.userDelete);
 
 router.get(
   "/google/home",
@@ -41,6 +41,7 @@ router.get("/logout", (req, res) => {
   });
 });
 
+router.get("/resendOTP", authcontroller.resendOTP);
 router.post("/register", authcontroller.register);
 router.post("/registerMail", registerMail);
 router.post("/authenticate", authcontroller.verifyUser, (req, res) => {
@@ -51,27 +52,24 @@ router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       console.error("Error during authentication:", err);
-      return res.status(500).send("Internal Server Error");
+      return res.status(500).json({ error: "Internal Server Error" });
     }
-     console.log(info, user);
+
     if (info && info.message === "2FA required") {
-      return res.redirect(info.redirect);
+      return res.status(200).json({ twoFactor: true, redirect: info.redirect });
     }
 
     if (!user) {
-      req.flash("error", info.message || "Authentication failed");
-      return res.redirect("/signin");
+      return res.status(401).json({ error: info.message || "Authentication failed" });
     }
-
- 
 
     req.login(user, (err) => {
       if (err) {
-        console.error("Error logging in user:", err);
-        return res.status(500).send("Failed to log in");
+        
+        return res.status(500).json({ error: "Failed to log in" });
       }
 
-      return res.redirect("/");
+      return res.status(200).json({ success: true, redirect: "/" });
     });
   })(req, res, next);
 });

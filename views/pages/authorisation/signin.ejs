@@ -3,15 +3,11 @@
 >
   <div class="hidden md:flex justify-center items-center flex-col">
     <h2
-      class="text-base sm:text-lg md:text-2xl font-bold text-primary  text-center -mb-10"
+      class="text-base sm:text-lg md:text-2xl font-bold text-primary text-center -mb-10"
     >
       Welcome Back!
     </h2>
-    <img
-      src="images/signinImg.svg"
-      alt="Sign-in image"
-      class="h-[80%]"
-    />
+    <img src="images/signinImg.svg" alt="Sign-in image" class="h-[80%]" />
     <p
       class="text-xs sm:text-base md:text-lg text-secondary md: font-semibold -mt-12 text-center"
     >
@@ -27,14 +23,18 @@
     <h1
       class="text-lg sm:text-xl md:text-2xl font-bold text-center md:mb-2 flex justify-center items-center gap-2 text-primary"
     >
-      <img src="images/logoImg/icon.png " class="h-10 rounded-md" alt="logo Img" />Sign In
+      <img
+        src="images/logoImg/icon.png "
+        class="h-10 rounded-md"
+        alt="logo Img"
+      />Sign In
     </h1>
     <h2
       class="text-sm sm:text-base md:text-lg text-secondary md:font-semibold mb-6 text-center"
     >
       Please enter your details to sign in.
     </h2>
-    <form id="signinForm" action="/auth/login" method="POST" class="space-y-6">
+    <form id="signinForm" class="space-y-6">
       <div class="h-16">
         <label for="username" class="block text-sm font-medium text-secondary"
           >Username</label
@@ -90,7 +90,7 @@
     </div>
     <a
       href="/auth/google"
-      class="flex items-center justify-center w-full px-5 py-3 bg-gray-100 hover:text-gray-900 shadow-inner hover:bg-gradient-to-r   hover:bg-gray-200   rounded-lg  hover:shadow-xl hover:-translate-y-0.5 transition-transform duration-300 ease-in-out focus:outline-none  relative"
+      class="flex items-center justify-center w-full px-5 py-3 bg-gray-100 hover:text-gray-900 shadow-inner hover:bg-gradient-to-r hover:bg-gray-200 rounded-lg hover:shadow-xl hover:-translate-y-0.5 transition-transform duration-300 ease-in-out focus:outline-none relative"
     >
       <img
         src="images/icons/googleIcon.svg"
@@ -101,7 +101,7 @@
         >Sign in with Google</span
       >
       <span
-        class="absolute inset-0  opacity-0 rounded-lg transition-opacity duration-300 hover:opacity-20 bg-gray-300 "
+        class="absolute inset-0 opacity-0 rounded-lg transition-opacity duration-300 hover:opacity-20 bg-gray-300"
       ></span>
     </a>
 
@@ -147,10 +147,7 @@
         break;
       case "password":
         if (!regex.password.test(input.value)) {
-          showError(
-            input,
-            "Invalid Password."
-          );
+          showError(input, "Invalid Password.");
         } else {
           clearError(input);
         }
@@ -166,6 +163,76 @@
         passwordField.type = "text";
       } else {
         passwordField.type = "password";
+      }
+    });
+
+  document
+    .getElementById("signinForm")
+    .addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username");
+      const password = document.getElementById("password");
+
+      // Validate again before sending
+      if (!regex.username.test(username.value)) {
+        showError(username, "Invalid Username.");
+        return;
+      } else {
+        clearError(username);
+      }
+
+      if (!regex.password.test(password.value)) {
+        showError(password, "Invalid Password.");
+        return;
+      } else {
+        clearError(password);
+      }
+
+      const data = {
+        username: username.value,
+        password: password.value,
+      };
+
+      try {
+        const response = await fetch("/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (result.twoFactor) {
+          window.location.href = result.redirect;
+        } else if (result.success) {
+          window.location.href = result.redirect;
+        } else {
+          throw new Error("Login failed");
+        }
+        Toastify({
+          text: "Login successful!",
+          duration: 4000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+          close: true,
+        }).showToast();
+
+        setTimeout(() => {
+          window.location.href = result.redirect;
+        }, 1000);
+      } catch (error) {
+        Toastify({
+          text: "Something went wrong",
+          duration: 4000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+          close: true,
+        }).showToast();
       }
     });
 </script>

@@ -5,7 +5,7 @@
     <h2 class="text-2xl font-bold text-primary text-center -mb-10">
       Join Our Community!
     </h2>
-    <img src="images/signupImg.svg" alt="signup image"   class="h-[80%]"/>
+    <img src="images/signupImg.svg" alt="signup image"   class="h-[80%] lg:h-96"/>
     <p class="text-lg text-secondary font-semibold mb-6 text-center">
       By signing up, you’ll become part of a vibrant community of professionals
       who are passionate about innovation and knowledge sharing.
@@ -32,7 +32,7 @@
     >
       <!-- Personal Information -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
+        <div class="h-16">
           <label for="firstName" class="block text-xs  sm:text-sm font-medium text-secondary"
             >First Name</label
           >
@@ -43,13 +43,13 @@
             minlength="2"
             maxlength="50"
             required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
+            class=" block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
           />
-          <p class="text-xs text-red-600 mt-1 hidden" id="firstNameError">
-            First name is required and must be letters only.
+          <p class="text-xs text-red-600  hidden" id="firstNameError">
+            Required and must be letters only.
           </p>
         </div>
-        <div>
+        <div class="h-16">
           <label for="lastName" class="block text-xs  sm:text-sm font-medium text-secondary"
             >Last Name</label
           >
@@ -60,17 +60,17 @@
             maxlength="50"
             required
             id="lastName"
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
+            class=" block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
           />
-          <p class="text-xs text-red-600 mt-1 hidden" id="lastNameError">
-            Last name is required and must be letters only.
+          <p class="text-xs text-red-600  hidden" id="lastNameError">
+            Required and must be letters only.
           </p>
         </div>
       </div>
 
       <!-- Account Details -->
       <div class="grid grid-cols-1  gap-4">
-        <div>
+        <div class="h-16">
           <label for="username" class="block text-xs  sm:text-sm font-medium text-secondary"
             >Username</label
           >
@@ -81,10 +81,10 @@
             minlength="2"
             maxlength="50"
             required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
+            class=" block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
           />
-          <p class="text-xs text-red-600 mt-1 hidden" id="usernameError">
-            Username is required and must be alphanumeric.
+          <p  class="text-xs text-red-600  hidden" id="usernameError">
+            Required and must be alphanumeric.
           </p>
         </div>
 
@@ -92,7 +92,7 @@
 
       <!-- Contact Information -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
+        <div class="h-16">
           <label for="phone" class="block text-xs  sm:text-sm font-medium text-secondary"
             >Phone</label
           >
@@ -103,10 +103,10 @@
             minlength="10"
             maxlength="10"
             required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
+            class=" block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
           />
-          <p class="text-xs text-red-600 mt-1 hidden" id="phoneError">
-            Phone number is required and must be in the correct format.
+          <p class="text-xs text-red-600  hidden" id="phoneError">
+            Required and must be in the correct format.
           </p>
         </div>
         <div>
@@ -120,9 +120,9 @@
             minlength="5"
             maxlength="50"
             required
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
+            class=" block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
           />
-          <p class="text-xs text-red-600 mt-1 hidden" id="emailError">
+          <p class="text-xs text-red-600  hidden" id="emailError">
             Please enter a valid email address.
           </p>
         </div>
@@ -130,7 +130,7 @@
 
       <!-- Password -->
        <div class="grid grid-cols-1 gap-4">
-      <div>
+      <div class="h-16">
         <label for="password" class="block text-xs  sm:text-sm font-medium text-secondary"
           >Password</label
         >
@@ -141,14 +141,14 @@
           minlength="8"
           maxlength="50"
           required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
+          class=" block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
         />
-        <p class="text-xs text-red-600 mt-1 hidden" id="passwordError">
-          Password is required and must be at least 8 characters long, including
+        <p class="text-xs text-red-600  hidden" id="passwordError">
+          Required and must be at least 8 characters long, including
           uppercase, lowercase, and numbers.
         </p>
       </div>
-      <div>
+      <div class="h-16">
         <label
           for="confirmPassword"
           class="block text-xs  sm:text-sm font-medium text-secondary"
@@ -161,9 +161,9 @@
           minlength="8"
           maxlength="50"
           required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
+          class=" block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth text-primary focus:border-fourth text-xs  sm:text-sm"
         />
-        <p class="text-xs text-red-600 mt-1 hidden" id="confirmPasswordError">
+        <p class="text-xs text-red-600  hidden" id="confirmPasswordError">
           Passwords do not match.
         </p>
       </div>
@@ -182,7 +182,7 @@
         </button>
       </div>
     </form>
-    <div class="text-xs md:text-sm text-center mt-4">
+    <div class="text-xs md:text-sm text-center ">
       <p class="text-primary"> 
         Already have an account?
         <a href="/signin" class="text-blue-500">Sign In</a>
@@ -201,6 +201,40 @@
     password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
   };
 
+  const usernameInput = document.getElementById("username");
+  const suggestUsername = document.getElementById("usernameError");
+  let isUniqueUsername = false;
+  usernameInput.addEventListener("input",async function () {
+    const username = usernameInput.value.trim();
+    
+    if (regex.username.test(username.value)) {
+      try {
+            const response = await fetch(`/api/profile/available/${username}`, {
+      method: "GET",
+    });
+
+    const data = await response.json();
+
+    if (data.available) {
+      isUniqueUsername = true;
+      suggestUsername.classList.add("hidden");
+    } else {
+      isUniqueUsername = false;
+      suggestUsername.classList.remove("hidden");
+      suggestUsername.innerText = "Username is already taken.";
+    }
+
+      } catch (error) {
+        isUniqueUsername = false;
+        console.error("Error checking username availability:", error);
+      }
+      console.log(isUniqueUsername);
+    } else {
+      suggestUsername.classList.remove("hidden");
+      suggestUsername.innerText = "Required and must be alphanumeric.";
+    }
+  });
+
   // Error handling function
   function showError(input, message) {
     const errorElement = document.getElementById(`${input.id}Error`);
@@ -211,13 +245,175 @@
 
   // Clear error handling function
   function clearError(input) {
+    
     const errorElement = document.getElementById(`${input.id}Error`);
+    
     input.classList.remove("error");
     errorElement.textContent = "";
     errorElement.classList.add("hidden");
   }
 
-  document.getElementById("signupForm").addEventListener("input", function (e) {
+ document.getElementById("signupForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+  let hasError = false;
+  const firstName = document.getElementById("firstName");
+  const lastName = document.getElementById("lastName");
+  const username = document.getElementById("username");
+  const phone = document.getElementById("phone");
+  const email = document.getElementById("email");
+  const password = document.getElementById("password");
+  const confirmPassword = document.getElementById("confirmPassword");
+
+
+  if (!regex.name.test(firstName.value)) {
+    showError(firstName, "First name must contain letters only.");
+    hasError = true;
+  } else {
+    clearError(firstName);
+  }
+
+  
+  if (!regex.name.test(lastName.value)) {
+    showError(lastName, "Last name must contain letters only.");
+    hasError = true;
+  } else {
+    clearError(lastName);
+  }
+
+  
+  if (!regex.username.test(username.value)) {
+    showError(username, "Username must be alphanumeric.");
+    hasError = true;
+  } else if (!isUniqueUsername) {
+    showError(username, "Username is already taken.");
+    hasError = true;
+  } else {
+    clearError(username);
+  }
+
+
+  if (!regex.phone.test(phone.value)) {
+    showError(phone, "Phone number format is invalid.");
+    hasError = true;
+  } else {
+    clearError(phone);
+  }
+
+  
+  if (!regex.email.test(email.value)) {
+    showError(email, "Please enter a valid email.");
+    hasError = true;
+  } else {
+    clearError(email);
+  }
+
+  
+  if (!regex.password.test(password.value)) {
+    showError(password, "Password must be at least 8 characters long and include uppercase, lowercase, and a number.");
+    hasError = true;
+  } else {
+    clearError(password);
+  }
+
+  
+  if (password.value !== confirmPassword.value) {
+    showError(confirmPassword, "Passwords do not match.");
+    hasError = true;
+  } else {
+    clearError(confirmPassword);
+  }
+
+  if (hasError) {
+    Toastify({
+        text: "Please fix the errors before submitting.",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+        stopOnFocus: true,
+        close: true,
+        style: {
+          borderRadius: "10px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          fontSize: "15px",
+          padding: "14px 18px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          color: "#fff",
+        },
+      }).showToast();
+    e.preventDefault();
+  }
+  const formData = {
+      firstname: firstName.value,
+      lastname: lastName.value,
+      username: username.value,
+      phone: phone.value,
+      email: email.value,
+      password: password.value,
+    };
+
+   try {
+      const res = await fetch("/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        
+        Toastify({
+          text: result.error || "Something went wrong.",
+          duration: 4000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+          stopOnFocus: true,
+          close: true,
+          style: {
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            fontSize: "15px",
+            padding: "14px 18px",
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            color: "#fff",
+          },
+        }).showToast();
+        return;
+      }
+
+      
+      Toastify({
+        text: "Registration successful! Redirecting...",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+        stopOnFocus: true,
+        close: true,
+      }).showToast();
+
+      setTimeout(() => {
+        window.location.href = result.redirect || "/signin";
+      }, 2000);
+
+    } catch (error) {
+      Toastify({
+        text: "Server error. Please try again later.",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+        stopOnFocus: true,
+        close: true,
+      }).showToast();
+    }
+});
+
+ document.getElementById("signupForm").addEventListener("input", function (e) {
     const input = e.target;
 
     switch (input.id) {
@@ -226,9 +422,7 @@
         if (!regex.name.test(input.value)) {
           showError(
             input,
-            `${input.name
-              .replace(/([A-Z])/g, " $1")
-              .toUpperCase()} is required and must be letters only.`
+            `Required and must be letters only.`
           );
         } else {
           clearError(input);
@@ -236,7 +430,7 @@
         break;
       case "username":
         if (!regex.username.test(input.value)) {
-          showError(input, "Username is required and must be alphanumeric.");
+          showError(input, "Required and must be alphanumeric.");
         } else {
           clearError(input);
         }
@@ -245,7 +439,7 @@
         if (!regex.phone.test(input.value)) {
           showError(
             input,
-            "Phone number is required and must be in the correct format."
+            "Required and must be in the correct format."
           );
         } else {
           clearError(input);
@@ -262,7 +456,7 @@
         if (!regex.password.test(input.value)) {
           showError(
             input,
-            "Password is required and must be at least 8 characters long, including uppercase, lowercase, and numbers."
+            "Required and must be at least 8 characters long, including uppercase, lowercase, and numbers."
           );
         } else {
           clearError(input);

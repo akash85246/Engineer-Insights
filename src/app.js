@@ -15,6 +15,7 @@ const argon2 = require("argon2");
 const dotenv = require("dotenv");
 const { v4: uuidv4 } = require('uuid'); 
 const AnalyticsModel = require("./models/Analytic.model");
+const {handleOTPGeneration} = require("./controllers/auth.controller");
 
 dotenv.config();
 const {
@@ -217,45 +218,24 @@ passport.use(
 
         // Verify password
         const isPasswordValid = await argon2.verify(user.password, password);
+
         if (!isPasswordValid) {
           return cb(null, false, { message: "Invalid password" });
         }
 
-        // Check if 2FA is enabled
+        
         if (user.settings["2fa"]) {
           try {
-            // Generate OTP
-            const otpResponse = await axios.get(
-              `${process.env.BASE_URL}/auth/generateOTP`,
-              { params: { username: user.username } }
-            );
-            if (otpResponse.status !== 201) {
+          
+            const  code  = await handleOTPGeneration(username, req.app, req.session);
+            console.log("Generated OTP:", code);
+            if (!code) {
               return cb(null, false, { message: "Failed to generate OTP" });
             }
 
-            const { code } = otpResponse.data;
-
-            // Send OTP email
-            const emailData = {
-              username: user.username,
-              userEmail: user.email,
-              text: `Your OTP for login is ${code}. If you did not request this, please ignore this email.`,
-              subject: "OTP for Login - Engineer Insights",
-            };
-
-            const mailResponse = await axios.post(
-              `${process.env.BASE_URL}/auth/registerMail`,
-              emailData
-            );
-
-            if (mailResponse.status !== 200) {
-              console.log("Failed to send OTP email:", mailResponse.status);
-              return cb(null, false, { message: "Failed to send OTP email" });
-            }
-
-            req.session.twoFactor = { userId: user._id };
-
-            // Redirect to 2FA page
+            console.log("Generated OTP:", code);
+           
+            req.session.otp = code;
             req.session.twoFactor = {
               userId: user._id,
               username: user.username,
@@ -265,6 +245,7 @@ passport.use(
               message: "2FA required",
               redirect: `/twoFactorAuth/${user.username}`,
             });
+
           } catch (error) {
             console.error("Error handling 2FA:", error);
             return cb(error);

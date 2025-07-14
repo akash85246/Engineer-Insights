@@ -1891,9 +1891,6 @@ video {
 .bg-opacity-80 {
   --tw-bg-opacity: 0.8;
 }
-.bg-\[url\(\'\.\.\/images\/backgroundImages\/large-triangles\.svg\'\)\] {
-  background-image: url('../images/backgroundImages/large-triangles.svg');
-}
 .bg-\[url\(\'https\:\/\/www\.transparenttextures\.com\/patterns\/cubes\.png\'\)\] {
   background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
 }
@@ -2054,6 +2051,9 @@ video {
 }
 .to-yellow-500 {
   --tw-gradient-to: #eab308 var(--tw-gradient-to-position);
+}
+.bg-contain {
+  background-size: contain;
 }
 .bg-cover {
   background-size: cover;

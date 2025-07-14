@@ -8,7 +8,7 @@
     <img
       src="images/resetImg.svg"
       alt="Sign-in image"
-      class="h-[80%]"
+      class="h-[80%] lg:h-96"
     />
     <p
       class="text-xs sm:text-base md:text-lg text-secondary md:font-semibold mb-6 text-center"
@@ -16,13 +16,14 @@
       Enter a new password to securely reset your account password.
     </p>
   </div>
+
   <div
     class="max-w-7xl mx-auto md:mx-5 my-auto p-8 rounded-lg shadow-lg bg-white bg-opacity-50 backdrop-blur-sm border border-gray-200"
   >
     <h1
       class="text-lg sm:text-xl md:text-2xl font-bold text-center md:mb-2 flex justify-center items-center gap-2"
     >
-      <img src="images/logoImg/icon.png" alt="logo Img" />Password
+      <img src="images/logoImg/icon.png" alt="logo Img" class="h-10" />Password
       Reset
     </h1>
     <h2
@@ -153,11 +154,26 @@
             
             window.location.href = "/signin";
         } else {
-            // Handle errors based on response status
-            console.error("Error:", response.status, response.statusText);
+            throw new Error("Failed to reset password");
         }
     } catch (error) {
-        console.error("Error:", error);
+        Toastify({
+                text: "Eror resetting password. Please try again.",
+                duration: 4000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+                stopOnFocus: true,
+                close: true,
+                style: {
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  fontSize: "15px",
+                  padding: "14px 18px",
+                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                  color: "#fff"
+            }
+         }).showToast();
     }
 });
 </script>

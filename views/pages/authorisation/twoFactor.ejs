@@ -1,42 +1,53 @@
-<div class="flex flex-col-reverse md:grid md:grid-cols-2 gap-6 py-16 px-4 sm:p-8 md:p-8 md:py-16">
-  <div class="hidden md:flex justify-center items-center flex-col ">
+<div
+  class="flex flex-col-reverse md:grid md:grid-cols-2 gap-6 py-16 px-4 sm:p-8 md:p-8 md:py-16"
+>
+  <div class="hidden md:flex justify-center items-center flex-col">
     <h2
-      class="text-base sm:text-lg md:text-2xl font-bold text-primary  text-center"
+      class="text-base sm:text-lg md:text-2xl font-bold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : ' text-primary' %> text-center"
     >
       Two Factor Authentication
     </h2>
     <img
       src="images/twoFactorImg.svg"
       alt="Sign-in image"
-      class="h-[80%]"
+      class="h-[80%] lg:h-96"
     />
     <p
-      class="text-xs sm:text-base md:text-lg text-secondary md:font-semibold mb-6 text-center"
+      class="text-xs sm:text-base md:text-lg <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-secondary' %> md:font-semibold mb-6 text-center"
     >
       Enter the 6-digit OTP sent to your email to securely complete two-factor
       authentication.
     </p>
   </div>
   <div
-    class="max-w-7xl mx-auto md:mx-5 my-auto p-8 rounded-lg shadow-lg bg-white bg-opacity-50 backdrop-blur-sm border border-gray-200"
+    class="max-w-7xl mx-auto md:mx-5 my-auto p-8 rounded-lg shadow-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-fourth bg-opacity-80' : ' bg-white border-gray-200 bg-opacity-50' %> backdrop-blur-sm border"
   >
     <h1
-      class="text-lg sm:text-xl md:text-2xl font-bold text-center md:mb-2 flex justify-center items-center gap-2 text-primary"
+      class="text-lg sm:text-xl md:text-2xl font-bold text-center md:mb-2 flex justify-center items-center gap-2 <%= user.settings.theme === 'dark' ? 'text-dark-primary' : ' text-primary' %>"
     >
       <img src="images/logoImg/icon.png" class="h-10" alt="logo Img" /> Two
       Factor Authentication
     </h1>
     <h2
-      class="text-sm sm:text-base md:text-lg text-secondary md:font-semibold mb-6 text-center"
+      class="text-sm sm:text-base md:text-lg <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-secondary' %> md:font-semibold mb-6 text-center"
     >
       Please enter the 6-digit OTP.
     </h2>
-    <form id="otpForm" class="space-y-6" action="/auth/twoFactorVerify" method="POST">
+    <form id="otpForm" class="space-y-6">
       <div class="h-16">
-        <label for="otp" class="block text-sm font-medium text-secondary">
+        <label
+          for="otp"
+          class="block text-sm font-medium <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-secondary' %>"
+        >
           OTP
         </label>
-        <input type="text" name="username" id="username" value="<%= user.username %>" hidden />
+        <input
+          type="text"
+          name="username"
+          id="username"
+          value="<%= user.username %>"
+          hidden
+        />
         <input
           type="text"
           name="code"
@@ -44,7 +55,7 @@
           required
           pattern="\d{6}"
           maxlength="6"
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth focus:border-fourth sm:text-sm"
+          class="mt-1 block w-full px-3 py-2 border <%= user.settings.theme === 'dark' ? ' bg-dark-sixth border-dark-fourth focus:ring-dark-tertiary focus:border-dark-tertiary' : 'border-gray-300 focus:ring-fourth focus:border-fourth text-primary' %> rounded-md shadow-sm focus:outline-none sm:text-sm"
         />
         <p class="text-xs text-red-600 mt-1 hidden" id="otpError"></p>
       </div>
@@ -55,14 +66,17 @@
         >
           Submit OTP
           <span
-          class="absolute inset-0 bg-blue-700 opacity-0 rounded-lg transition-opacity duration-300 hover:opacity-20"
-        ></span>
+            class="absolute inset-0 bg-blue-700 opacity-0 rounded-lg transition-opacity duration-300 hover:opacity-20"
+          ></span>
         </button>
       </div>
     </form>
     <div class="text-xs md:text-sm text-center mt-4">
       <p>
-        <span id="timer" class="text-gray-500">
+        <span
+          id="timer"
+          class=". <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-tertiary' %>"
+        >
           Resend OTP available in: 30s
         </span>
         <br />
@@ -81,40 +95,7 @@
     }
 
     const form = document.getElementById("otpForm");
-    // form.addEventListener("submit", async (e) => {
-    //   e.preventDefault();
-    //   const otp = document.getElementById("otp").value;
 
-    //   if (username && otp) {
-    //     try {
-    //       const res = await fetch(
-    //         `/auth/twoFactorVerify?username=${username}&code=${otp}`,
-    //         {
-    //           method: "POST",
-    //           headers: { "Content-Type": "application/json" },
-    //         }
-    //       );
-
-    //       if (res.ok) {
-    //         const { username, token } = await res.json();
-    //         localStorage.setItem("username", username);
-    //         localStorage.setItem("token", token);
-    //         console.log("Verification successful", username, token);
-    //         window.location.href = "/";
-    //       } else {
-    //         throw new Error("Verification failed");
-    //       }
-    //     } catch (error) {
-    //         console.log(error);
-            
-    //       console.error("Fetch operation error:", error);
-    //     }
-    //   } else {
-    //     console.error("Username or OTP is missing");
-    //   }
-    // });
-
-    // const resendLink = document.getElementById("resendLink");
     const timerDisplay = document.getElementById("timer");
     let canResend = true;
     const resendTimeout = 30000;
@@ -142,15 +123,109 @@
       }, 1000);
     };
 
-    resendLink.addEventListener("click", (e) => {
+    resendLink.addEventListener("click", async (e) => {
       e.preventDefault();
       if (canResend) {
-        console.log("Resending OTP...");
+        try {
+          const resendUrl = `/auth/resendOTP?username=${username}`;
+          const res = await fetch(resendUrl, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (res.status !== 201) {
+            throw new Error("Failed to resend OTP");
+          }
+        } catch (error) {
+          Toastify({
+            text: "Error resending OTP. Please try again.",
+            duration: 4000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+            stopOnFocus: true,
+            close: true,
+            style: {
+              borderRadius: "10px",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+              fontSize: "15px",
+              padding: "14px 18px",
+              fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+              color: "#fff",
+            },
+          }).showToast();
+        }
 
         startResendCountdown();
       }
     });
 
     startResendCountdown();
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const otpInput = document.getElementById("otp");
+      const otpError = document.getElementById("otpError");
+
+      if (!/^\d{6}$/.test(otpInput.value)) {
+        otpError.textContent = "Invalid OTP. Please enter a 6-digit code.";
+        otpError.classList.remove("hidden");
+        return;
+      } else {
+        otpError.classList.add("hidden");
+      }
+
+      const code = otpInput.value;
+      try {
+        const response = await fetch("/auth/twoFactorVerify", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ code, username }),
+        });
+
+        const result = await response.json();
+
+        if (response.status === 200) {
+          Toastify({
+            text: "OTP verified successfully!",
+            duration: 4000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            close: true,
+          }).showToast();
+
+          setTimeout(() => {
+            window.location.href = result.redirect;
+          }, 1000);
+        } else {
+          throw new Error(result.msg || "Verification failed");
+        }
+      } catch (error) {
+        console.error(error);
+        Toastify({
+          text: "Error verifying OTP. Please try again.",
+          duration: 4000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+          stopOnFocus: true,
+          close: true,
+          style: {
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            fontSize: "15px",
+            padding: "14px 18px",
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            color: "#fff",
+          },
+        }).showToast();
+      }
+    });
   });
 </script>
