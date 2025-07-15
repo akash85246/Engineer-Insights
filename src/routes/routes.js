@@ -35,13 +35,16 @@ router.get("/twoFactorAuth/:username", async (req, res) => {
     const isAuthenticated = req.isAuthenticated();
     
     const username = req.params.username;
+    if(!username) {
+      return res.status(400).send("Username is required");
+    }
     const user = await userModel.findOne({ username: username });
 
     if (!user) {
       return res.status(404).send("User not found");
     }
 
-    if (!req.session.twoFactor || req.session.twoFactor.username !== username) {
+    if ( (!req.session.twoFactor || req.session.twoFactor.username !== username)) {
       return res.redirect("/signin");
     }
 
@@ -86,7 +89,7 @@ router.get("/recovery", (req, res) => {
   };
 
   const isAuthenticated = req.isAuthenticated();
-  if (isAuthenticated) {
+  if (!req.session.passwordReset && isAuthenticated) {
     return res.redirect("/");
   }
 
@@ -97,15 +100,17 @@ router.get("/recovery", (req, res) => {
   });
 });
 
-router.get("/reset", (req, res) => {
+router.get("/reset", async (req, res) => {
   const { username } = req.query;
   const isAuthenticated = req.isAuthenticated();
-  if (isAuthenticated) {
+  if (!req.session.passwordReset && isAuthenticated) {
     return res.redirect("/");
   }
-  if (!req.session.twoFactor || req.session.twoFactor.username !== username) {
+  if (!req.session.passwordReset &&(!req.session.twoFactor || req.session.twoFactor.username !== username)) {
     return res.redirect("/recovery");
   }
+
+  
 
   let user = {
     settings: {
@@ -113,6 +118,7 @@ router.get("/reset", (req, res) => {
       notifications: true,
     },
   };
+   user = await userModel.findOne({ username: username });
 
   res.renderWithAuthLayout("../pages/authorisation/reset", {
     title: "Reset Password",
@@ -122,13 +128,16 @@ router.get("/reset", (req, res) => {
   });
 });
 
-router.get("/verify", (req, res) => {
+router.get("/verify", async (req, res) => {
   const { username } = req.query;
   const isAuthenticated = req.isAuthenticated();
-  if (isAuthenticated) {
+  console.log(req.session.passwordReset);
+  if (isAuthenticated && !req.session.passwordReset) {
     return res.redirect("/");
   }
-  if (!req.session.twoFactor || req.session.twoFactor.username !== username) {
+
+  if (!req.session.passwordReset &&
+  (!req.session.twoFactor || req.session.twoFactor.username !== username)) {
     return res.redirect("/recovery");
   }
 
@@ -138,6 +147,8 @@ router.get("/verify", (req, res) => {
       notifications: true,
     },
   };
+
+  user = await userModel.findOne({ username: username });
 
   res.renderWithAuthLayout("../pages/authorisation/verify", {
     title: "Verify User",

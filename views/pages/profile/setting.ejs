@@ -1,14 +1,25 @@
-<%- include("../../partials/profileFeaturedBlog.ejs")%>
-<div class="p-4 rounded-lg  m-auto font-lora mt-6">
-
-  <h1 class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-2 md:px-2 lg:px-5 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-secondary bg-white bg-background' %> sticky top-0 z-10" >User Settings</h1>
+<button%- include("../../partials/profileFeaturedBlog.ejs")%>
+<div class="p-4 rounded-lg m-auto font-lora mt-6">
+  <h1
+    class="text-base font-lora sm:text-lg md:text-xl lg:text-2xl p-3 px-2 md:px-2 lg:px-5 font-semibold flex justify-between items-center <%= user.settings.theme === 'dark' ? 'text-dark-secondary bg-dark-background' : 'text-secondary bg-white bg-background' %> sticky top-0 z-10"
+  >
+    User Settings
+  </h1>
   <table
     class="w-full <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : 'bg-background text-primary' %> shadow-md rounded-lg"
   >
     <tbody>
-
-      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
-        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/blockedUserIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Blocked Users</td>
+      <tr
+        class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>"
+      >
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2">
+          <img
+            src="/images/icons/blockedUserIcon.png"
+            alt="blocked user icon"
+            class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+          Blocked Users
+        </td>
         <td class="p-4 text-right">
           <a
             href="/blockedUsers"
@@ -17,9 +28,18 @@
           >
         </td>
       </tr>
-      
-      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
-        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2 "><img src="/images/icons/suggestionIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Auto Suggestion</td>
+
+      <tr
+        class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>"
+      >
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2">
+          <img
+            src="/images/icons/suggestionIcon.png"
+            alt="blocked user icon"
+            class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+          Auto Suggestion
+        </td>
         <td class="p-4 text-right">
           <label class="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" class="sr-only peer" <%= setting.suggestions
@@ -33,9 +53,18 @@
           </label>
         </td>
       </tr>
-     
-      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
-        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/nightModeIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Night Mode</td>
+
+      <tr
+        class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>"
+      >
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2">
+          <img
+            src="/images/icons/nightModeIcon.png"
+            alt="blocked user icon"
+            class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+          Night Mode
+        </td>
         <td class="p-4 text-right">
           <label class="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" class="sr-only peer" id="theme-toggle" <%=
@@ -51,8 +80,17 @@
         </td>
       </tr>
 
-      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
-        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/emailIcon copy.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Email Notifications</td>
+      <tr
+        class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>"
+      >
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2">
+          <img
+            src="/images/icons/emailIcon copy.png"
+            alt="blocked user icon"
+            class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+          Email Notifications
+        </td>
         <td class="p-4 text-right">
           <label class="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" class="sr-only peer" <%=
@@ -68,8 +106,17 @@
         </td>
       </tr>
 
-      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
-        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/newsletterIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Receive Newsletters</td>
+      <tr
+        class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>"
+      >
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2">
+          <img
+            src="/images/icons/newsletterIcon.png"
+            alt="blocked user icon"
+            class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+          Receive Newsletters
+        </td>
         <td class="p-4 text-right">
           <label class="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" class="sr-only peer" <%= setting.newsletter ?
@@ -84,8 +131,17 @@
         </td>
       </tr>
 
-      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
-        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/2faIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Two-Factor Authentication</td>
+      <tr
+        class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>"
+      >
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2">
+          <img
+            src="/images/icons/2faIcon.png"
+            alt="blocked user icon"
+            class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+          Two-Factor Authentication
+        </td>
         <td class="p-4 text-right">
           <label class="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" class="sr-only peer" <%= setting['2fa'] ?
@@ -100,19 +156,36 @@
         </td>
       </tr>
 
-      <tr class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>">
-        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/passwordResetIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Password Reset</td>
+      <tr
+        class="border-b <%= user.settings.theme === 'dark' ? 'border-dark-background' : 'border-background' %>"
+      >
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2">
+          <img
+            src="/images/icons/passwordResetIcon.png"
+            alt="blocked user icon"
+            class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+          Password Reset
+        </td>
         <td class="p-4 text-right">
-          <a href="/profile/verify"
-            class="bg-blue-500 hover:bg-blue-600 text-sixth  py-1 px-4 rounded-lg font-roboto"
+          <button
+            onclick="resetPassword()"
+            class="bg-blue-500 hover:bg-blue-600 text-sixth py-1 px-4 rounded-lg font-roboto"
           >
             Reset
-        </a>
+          </button>
         </td>
       </tr>
 
       <tr>
-        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2"><img src="/images/icons/deleteUserIcon.png" alt="blocked user icon" class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"/> Delete User</td>
+        <td class="p-4 flex items-center gap-2 md:gap-1 lg:gap-2">
+          <img
+            src="/images/icons/deleteUserIcon.png"
+            alt="blocked user icon"
+            class="h-6 w-6 object-cover <%= user.settings.theme === 'dark' ? 'invert' : '' %>"
+          />
+          Delete User
+        </td>
         <td class="p-4 text-right">
           <button
             class="bg-red-500 hover:bg-red-600 text-sixth py-1 font-roboto px-4 rounded-lg"
@@ -127,13 +200,15 @@
 </div>
 <!-- dlete user popout modal -->
 <div
-  class="hidden fixed inset-0  flex items-center justify-center backdrop-blur-sm <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %> bg-opacity-50 p-5 md:p-0 z-50"
+  class="hidden fixed inset-0 flex items-center justify-center backdrop-blur-sm <%= user.settings.theme === 'dark' ? 'bg-dark-primary text-dark-text' : ' text-text bg-primary' %> bg-opacity-50 p-5 md:p-0 z-50"
   onclick="toggleDeleteUser()"
   id="deleteUser"
 >
-  <div  class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-gray-900' %> w-full sm:max-w-md lg:max-w-lg p-6 rounded-xl shadow-2xl transition-all duration-300" 
-    onclick="event.stopPropagation()">
-     <div class="flex items-center justify-between mb-4">
+  <div
+    class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-gray-900' %> w-full sm:max-w-md lg:max-w-lg p-6 rounded-xl shadow-2xl transition-all duration-300"
+    onclick="event.stopPropagation()"
+  >
+    <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-semibold font-sans">Delete User</h2>
       <button
         onclick="toggleDeleteUser()"
@@ -144,7 +219,9 @@
       </button>
     </div>
 
-    <p cclass="text-sm mb-6 <%= user.settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-600' %>">
+    <p
+      cclass="text-sm mb-6 <%= user.settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-600' %>"
+    >
       Are you sure you want to delete your account? This action cannot be
       undone.
     </p>
@@ -162,7 +239,7 @@
         onclick="deleteUser()"
         id="deleteUserButton"
       >
-       <div
+        <div
           class="loader-inner ball-beat hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         >
           <div
@@ -176,9 +253,7 @@
           ></div>
         </div>
         <span class="btn-text inline-block">Delete user</span>
-       
       </button>
-      
     </div>
   </div>
 </div>
@@ -191,63 +266,63 @@
       .then((response) => {
         if (response.ok) {
           Toastify({
-                  text: "Night mode updated successfully.",
-                  className: "info",
-                  duration: 4000,
-                  gravity: "top",
-                  position: "right",
-                  backgroundColor: "linear-gradient(to right, #0f2027, #203a43, #2c5364)", 
-                  stopOnFocus: true,
-                  close: true,
-                  style: {
-                    borderRadius: "10px",
-                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                    fontSize: "15px",
-                    padding: "14px 18px",
-                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                    color: "#fff"
-                  }
-            }).showToast();
+            text: "Night mode updated successfully.",
+            className: "info",
+            duration: 4000,
+            gravity: "top",
+            position: "right",
+            backgroundColor:
+              "linear-gradient(to right, #0f2027, #203a43, #2c5364)",
+            stopOnFocus: true,
+            close: true,
+            style: {
+              borderRadius: "10px",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+              fontSize: "15px",
+              padding: "14px 18px",
+              fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+              color: "#fff",
+            },
+          }).showToast();
           window.location.reload();
         } else {
-          
-           Toastify({
-                text: "Failed to update night mode.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+          Toastify({
+            text: "Failed to update night mode.",
+            duration: 4000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+            stopOnFocus: true,
+            close: true,
+            style: {
+              borderRadius: "10px",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+              fontSize: "15px",
+              padding: "14px 18px",
+              fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+              color: "#fff",
+            },
+          }).showToast();
         }
       })
       .catch((error) => {
         Toastify({
-                text: "Failed to update mode. Please try again later.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+          text: "Failed to update mode. Please try again later.",
+          duration: 4000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+          stopOnFocus: true,
+          close: true,
+          style: {
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            fontSize: "15px",
+            padding: "14px 18px",
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            color: "#fff",
+          },
+        }).showToast();
       });
   }
 
@@ -259,61 +334,62 @@
         if (response.ok) {
           console.log("Suggestions updated successfully.", response);
           Toastify({
-                text: "Suggestions updated successfully.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #0f2027, #203a43, #2c5364)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+            text: "Suggestions updated successfully.",
+            duration: 4000,
+            gravity: "top",
+            position: "right",
+            backgroundColor:
+              "linear-gradient(to right, #0f2027, #203a43, #2c5364)",
+            stopOnFocus: true,
+            close: true,
+            style: {
+              borderRadius: "10px",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+              fontSize: "15px",
+              padding: "14px 18px",
+              fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+              color: "#fff",
+            },
+          }).showToast();
         } else {
           Toastify({
-                text: "Failed to update suggestions.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+            text: "Failed to update suggestions.",
+            duration: 4000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+            stopOnFocus: true,
+            close: true,
+            style: {
+              borderRadius: "10px",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+              fontSize: "15px",
+              padding: "14px 18px",
+              fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+              color: "#fff",
+            },
+          }).showToast();
           return;
         }
       })
       .catch((error) => {
         Toastify({
-                text: "Failed to update suggestions. Please try again later.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+          text: "Failed to update suggestions. Please try again later.",
+          duration: 4000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+          stopOnFocus: true,
+          close: true,
+          style: {
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            fontSize: "15px",
+            padding: "14px 18px",
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            color: "#fff",
+          },
+        }).showToast();
       });
   }
 
@@ -325,44 +401,45 @@
         if (response.ok) {
           console.log("Notifications updated successfully.", response);
           Toastify({
-                text: "Notifications updated successfully.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #0f2027, #203a43, #2c5364)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+            text: "Notifications updated successfully.",
+            duration: 4000,
+            gravity: "top",
+            position: "right",
+            backgroundColor:
+              "linear-gradient(to right, #0f2027, #203a43, #2c5364)",
+            stopOnFocus: true,
+            close: true,
+            style: {
+              borderRadius: "10px",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+              fontSize: "15px",
+              padding: "14px 18px",
+              fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+              color: "#fff",
+            },
+          }).showToast();
         } else {
           throw new Error("Failed to Notificatios mode.");
         }
       })
       .catch((error) => {
-           Toastify({
-                text: "Failed to update notifications. Please try again later.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+        Toastify({
+          text: "Failed to update notifications. Please try again later.",
+          duration: 4000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+          stopOnFocus: true,
+          close: true,
+          style: {
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            fontSize: "15px",
+            padding: "14px 18px",
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            color: "#fff",
+          },
+        }).showToast();
       });
   }
 
@@ -373,44 +450,45 @@
       .then((response) => {
         if (response.ok) {
           Toastify({
-                text: "Newsletter updated successfully.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #0f2027, #203a43, #2c5364)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+            text: "Newsletter updated successfully.",
+            duration: 4000,
+            gravity: "top",
+            position: "right",
+            backgroundColor:
+              "linear-gradient(to right, #0f2027, #203a43, #2c5364)",
+            stopOnFocus: true,
+            close: true,
+            style: {
+              borderRadius: "10px",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+              fontSize: "15px",
+              padding: "14px 18px",
+              fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+              color: "#fff",
+            },
+          }).showToast();
         } else {
           throw new Error("Failed to update newsletter.");
         }
       })
       .catch((error) => {
-       Toastify({
-                text: "Failed to update newsletter. Please try again later.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+        Toastify({
+          text: "Failed to update newsletter. Please try again later.",
+          duration: 4000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+          stopOnFocus: true,
+          close: true,
+          style: {
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            fontSize: "15px",
+            padding: "14px 18px",
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            color: "#fff",
+          },
+        }).showToast();
       });
   }
 
@@ -420,51 +498,51 @@
     })
       .then((response) => {
         if (response.ok) {
-           Toastify({
-                text: "Two Factor Authentication updated successfully.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #0f2027, #203a43, #2c5364)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+          Toastify({
+            text: "Two Factor Authentication updated successfully.",
+            duration: 4000,
+            gravity: "top",
+            position: "right",
+            backgroundColor:
+              "linear-gradient(to right, #0f2027, #203a43, #2c5364)",
+            stopOnFocus: true,
+            close: true,
+            style: {
+              borderRadius: "10px",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+              fontSize: "15px",
+              padding: "14px 18px",
+              fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+              color: "#fff",
+            },
+          }).showToast();
         } else {
           throw new Error("Failed to update 2fa.");
         }
       })
       .catch((error) => {
-         Toastify({
-                text: "Failed to update Two Factor Authentication. Please try again later.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+        Toastify({
+          text: "Failed to update Two Factor Authentication. Please try again later.",
+          duration: 4000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+          stopOnFocus: true,
+          close: true,
+          style: {
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            fontSize: "15px",
+            padding: "14px 18px",
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+            color: "#fff",
+          },
+        }).showToast();
       });
   }
   const deleteUserButton = document.getElementById("deleteUserButton");
 
   async function deleteUser() {
-    
     showBtnLoader(deleteUserButton);
     try {
       const response = await fetch("/api/profile/delete", {
@@ -479,22 +557,22 @@
     } catch (error) {
       hideBtnLoader(deleteUserButton);
       Toastify({
-                text: "Failed to delete user. Please try again later.",
-                duration: 4000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
-                stopOnFocus: true,
-                close: true,
-                style: {
-                  borderRadius: "10px",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  fontSize: "15px",
-                  padding: "14px 18px",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  color: "#fff"
-                }
-              }).showToast();
+        text: "Failed to delete user. Please try again later.",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+        stopOnFocus: true,
+        close: true,
+        style: {
+          borderRadius: "10px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          fontSize: "15px",
+          padding: "14px 18px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          color: "#fff",
+        },
+      }).showToast();
     }
   }
 
@@ -504,6 +582,65 @@
       modal.style.display = "flex";
     } else {
       modal.style.display = "none";
+    }
+  }
+
+  async function resetPassword() {
+    const username = "<%= user.username %>";
+    console.log(`Resetting password for user: ${username}`);
+    try {
+      const url = `/auth/otpreset?username=${username}`;
+      const res = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to generate OTP");
+      }
+      const data = await res.json();
+
+      Toastify({
+        text: "OTP sent successfully. Please check your email.",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #4caf50, #2e7d32)",
+        stopOnFocus: true,
+        close: true,
+        style: {
+          borderRadius: "10px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          fontSize: "15px",
+          padding: "14px 18px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          color: "#fff",
+        },
+      }).showToast();
+
+      setTimeout(() => {
+        window.location.href = data.redirect;
+      }, 2000);
+    } catch (error) {
+      Toastify({
+        text: "Error sending OTP ",
+        duration: 4000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "linear-gradient(to right, #e52d27, #b31217)",
+        stopOnFocus: true,
+        close: true,
+        style: {
+          borderRadius: "10px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          fontSize: "15px",
+          padding: "14px 18px",
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          color: "#fff",
+        },
+      }).showToast();
     }
   }
 </script>

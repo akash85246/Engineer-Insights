@@ -271,6 +271,7 @@ async function resetPassword(req, res) {
     if (!req.app.locals.resetSession) {
       return res.status(440).send({ error: "Session expired!" });
     }
+   
 
     const { username, password } = req.body;
 
@@ -294,6 +295,9 @@ async function resetPassword(req, res) {
 
     req.app.locals.resetSession = false;
     req.session.passwordReset = null;
+     if (req.session.passwordReset) {
+      req.session.passwordReset = null;
+    }
     return res.status(201).send({ msg: "Record updated......" });
   } catch (error) {
     console.error("Error resetting password:", error);
@@ -319,9 +323,11 @@ async function resendOTP(req, res) {
 
 async function generateOTPReset(req, res) {
   const { username } = req.query;
+  req.session.passwordReset = true;
   if (!username) {
     return res.status(400).send({ error: "Username is required" });
   }
+
 
   try {
     const otpCode = await handleOTPGeneration(username, req.app, req.session);

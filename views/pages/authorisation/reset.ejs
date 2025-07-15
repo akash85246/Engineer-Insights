@@ -1,7 +1,7 @@
 <div class="flex flex-col-reverse md:grid md:grid-cols-2 gap-6 py-16 px-4 sm:p-8 md:p-8 md:py-16">
   <div class="hidden md:flex justify-center items-center flex-col">
     <h2
-      class="text-base sm:text-lg md:text-2xl font-bold text-primary  text-center"
+      class="text-base sm:text-lg md:text-2xl font-bold <%= user.settings.theme === 'dark' ? 'text-dark-primary' : ' text-primary' %>  text-center"
     >
       Forgot Your Password?
     </h2>
@@ -11,23 +11,23 @@
       class="h-[80%] lg:h-96"
     />
     <p
-      class="text-xs sm:text-base md:text-lg text-secondary md:font-semibold mb-6 text-center"
+      class="text-xs sm:text-base md:text-lg <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-secondary' %>  md:font-semibold mb-6 text-center"
     >
       Enter a new password to securely reset your account password.
     </p>
   </div>
 
   <div
-    class="max-w-7xl mx-auto md:mx-5 my-auto p-8 rounded-lg shadow-lg bg-white bg-opacity-50 backdrop-blur-sm border border-gray-200"
+    class="max-w-7xl mx-auto md:mx-5 my-auto p-8 rounded-lg shadow-lg <%= user.settings.theme === 'dark' ? 'bg-dark-sixth border-dark-fourth bg-opacity-80' : ' bg-white border-gray-200 bg-opacity-50' %> backdrop-blur-sm border "
   >
     <h1
-      class="text-lg sm:text-xl md:text-2xl font-bold text-center md:mb-2 flex justify-center items-center gap-2"
+      class="text-lg sm:text-xl md:text-2xl font-bold text-center md:mb-2 flex justify-center items-center gap-2 <%= user.settings.theme === 'dark' ? 'text-dark-primary' : ' text-primary' %>"
     >
       <img src="images/logoImg/icon.png" alt="logo Img" class="h-10" />Password
       Reset
     </h1>
     <h2
-      class="text-sm sm:text-base md:text-lg text-secondary md:font-semibold mb-6 text-center"
+      class="text-sm sm:text-base md:text-lg <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-secondary' %> md:font-semibold mb-6 text-center"
     >
       Please enter your new password and confirm it.
     </h2>
@@ -36,7 +36,7 @@
       class="space-y-6"
     >
       <div class="h-16">
-        <label for="password" class="block text-sm font-medium text-secondary"
+        <label for="password" class="block text-sm font-medium <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-secondary' %>"
           >New Password</label
         >
         <input
@@ -45,14 +45,14 @@
           id="password"
           required
           minlength="8"
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth focus:border-fourth sm:text-sm text-primary"
+          class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none sm:text-sm <%= user.settings.theme === 'dark' ? ' bg-dark-sixth border-dark-fourth focus:ring-dark-tertiary focus:border-dark-tertiary' : 'border-gray-300 focus:ring-fourth focus:border-fourth text-primary' %>"
         />
         <p class="text-xs text-red-600 mt-1 hidden" id="passwordError"></p>
       </div>
       <div class="h-16">
         <label
           for="confirmPassword"
-          class="block text-sm font-medium text-secondary"
+          class="block text-sm font-medium <%= user.settings.theme === 'dark' ? 'text-dark-secondary' : ' text-secondary' %>"
           >Confirm Password</label
         >
         <input
@@ -61,7 +61,7 @@
           id="confirmPassword"
           required
           minlength="8"
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-fourth focus:border-fourth sm:text-sm text-primary"
+          class="mt-1 block w-full px-3 py-2 border  rounded-md shadow-sm focus:outline-none sm:text-sm <%= user.settings.theme === 'dark' ? ' bg-dark-sixth border-dark-fourth focus:ring-dark-tertiary focus:border-dark-tertiary' : 'border-gray-300 focus:ring-fourth focus:border-fourth text-primary' %>"
         />
         <p
           class="text-xs text-red-600 mt-1 hidden"
