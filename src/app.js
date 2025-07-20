@@ -13,9 +13,9 @@ const passport = require("passport");
 const socketIo = require("socket.io");
 const argon2 = require("argon2");
 const dotenv = require("dotenv");
-const { v4: uuidv4 } = require('uuid'); 
+const { v4: uuidv4 } = require("uuid");
 const AnalyticsModel = require("./models/Analytic.model");
-const {handleOTPGeneration} = require("./controllers/auth.controller");
+const { handleOTPGeneration } = require("./controllers/auth.controller");
 
 dotenv.config();
 const {
@@ -74,8 +74,14 @@ app.set("views", path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../public/images/uploads")));
 // Serve Toastify CSS and JS
-app.use('/toastify', express.static(path.join(__dirname, '../node_modules/toastify-js/src')));
-app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
+app.use(
+  "/toastify",
+  express.static(path.join(__dirname, "../node_modules/toastify-js/src"))
+);
+app.use(
+  "/node_modules",
+  express.static(path.join(__dirname, "../node_modules"))
+);
 
 app.use(cookieParser());
 app.use(methodOverride("_method"));
@@ -88,7 +94,6 @@ io.on("connection", (socket) => {
   socket.on("newComment", (data) => {
     try {
       commentController.handleNewComment(socket, { body: data });
-      
     } catch (error) {
       console.error("Error handling new comment:", error);
     }
@@ -185,14 +190,12 @@ app.use(async (err, req, res, next) => {
   } else if (!user.settings) {
     user.settings = defaultSettings;
   }
-console.error("Error:", err);
-  res
-    .status(500)
-    .renderWithMainLayout("../pages/errors/500.ejs", {
-      title: "Internal Server Error",
-      isAuthenticated,
-      user: user,
-    });
+  console.error("Error:", err);
+  res.status(500).renderWithMainLayout("../pages/errors/500.ejs", {
+    title: "Internal Server Error",
+    isAuthenticated,
+    user: user,
+  });
 });
 
 app.use((req, res, next) => {
@@ -223,18 +226,20 @@ passport.use(
           return cb(null, false, { message: "Invalid password" });
         }
 
-        
         if (user.settings["2fa"]) {
           try {
-          
-            const  code  = await handleOTPGeneration(username, req.app, req.session);
+            const code = await handleOTPGeneration(
+              username,
+              req.app,
+              req.session
+            );
             console.log("Generated OTP:", code);
             if (!code) {
               return cb(null, false, { message: "Failed to generate OTP" });
             }
 
             console.log("Generated OTP:", code);
-           
+
             req.session.otp = code;
             req.session.twoFactor = {
               userId: user._id,
@@ -245,7 +250,6 @@ passport.use(
               message: "2FA required",
               redirect: `/twoFactorAuth/${user.username}`,
             });
-
           } catch (error) {
             console.error("Error handling 2FA:", error);
             return cb(error);
@@ -297,6 +301,11 @@ passport.use(
   )
 );
 
+console.log(
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.BASE_URL
+);
 passport.use(
   "google",
   new GoogleStrategy(
@@ -308,12 +317,28 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, cb) => {
       try {
+        if (!profile.email) {
+          return cb(new Error("Google profile does not contain an email"));
+        }
         const result = await UserModel.findOne({ email: profile.email });
         const loginTime = new Date();
 
         if (!result) {
+          const baseUsername = (
+            profile.given_name + profile.family_name
+          ).replace(/\s/g, "");
+          let username = baseUsername;
+          let userExists = await UserModel.findOne({ username });
+
+          let suffix = 1;
+          while (userExists) {
+            username = `${baseUsername}${suffix}`;
+            userExists = await UserModel.findOne({ username });
+            suffix++;
+          }
+
           const newUser = await UserModel.create({
-            username: profile.given_name+profile.family_name,
+            username: username,
             firstname: profile.given_name,
             lastname: profile.family_name,
             email: profile.email,
@@ -325,7 +350,7 @@ passport.use(
               notifications: true,
             },
           });
-          const user=newUser.save();
+          const user = newUser.save();
           await AnalyticsModel.updateOne(
             { user_id: user._id },
             {
@@ -339,17 +364,17 @@ passport.use(
           );
           return cb(null, newUser);
         } else {
-           await AnalyticsModel.updateOne(
-                { user_id: result._id },
-                {
-                  $push: {
-                    logins: {
-                      date: loginTime,
-                      count: 1,
-                    },
-                  },
-                }
-              );
+          await AnalyticsModel.updateOne(
+            { user_id: result._id },
+            {
+              $push: {
+                logins: {
+                  date: loginTime,
+                  count: 1,
+                },
+              },
+            }
+          );
           return cb(null, result);
         }
       } catch (err) {
