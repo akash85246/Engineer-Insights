@@ -23,7 +23,7 @@
       </button>
       <button
         id="featuredButton"
-        class="<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %> py-2 px-3 sm:px-4 text-center rounded-md focus:outline-none font-roboto w-full h-full text-sm sm:text-base md:text-lg font-semibold"
+        class="<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600' %> py-2 px-3 sm:px-4 text-center rounded-md focus:outline-none font-roboto w-full h-full text-sm sm:text-base md:text-lg font-semibold"
         onclick="toggleTab('featuredBlogs')"
       >
         Featured Blogs
@@ -93,8 +93,8 @@ include("../../partials/featureModalInfo.ejs") %>
 
       // Update button styles
       newButton.classList.add("<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %>");
-      newButton.classList.remove("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %>");
-      featuredButton.classList.add("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %>");
+      newButton.classList.remove("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600' %>");
+      featuredButton.classList.add("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600' %>");
       featuredButton.classList.remove("<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %>");
 
       // Show reports content and hide reported blogs content
@@ -108,10 +108,10 @@ include("../../partials/featureModalInfo.ejs") %>
       slider.style.transform = "translateX(100%)";
 
       // Update button styles
-      newButton.classList.add("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %>");
+      newButton.classList.add("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600' %>");
       newButton.classList.remove("<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %>");
       featuredButton.classList.add("<%= user.settings.theme === 'dark' ? 'text-dark-primary' : 'text-gray-800' %>");
-      featuredButton.classList.remove("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600 ' %>");
+      featuredButton.classList.remove("<%= user.settings.theme === 'dark' ? 'text-dark-fifth' : 'text-gray-600' %>");
 
       // Show reported blogs content and hide reports content
       featuredBlogs.classList.remove("hidden");

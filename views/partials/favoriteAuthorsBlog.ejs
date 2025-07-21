@@ -14,7 +14,7 @@
 
   <div
     id="blogsByFavouriteAuthors"
-    class="flex overflow-x-scroll scroll-smooth gap-2 md:gap-2 flex-1 w-full"
+    class="flex overflow-x-scroll scroll-smooth gap-2 md:gap-2 sm:flex-1 w-full"
   ></div>
 
   <button
@@ -371,7 +371,7 @@
                 }
 
             return  `
-            <div class="max-w-[250px] sm:min-w-[50%] md:min-w-[30%] lg:min-w-[25%] flex-shrink-0 font-lora flex-1 min-h-full  flex-grow " onmouseleave="hideAuthorBlogOptions('${blog.slug}')">
+            <div class="min-w-80 w-full sm:w-[90%] md:w-[48%] lg:w-[32%] xl:w-[24%] max-w-[25rem] flex-shrink-0 font-lora flex-1 min-h-full flex-grow" onmouseleave="hideAuthorBlogOptions('${blog.slug}')">
                     <div class="flex justify-evenly items-center bg-no-repeat bg-cover text-white rounded-md h-full" style="background-image: url('${
                       blog.blogPhoto
                     }')">
@@ -513,6 +513,7 @@
                         </div>
                       </div>
                     </div>
+                  </div>
                   </div>
                   `
       })

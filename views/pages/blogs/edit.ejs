@@ -4,7 +4,7 @@
   method="POST"
 >
   <div
-    class="order-3 md:order-1 col-span-4 md:col-span-1 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-secondary' %> shadow-lg rounded-lg"
+    class="!pt-0 order-3 md:order-1 col-span-4 md:col-span-1 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white text-secondary' %> shadow-lg rounded-lg"
   >
     <h2
       class="text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2 lg:mb-6 <%= user.settings.theme === 'dark' ? 'text-dark-primary bg-dark-sixth' : 'text-secondary bg-white' %> sticky top-0 pb-1 lg:pb-2"
@@ -25,7 +25,6 @@
       >
         <option value="" disabled selected>Select a category</option>
         <option value="tech">Technology</option>
-        <option value="health">Health</option>
         <option value="travel">Travel</option>
         <option value="lifestyle">Lifestyle</option>
         <option value="education">Education</option>
@@ -179,13 +178,13 @@
   </div>
 
   <div
-    class="order-1 md:order-2 col-span-4 sm:col-span-3 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white' %> shadow-lg rounded-lg flex flex-col max-h-screen overflow-y-scroll"
+    class="!pt-0 order-1 md:order-2 col-span-4 sm:col-span-3 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'bg-dark-sixth text-dark-secondary' : ' bg-white' %> shadow-lg rounded-lg flex flex-col max-h-screen overflow-y-scroll "
     onclick="focusoneditor()"
   >
     <h1
       id="markdownLabel"
       for="markdown"
-      class="text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2 lg:mb-6 <%= user.settings.theme === 'dark' ? 'text-dark-primary bg-dark-sixth' : 'text-secondary bg-white' %> sticky top-0 z-10 pb-1 lg:pb-2 w-full"
+      class="text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2 lg:mb-6 <%= user.settings.theme === 'dark' ? 'text-dark-primary bg-dark-sixth' : 'text-secondary bg-white' %> sticky top-0  pb-1 lg:pb-2 w-full  z-20"
       onclick="event.stopPropagation()"
     >
       Markdown
@@ -214,7 +213,7 @@
   </div>
 
   <div
-    class="order-2 hidden sm:block md:order-3 col-span-1 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'text-dark-primary bg-dark-sixth' : 'text-secondary bg-white' %> shadow-lg rounded-lg"
+    class="!pt-0 order-2 hidden sm:block md:order-3 col-span-1 p-3 md:p-2 lg:p-3 <%= user.settings.theme === 'dark' ? 'text-dark-primary bg-dark-sixth' : 'text-secondary bg-white' %> shadow-lg rounded-lg"
   >
     <div class="sticky top-0 h-auto max-h-[70vh]">
       <h2
