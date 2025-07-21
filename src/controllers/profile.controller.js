@@ -778,10 +778,12 @@ async function getSettings(req, res) {
       },
     ]);
 
+
     res.renderWithProfileLayout("../pages/profile/setting", {
       title: `${user.username}'s Settings`,
       user: { ...user },
       profile: { ...user },
+      readerId: null,
       setting: user.settings,
       isAuthenticated,
       featuredBlogs,
