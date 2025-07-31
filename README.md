@@ -362,7 +362,7 @@ I would like to extend my gratitude to the following resources, tools, and indiv
 - **Socket.IO** – For enabling real-time collaboration and interactivity.
 - **Loaders.css** – For lightweight and customizable loaders used during content fetch and loading screens.
 - **Toastify.js** – For elegant and simple toast notifications.
-- **Udemy & YouTube Creators** – For tutorials, project ideas, and technical deep-dives that helped sharpen development skills.
+- **Udemy** – For tutorials, project ideas, and technical deep-dives that helped sharpen development skills.
 - **Open Source Community** – For providing libraries, tools, and inspiration to build projects like this.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
