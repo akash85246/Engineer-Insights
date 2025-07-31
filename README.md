@@ -347,20 +347,23 @@ Project Link: [https://github.com/akash85246/Engineer-Insights](https://github.c
 
 ## Acknowledgments
 
-I would like to extend my gratitude to the following resources and individuals:
+I would like to extend my gratitude to the following resources, tools, and individuals that made this project possible:
 
-- **Open Library API** – For providing the book cover images and book data.
-- **Google** – For offering the Google Authentication API that allows users to sign in securely.
-- **PostgreSQL** – For providing the database solution for managing user data and book reviews.
-- **Render** – For hosting the project online and making deployment seamless.
-- **Tailwind CSS** – For its utility-first CSS framework that helped design the responsive layout.
-- **Node.js** – For being the foundation of the backend server.
-- **Express.js** – For making routing and server-side development efficient and easy.
-- **EJS** – For templating and rendering dynamic views.
-- **Loaders.css** – For providing an easy-to-implement loader to enhance user experience during page loads.
-- **App Brewery** – For providing educational resources and inspiration for building full-stack applications.
-- **Udemy** – For offering valuable courses that helped deepen my understanding of web development.
-- **Angela Yu** – For being an amazing instructor whose courses on Udemy have greatly contributed to my learning and growth in web development.
+- **Google AI Studio** – For enabling AI-assisted writing and content summarization.
+- **Google Authentication** – For secure and seamless user login.
+- **MongoDB & Mongoose** – For providing a scalable and flexible database solution.
+- **Cloudinary** – For effortless and reliable media storage and delivery.
+- **PayPal Developer Platform** – For powering monetization through featured blog promotions.
+- **Render** – For providing a simple and effective deployment solution.
+- **Tailwind CSS** – For the utility-first framework that helped build a clean and responsive UI.
+- **Node.js** – For being the backbone of the server-side application.
+- **Express.js** – For simplifying API development and server management.
+- **EJS** – For server-side templating and rendering dynamic content.
+- **Socket.IO** – For enabling real-time collaboration and interactivity.
+- **Loaders.css** – For lightweight and customizable loaders used during content fetch and loading screens.
+- **Toastify.js** – For elegant and simple toast notifications.
+- **Udemy & YouTube Creators** – For tutorials, project ideas, and technical deep-dives that helped sharpen development skills.
+- **Open Source Community** – For providing libraries, tools, and inspiration to build projects like this.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
