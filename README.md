@@ -276,7 +276,6 @@ Here are the planned improvements and features for the Engineer Insights platfor
 - [x] Notification system for collaborations and interactions.
 - [x] Bookmark feature to save favorite blogs.
 - [ ] Admin dashboard for moderating reports and managing content/users.
-- [ ] Tag-based recommendation engine for blog discovery.
 - [ ] Machine learning-based personalized blog recommendation system.
 
 See the [open issues](https://github.com/akash85246/Engineer-Insights/issues) for a full list of proposed features (and known issues).
@@ -334,6 +333,8 @@ Don't forget to ⭐ the project — thank you for your support!
 </a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 ## Contact
 
 Akash Rajput - [@akash_rajp91025](https://x.com/akash_rajp91025) - akash.rajput.dev@gmail.com
