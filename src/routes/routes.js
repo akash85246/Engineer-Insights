@@ -26,6 +26,8 @@ router.get("/signin", async (req, res) => {
     title: "Sign In",
     user: user,
     isAuthenticated,
+    description: "Sign in to your account on Engineer Insights, the platform for engineers to share knowledge and insights.",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
 
   });
 });
@@ -52,6 +54,8 @@ router.get("/twoFactorAuth/:username", async (req, res) => {
       isAuthenticated,
       title: "Two Factor Authentication",
       user: user,
+      description: "Secure your account with two-factor authentication on Engineer Insights.",
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
     });
   } catch (error) {
     console.error("Error fetching user:", error);
@@ -76,6 +80,8 @@ router.get("/signup", (req, res) => {
     title: "Sign Up",
     user: user,
     isAuthenticated,
+    description: "Create an account on Engineer Insights, the platform for engineers to share knowledge and insights.",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
   });
 });
 
@@ -97,6 +103,8 @@ router.get("/recovery", (req, res) => {
     title: "Recovery Password",
     user: user,
     isAuthenticated,
+    description: "Recover your password on Engineer Insights, the platform for engineers to share knowledge and insights.",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
   });
 });
 
@@ -125,6 +133,8 @@ router.get("/reset", async (req, res) => {
     username: username,
     user: user,
     isAuthenticated,
+    description: "Reset your password on Engineer Insights, the platform for engineers to share knowledge and insights.",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
   });
 });
 
@@ -155,6 +165,8 @@ router.get("/verify", async (req, res) => {
     username: username,
     user: user,
     isAuthenticated,
+    description: "Verify your account on Engineer Insights, the platform for engineers to share knowledge and insights.",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
   });
 });
 

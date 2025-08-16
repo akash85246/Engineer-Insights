@@ -367,6 +367,7 @@ I would like to extend my gratitude to the following resources, tools, and indiv
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
 <!-- MARKDOWN LINKS & IMAGES -->
 
 [contributors-shield]: https://img.shields.io/github/contributors/akash85246/Engineer-Insights.svg?style=for-the-badge
