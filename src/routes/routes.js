@@ -219,6 +219,10 @@ router.get("/subscribe", async (req, res) => {
     user,
     payment: payment,
     timeRemaining: 0,
+    description: "Subscribe to Engineer Insights for exclusive content and features. Enjoy premium articles, insights, and more",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+    keywords: "subscription, payment, engineer insights, exclusive content",
+    
   });
 });
 

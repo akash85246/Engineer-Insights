@@ -301,11 +301,7 @@ passport.use(
   )
 );
 
-console.log(
-  process.env.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.BASE_URL
-);
+
 passport.use(
   "google",
   new GoogleStrategy(

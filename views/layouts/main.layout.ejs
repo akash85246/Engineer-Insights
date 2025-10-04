@@ -24,15 +24,62 @@
     />
     <!-- Toastify CSS -->
     <link rel="stylesheet" href="/toastify/toastify.css" />
-     <!-- loader -->
-    <link rel="stylesheet" href="/node_modules/loaders.css/loaders.min.css">
+    <!-- loader -->
+    <link rel="stylesheet" href="/node_modules/loaders.css/loaders.min.css" />
+    <!-- Meta Data -->
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="<%= title || 'Engineer Insights' %>" />
+    <meta
+      name="description"
+      content="<%= description || 'Engineer Insights is a modern blogging platform for engineers to share knowledge, explore blogs, and connect with the community.' %>"
+    />
+    <meta
+      name="keywords"
+      content="<%= keywords || 'Engineer Insights, engineering blogs, AI blogs, tech community, knowledge sharing, subscriptions' %>"
+    />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="<%= pageUrl || 'https://engineer-insights.onrender.com/' %>"
+    />
+    <meta property="og:title" content="<%= title || 'Engineer Insights' %>" />
+    <meta
+      property="og:description"
+      content="<%= description || 'A platform for engineers to write, share, and explore blogs with AI-powered insights.' %>"
+    />
+    <meta
+      property="og:image"
+      content="/images/logoImg/logo.png"
+    />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="<%= pageUrl || 'https://engineer-insights.onrender.com/' %>"
+    />
+    <meta
+      property="twitter:title"
+      content="<%= title || 'Engineer Insights' %>"
+    />
+    <meta
+      property="twitter:description"
+      content="<%= description || 'Discover engineering blogs, AI insights, and subscribe for premium content on Engineer Insights.' %>"
+    />
+    <meta
+      property="twitter:image"
+      content="/images/logoImg/logo.png"
+    />
   </head>
   <script
     async
     src="https://www.googletagmanager.com/gtag/js?id=G-FG5BN3EY26"
   ></script>
   <% if (user && user._id && user.googleAnalyticsId) { %>
-     <script>
+  <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() {
       dataLayer.push(arguments);
@@ -42,13 +89,13 @@
       user_id: "<%= user._id %>",
     });
   </script>
-    <% } %>
+  <% } %>
   <body
     class="<%= user.settings.theme === 'dark' ? 'bg-dark-background text-dark-text' : 'bg-white text-text' %>"
   >
-    <%- include("../partials/header.ejs") %> <%- include(view) %>
-    <%- include("../partials/loader.ejs") %>
-     <%- include("../partials/footer.ejs") %>
+    <%- include("../partials/header.ejs") %> <%- include(view) %> <%-
+    include("../partials/loader.ejs") %> <%- include("../partials/footer.ejs")
+    %>
   </body>
 </html>
 <!-- Toastify JS -->
