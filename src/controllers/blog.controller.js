@@ -141,6 +141,9 @@ async function getEditArticleBySlug(req, res) {
 
     res.renderWithMainLayout("../pages/blogs/edit", {
       title: "Edit Blog",
+      description: `Edit your blog post "${blog.title}" on Engineer Insights, the platform for engineers to share knowledge and insights.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: `edit blog, update post, engineer insights, modify article`,
       blog: { ...blog._doc, author },
       user: author,
       isAuthenticated,
@@ -360,6 +363,9 @@ async function getArticleBySlug(req, res, next) {
 
     res.renderWithMainLayout("../pages/blogs/show", {
       title: blog.title,
+      description: blog.description,
+      pageUrl: fullUrl,
+      keywords: blog.tags.join(", "),
       blog: { ...blog, author, timeSinceCreation },
       isAuthenticated,
       editable: canEdit,
@@ -778,6 +784,10 @@ async function getAllBlogs(req, res) {
     }
     res.renderWithMainLayout("../pages/blogs/all", {
       title: "All Blogs",
+      description:
+        "Explore a wide range of engineering blogs on Engineer Insights. Discover articles, tutorials, and insights from engineers around the world.",
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: "engineering blogs, tech articles, engineer insights, blog posts",
       tags,
       isAuthenticated,
       user: user,

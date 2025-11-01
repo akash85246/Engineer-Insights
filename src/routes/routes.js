@@ -24,6 +24,9 @@ router.get("/signin", async (req, res) => {
 
   res.renderWithAuthLayout("../pages/authorisation/signin", {
     title: "Sign In",
+    description: "Sign in to your account on Engineer Insights, the platform for engineers to share knowledge and insights.",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+    keywords: "sign in, login, engineer insights, access account",
     user: user,
     isAuthenticated,
     description: "Sign in to your account on Engineer Insights, the platform for engineers to share knowledge and insights.",
@@ -53,6 +56,9 @@ router.get("/twoFactorAuth/:username", async (req, res) => {
     return res.renderWithAuthLayout("../pages/authorisation/twoFactor.ejs", {
       isAuthenticated,
       title: "Two Factor Authentication",
+      designation: "Two Factor Authentication",
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: "two factor authentication, 2fa, security, engineer insights",
       user: user,
       description: "Secure your account with two-factor authentication on Engineer Insights.",
       pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
@@ -78,6 +84,9 @@ router.get("/signup", (req, res) => {
 
   res.renderWithAuthLayout("../pages/authorisation/signup", {
     title: "Sign Up",
+    description: "Sign up to create an account on Engineer Insights, the platform for engineers to share knowledge and insights.",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+    keywords: "sign up, register, create account, engineer insights",
     user: user,
     isAuthenticated,
     description: "Create an account on Engineer Insights, the platform for engineers to share knowledge and insights.",
@@ -101,6 +110,9 @@ router.get("/recovery", (req, res) => {
 
   res.renderWithAuthLayout("../pages/authorisation/recovery", {
     title: "Recovery Password",
+    description: "Recover your password on Engineer Insights, the platform for engineers to share knowledge and insights.",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+    keywords: "password recovery, reset password, forgot password, engineer insights",
     user: user,
     isAuthenticated,
     description: "Recover your password on Engineer Insights, the platform for engineers to share knowledge and insights.",
@@ -130,6 +142,9 @@ router.get("/reset", async (req, res) => {
 
   res.renderWithAuthLayout("../pages/authorisation/reset", {
     title: "Reset Password",
+    description: "Reset your password on Engineer Insights, the platform for engineers to share knowledge and insights.",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+    keywords: "reset password, change password, password update, engineer insights",
     username: username,
     user: user,
     isAuthenticated,
@@ -162,6 +177,9 @@ router.get("/verify", async (req, res) => {
 
   res.renderWithAuthLayout("../pages/authorisation/verify", {
     title: "Verify User",
+    description: "Verify your account on Engineer Insights, the platform for engineers to share knowledge and insights.",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+    keywords: "user verification, account verify, verify identity, engineer insights",
     username: username,
     user: user,
     isAuthenticated,
@@ -215,6 +233,9 @@ router.get("/subscribe", async (req, res) => {
 
   res.renderWithMainLayout("../pages/payment/subscription.ejs", {
     title: "Subscribe",
+    description: "Subscribe to Engineer Insights for exclusive content and features. Enjoy premium articles, insights, and more",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+    keywords: "subscription, payment, engineer insights, exclusive content",
     isAuthenticated,
     user,
     payment: payment,
@@ -272,6 +293,9 @@ router.get("/about", async (req, res) => {
 
   res.renderWithMainLayout("../pages/about.ejs", {
     title: "About",
+    description: "Learn more about Engineer Insights, our mission, and how we empower engineers to share knowledge and insights.",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+    keywords: "about us, engineer insights, mission, knowledge sharing",
     isAuthenticated,
     user,
   });
@@ -334,6 +358,9 @@ router.get("/", async (req, res) => {
 
   res.renderWithMainLayout("../pages/home", {
     title: "Home",
+    description: "Engineer Insights - Share and Discover Engineering Knowledge",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+    keywords: "engineering, insights, articles, knowledge sharing, technology, innovation",
     isAuthenticated,
     user: user,
     popularBlog: popularBlog,

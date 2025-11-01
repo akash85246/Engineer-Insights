@@ -61,6 +61,9 @@ async function createPayment(req, res) {
 
       return res.renderWithMainLayout("../pages/payment/success.ejs", {
         title: "Free Blog Used",
+        description: "Your free blog has been successfully published.",
+        pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+        keywords: "free blog, publish blog, engineer insights",
         user,
         message: `Your free blog has been successfully published! You have ${freeBlogsLeft} free blogs remaining.`,
         isAuthenticated,
@@ -130,6 +133,9 @@ async function paymentSuccess(req, res) {
     if (error) {
       res.renderWithMainLayout("../pages/payment/failure.ejs", {
         title: "Payment Failure",
+        description: "There was an error executing your PayPal payment.",
+        pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+        keywords: "payment failure, paypal error, engineer insights",
         user,
         isAuthenticated,
         errorMessage: "Error executing PayPal payment",
@@ -189,6 +195,9 @@ async function paymentSuccess(req, res) {
 
       res.renderWithMainLayout("../pages/payment/success.ejs", {
         title: "Payment Success",
+        description: "Your payment was successful. Thank you for your purchase.",
+        pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+        keywords: "payment success, paypal payment, engineer insights",
         user,
         message: "Payment successful! Thank you for your purchase.",
         isAuthenticated,
@@ -208,6 +217,9 @@ async function paymentCancel(req, res) {
 
   res.renderWithMainLayout("../pages/payment/cancel.ejs", {
     title: "Payment Cancel",
+    description: "Your payment was canceled. Please try again if you wish to complete the purchase.",
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+    keywords: "payment cancel, paypal cancel, engineer insights",
     user,
     message: "Payment canceled. Please try again.",
     isAuthenticated,

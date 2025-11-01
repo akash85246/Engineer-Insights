@@ -396,6 +396,9 @@ async function getAnalytics(req, res) {
     if (!user) {
       return res.renderWithMainLayout("errors/404.ejs", {
         title: "User Not Found",
+        description: "The author you're looking for doesn't exist.",
+        keywords: "user not found, author missing, 404 error",
+        pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
         message: "The author you're looking for doesn't exist.",
         isAuthenticated,
       });
@@ -432,6 +435,9 @@ async function getAnalytics(req, res) {
 
     res.renderWithProfileLayout("../pages/profile/analytic", {
       title: `${user.username}'s Analytics`,
+      description: `Explore detailed analytics for ${user.username} on Engineer Insights, including engagement metrics, popular tags, and blog performance.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: `analytics, ${user.username}, engagement metrics, popular tags, blog performance, engineer insights`,
       user: { ...user },
       isAuthenticated,
       profile: { ...user },
@@ -443,6 +449,9 @@ async function getAnalytics(req, res) {
     console.error("Error fetching user:", error);
     res.renderWithMainLayout("errors/500.ejs", {
       title: "Server Error",
+      description: "An error occurred while fetching the user's profile.",
+      keywords: "server error, 500 error, user profile error",
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
       message: "An error occurred while fetching the user's profile.",
       isAuthenticated: req.isAuthenticated(),
     });

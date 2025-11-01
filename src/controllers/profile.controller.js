@@ -48,6 +48,9 @@ async function getProfile(req, res, next) {
 
     res.renderWithProfileLayout("../pages/profile/profile", {
       title: `${profile.username}'s Profile`,
+      description: `Explore the profile of ${profile.username} on Engineer Insights. Discover their blogs, insights, and contributions to the engineering community.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: `profile, ${profile.username}, engineer insights, user profile`,
       profile,
       user,
       isAuthenticated,
@@ -71,6 +74,9 @@ async function getUpdateProfile(req, res) {
 
     res.renderWithProfileLayout("../pages/profile/editProfile", {
       title: "Edit Profile",
+      description: `Edit your profile on Engineer Insights. Update your personal information, avatar, and preferences to enhance your experience on the platform.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: "edit profile, update user info, engineer insights, profile settings",
       user: user,
       profile: { ...user },
       isAuthenticated,
@@ -320,6 +326,9 @@ async function getAuthorBySlug(req, res) {
 
     res.renderWithMainLayout("../pages/profile/author.ejs", {
       title: `${user.username}'s Profile`,
+      description: `Explore the profile of ${user.username} on Engineer Insights. Discover their blogs, insights, and contributions to the engineering community.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: `profile, ${user.username}, engineer insights, user profile`,
       user: reader,
       reader: { ...user, blogs: user.blogs },
       isAuthenticated: req.isAuthenticated(),
@@ -349,6 +358,9 @@ async function getAuthorDrafts(req, res) {
     if (!user) {
       return res.renderWithMainLayout("errors/404.ejs", {
         title: "User Not Found",
+        description: "The author you're looking for doesn't exist.",
+        pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+        keywords: "user not found, profile error, engineer insights",
         message: "The author you're looking for doesn't exist.",
         isAuthenticated,
       });
@@ -373,6 +385,9 @@ async function getAuthorDrafts(req, res) {
 
     res.renderWithProfileLayout("../pages/profile/draft", {
       title: `${user.username}'s Drafts`,
+      description: `Explore the drafts of ${user.username} on Engineer Insights. Review and manage your unpublished blog posts and articles.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: `drafts, ${user.username}, engineer insights, unpublished blogs`,
       user: { ...user },
       isAuthenticated,
       profile: { ...user },
@@ -404,6 +419,9 @@ async function savedBlogs(req, res) {
     if (!user) {
       return res.renderWithMainLayout("errors/404.ejs", {
         title: "User Not Found",
+        description: "The author you're looking for doesn't exist.",
+        pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+        keywords: "user not found, profile error, engineer insights",
         message: "The author you're looking for doesn't exist.",
         isAuthenticated,
       });
@@ -428,6 +446,9 @@ async function savedBlogs(req, res) {
 
     res.renderWithProfileLayout("../pages/profile/saved", {
       title: `${user.username}'s Saved Blogs`,
+      description: `Explore the saved blogs of ${user.username} on Engineer Insights. Access and read your favorite articles and posts.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: `saved blogs, ${user.username}, engineer insights, favorite articles`,
       profile: { ...user },
       user,
       isAuthenticated,
@@ -437,6 +458,9 @@ async function savedBlogs(req, res) {
     // console.error("Error fetching user:", error);
     res.renderWithMainLayout("errors/500.ejs", {
       title: "Server Error",
+      description: "An error occurred while fetching the user's profile.",
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: "server error, profile error, engineer insights",
       message: "An error occurred while fetching the user's profile.",
       isAuthenticated: req.isAuthenticated(),
     });
@@ -508,6 +532,9 @@ async function getArchivedBlogs(req, res) {
   if (!user) {
     return res.renderWithMainLayout("errors/404.ejs", {
       title: "User Not Found",
+      description: "The author you're looking for doesn't exist.",
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: "user not found, profile error, engineer insights",
       message: "The author you're looking for doesn't exist.",
       isAuthenticated,
     });
@@ -532,6 +559,9 @@ async function getArchivedBlogs(req, res) {
 
   res.renderWithProfileLayout("../pages/profile/archived", {
     title: `${user.username}'s Archieve`,
+    description: `Explore the archived blogs of ${user.username} on Engineer Insights. Review and manage your archived blog posts and articles.`,
+    pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+    keywords: `archived blogs, ${user.username}, engineer insights, old articles`,
     user: { ...user },
     isAuthenticated,
     profile: { ...user },
@@ -550,6 +580,9 @@ async function getUserReports(req, res) {
     if (!user) {
       return res.renderWithMainLayout("errors/404.ejs", {
         title: "User Not Found",
+        description: "The author you're looking for doesn't exist.",
+        pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+        keywords: "user not found, profile error, engineer insights",
         message: "The author you're looking for doesn't exist.",
         isAuthenticated,
       });
@@ -574,6 +607,9 @@ async function getUserReports(req, res) {
 
     res.renderWithProfileLayout("../pages/profile/report", {
       title: `${user.username}'s Reports`,
+      description: `Explore the reports made by ${user.username} on Engineer Insights. Review and manage your reported content and submissions.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: `reports, ${user.username}, engineer insights, reported content`,
       user: { ...user },
       isAuthenticated,
       profile: { ...user },
@@ -583,6 +619,9 @@ async function getUserReports(req, res) {
     console.error("Error fetching user:", error);
     res.renderWithMainLayout("errors/500.ejs", {
       title: "Server Error",
+      description: "An error occurred while fetching the user's profile.",
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: "server error, profile error, engineer insights",
       message: "An error occurred while fetching the user's profile.",
       isAuthenticated: req.isAuthenticated(),
     });
@@ -625,6 +664,9 @@ async function getUserFollowers(req, res) {
 
     res.renderWithProfileLayout("../pages/profile/follower", {
       title: `${profile.username}'s Followers`,
+      description: `Explore the followers of ${profile.username} on Engineer Insights. See who is following their blogs and contributions to the engineering community.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: `followers, ${profile.username}, engineer insights, user followers`,
       user,
       isAuthenticated,
       profile,
@@ -635,6 +677,9 @@ async function getUserFollowers(req, res) {
     console.error("Error fetching user:", error);
     res.renderWithMainLayout("errors/500.ejs", {
       title: "Server Error",
+      description: "An error occurred while fetching the user's profile.",
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: "server error, profile error, engineer insights",
       message: "An error occurred while fetching the user's profile.",
       isAuthenticated: req.isAuthenticated(),
     });
@@ -676,6 +721,9 @@ async function getUserFollowing(req, res) {
 
     res.renderWithProfileLayout("../pages/profile/following", {
       title: `${profile.username}'s Following`,
+      description: `Explore who ${profile.username} is following on Engineer Insights. Discover the authors and blogs they are interested in within the engineering community.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: `following, ${profile.username}, engineer insights, user following`,
       user,
       readerId: null,
       isAuthenticated,
@@ -686,6 +734,9 @@ async function getUserFollowing(req, res) {
     console.error("Error fetching user:", error);
     res.renderWithMainLayout("errors/500.ejs", {
       title: "Server Error",
+      description: "An error occurred while fetching the user's profile.",
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: "server error, profile error, engineer insights",
       message: "An error occurred while fetching the user's profile.",
       isAuthenticated: req.isAuthenticated(),
     });
@@ -705,6 +756,9 @@ async function getUserNotification(req, res) {
     if (!user) {
       return res.renderWithMainLayout("errors/404.ejs", {
         title: "User Not Found",
+        dwscription: "The author you're looking for doesn't exist.",
+        pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+        keywords: "user not found, profile error, engineer insights",
         message: "The author you're looking for doesn't exist.",
         isAuthenticated,
       });
@@ -729,6 +783,9 @@ async function getUserNotification(req, res) {
 
     res.renderWithProfileLayout("../pages/profile/notification", {
       title: `${user.username}'s Notifications`,
+      description: `Explore the notifications of ${user.username} on Engineer Insights. Stay updated with the latest interactions and activities related to your profile and blogs.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: `notifications, ${user.username}, engineer insights, user notifications`,
       user: { ...user },
       isAuthenticated,
       profile: { ...user },
@@ -781,6 +838,9 @@ async function getSettings(req, res) {
 
     res.renderWithProfileLayout("../pages/profile/setting", {
       title: `${user.username}'s Settings`,
+      description: `Manage the settings of ${user.username} on Engineer Insights. Customize your profile preferences, privacy settings, and notification options.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: `settings, ${user.username}, engineer insights, profile settings`,
       user: { ...user },
       profile: { ...user },
       readerId: null,
@@ -812,6 +872,10 @@ async function getSupport(req, res) {
 
     res.renderWithProfileLayout("../pages/profile/support", {
       title: `${user.username}'s Support`,
+      description: `Get support for ${user.username} on Engineer Insights. Access help resources, FAQs, and contact options for assistance with your profile and account.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: `support, ${user.username}, engineer insights, profile support`,
+      profile: { ...user },
       user: { ...user },
       isAuthenticated,
       readerId: null,
@@ -1186,6 +1250,9 @@ async function getFeaturedBlog(req, res) {
     console.log(user);
     res.renderWithMainLayout("../pages/profile/feature.ejs", {
       title: "Featured Blogs",
+      description: `Manage your featured blogs on Engineer Insights. Highlight your best content and showcase your expertise to the engineering community.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: `featured blogs, engineer insights, user featured content`,
       newBlogs: nonfeaturedBlogs,
       featuredBlogs: featuredBlogs,
       isAuthenticated,
@@ -1239,6 +1306,9 @@ async function getBlockedUsers(req, res) {
 
     res.renderWithProfileLayout("../pages/profile/blockedUsers.ejs", {
       title: "Blocked Users",
+      description: `Manage your blocked users on Engineer Insights. Review and update your list of blocked users to control your interactions within the engineering community.`,
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: `blocked users, engineer insights, user blocked list`,
       isAuthenticated,
       profile: user,
       user: user,
@@ -1364,6 +1434,9 @@ async function getVerifyOtp(req, res) {
 
     res.renderWithProfileLayout("../partials/resetVerify.ejs", {
       title: "Verify User",
+      description: "Verify user OTP for password reset.",
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: "verify otp, password reset, engineer insights",
       isAuthenticated,
       profile: { ...user },
       username: user.username,
@@ -1387,6 +1460,9 @@ async function getResetPassword(req, res) {
     console.log("user", user);
     res.renderWithProfileLayout("../partials/resetPassword.ejs", {
       title: "Reset Password",
+      description: "Reset your password securely.",
+      pageUrl: `${req.protocol}://${req.get("host")}${req.originalUrl}`,
+      keywords: "reset password, secure password, engineer insights",
       isAuthenticated,
       profile: { ...user },
       username: user.username,
